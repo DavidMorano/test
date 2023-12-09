@@ -1,0 +1,8 @@
+ANSIC
+
+Compile with something like:
+$ gcc -o testansic.x main.c
+
+Execute with:
+$ testansic.x
+
