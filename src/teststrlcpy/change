@@ -1,0 +1,33 @@
+#!/usr/extra/bin/ksh
+# CHANGER
+
+NAMES=
+NAMES="${NAMES} Solaris "
+
+
+DN=/dev/null
+
+
+for F in "${@}" ; do
+
+  if [[ -r "${F}" ]] ; then
+
+    for N in ${NAMES} ; do
+
+      if fgrep ${N} $F > ${DN} ; then
+
+      ed - $F <<\EOF
+g/Solaris/s//Solaris®/g
+	w
+	q
+EOF
+
+      fi
+
+    done
+
+  fi
+
+done
+
+
