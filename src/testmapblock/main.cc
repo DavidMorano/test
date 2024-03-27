@@ -31,15 +31,19 @@
 using namespace std ;
 
 int main(int,mainv,mainv) {
-	singlist<ccharp>	list ;
-	list += "one" ;
-	list += "two" ;
-	list += "three" ;
-	for (auto &e : list) {
-	   cout << e << eol ;
-	}
-	(void) list ;
-	cout << "¯return¯" << eol ;
+	{
+	    singlist<string>	list ;
+	    cout << "¯singlist¯" << eol ;
+	    list += "one" ;
+	    list += "two" ;
+	    list += "three" ;
+	    for (const auto &e : list) {
+	       cout << e << eol ;
+	    }
+	} /* end block */
+	{
+	    cout << "¯mapblock¯" << eol ;
+	} /* end block */
 	return EXIT_SUCCESS ;
 }
 /* end subroutine (main) */
