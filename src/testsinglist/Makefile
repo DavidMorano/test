@@ -1,4 +1,4 @@
-# MAKEFILES (testsinglist)
+# MAKEFILE (testsinglist)
 
 T= testsinglist
 

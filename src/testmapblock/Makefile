@@ -1,4 +1,4 @@
-# MAKEFILES (testmapblock)
+# MAKEFILE (testmapblock)
 
 T= testmapblock
 

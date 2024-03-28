@@ -1,4 +1,4 @@
-/* testmapblock JEADER */
+/* testmapblock HEADER */
 /* lang=C++20 */
 
 /* test the object |mapblock(3uc)| */
