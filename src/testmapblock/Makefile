@@ -126,3 +126,7 @@ obj3_testmapblock.o:	$(OBJ3_TESTMAPBLOCK)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3_TESTMAPBLOCK)
 
 
+main.o:			main.cc mapblock.hh
+mapblock.o:		mapblock.cc mapblock.hh
+
+

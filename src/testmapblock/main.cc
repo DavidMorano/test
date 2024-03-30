@@ -22,30 +22,110 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |EXIT_SUCCESS| */
 #include	<string>
+#include	<unordered_map>
 #include	<iostream>
 #include	<localmisc.h>
 
 #include	"singlist.hh"
 #include	"mapblock.hh"
 
+#define		NDATA		10
+
 using namespace std ;
 
+static constexpr pair<int,string> tdata[] = {
+	{ 1, "one" },
+	{ 2, "two" },
+	{ 3, "three" }
+} ;
+
+/* forward references */
+
+static int	main_list() noex ;
+static int	main_umap() noex ;
+static int	main_mapblock() noex ;
+
+/* exported subroutines */
+
 int main(int,mainv,mainv) {
-	{
-	    singlist<string>	list ;
-	    cout << "¯singlist¯" << eol ;
+	int		ex = EXIT_SUCCESS ;
+	int		rs = SR_OK ;
+	if (rs >= 0) {
+	    rs = main_list() ;
+	}
+	if (rs >= 0) {
+	    rs = main_umap() ;
+	}
+	if (rs >= 0) {
+	    rs = main_mapblock() ;
+	}
+	if (rs < 0) ex = EXIT_FAILURE ;
+	return ex ;
+}
+/* end subroutine (main) */
+
+
+/* local subroutines */
+
+int main_list() noex {
+	singlist<string>	list ;
+	int		rs = SR_OK ;
+	cerr << "singlist: ent" << eol ;
 	    list += "one" ;
 	    list += "two" ;
 	    list += "three" ;
 	    for (const auto &e : list) {
-	       cout << e << eol ;
+	       cerr << e << eol ;
 	    }
-	} /* end block */
-	{
-	    cout << "¯mapblock¯" << eol ;
-	} /* end block */
-	return EXIT_SUCCESS ;
+	cerr << "singlist: ret=" << rs << eol ;
+	return rs ;
 }
-/* end subroutine (main) */
+/* end subroutine (main_list) */
+
+int main_umap() noex {
+	typedef unordered_map<int,string>::iterator	umapit_t ;
+	unordered_map<int,string>	uv ;
+	int		rs = SR_OK ;
+	cerr << "umap: ent" << eol ;
+	    for (const auto &e : tdata) {
+		cint		k = e.first ;
+		const string	&v = e.second ;
+		cerr << "ins k=" << k << " v=" << v << eol ;
+		if (k <= 0) break ;
+		{
+		    pair<umapit_t,bool>		r ;
+		    r = uv.insert({k,v}) ;
+		    if (!r.second) rs = SR_NOMEM ;
+		}
+		if (rs < 0) break ;
+		cerr << "loop" << eol ;
+	    } /* end for */
+	cerr << "umap: ret=" << rs << eol ;
+	return rs ;
+}
+/* end subroutine (main_umap) */
+
+int main_mapblock() noex {
+	mapblock<int,string>	mv ;
+	int		rs ;
+	int		rs1 ;
+	cerr << "mapblock: ent" << eol ;
+	if ((rs = mv.start) >= 0) {
+	    for (const auto &e : tdata) {
+		cint		k = e.first ;
+		const string	&s = e.second ;
+		cerr << "ins k=" << k << " v=" << s << eol ;
+		if (k <= 0) break ;
+		rs = mv.ins(k,s) ;
+		if (rs < 0) break ;
+		cerr << "loop" << eol ;
+	    } /* end for */
+	    rs1 = mv.finish ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (mapblock) */
+	cerr << "mapblock: ret=" << rs << eol ;
+	return rs ;
+}
+/* end subroutine (main_mapblock) */
 
 
