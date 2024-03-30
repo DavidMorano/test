@@ -68,13 +68,13 @@ int main(int,mainv,mainv) {
 /* local subroutines */
 
 int main_list() noex {
-	singlist<string>	list ;
+	singlist<string>	lval ;
 	int		rs = SR_OK ;
 	cerr << "singlist: ent" << eol ;
-	    list += "one" ;
-	    list += "two" ;
-	    list += "three" ;
-	    for (const auto &e : list) {
+	    lval += "one" ;
+	    lval += "two" ;
+	    lval += "three" ;
+	    for (const auto &e : lval) {
 	       cerr << e << eol ;
 	    }
 	cerr << "singlist: ret=" << rs << eol ;
@@ -100,6 +100,14 @@ int main_umap() noex {
 		if (rs < 0) break ;
 		cerr << "loop" << eol ;
 	    } /* end for */
+	if (rs >= 0) {
+	   cerr << "umap: enumerate" << eol ;
+	    for (const auto &e : uv) {
+		cint		k = e.first ;
+		const string	&v = e.second ;
+		cerr << "enum k=" << k << " v=" << v << eol ;
+	    }
+	} /* end if (enumerate) */
 	cerr << "umap: ret=" << rs << eol ;
 	return rs ;
 }
@@ -120,6 +128,14 @@ int main_mapblock() noex {
 		if (rs < 0) break ;
 		cerr << "loop" << eol ;
 	    } /* end for */
+	    if (rs >= 0) {
+	        cerr << "mapblock: enumerate" << eol ;
+	        for (const auto &e : mv) {
+		    cint		k = e.first ;
+		    const string	&s = e.second ;
+		    cerr << "enum k=" << k << " v=" << s << eol ;
+		} /* end for (enumerate) */
+	    } /* end if (enumerate) */
 	    rs1 = mv.finish ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (mapblock) */
