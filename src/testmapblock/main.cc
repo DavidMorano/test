@@ -29,7 +29,6 @@
 #include	"singlist.hh"
 #include	"mapblock.hh"
 
-#define		NDATA		10
 
 using namespace std ;
 
