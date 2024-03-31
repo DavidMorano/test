@@ -40,9 +40,9 @@ static constexpr pair<int,string> tdata[] = {
 
 /* forward references */
 
-static int	main_list() noex ;
-static int	main_umap() noex ;
-static int	main_mapblock() noex ;
+static int	main_list() ;
+static int	main_umap() ;
+static int	main_mapblock() ;
 
 /* exported subroutines */
 
@@ -66,7 +66,7 @@ int main(int,mainv,mainv) {
 
 /* local subroutines */
 
-int main_list() noex {
+int main_list() {
 	singlist<string>	lval ;
 	int		rs = SR_OK ;
 	cerr << "singlist: ent" << eol ;
@@ -81,7 +81,7 @@ int main_list() noex {
 }
 /* end subroutine (main_list) */
 
-int main_umap() noex {
+int main_umap() {
 	typedef unordered_map<int,string>::iterator	umapit_t ;
 	unordered_map<int,string>	uv ;
 	int		rs = SR_OK ;
@@ -112,7 +112,7 @@ int main_umap() noex {
 }
 /* end subroutine (main_umap) */
 
-int main_mapblock() noex {
+int main_mapblock() {
 	mapblock<int,string>	mv ;
 	int		rs ;
 	int		rs1 ;
