@@ -1,167 +1,109 @@
-# MAKEFILE
+# MAKEFILE (testa)
 
 T= testa
 
-ALL = $(T) $(T).$(OFF)
-
-SRCROOT= $(LOCAL)
+ALL= $(T).x
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
-
-#LDCRTDIR= /opt/SUNWspro/WS6/lib
-#LDCRTDIR= /opt/SUNWspro/SC5.0/lib
-#LDCRTDIR= /opt/SUNWspro/SC4.0/lib
-#LDCRTDIR= /opt/SUNWspro/lib
-LDCRTDIR= $(SRCROOT)/lib
+BINDIR= $(REPOROOT)/bin
+INCDIR= $(REPOROOT)/include
+LIBDIR= $(REPOROOT)/lib
+MANDIR= $(REPOROOT)/man
+INFODIR= $(REPOROOT)/info
+HELPDIR= $(REPOROOT)/share/help
 
 
-CC= gcc
+CRTDIR= $(CGS_CRTDIR)
+VALDIR= $(CGS_VALDIR)
+LIBDIR= $(CGS_LIBDIR)
 
-CCOPTS= -O3 -mcpu=ultrasparc # -fpic
-#CCOPTS= -g
-#CCOPTS= -g -pg
+CPP=	cpp
+CC=	gcc
+CXX=	gpp
+LD=	gld
+RANLIB=	granlib
+AR=	gar
+NM=	gnm
+COV=	gcov
 
-# HyperSPARC
-#CCOPTS= -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-
-# UltraSPARC
-#CCOPTS= -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
-
-
-DEF0=
-DEF1=
-DEF2=
-DEF3=
-DEF4=
-DEF5=
-DEF6=
-DEF7= $(LF_DEFS)
-
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6)
+LORDER=	lorder
+TSORT=	tsort
+LINT=	lint
+RM=	rm -f
+TOUCH=	touch
+LINT=	lint
 
 
-INCDIRS= -I$(INCDIR)
+DEFS=
 
-CPPFLAGS= $(DEFS) $(INCDIRS)
-
-CFLAGS= $(CCOPTS)
-
-#LD= $(CC)
-#LD= cc
-LD= ld
-
-LDFLAGS= -m -R$(LIBDIR)
-
+LDRPATH= $(EXTRA)/lib
 
 LIBDIRS= -L$(LIBDIR)
 
-LIB0=
-LIB1= -ldam -lb -luc
-LIB2=
-LIB3= -Bstatic -lu -Bdynamic
-LIB4= -L$(GNU)/lib -lgcc
-LIB5= 
-LIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-LIB7= -ldl -lc
-
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
+LIBS= -lmacuser
 
 
-CRTI= $(LDCRTDIR)/crti.o
-CRT1= $(LDCRTDIR)/crt1.o
-VALUES= $(LDCRTDIR)/values-xa.o
-CRTN= $(LDCRTDIR)/crtn.o
-
-CRT0= $(CRTI) $(CRT1) $(VALUES)
-CRTC= makedate.o
-
-LINT= lint
-LINTFLAGS= -uxn -Dlint
-
-NM= nm
-NMFLAGS= -xs
-
-CPP= cpp
+# flag setting
+CPPFLAGS= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS= $(MAKECFLAGS)
+CCFLAGS= $(MAKECCFLAGS)
+ARFLAGS= $(MAKEARFLAGS)
+LDFLAGS= $(MAKELDFLAGS)
 
 
 INCS=
 
 
-OBJ00=
-OBJ01= main.o
-OBJ02=
-OBJ03=
-OBJ04=
-OBJ05=
-OBJ06=
-OBJ07=
-
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07)
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-
-OBJ= $(OBJA) $(OBJB)
-
-OBJS= $(CRT0) $(OBJ) $(CRTC)
-
-
-.SUFFIXES:	.ls
+OBJ_ENDIAN= main.o
 
 
 default:		$(T).x
 
 all:			$(ALL)
 
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
-
 .c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
+	$(LINT) -c $(LINTFLAGS) $(CPPFLAGS) $<
 
 .c.ls:
 	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
 
+.c.i:
+	$(CPP) $(CPPFLAGS) $< > $(*).i
 
-$(T):			$(T).ee
-	cp -p $(T).ee $(T)
+.c.o:
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
 
-$(T).x:			$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c $(CFLAGS) makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
+.cc.o:
+	$(CXX)  $(CPPFLAGS) $(CCFLAGS) -c $<
 
-$(T).$(OFF) $(OFF):	$(T).x
-	cp -p $(T).x $(T).$(OFF)
 
-strip:			$(T).x
-	strip $(T).x
-	rm -f $(T).$(OFF) $(T)
+$(T).x:			$(OBJ_ENDIAN)
+	$(LD) $(LDFLAGS) -o $@ $(LIBDIRS) $(LIBS) $(OBJ_ENDIAN)
 
-install:		$(ALL)
-	bsdinstall $(ALL) $(BINDIR)
+$(T).o:			$(OBJ_ENDIAN)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ_ENDIAN)
 
-install-raw:		$(T).x
-	cp -p $(T).x $(T)
-	rm -f $(BINDIR)/$(T).$(OFF)
-	bsdinstall $(T) $(BINDIR)
+$(T).a:			$(OBJ_ENDIAN)
+	$(AR) $(ARFLAGS) -rc $@ $?
+
+$(T).nm:		$(T).o
+	$(NM) $(NMFLAGS) $(T).o > $(T).nm
+
+$(T).order:		$(OBJ_ENDIAN) $(T).a
+	$(LORDER) $(T).a | $(TSORT) > $(T).order
+	$(RM) $(T).a
+	while read O ; do $(AR) $(ARFLAGS) -cr $(T).a $${O} ; done < $(T).order
 
 again:
-	rm -f $(ALL) $(T).x
+	rm -f $(ALL)
 
-clean:			again
-	rm -f *.o
+clean:
+	makeclean $(ALL)
 
 control:
-	uname -n > Control
-	date >> Control
+	(uname -n ; date) > Control
 
 
-main.o:			main.c config.h
-
-whatinfo.o:		whatinfo.c config.h
-
-
+main.o:			main.cc		$(INCS)
 
 

@@ -1,29 +1,43 @@
 /* main (TESTA) */
+/* lang=C++20 */
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
-#include	<string.h>
-#include	<stdio.h>
-
+#include	<cstring>
+#include	<cstdio>
+#include	<iostream>
+#include	<usystem.h>
 #include	<mallocstuff.h>
-
 #include	<localmisc.h>
 
+/* local defines */
 
+#define	NI	20
+#define	NJ	2
 
-int main()
-{
-	int		a[20][2] ;
-	int		typesize, size ;
+/* forward references */
+
+static int sub(int (*)[NJ],int,int) ;
+
+/* local variables */
+
+constexpr cchar		str[] = "hello" ;
+
+/* exported subroutines */
+
+int main() {
+	int		a[NI][NJ] ;
+	int		typesize ;
+	int		sz ;
 	int		n, i, j ;
 	int		*p ;
-	char		*(*keys)[2] ;
 
-	n = 2 * 20 ;
+	sz = sizeof(str) ;
+	printf("sizeof=%u\v",sz) ;
 
-	typesize = sizeof(uint (*)[2]) ;
+	n = NI * NJ ;
+	typesize = sizeof(uint (*)[NJ]) ;
 
 	printf("1 typesize=%u\n",typesize) ;
 
@@ -31,65 +45,53 @@ int main()
 
 	printf("2 typesize=%u\n",typesize) ;
 
-	size = n * typesize ;
-	(void) uc_malloc(size,&keys) ;
+#ifdef	COMMENT
+	{
+	    cchar	*(*keys)[NJ] ;
+	    sz = n * typesize ;
+	    (void) uc_malloc(sz,&keys) ;
+	    memset(keys,0,sz) ;
+	    printf("typesize=%u n=%u size=%u\n",typesize,n,sz) ;
+	    keys[0][0] = "hello" ;
+	    keys[0][1] = "there" ;
+	    keys[1][0] = "good" ;
+	    keys[1][1] = "bye" ;
+	    for (i = 0 ; i < NJ ; i += 1) {
+	        if (keys[i][0] != nullptr) {
+	            printf("k=%s v=%s\n", keys[i][0],keys[i][1]) ;
+	        }
+	    } /* end for */
+	} /* end block */
+#endif /* COMMENT */
 
-	memset(keys,0,size) ;
-
-	printf("typesize=%u n=%u size=%u\n",typesize,n,size) ;
-
-	keys[0][0] = "hello" ;
-	keys[0][1] = "there" ;
-
-	keys[1][0] = "good" ;
-	keys[1][1] = "bye" ;
-
-	for (i = 0 ; i < 2 ; i += 1) {
-
-		if (keys[i][0] != NULL)
-	    printf("k=%s v=%s\n",
-		keys[i][0],keys[i][1]) ;
-
-	}
-
-
-	size = n * sizeof(int) ;
-	(void) memset(a,0,size) ;
+	sz = n * sizeof(int) ;
+	memset(a,0,sz) ;
 
 	p = (int *) a ;
-	for (i = 0 ; i < n ; i += 1)
+	for (i = 0 ; i < n ; i += 1) {
 		p[i] = i ;
-
-	for (i = 0 ; i < 20 ; i += 1) {
-
-		for (j = 0 ; j < 2 ; j += 1)
-			printf("[%2d,%2d]=%d\n",
-				i,j,a[i][j]) ;
-
 	}
 
-	sub(a,2) ;
-
-	fclose(stdout) ;
-
-	return 0 ;
-}
-
-
-int sub(a,rn)
-int	rn ;
-int	(*a)[2] ;
-{
-	int		i, j ;
-
-	for (i = 0 ; i < 20 ; i += 1) {
-	    for (j = 0 ; j < 2 ; j += 1) {
-			printf("sub [%2d,%2d]=%d\n",
-				i,j,a[i][j]) ;
+	for (i = 0 ; i < NI ; i += 1) {
+	    for (j = 0 ; j < NJ ; j += 1) {
+		printf("[%2d,%2d]=%d\n",i,j,a[i][j]) ;
 	    }
 	}
 
+	sub(a,NI,NJ) ;
+
 	return 0 ;
 }
+/* end subroutine (main) */
+
+static int sub(int (*a)[2],int ni,int nj) {
+	for (int i = 0 ; i < ni ; i += 1) {
+	    for (int j = 0 ; j < nj ; j += 1) {
+		printf("sub [%2d,%2d]=%d\n",i,j,a[i][j]) ;
+	    }
+	}
+	return 0 ;
+}
+/* end subroutine (sub) */
 
 
