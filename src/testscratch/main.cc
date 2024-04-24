@@ -1,4 +1,4 @@
-/* testscratch */
+/* main SUPPORT (testscratch) */
 /* lang=C++20 */
 
 #include	<cmath>
@@ -6,37 +6,44 @@
 
 using std::cout ;
 
-static bool sub(int) ;
+static void sub1() ;
+static void sub2() ;
 
-const bool	f_hello = true ;
+struct finder ;
+typedef void (finder::*finder_m)(int)  ;
+struct finder {
+	finder_m	m ;
+	finder() ;
+	void sub1(int v)  {
+	   cout << "sub1=" << v << '\n' ;
+	} ;
+	void sub2(int v)  {
+	   cout << "sub2=" << v << '\n' ;
+	} ;
+	void choose(int v) {
+	   cout << "choose=" << v << '\n' ;
+	   (this->*m)(v) ;
+	   m = &finder::sub2 ;
+	} ;
+} ;
 
-constexpr char	msg[] = "goodbye" ;
-
-constexpr double	val = 3.1415926 ;
-
-const int	A = 1 ;
-const int	B = 2 ;
+finder::finder() {
+	m = &finder::sub1 ;
+}
 
 int main() {
-   double	v = pow(1.01,100.0) ;
-	if constexpr (f_hello) {
-   	    cout << msg << ' ' << v << '\n' ;
-	} else {
-   	    cout << "false=" << v << '\n' ;
-	}
-	cout << val << '\n' ;
-	sub(3) ;
+	sub1() ;
+	sub2() ;
 }
 /* end subroutine (main) */
 
-static bool sub(int v) {
-	bool	f = false ;
-	switch (v) {
-	case A:
-	case B:
-	   f = true ;
-	   ;;
-	}
-	return f ;
+static void sub1() {
+	cout << "sub1" << '\n' ;
+}
+
+static void sub2() {
+	finder	fd ;
+	cout << "sub2" << '\n' ;
+	fd.choose(2) ;
 }
 
