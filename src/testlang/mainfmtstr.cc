@@ -1,24 +1,29 @@
-/* main */
+/* main SUPPOER (testlang */
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
-
-#include	<bfile.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
+#include	<usyscalls.h>
+#include	<clanguage.h>
+#include	<localmisc.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
 
+/* local defines */
+
+
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+int main(int argc,mainv,mainv) {
 	bfile	outfile, *ofp = &outfile ;
 
 	unsigned long long	a, r ;

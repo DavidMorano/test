@@ -1,14 +1,14 @@
+/* main SUPPORT (testlang) */
+
 
 #include	<sys/types.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	"localmisc.h"
 
 
 
-
-int main()
-{
+int main() {
 	uchar	uc ;
 	uchar	u1c, u2c ;
 
@@ -45,5 +45,6 @@ int main()
 
 	return 0 ;
 }
+/* end subroutine (main) */
 
 
