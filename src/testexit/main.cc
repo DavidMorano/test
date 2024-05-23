@@ -1,9 +1,9 @@
-/* main */
+/* main SUPPORT (testexit) */
 
 #include	<stdio.h>
+#include	<iostream>
 
-int main(argc,const char **argv,const char **envv)
-{
+int main(argc,const char **argv,const char **envv) {
 	int		a ;
 	int		b ;
 

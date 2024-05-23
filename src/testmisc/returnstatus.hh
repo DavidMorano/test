@@ -12,7 +12,7 @@
 
 
 #ifndef	RETURNSTATS_INCLUDE
-#define	RETURNSTATS_INCLUDE	1
+#define	RETURNSTATS_INCLUDE
 
 
 class returnstatus {
