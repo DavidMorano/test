@@ -57,11 +57,12 @@ extern "C" char	*strwcpy(char *,cchar *,int) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 	string		s = "hello world!" ;
 	string		w ;
 	int		i ;
@@ -103,7 +104,7 @@ int main(int argc,const char **argv,const char **envv)
 		delete [] bp ;
 	    } else {
 		rs = SR_NOMEM ;
-	    } /* end if (m-a) */
+	    } /* end if (m-a-f) */
 	}
 
 
