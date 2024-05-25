@@ -11,7 +11,8 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getprogname(3c)| */
 #include	<cstdio>
 #include	<iostream>
 #include	<utypedefs.h>
@@ -39,7 +40,7 @@ extern "C" {
 }
 
 int main(int argc,const char **argv,const char **envv) {
-	static int	srs = mkterms() ;
+	static cint	srs = mkterms() ;
 	int		rs ;
 	int		ex = 0 ;
 	if ((rs = srs) >= 0) {
@@ -64,4 +65,5 @@ static int mkterms() noexcept {
     cout << "mkterms\n" ;
     return 0 ;
 }
+
 

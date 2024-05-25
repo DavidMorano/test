@@ -1,4 +1,5 @@
-/* main SUPPOER (testlang */
+/* main SUPPOER (mainfmtstr) */
+/* lang=C++20 */
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
@@ -25,20 +26,13 @@
 
 int main(int argc,mainv,mainv) {
 	bfile	outfile, *ofp = &outfile ;
-
-	unsigned long long	a, r ;
-
-	unsigned int		ui, uii ;
-
 	int	rs ;
-	int	i, ii ;
+	int	rs1 ;
 	int	ex = EX_OK ;
-
-
-	rs = bopen(ofp,BFILE_STDOUT,"dwct",0666) ;
-
-	if (rs < 0)
-		goto ret0 ;
+	if ((rs = bopen(ofp,BFILE_STDOUT,"dwct",0666)) >= 0) {
+	    unsigned long long	a, r ;
+	    unsigned int	ui, uii ;
+	    int	i, ii ;
 
 	a = 0xFFFFFFFFFFFFFF01ULL ;
 
@@ -57,12 +51,10 @@ int main(int argc,mainv,mainv) {
 	r = (long long) (~ ui) ;
 	bprintf(ofp,"r2=%016llX\n",r) ;
 
-	bclose(ofp) ;
-
-ret1:
+	    rs1 = bclose(ofp) ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (bfile) */
 	ex = (rs >= 0) ? EX_OK : EX_DATAERR ;
-
-ret0:
 	return ex ;
 }
 /* end subroutine (main) */

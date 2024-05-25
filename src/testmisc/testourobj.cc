@@ -1,12 +1,10 @@
-/* testset */
+/* testourobj SUPPORT */
 /* lang=C++98 */
 
 /* test the SET object */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEL		1		/* delete */
-
 
 /* revision history:
 
@@ -21,14 +19,12 @@
 
 	We perform some tests on the SET (container) object.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
-#include	<limits.h>
-#include	<string.h>
+#include	<climits>
+#include	<cstring>
 #include	<new>
 #include	<initializer_list>
 #include	<utility>
@@ -44,19 +40,12 @@
 /* local defines */
 
 
-/* default name spaces */
+/* imported namespaces */
 
 using namespace		std ;		/* yes, we want punishment! */
 
 
 /* external subroutines */
-
-#if	CF_DEBUGS
-extern "C" int	debugopen(cchar *) ;
-extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(cchar *,int,int) ;
-#endif
 
 
 /* local structures */
@@ -128,11 +117,12 @@ struct genless {
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,cchar **argv,cchar **envv) {
 	set<ourobj>	os ;
 	int		c = 0 ;
 
@@ -153,7 +143,6 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	c = os.size() ;
 	cout << "count " << c << endl ;
-
 	return 0 ;
 }
 /* end subroutine (main) */

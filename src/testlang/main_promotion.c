@@ -1,4 +1,5 @@
-/* main SUPPORT (testlang) */
+/* main SUPPORT (main_promotion) */
+/* lang=C++20 */
 
 
 #include	<sys/types.h>
@@ -40,8 +41,6 @@ int main() {
 	u2c = 5 ;
 	si = (u2c - u1c) ;
 	fprintf(stdout,"subtraction si=%08x\n",si) ;
-
-	fclose(stdout) ;
 
 	return 0 ;
 }
