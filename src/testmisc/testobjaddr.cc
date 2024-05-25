@@ -52,10 +52,13 @@ using namespace		std ;		/* yes, we want punishment! */
 struct Base {
 	string	id ;
 	Base(cchar *s) : id(s) {
-	    cout << "Base::ctor " << id << eol ;
+	    cout << "Base___::ctor " << id << eol ;
 	} ;
-	~Base() {
-	    cout << "Base::dtor " << id << eol  ;
+	virtual ~Base() {
+	    cout << "Base___::dtor " << id << eol  ;
+	} ;
+	virtual void print() {
+	    cout << "Base___::print " << id << eol ;
 	} ;
 } ;
 
@@ -66,6 +69,9 @@ struct Derived : Base {
 	} ;
 	~Derived() {
 	    cout << "Derived::dtor " << id << eol ;
+	} ;
+	void print() {
+	    cout << "Derived::print " << id << eol ;
 	} ;
 } ;
 
@@ -87,9 +93,14 @@ int main(int,mainv,mainv) {
 	Base	*bp = new Derived("a") ;
 	cout << bp << eol ;
 	{
+	    void	*vp ;
 	    Derived *dp = static_cast<Derived *>(bp) ;
-	    void	*vp = bp ;
+	    vp = bp ;
+	    cout << bp << " " << vp << eol ;
+	    vp = dp ;
 	    cout << dp << " " << vp << eol ;
+	    bp->print() ;
+	    dp->print() ;
 	}
 	sub1() ;
 	Derived *dp = static_cast<Derived *>(bp) ;
@@ -102,8 +113,13 @@ static void sub1() {
 	cout << "sub1 " << dp << eol ;
 	{
 	    Base	*bp = dp ;
-	    void	*vp = dp ;
+	    void	*vp ;
+	    vp = bp ;
 	    cout << "sub1 " << bp << " " << vp << eol ;
+	    vp = dp ;
+	    cout << "sub1 " << dp << " " << vp << eol ;
+	    bp->print() ;
+	    dp->print() ;
 	}
 	delete dp ;
 }
