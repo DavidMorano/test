@@ -48,7 +48,7 @@ extern "C" int	mkrevstr(char *,int) ;
 extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local structures (and methods) */

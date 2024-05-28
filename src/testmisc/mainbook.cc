@@ -82,7 +82,7 @@ extern "C" int	strlinelen(cchar *,cchar *,int) ;
 extern "C" cchar	*getourenv(cchar **,cchar *) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local structures (and methods) */

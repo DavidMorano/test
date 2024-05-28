@@ -121,7 +121,7 @@ extern int	mkhexstr(char *,int,void *,int) ;
 #endif
 
 
-/* global variables */
+/* external variables */
 
 
 /* local variables */

@@ -91,7 +91,7 @@ Arguments (may be any combination):
 
 
 
-/* local global variables */
+/* local external variables */
 
 int	f_quiet ;
 int	f_verbose ;

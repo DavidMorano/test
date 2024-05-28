@@ -62,9 +62,22 @@ struct Base {
 	} ;
 } ;
 
-struct Derived : Base {
+struct Inter {
 	string	id ;
-	Derived(cchar *s) : Base(s), id(s) {
+	Inter(cchar *s) : id(s) {
+	    cout << "Inter__::ctor " << id << eol ;
+	} ;
+	virtual ~Inter() {
+	    cout << "Inter__::dtor " << id << eol  ;
+	} ;
+	virtual void print() {
+	    cout << "Inter__::print " << id << eol ;
+	} ;
+} ;
+
+struct Derived : Inter, Base {
+	string	id ;
+	Derived(cchar *s) : Base(s), Inter(s), id(s) {
 	    cout << "Derived::ctor " << id << eol ;
 	} ;
 	~Derived() {

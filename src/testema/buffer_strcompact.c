@@ -72,7 +72,7 @@ extern char	*strnchr(const char *,int,int) ;
 /* external variables */
 
 
-/* global variables */
+/* external variables */
 
 
 /* local structures */

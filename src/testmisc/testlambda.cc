@@ -37,7 +37,7 @@ extern "C" {
 }
 
 
-/* global variables */
+/* external variables */
 
 volatile sig_atomic_t	f_init = 0 ;
 volatile sig_atomic_t	f_initdone = 0 ;

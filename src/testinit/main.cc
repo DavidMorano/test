@@ -58,7 +58,7 @@ extern int	libtest_other() ;
 /* local structures (and methods) */
 
 
-/* global variables */
+/* external variables */
 
 
 /* exported subroutines */

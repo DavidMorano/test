@@ -96,7 +96,7 @@ static int	varmk_loadcalls(VARMK *,const char *) ;
 static int	isrequired(int) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local variables */

@@ -55,7 +55,7 @@ using namespace std ;
 extern "C" int	sisub(cchar *,int,cchar *) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local structures (and methods) */

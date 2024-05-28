@@ -15,7 +15,7 @@
 #include "datetok.h"
 
 
-/* global variables */
+/* external variables */
 
 int dtok_numparsed ;
 

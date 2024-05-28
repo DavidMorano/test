@@ -46,7 +46,7 @@
 /* forward references */
 
 
-/* module global variables */
+/* module external variables */
 
 
 /* local variables */

@@ -64,7 +64,7 @@ extern "C" cchar	*getourenv(cchar **,cchar *) ;
 extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local structures (and methods) */

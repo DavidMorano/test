@@ -69,7 +69,7 @@
 /* forward references */
 
 
-/* global variables */
+/* external variables */
 
 const char	*mailmsghdrs_names[] = {
 	"From",			/* 0 */

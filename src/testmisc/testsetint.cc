@@ -47,7 +47,7 @@ extern "C" uint	elfhash(const void *,int) ;
 extern "C" int	sisub(cchar *,int,cchar *) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local structures (and methods) */

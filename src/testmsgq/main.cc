@@ -113,7 +113,7 @@ static void	helpfile(const char *,bfile *) ;
 static void	int_all() ;
 
 
-/* global variables */
+/* external variables */
 
 int		f_signal ;
 int		signal_num ;

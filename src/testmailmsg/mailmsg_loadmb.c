@@ -87,7 +87,7 @@ extern char	*strnchr(const char *,int,int) ;
 /* forward references */
 
 
-/* global variables */
+/* external variables */
 
 
 /* local variables */

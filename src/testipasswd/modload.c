@@ -150,7 +150,7 @@ static int	subinfo_sotest(SUBINFO *) ;
 static int	subinfo_checksyms(SUBINFO *) ;
 
 
-/* global variables */
+/* external variables */
 
 
 /* local variables */
