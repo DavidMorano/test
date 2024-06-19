@@ -19,7 +19,12 @@
 #include	<clanguage.h>
 
 
-using std::cout ;
+#ifndef	eol
+#define	eol	'\n'
+#endif
+
+using std::cout ;			/* variable */
+using std::cerr ;			/* variable */
 
 typedef const char *const 	*mainv ;
 
@@ -44,10 +49,17 @@ int main(int argc,const char **argv,const char **envv) {
 	int		rs ;
 	int		ex = 0 ;
 	if ((rs = srs) >= 0) {
+	    if ((argc > 0) && argv[0]) {
+		cout << "argz=" << argv[0] << eol ;
+	    }
 	    printf("aa.a=%08x aa.b=%08x\n",aa.a,aa.b) ;
 	    {
 		cchar	*pn = getprogname() ;
-		cout << "pn=" << pn << '\n' ; 
+		if (pn) {
+		    cout << "pn=" << pn << eol ; 
+		} else {		
+		    cerr << "pn=NULL" << eol ;
+		}
 	    } /* end block */
 	} /* end if */
 	if (rs < 0) ex = 1 ;
