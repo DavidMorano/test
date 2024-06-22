@@ -1,6 +1,6 @@
-# MAKEFILE (testmapblock)
+# MAKEFILE (testmemtrack)
 
-T= testmapblock
+T= testmemtrack
 
 ALL= $(T).x
 
@@ -47,9 +47,9 @@ INCDIR=
 LIBDIRS= -L$(LIBDIR)
 
 
-LIBINFO= $(LIBDIRS) $(LIBS)
-
 RUNINFO= -rpath $(RUNDIR)
+
+LIBINFO= $(LIBDIRS) $(LIBS)
 
 # flag setting
 CPPFLAGS= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
@@ -59,7 +59,7 @@ ARFLAGS= $(MAKEARFLAGS)
 LDFLAGS= $(MAKELDFLAGS)
 
 
-OBJ0= main.o mapblock.o
+OBJ0= main.o
 OBJ1= 
 OBJ2= 
 OBJ3= 
@@ -128,7 +128,6 @@ obj3.o:			$(OBJ3)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3)
 
 
-main.o:			main.cc mapblock.hh
-mapblock.o:		mapblock.cc mapblock.hh
+main.o:			main.cc
 
 

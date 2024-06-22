@@ -1,28 +1,23 @@
-/* main */
+/* main SUPPORT (testmap) */
+/* lang=C++20 */
 
 /* program to read a shared memory mapped file */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0
-
 
 /* revision history:
 
-	= 88/01/10, David A­D­ Morano
-
+	= 1988-01-10, David A­D­ Morano
 	This subroutine was originally written.
 
-
-	= 01/09/06, David A­D­ Morano
-
-	It always amazes me how many years go by (since 1988 !) before
-	I do anything again with some things.  This was taken from the
-	TESTMAP2 testing program but it is almost entirely rewritten to
-	do more interactive tests of memory mapping and file locking.
-	It kills me that I have spent so much of my life coding
-	and have nothing to show for it !!
-
+	= 2001-09-06, David A­D­ Morano
+	It always amazes me how many years go by (since 1988 !)
+	before I do anything again with some things.  This was taken
+	from the TESTMAP2 testing program but it is almost entirely
+	rewritten to do more interactive tests of memory mapping
+	and file locking.  It kills me that I have spent so much
+	of my life coding and have nothing to show for it !!
 
 */
 
@@ -33,21 +28,17 @@
 	This subroutine is the major part of a program that tests
 	file mapping concepts.
 
-
 ***************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/mman.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<termios.h>
-#include	<signal.h>
-#include	<time.h>
-#include	<stdlib.h>
-
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<usystem.h>
 #include	<field.h>
 #include	<bfile.h>
@@ -120,11 +111,13 @@ static constexpr cpcchar	cmds[] = {
 /* exported variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
 int main(int argc,mainv argv,mainv) {
 	TERMIOS		ots, nts ;
-	SIGACTION	sigs ;
 	PROGINFO	pi, *pip = &pi ;
 	sigset_t	signalmask ;
 

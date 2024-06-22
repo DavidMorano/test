@@ -73,7 +73,7 @@ int main_list() {
 	    lval += "one" ;
 	    lval += "two" ;
 	    lval += "three" ;
-	    for (const auto &e : lval) {
+	    for (cauto &e : lval) {
 	       cerr << e << eol ;
 	    }
 	cerr << "singlist: ret=" << rs << eol ;
@@ -86,7 +86,7 @@ int main_umap() {
 	unordered_map<int,string>	uv ;
 	int		rs = SR_OK ;
 	cerr << "umap: ent" << eol ;
-	    for (const auto &e : tdata) {
+	    for (cauto &e : tdata) {
 		cint		k = e.first ;
 		const string	&v = e.second ;
 		cerr << "ins k=" << k << " v=" << v << eol ;
@@ -101,7 +101,7 @@ int main_umap() {
 	    } /* end for */
 	if (rs >= 0) {
 	   cerr << "umap: enumerate" << eol ;
-	    for (const auto &e : uv) {
+	    for (cauto &e : uv) {
 		cint		k = e.first ;
 		const string	&v = e.second ;
 		cerr << "enum k=" << k << " v=" << v << eol ;
@@ -118,7 +118,7 @@ int main_mapblock() {
 	int		rs1 ;
 	cerr << "mapblock: ent" << eol ;
 	if ((rs = mv.start) >= 0) {
-	    for (const auto &e : tdata) {
+	    for (cauto &e : tdata) {
 		cint		k = e.first ;
 		const string	&s = e.second ;
 		cerr << "ins k=" << k << " v=" << s << eol ;
@@ -129,7 +129,7 @@ int main_mapblock() {
 	    } /* end for */
 	    if (rs >= 0) {
 	        cerr << "mapblock: enumerate" << eol ;
-	        for (const auto &e : mv) {
+	        for (cauto &e : mv) {
 		    cint		k = e.first ;
 		    const string	&s = e.second ;
 		    cerr << "enum k=" << k << " v=" << s << eol ;

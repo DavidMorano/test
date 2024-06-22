@@ -14,7 +14,7 @@
 /****
 
 Compile and execute:
-$ gpp -p testexit.x testexot.cc testsub.cc
+$ gpp -o testexit.x testexit.cc
 
 ****/
 

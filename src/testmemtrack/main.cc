@@ -1,6 +1,10 @@
 /* testmemtrack SUPPORT */
 /* lang=C++20 */
 
+/* test the MEMTRACK object */
+/* version %I% last-modified %G% */
+
+
 /* revision history:
 
 	= 1998-04-13, David A-D- Morano
@@ -13,10 +17,10 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<iostream>
-#include	<usysrets.h>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
-#include	<clanguage.h>
+#include	<usysrets.h>
 
 #include	"memtrack.hh"
 
@@ -44,6 +48,9 @@ static const memtrack_ent	ents[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
 int main(int,const char **,const char **) {
@@ -54,7 +61,7 @@ int main(int,const char **,const char **) {
 	if ((rs = t.start) >= 0) {
 	    for (int i = 0 ; (rs >= 0) && ents[i].addr ; i += 1) {
 		cvoid	*addr = ents[i].addr ;
-		rs = t.ins(addr,ents[i].size) ;
+		rs = t.ins(addr,ents[i].asize) ;
 	    } /* end for */
 	    if (rs >= 0) {
 		cout << "present phase\n" ;
@@ -73,7 +80,7 @@ int main(int,const char **,const char **) {
 		        if ((rs = t.get(addr,&e)) >= 0) {
 			    const uintptr_t	a = uintptr_t(e.addr) ;
 			    if (a == ea) {
-		                cout << "a=" << a << " s=" << e.size << "\n" ;
+		                cout << "a=" << a << " s=" << e.asize << "\n" ;
 			    }
 			}
 		    } /* end for */
