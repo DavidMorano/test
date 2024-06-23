@@ -59,10 +59,25 @@ static int ents_ins(addrset_ent *,addrset *) noex ;
 static int ents_present(addrset_ent *,addrset *) noex ;
 static int ents_get(addrset_ent *,addrset *) noex ;
 static int ents_have(addrset_ent *,addrset_ent *) noex ;
+static int ents_cents(addrset_ent *,addrset *) noex ;
+static int ents_enum(addrset_ent *,addrset *) noex ;
 static int ents_rem(addrset_ent *,addrset *) noex ;
+static int ents_czero(addrset_ent *,addrset *) noex ;
 
 
 /* local variables */
+
+typedef int (*ents_f)(addrset_ent *,addrset *) noex ;
+
+constexpr ents_f	funcs[] = {
+	ents_ins,
+	ents_present,
+	ents_get,
+	ents_cents,
+	ents_enum,
+	ents_rem,
+	ents_czero
+} ;
 
 constexpr int		nents = NENTS ;
 
@@ -80,21 +95,12 @@ int main(int,mainv,mainv) {
 	cerr << "ent\n" ;
 	if ((ents = new(nothrow) addrset_ent[nents + 1]) != nullptr) {
 	    if ((rs = ents_load(ents)) >= 0) {
-	        addrset	t ;
+	        addrset		t ;
 	        if ((rs = t.start) >= 0) {
-		    if ((rs = ents_ins(ents,&t)) >= 0) {
-			if ((rs = ents_present(ents,&t)) >= 0) {
-			    if ((rs = ents_get(ents,&t)) >= 0) {
-				if ((rs = t.count) >= 0) {
-				    cint	c = rs ;
-				    rs = SR_BADFMT ;
-				    if (c == nents) {
-					rs = ents_rem(ents,&t) ;
-				    }
-				}
-			    } /* end if (ents_get) */
-			} /* end if (ents_present) */
-		    } /* end if (ents_ins) */
+		    for (cauto &f : funcs) {
+			rs = f(ents,&t) ;
+			if (rs < 0) break ;
+		    } /* end for */
 	            rs1 = t.finish ;
 	            if (rs >= 0) rs = rs1 ;
 	        } /* end if (addrset) */
@@ -195,5 +201,49 @@ static int ents_rem(addrset_ent *ents,addrset *tp) noex {
 	return rs ;
 }
 /* end subroutine (ents_get) */
+
+static int ents_cents(addrset_ent *,addrset *tp) noex {
+	int		rs ;
+	if ((rs = tp->count) >= 0) {
+	    cint	c = rs ;
+	    rs = SR_BADFMT ;
+	    if (c == nents) {
+		rs = SR_OK ;
+	    }
+	}
+	return rs ;
+}
+/* end subroutine (ents_cents) */
+
+static int ents_enum(addrset_ent *ents,addrset *tp) noex {
+	int		rs ;
+	int		rs1 ;
+	addrset_cur	cur ;
+	cerr << "ents_enum: ent" << eol ;
+	if ((rs = tp->curbegin(&cur)) >= 0) {
+	    addrset_ent		e ;
+	    while ((rs = tp->curenum(&cur,&e)) > 0) {
+		rs = ents_have(ents,&e) ;
+		if (rs < 0) break ;
+	    } /* end while */
+	    rs1 = tp->curend(&cur) ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (addrset-cur) */
+	cerr << "ents_enum: ret rs=" << rs << eol ;
+	return rs ;
+}
+
+static int ents_czero(addrset_ent *,addrset *tp) noex {
+	int		rs ;
+	if ((rs = tp->count) >= 0) {
+	    cint	c = rs ;
+	    rs = SR_BADFMT ;
+	    if (c == 0) {
+		rs = SR_OK ;
+	    }
+	}
+	return rs ;
+}
+/* end subroutine (ents_czero) */
 
 
