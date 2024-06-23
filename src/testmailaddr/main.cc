@@ -1,19 +1,18 @@
-/* main */
+/* main SUPPORT (testmailaddr) */
+/* lang=C++20 */
 
 /* test the various email address objects */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
-
 
 /* revistion history:
 
 	= 2003-05-08, David A­D­ Morano
 
-
 */
 
-
+/* Copyright © 2003 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* MUST be first to configure */
 
