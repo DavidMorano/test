@@ -1,4 +1,4 @@
-/* mapblock HEADER */
+/* addrset HEADER */
 /* lang=C++20 */
 
 /* implement a map container of blocks (of a given structure) */
@@ -19,14 +19,14 @@
 /*******************************************************************************
 
 	Name:
-	mapblock
+	addrset
 
 	Description:
 	This object implements a map from a "key" type (|K|)
 	to a given "block" type (|B|).
 
 	Symopsis:
-	int mapblock_start<typename K,typename B>(int n = 0) noex
+	int addrset_start<typename K,typename B>(int n = 0) noex
 
 	Arguments:
 	n		suggested starting possible number of elements
@@ -45,7 +45,6 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<new>
 #include	<utility>
-#include	<unordered_map>
 #include	<functional>
 #include	<clanguage.h>
 #include	<utypedefs.h>
@@ -53,91 +52,79 @@
 #include	<usysrets.h>
 
 
-template<typename K,typename B> class mapblock ;
-
-template <typename K,typename B>
-class mapblock_iter {
-	typedef mapblock<K,B>		mb_t ;
-	typedef typename std::unordered_map<K,B>::iterator	mapit_type ;
-	typedef std::pair<const K,B>		value_type ;
-	mapit_type		mit ;
+class addrset_iter {
+	std::pair<addrset_iter,bool>	retit ;
+	void		*itp = nullptr ;
 public:
-	mapblock_iter() noex { } ;
-	mapblock_iter(const mapblock_iter<K,B> &oit) noex {
+	addrset_iter() noex { } ;
+	addrset_iter(const addrset_iter &oit) noex {
 	    if (this != &oit) {
-	        mit = oit.mit ;
+	        itp = oit.itp ;
 	    }
 	} ;
-	mapblock_iter(mapblock_iter<K,B> &&oit) noex {
+	addrset_iter(addrset_iter &&oit) noex {
 	    if (this != &oit) {
-	        mit = oit.mit ;
+	        itp = oit.itp ;
+		oit.itp = nullptr ;
 	    }
 	} ;
-	mapblock_iter(mb_t *mbp,bool fend) noex {
-	    if (mbp->mp) {
-	        if (fend) {
-	            mit = mbp->mp->end() ;
-	        } else {
-	            mit = mbp->mp->begin() ;
-	        }
-	    }
-	} ;
-	mapblock_iter<K,B> &operator = (const mapblock_iter<K,B> &oit) noex {
+	addrset_iter &operator = (const addrset_iter &oit) noex {
 	    if (this != &oit) {
-	        mit = oit.mit ;
+	        itp = oit.itp ;
 	    }
 	    return *this ;
 	} ;
-	mapblock_iter<K,B> &operator = (mapblock_iter<K,B> &&oit) noex {
+	addrset_iter &operator = (addrset_iter &&oit) noex {
 	    if (this != &oit) {
-	        mit = oit.mit ;
+	        itp = oit.itp ;
+		oit.itp = nullptr ;
 	    }
 	    return *this ;
 	} ;
-	mapblock_iter<K,B> &operator = (const mapblock_iter<K,B> *oip) noex {
+	addrset_iter &operator = (const addrset_iter *oip) noex {
 	    if (this != oip) {
-	        mit = oip->mit ;
+	        itp = oip->itp ;
 	    }
 	    return *this ;
 	} ;
 	std::pair<const K,B> &operator * () const noex {
 	    return *mit ;
 	} ;
-	mapblock_iter<K,B> &operator ++ () noex { /* pre-increment */
+	addrset_iter<K,B> &operator ++ () noex { /* pre-increment */
 	    ++mit ;
 	    return *this ;
 	} ;
-	mapblock_iter<K,B> operator ++ (int) noex { /* post-increment */
-	    mapblock_iter<K,B>	tmp = *this ;
+	addrset_iter<K,B> operator ++ (int) noex { /* post-increment */
+	    addrset_iter<K,B>	tmp = *this ;
 	    mit++ ;
 	    return tmp ; /* returns previous PRVALUE */
 	} ;
-	mapblock_iter<K,B> &operator += (int inc) noex {
+	addrset_iter<K,B> &operator += (int inc) noex {
 	    mit += inc ;
 	    return *this ;
 	} ;
-	mapblock_iter<K,B> &operator + (int inc) const noex {
-	    mapblock_iter<K,B>	tmp = *this ;
+	addrset_iter<K,B> &operator + (int inc) const noex {
+	    addrset_iter<K,B>	tmp = *this ;
 	    tmp.mit + inc ;
 	    return tmp ;
 	} ;
-	friend bool operator == (const mapblock_iter<K,B> &i1,
-		const mapblock_iter<K,B> &i2) noex {
+	friend bool operator == (const addrset_iter<K,B> &i1,
+		const addrset_iter<K,B> &i2) noex {
 	    return (i1.mit == i2.mit) ;
 	} ;
-	friend mapblock<K,B> ;
-} ; /* end class (mapblock_iter) */
+	friend addrset<K,B> ;
+} ; /* end class (addrset_iter) */
 
-enum mapblockmems {
-	mapblockmem_start,
-	mapblockmem_finish,
-	mapblockmem_count,
-	mapblockmem_overlast
+enum addrsetmems {
+	addrsetmem_start,
+	addrsetmem_finish,
+	addrsetmem_count,
+	addrsetmem_overlast
 } ;
 
 template<typename K,typename B>
-struct mapblock_co {
-	typedef mapblock<K,B>	mb_t ;
+struct addrset_co {
+	typedef addrset<K,B>	mb_t ;
 	mb_t		*op = nullptr ;
 	int		w = -1 ;
 	constexpr void operator () (mb_t *p,int m) noex {
@@ -148,21 +135,21 @@ struct mapblock_co {
 	operator int () noex {
 	    return operator () () ;
 	} ;
-} ; /* end struct (mapblock_co) */
+} ; /* end struct (addrset_co) */
 
 template<typename K,typename B>
-class mapblock {
+class addrset {
 	std::unordered_map<K,B>			*mp = nullptr ;
 	typedef std::unordered_map<K,B>		maptype ;
-	typedef mapblock_co<K,B>		mbco_type ;
+	typedef addrset_co<K,B>		mbco_type ;
 public:
 	typedef K				key_type ;
 	typedef B				mapped_type ;
 	typedef std::pair<const K,B>		value_type ;
-	typedef mapblock_iter<K,B>		iterator ;
-	typedef const mapblock_iter<K,B>	const_iterator ;
-	mapblock(const mapblock &) = delete ;
-	mapblock &operator = (const mapblock &) = delete ;
+	typedef addrset_iter<K,B>		iterator ;
+	typedef const addrset_iter<K,B>	const_iterator ;
+	addrset(const addrset &) = delete ;
+	addrset &operator = (const addrset &) = delete ;
 	mbco_type	start ;
 	mbco_type	finish ;
 	mbco_type	count ;
@@ -181,22 +168,22 @@ public:
 	    iterator	it(this,true) ;
 	    return it ;
 	} ;
-	constexpr mapblock() noex {
-	    start(this,mapblockmem_start) ;
-	    finish(this,mapblockmem_finish) ;
-	    count(this,mapblockmem_count) ;
+	constexpr addrset() noex {
+	    start(this,addrsetmem_start) ;
+	    finish(this,addrsetmem_finish) ;
+	    count(this,addrsetmem_count) ;
 	} ; /* end ctor) */
-	~mapblock() noex {
+	~addrset() noex {
 	    if (mp) {
 	        delete mp ;
 		mp = nullptr ;
 	    }
 	} ; /* end dtor */
 	friend iterator ;
-} ; /* end class (mapblock) */
+} ; /* end class (addrset) */
 
 template<typename K,typename B>
-int mapblock<K,B>::istart(int n) noex {
+int addrset<K,B>::istart(int n) noex {
 	typedef decltype(std::nothrow)	nothrow_t ;
 	int		rs = SR_INVALID ;
 	if (n >= 0) {
@@ -213,10 +200,10 @@ int mapblock<K,B>::istart(int n) noex {
 	}
 	return rs ;
 }
-/* end method (mapblock::istart) */
+/* end method (addrset::istart) */
 
 template<typename K,typename B>
-int mapblock<K,B>::ifinish() noex {
+int addrset<K,B>::ifinish() noex {
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
 	    delete mp ;
@@ -228,7 +215,7 @@ int mapblock<K,B>::ifinish() noex {
 
 
 template<typename K,typename B>
-int mapblock<K,B>::ins(K k,const B &v) noex {
+int addrset<K,B>::ins(K k,const B &v) noex {
 	typedef	typename maptype::iterator	mit_t ;
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
@@ -242,10 +229,10 @@ int mapblock<K,B>::ins(K k,const B &v) noex {
 	} /* end if (non-null) */
 	return rs ;
 }
-/* end method (mapblock::ifinish) */
+/* end method (addrset::ifinish) */
 
 template<typename K,typename B>
-int mapblock<K,B>::rem(K k) noex {
+int addrset<K,B>::rem(K k) noex {
 	typedef typename maptype::size_type	mitsize_t ;
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
@@ -261,7 +248,7 @@ int mapblock<K,B>::rem(K k) noex {
 }
 
 template<typename K,typename B>
-int mapblock<K,B>::present(K &k) noex {
+int addrset<K,B>::present(K &k) noex {
 	typedef typename maptype::iterator	mit_t ;
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
@@ -273,7 +260,7 @@ int mapblock<K,B>::present(K &k) noex {
 }
 
 template<typename K,typename B>
-int mapblock<K,B>::get(K k,B *vp) noex {
+int addrset<K,B>::get(K k,B *vp) noex {
 	typedef typename maptype::iterator	mit_t ;
 	int		rs = SR_FAULT ;
 	if (vp) {
@@ -294,32 +281,32 @@ int mapblock<K,B>::get(K k,B *vp) noex {
 }
 
 template<typename K,typename B>
-int mapblock<K,B>::icount() noex {
+int addrset<K,B>::icount() noex {
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
 	    rs = mp->size() ;
 	} /* end if (non-null) */
 	return rs ;
 }
-/* end method (mapblock::icount) */
+/* end method (addrset::icount) */
 
 template<typename K,typename B>
-int mapblock_co<K,B>::operator () (int a) noex {
+int addrset_co<K,B>::operator () (int a) noex {
 	int		rs = SR_BUGCHECK ;
 	switch (w) {
-	case mapblockmem_start:
+	case addrsetmem_start:
 	    rs = op->istart(a) ;
 	    break ;
-	case mapblockmem_finish:
+	case addrsetmem_finish:
 	    rs = op->ifinish() ;
 	    break ;
-	case mapblockmem_count:
+	case addrsetmem_count:
 	    rs = op->icount() ;
 	    break ;
 	} /* end switch */
 	return rs ;
 }
-/* end method (mapblock_co::operator) */
+/* end method (addrset_co::operator) */
 
 #endif	/* __cplusplus */
 #endif /* MAPBLOCK_INCLUDE */
