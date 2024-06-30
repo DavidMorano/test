@@ -16,11 +16,13 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<unistd.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<clanguage.h>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |EXIT_SUCCESS| */
+#include	<utility>		/* |pair(3c++)| */
 #include	<string>
 #include	<unordered_map>
 #include	<iostream>

@@ -42,14 +42,14 @@ INCS=
 LIBS= -lmacuser -lu
 
 
-INCDIR=
+INCDIRS=
 
 LIBDIRS= -L$(LIBDIR)
 
 
-LIBINFO= $(LIBDIRS) $(LIBS)
-
 RUNINFO= -rpath $(RUNDIR)
+
+LIBINFO= $(LIBDIRS) $(LIBS)
 
 # flag setting
 CPPFLAGS= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
