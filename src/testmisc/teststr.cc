@@ -1,4 +1,5 @@
 /* main (strchr) */
+/* lang=C++20 */
 
 
 /* revision history:
@@ -12,13 +13,17 @@
 
 
 #include	<envstandards.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<cstring>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdio>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<mkchar.h>
 #include	<localmisc.h>
-extern int	nchr(const char *,int,int) ;
 
-int main()
-{
+
+int main() {
 	const char	*a = "this­that­other" ;
 	const char	*sp, *tp ;
 	int	n = 0 ;

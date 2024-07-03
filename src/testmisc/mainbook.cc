@@ -1,9 +1,7 @@
-/* mainbook */
+/* mainbook SUPPORT */
 /* lang=C++11 */
 
-
 #define	CF_DEBUGS	1		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -16,20 +14,18 @@
 
 /*******************************************************************************
 
-	This program indexes the words in a file and then allows queries on
-	specified words.  Queies return the number of times the given word was
-	found in the text file.  This program is a lttle bit more of a toy than
-	anything else, but it is here if you want to use it.
+	This program indexes the words in a file and then allows
+	queries on specified words.  Queies return the number of
+	times the given word was found in the text file.  This
+	program is a lttle bit more of a toy than anything else,
+	but it is here if you want to use it.
 
 	Synopsis:
-
 	$ book <file> [<queries>]
-
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<cstdlib>
 #include	<cstring>
@@ -112,14 +108,16 @@ static int	procword(char *,cchar *,int) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	wordcount	book ;
 	int		rs ;
 	cchar		*cp ;
+	(void) envv ;
 
 #if	CF_DEBUGS
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {

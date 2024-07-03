@@ -1,4 +1,4 @@
-/* main (testmisc) */
+/* main SUPPORT (testmisc) */
 /* lang=C++11 */
 
 
@@ -31,13 +31,12 @@
 
 	General testing.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-#include	<stdio.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
+#include	<cstdio>
 #include	<cinttypes>
 #include	<new>
 #include	<initializer_list>
@@ -57,6 +56,9 @@
 #include	<usystem.h>
 #include	<hasduplicate.hh>
 #include	<localmisc.h>
+
+
+/* local defines */
 
 
 /* name-spaces */
@@ -127,29 +129,25 @@ public:
 	friend thing	operator + (const thing&,const thing&) ;
 } ;
 
-int thing::init(int a)
-{
+int thing::init(int a) {
 	a1 = a ;
 	a2 = a * 2 ;
 	return 0 ;
 }
 
-int thing::get()
-{
+int thing::get() {
 	return (a1 + a2) ;
 }
 
 /* this IS is a MEMBER function */
-thing &thing::operator += (const thing &b)
-{
+thing &thing::operator += (const thing &b) {
 	fprintf(stderr,"main: operator C\n") ;
 	this->a1 += b.a1 ;
 	this->a2 += b.a2 ;
 	return *this ;
 }
 
-thing &thing::operator += (const thing b)
-{
+thing &thing::operator += (const thing b) {
 	fprintf(stderr,"main: operator B\n") ;
 	this->a1 += b.a1 ;
 	this->a2 += b.a2 ;
@@ -157,8 +155,7 @@ thing &thing::operator += (const thing b)
 }
 
 /* this is a NON-MEMBER function */
-thing operator + (const thing &a,const thing &b)
-{
+thing operator + (const thing &a,const thing &b) {
 	thing	r(18) ;
 	fprintf(stderr,"main: operator A\n") ;
 	r.a1 = a.a1 + b.a1 ;
@@ -231,10 +228,12 @@ static int readline(ifstream &,char *,int) ;
 static cchar	*hello = "hello world!" ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	testcon		tc ;
 	thing		a(1), b(2), c(3) ;
 
@@ -365,19 +364,15 @@ int main(int argc,const char **argv,const char **envv)
 }
 /* end subroutine (main) */
 
-
-auto special(int a, int b) -> int
-{
+auto special(int a, int b) -> int {
 	return (a+b) ;
 }
 
 
 /* local subroutines */
 
-
 #if	CF_TESTIO
-static int testio()
-{
+static int testio() {
 	int		rs = SR_OK ;
 	{
 	    cchar	*ofn = "ourout.txt" ;
@@ -412,10 +407,8 @@ static int testio()
 /* end subroutine (testio) */
 #endif /* CF_TESTIO */
 
-
 #if	CF_LAMBDA
-static int testlambda(void)
-{
+static int testlambda(void) {
 	vector<int>	mv = { 1, 2, 3, 4 } ;
 	int		a[3] = { 2, 1, 3 } ;
 	int		sum = 0 ;
@@ -444,16 +437,13 @@ static int testlambda(void)
 /* end subroutine (testlambda) */
 #endif /* CF_LAMBDA */
 
-
 bool testcon::have() {
 	const int	ans = sisub(hello,-1,"hello") ;
 	fprintf(stderr,"main/testconn::have: ans=%u\n",(ans >= 0)) ;
 	return (ans >= 0) ;
 }
 
-
-int readline(ifstream &is,char *lbuf,int llen)
-{
+int readline(ifstream &is,char *lbuf,int llen) {
 	int		rs = SR_OK ;
 	if (is.getline(lbuf,llen)) {
 	    rs = is.gcount() ;

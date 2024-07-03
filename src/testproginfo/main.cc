@@ -1,4 +1,4 @@
-/* main SUPPORT */
+/* main SUPPORT (testproginfo) */
 /* lang=C++20 */
 
 
@@ -15,8 +15,15 @@
 #include	<localmisc.h>
 
 
+/* local defines */
 
-int main(int argc,mainv argv,mainv envv) {
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,mainv argv) {
 	cchar		*cp ;
 
 	printf("argname=%s\n", ((argc > 0) ? argv[0] : "")) ;

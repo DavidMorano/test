@@ -1,4 +1,4 @@
-/* mapblock SUPPORT */
+/* prique SUPPORT */
 /* lang=C++20 */
 
 /* implement a map container of blocks (of a given structure) */
@@ -8,9 +8,7 @@
 /* revision history:
 
 	= 2011-04-12, David A­D­ Morano
-	This subroutine was originally written.  Only the introduction
-	of C++11 has allowed this (finally), due to the addition
-	(in C++11) of |unordered_map(3c++)|.
+	This subroutine was originally written.
 
 */
 
@@ -19,10 +17,10 @@
 /*******************************************************************************
 
 	Description:
-	mapblock
+	prique
 
 	Symopsis:
-	int mapblock_start<typename K,typename Block>(int n = 0) noex
+	int prique_start<typename K,typename Block>(int n = 0) noex
 
 	Arguments:
 	n		suggested starting size
@@ -39,7 +37,7 @@
 #include	<cstring>
 #include	<usystem.h>
 
-#include	"mapblock.hh"
+#include	"prique.hh"
 
 
 /* code comments */

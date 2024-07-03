@@ -1,10 +1,7 @@
-/* main (testinit) */
+/* main SUPPORT (testinit) */
 /* lang=C99 */
 
-
-#define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_INIT		0		/* use pragma init (only Solaris®?) */
-
 
 /* revision history:
 
@@ -19,19 +16,17 @@
 
 	We test the GCC pragma 'init'.
 
-	Does this work only for the Solaris® compilers?
-	It appears to be the case, that this only works for the Solaris®
+	Does this work only for the Solaris® compilers?  It appears
+	to be the case, that this only works for the Solaris®
 	compilers). But the GNU compiler (GCC) does have some similar
 	mechanism, I just forgot what it is!
 
 	Findings:
 
-        The GCC pragma works for an absolute executable but not for shared
-        object libraries.
-
+	The GCC pragma works for an absolute executable but not for
+	shared object libraries.
 
 *******************************************************************************/
-
 
 #include	<envstandards.h>
 #include	<stdio.h>
@@ -63,14 +58,11 @@ extern int	libtest_other() ;
 
 /* exported subroutines */
 
-void maininit()
-{
+void maininit() noex {
 	printf("main-init!\n") ;
 }
 
-/* ARGSUSED */
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv,mainv) {
 	int		ex ;
 	printf("hello world!\n") ;
 	ex = libtest_other() ;

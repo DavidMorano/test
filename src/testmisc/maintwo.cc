@@ -1,4 +1,4 @@
-/* main (two) */
+/* main SUPPORT (two) */
 /* lang=C99 */
 
 
@@ -15,19 +15,19 @@
 
 	What were we doing here?  A custom version of SQRT?
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-#include	<stdio.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<math.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdio>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
 #include	<localmisc.h>
 
 
-/* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv,mainv) {
 	double		a = 2.0 ;
 	double		b ;
 

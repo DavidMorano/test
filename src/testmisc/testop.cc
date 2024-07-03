@@ -1,4 +1,4 @@
-/* testop */
+/* testop SUPPORT */
 /* lang=C++11 */
 
 /* test operations */
@@ -170,30 +170,26 @@ struct thingless {
     } ;
 } ;
 
-int thing::init(int a)
-{
+int thing::init(int a) {
 	id = a ;
 	return 0 ;
 }
 
 /* this IS a MEMBER function */
-thing &thing::operator += (const thing &b)
-{
+thing &thing::operator += (const thing &b) {
 	fprintf(stderr,"main: operator C\n") ;
 	this->id += b.id ;
 	return *this ;
 }
 
-thing &thing::operator += (const thing b)
-{
+thing &thing::operator += (const thing b) {
 	fprintf(stderr,"main: operator B\n") ;
 	this->id += b.id ;
 	return *this ;
 }
 
 /* this is a NON-MEMBER function */
-thing operator + (const thing &a,const thing &b)
-{
+thing operator + (const thing &a,const thing &b) {
 	thing	r ;
 	fprintf(stderr,"main: operator A\n") ;
 	r.id = a.id + b.id ;
@@ -259,12 +255,12 @@ static int testcallobj() ;
 static staticobj	so ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv,mainv) {
 	FILE		*efp = stderr ;
 	thing		a(11), b(23), c(9) ;
 	int		ex = 0 ;
@@ -353,11 +349,9 @@ int main(int argc,cchar **argv,cchar **envv)
 
 /* local subroutines */
 
-
 #if	CF_TESTIO
 
-static int testio()
-{
+static int testio() {
 	int		rs = SR_OK ;
 	{
 	    cchar	*ofn = "ourout.txt" ;
@@ -391,8 +385,7 @@ static int testio()
 }
 /* end subroutine (testio) */
 
-int readline(ifstream &is,char *lbuf,int llen)
-{
+int readline(ifstream &is,char *lbuf,int llen) {
 	int		rs = SR_OK ;
 	if (is.getline(lbuf,llen)) {
 	    rs = is.gcount() ;
@@ -403,10 +396,8 @@ int readline(ifstream &is,char *lbuf,int llen)
 
 #endif /* CF_TESTIO */
 
-
 #if	CF_TESTLAMBDA
-static int testlambda(void)
-{
+static int testlambda(void) {
 	vector<int>	mv = { 1, 2, 3, 4 } ;
 	int		a[3] = { 2, 1, 3 } ;
 	int		sum = 0 ;
@@ -435,10 +426,8 @@ static int testlambda(void)
 /* end subroutine (testlambda) */
 #endif /* CF_TESTLAMBDA */
 
-
 #if	CF_TESTIN
-static int testin()
-{
+static int testin() {
 	const int	n = 20 ;
 	int		rs = SR_OK ;
 	int		i ;
@@ -452,7 +441,6 @@ static int testin()
 }
 /* end subroutine (testin) */
 #endif /* CF_TESTIN */
-
 
 #if	CF_INH
 struct A {
@@ -490,7 +478,6 @@ static int inh() {
 /* end subroutine (inh) */
 #endif /* CG_INH */
 
-
 #if	CF_CALLOBJ
 struct callobj {
 	int	v = 0 ;
@@ -505,13 +492,11 @@ struct callobj {
 	    return v ;
 	} ;
 } ;
-static int testcallobj_sub(void *objp)
-{
+static int testcallobj_sub(void *objp) {
 	callobj		*op = (callobj *) objp ;
 	return op->timeout() ;
 }
-static int testcallobj()
-{
+static int testcallobj() {
 	callobj		obj ;
 	void		*objp ;
 	void		*metp ;

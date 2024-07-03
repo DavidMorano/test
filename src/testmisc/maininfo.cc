@@ -1,7 +1,8 @@
-/* maininfo */
+/* maininfo SUPPORT */
+/* lang=C++20 */
 
 /* version %I% last-modified %G% */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUGN	0		/* special debugging */
@@ -9,12 +10,12 @@
 #define	CF_SIGHAND	1		/* install signal handlers */
 #define	CF_SIGALTSTACK	0		/* do *not* define */
 
-
 /* revision history:
 
 	= 2001-11-01, David A­D­ Morano
-	This subroutine was written for use as a front-end for Korn Shell (KSH)
-	commands that are compiled as stand-alone programs.
+	This subroutine was written for use as a front-end for Korn
+	Shell (KSH) commands that are compiled as stand-alone
+	programs.
 
 */
 
@@ -22,21 +23,16 @@
 
 /*******************************************************************************
 
-	This is the front-end to make the various SHELL (KSH) built-in commands
-	into stand-alone programs.
-
+	This is the front-end to make the various SHELL (KSH)
+	built-in commands into stand-alone programs.
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<limits.h>
 #include	<stdlib.h>
-#include	<string.h>
-
 #include	<usystem.h>
 #include	<vecstr.h>
 #include	<upt.h>
@@ -50,15 +46,15 @@
 
 /* external subroutines */
 
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sncpy2w(char *,int,const char *,const char *,int) ;
-extern int	sncpylc(char *,int,const char *) ;
-extern int	sncpyuc(char *,int,const char *) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	bufprintf(char *,int,const char *,...) ;
-extern int	haslc(const char *,int) ;
-extern int	hasuc(const char *,int) ;
+extern int	snwcpy(char *,int,cchar *,int) ;
+extern int	sncpy2(char *,int,cchar *,cchar *) ;
+extern int	sncpy2w(char *,int,cchar *,cchar *,int) ;
+extern int	sncpylc(char *,int,cchar *) ;
+extern int	sncpyuc(char *,int,cchar *) ;
+extern int	sfbasename(cchar *,int,cchar **) ;
+extern int	bufprintf(char *,int,cchar *,...) ;
+extern int	haslc(cchar *,int) ;
+extern int	hasuc(cchar *,int) ;
 extern int	isNotPresent(int) ;
 
 #if	CF_DEBUGS
@@ -67,12 +63,12 @@ extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 #if	CF_DEBUGN
-extern int	nprintf(const char *,const char *,...) ;
+extern int	nprintf(cchar *,cchar *,...) ;
 #endif
 
-extern cchar	*getourenv(const char **,const char *) ;
+extern cchar	*getourenv(cchar **,cchar *) ;
 
-extern char	*strnrchr(const char *,int,int) ;
+extern char	*strnrchr(cchar *,int,int) ;
 
 
 /* external variables */
@@ -91,15 +87,16 @@ static int	maininfo_utiler(MAININFO *) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int maininfo_start(MAININFO *mip,int argc,cchar **argv)
-{
+int maininfo_start(MAININFO *mip,int argc,mainv argv) {
 	sigset_t	ss ;
-	const int	sig = SIGTIMEOUT ;
+	cint		sig = SIGTIMEOUT ;
 	int		rs ;
-	const char	*argz = NULL ;
+	cchar		*argz = NULL ;
 
 	memset(mip,0,sizeof(MAININFO)) ;
 
@@ -147,9 +144,7 @@ int maininfo_start(MAININFO *mip,int argc,cchar **argv)
 }
 /* end subroutine (maininfo_start) */
 
-
-int maininfo_finish(MAININFO *mip)
-{
+int maininfo_finish(MAININFO *mip) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 
@@ -165,9 +160,7 @@ int maininfo_finish(MAININFO *mip)
 }
 /* end subroutine (maininfo_finish) */
 
-
-int maininfo_setentry(MAININFO *mip,cchar **epp,cchar *vp,int vl)
-{
+int maininfo_setentry(MAININFO *mip,cchar **epp,cchar *vp,int vl) {
 	int		rs = SR_OK ;
 	int		oi = -1 ;
 	int		len = 0 ;
@@ -192,15 +185,13 @@ int maininfo_setentry(MAININFO *mip,cchar **epp,cchar *vp,int vl)
 }
 /* end subroutine (maininfo_setentry) */
 
-
 #if	CF_SIGALTSTACK
-int maininfo_sigbegin(MAININFO *mip,maininfohand_t sh,const int *sigcatches)
-{
+int maininfo_sigbegin(MAININFO *mip,maininfohand_t sh,cint *sigcatches) {
 	size_t		ms ;
-	const int	ps = getpagesize() ;
-	const int	ss = (2*SIGSTKSZ) ;
-	const int	mp = (PROT_READ|PROT_WRITE) ;
-	const int	mf = (MAP_PRIVATE|MAP_NORESERVE|MAP_ANON) ;
+	cint	ps = getpagesize() ;
+	cint	ss = (2*SIGSTKSZ) ;
+	cint	mp = (PROT_READ|PROT_WRITE) ;
+	cint	mf = (MAP_PRIVATE|MAP_NORESERVE|MAP_ANON) ;
 	int		rs ;
 	int		fd = -1 ;
 	void		*md ;
@@ -230,8 +221,7 @@ int maininfo_sigbegin(MAININFO *mip,maininfohand_t sh,const int *sigcatches)
 }
 /* end subroutine (maininfo_sigbegin) */
 #else /* CF_SIGALTSTACK */
-int maininfo_sigbegin(MAININFO *mip,maininfohand_t sh,const int *sigcatches)
-{
+int maininfo_sigbegin(MAININFO *mip,maininfohand_t sh,cint *sigcatches) {
 	int		rs = SR_OK ;
 #if	CF_SIGHAND
 	rs = sighand_start(&mip->sh,NULL,NULL,sigcatches,sh) ;
@@ -244,9 +234,7 @@ int maininfo_sigbegin(MAININFO *mip,maininfohand_t sh,const int *sigcatches)
 /* end subroutine (maininfo_sigbegin) */
 #endif /* CF_SIGALTSTACK */
 
-
-int maininfo_sigend(MAININFO *mip)
-{
+int maininfo_sigend(MAININFO *mip) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 
@@ -272,9 +260,7 @@ int maininfo_sigend(MAININFO *mip)
 }
 /* end subroutine (maininfo_sigend) */
 
-
-int maininfo_utilbegin(MAININFO *op,int f_run)
-{
+int maininfo_utilbegin(MAININFO *op,int f_run) {
 	pthread_t	tid ;
 	thrsub		w = (thrsub) maininfo_utiler ;
 	int		rs = SR_OK ;
@@ -290,9 +276,7 @@ int maininfo_utilbegin(MAININFO *op,int f_run)
 }
 /* end subroutine (maininfo_utilbegin) */
 
-
-int maininfo_utilend(MAININFO *op)
-{
+int maininfo_utilend(MAININFO *op) {
 	int		rs = SR_OK ;
 
 	if (op->f.utilout) {
@@ -307,15 +291,13 @@ int maininfo_utilend(MAININFO *op)
 }
 /* end subroutine (maininfo_utilend) */
 
-
-int maininfo_srchname(MAININFO *mip,cchar **rpp)
-{
+int maininfo_srchname(MAININFO *mip,cchar **rpp) {
 	int		rs = SR_OK ;
 	cchar		*srch = mip->progname ;
 	if (rpp == NULL) return SR_FAULT ;
 	*rpp = srch ;
 	if (hasuc(srch,-1)) {
-	    const int	slen = MAXNAMELEN ;
+	    cint	slen = MAXNAMELEN ;
 	    char	sbuf[MAXNAMELEN+1] ;
 	    if ((rs = sncpylc(sbuf,slen,srch)) >= 0) {
 	        rs = maininfo_setentry(mip,rpp,sbuf,rs) ;
@@ -330,17 +312,15 @@ int maininfo_srchname(MAININFO *mip,cchar **rpp)
 
 /* private subroutines */
 
-
-static int maininfo_utiler(MAININFO *mip)
-{
-	const int	of = (O_WRONLY|O_APPEND) ;
+static int maininfo_utiler(MAININFO *mip) {
+	cint	of = (O_WRONLY|O_APPEND) ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	cchar		*fn = "here.txt" ;
 
 	if ((rs = u_open(fn,of,0664)) >= 0) {
-	    const int	wlen = LINEBUFLEN ;
-	    const int	fd = rs ;
+	    cint	wlen = LINEBUFLEN ;
+	    cint	fd = rs ;
 	    cchar	*fmt = "hello world!\n" ;
 	    char	wbuf[LINEBUFLEN+1] ;
 	    if ((rs = bufprintf(wbuf,wlen,fmt)) >= 0) {

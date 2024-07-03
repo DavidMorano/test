@@ -44,7 +44,7 @@ extern "C" {
     }
 }
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,mainv argv,mainv) {
 	static cint	srs = mkterms() ;
 	int		rs ;
 	int		ex = 0 ;
