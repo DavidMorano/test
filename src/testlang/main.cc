@@ -1,4 +1,4 @@
-/* main SUPPORR (testlang */
+/* main SUPPORT (testlang) */
 /* lang=C++20 */
 
 /* test the language itself */
@@ -11,11 +11,11 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<iostream>
+#include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysrets.h>
 #include	<usyscalls.h>
-#include	<clanguage.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| */
 
@@ -29,6 +29,9 @@ using std::cout ;			/* variable */
 
 
 /* exported variables */
+
+
+/* local structures */
 
 
 /* forward references */
@@ -53,6 +56,7 @@ int main(int argc,mainv,mainv) {
 	    cint	c = 2 ;
 	    return (b + c) ;
 	} ;
+	(void) argc ;
 	cout << a << eol ;
 	cout << lamb() << eol ;
 	sub1() ;
@@ -67,7 +71,7 @@ int main(int argc,mainv,mainv) {
 static void sub1() noex {
 	cchar	*sp = "hello\n" ;
 	for (int i = 0 ; *sp ; i += 1) {
-	    cout << i << *sp++ << '\n' ;
+	    cout << i << *sp++ << eol ;
 	}
 }
 

@@ -1,6 +1,6 @@
-# MAKEFILE (testproginfo)
+# MAKEFILE (testlang)
 
-T= testproginfo
+T= testlang
 
 ALL= $(T).x
 
@@ -35,16 +35,16 @@ TOUCH= touch
 LINT= lint
 
 
-DEFS +=
+DEFS=
 
-INCS +=
+INCS=
 
-LIBS += -lmacuser -lu
+LIBS= -lmacuser -lu
 
 
-INCDIRS +=
+INCDIRS=
 
-LIBDIRS += -L$(LIBDIR)
+LIBDIRS= -L$(LIBDIR)
 
 
 RUNINFO= -rpath $(RUNDIR)
@@ -56,10 +56,19 @@ CPPFLAGS= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
 CFLAGS= $(MAKECFLAGS)
 CCFLAGS= $(MAKECCFLAGS)
 ARFLAGS= $(MAKEARFLAGS)
-LDFLAGS= $(MAKELDFLAGS) 
+LDFLAGS= $(MAKELDFLAGS)
 
 
-OBJ_MACUSER= main.o
+OBJ0= main.o
+OBJ1= 
+OBJ2= 
+OBJ3= 
+
+OBJA= obj0.o 
+#OBJA= obj0.o obj1.o
+#OBJB= obj2.o obj3.o
+
+OBJ= $(OBJA)
 
 
 default:		$(T).x
@@ -82,14 +91,19 @@ all:			$(ALL)
 	$(CXX)  $(CPPFLAGS) $(CCFLAGS) -c $<
 
 
-$(T).x:			$(OBJ_MACUSER)
-	$(CXX) $(LDFLAGS) -o $@ $(OBJ_MACUSER) $(LIBINFO)
+$(T).x:			$(OBJ)
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
 
-$(T).nm:		$(T).x
+$(T).nm:		$(T).so
 	$(NM) $(NMFLAGS) $(T).so > $(T).nm
 
+$(T).order:		$(OBJ) $(T).a
+	$(LORDER) $(T).a | $(TSORT) > $(T).order
+	$(RM) $(T).a
+	while read O ; do $(AR) $(ARFLAGS) -cr $(T).a $${O} ; done < $(T).order
+
 again:
-	rm -f $(T).x
+	rm -f $(ALL)
 
 clean:
 	makeclean $(ALL)
@@ -97,7 +111,23 @@ clean:
 control:
 	(uname -n ; date) > Control
 
+envs:
+	env
 
-main.o:			main.cc			$(INCS)
+
+obj0.o:			$(OBJ0)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ0)
+
+obj1.o:			$(OBJ1)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ1)
+
+obj2.o:			$(OBJ2)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ2)
+
+obj3.o:			$(OBJ3)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3)
+
+
+main.o:			main.cc 		$(INCS)
 
 

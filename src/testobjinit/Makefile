@@ -1,182 +1,82 @@
-# MAKEFILE
+# MAKEFILE (testobjinit)
 
-T= testinit
+T= testobjinit
 
-TSO= libtest
-
-
-ALL= $(T)
-
-SRCROOT= $(LOCAL)
+ALL= $(T).x
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
+BINDIR= $(REPOROOT)/bin
+INCDIR= $(REPOROOT)/include
+LIBDIR= $(REPOROOT)/lib
+MANDIR= $(REPOROOT)/man
 
-LDCRTDIR= $(CGS_CRTDIR)
+INFODIR= $(REPOROOT)/info
+HELPDIR= $(REPOROOT)/share/help
+
+CRTDIR= $(CGS_CRTDIR)
 VALDIR= $(CGS_VALDIR)
+RUNDIR= $(USRLOCAL)/lib
 
 
-CC= $(CGS_CC)
-GPP= $(CGS_GPP)
+CPP= cpp
+CC= gcc
+CXX= gpp
+LD= gld
+RANLIB= granlib
+AR= gar
+NM= gnm
+COV= gcov
 
-GPPFLAGS= $(CGS_CCFLAGS)
-CCOPTS_GCCALL= -pthreads -fexceptions
-CCOPTS_CCALL= -MT
-
-CCOPTS_GCCOPTSGPP= $(CGS_CCFLAGS)
-CCOPTS_GCCOPTSPARC= -mcpu=ultrasparc
-CCOPTS_GCCLIBSPARC= -mno-app-regs
-
-CCOPTS= $(CCOPTS_GCCALL) -O $(CCOPTS_GCCOPTSPARC)
-#CCOPTS= $(CCOPTS_GCCALL) -g -O
-#CCOPTS= $(CCOPTS_GCCALL) -g -pg
-#CCOPTS= $(CCOPTS_GCCALL) -g -Wstrict-aliasing
-CCOPTS= $(CCOPTS_GCCALL) -g -Wall
-
-CCOPTS_GCCLIB= -fpic $(CCOPTS_GCCLIBSPARC)
-
-#CCOPTS= $(CCOPTS_CCALL) -g -xs
-
-# HyperSPARC
-#CCOPTS= -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-
-# UltraSPARC
-#CCOPTS= -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
+LORDER= lorder
+TSORT= tsort
+LINT= lint
+RM= rm -f
+TOUCH= touch
+LINT= lint
 
 
-LDA=
-LDA += -z initarray=maininit
+DEFS=
+
+INCS=
+
+LIBS= -lmacuser -lu
 
 
-DEF0=
-DEF1=
-DEF2=
-DEF3=
-DEF4=
-DEF5=
-DEF6=
-DEF7= $(LF_DEFS)
+INCDIR=
 
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6) $(DEF7)
+LIBDIRS= -L$(LIBDIR)
 
 
-INCDIRS= -I$(INCDIR)
-
-CPPFLAGS= $(DEFS) $(INCDIRS)
-
-CFLAGS= $(CCOPTS)
-
-#LD= $(CC)
-#LD= cc
-LD= ld
-
-
-LDRPATH=
-
-
-LDFLAGS= $(LF_LDFLAGS) -m -R$(LIBDIR):$(CGS_RPATH) $(LDA)
-
-LIBDIRS= -L$(LIBDIR) -L$(CGS_LIBDIR)
-
-LIB0= -ltest
-LIB1= -ldam -lb
-LIB2=
-LIB3= -luc -lu
-LIB4= $(CGSLIBS)
-LIB5= 
-LIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-LIB7= -ldl -lc
-
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
+RUNINFO= -rpath $(RUNDIR)
 
 LIBINFO= $(LIBDIRS) $(LIBS)
 
-
-SLDA= -z initarray=libtest_init -z finiarray=libtest_fini
-
-SLDFLAGS= $(LF_LDFLAGS) -m -R$(LIBDIR):$(CGS_RPATH) $(SLDA)
-
-SLIBDIRS= -L$(LIBDIR) -L$(CGS_LIBDIR)
-
-SLIB0=
-SLIB1= -ldam -lb
-SLIB2=
-SLIB3= -luc -lu
-SLIB4= $(CGS_LIBS)
-SLIB5= 
-SLIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-SLIB7=
-
-SLIBS= $(SLIB0) $(SLIB1) $(SLIB2) $(SLIB3) $(SLIB4) $(SLIB5) $(SLIB6) $(SLIB7)
-
-SLIBINFO= $(SLIBDIRS) $(SLIBS)
+# flag setting
+CPPFLAGS= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS= $(MAKECFLAGS)
+CCFLAGS= $(MAKECCFLAGS)
+ARFLAGS= $(MAKEARFLAGS)
+LDFLAGS= $(MAKELDFLAGS)
 
 
-VALUES= $(VALDIR)/$(CGS_VALUES)
+OBJ0= main.o prique.o
+OBJ1= 
+OBJ2= 
+OBJ3= 
 
-CRT1= $(LDCRTDIR)/crt1.o
-CRTI= $(LDCRTDIR)/crti.o
-CRTBEGIN= $(LDCRTDIR)/crtbegin.o
-MCRT1= $(LDCRTDIR)/mcrt1.o
-GCRT1= $(LDCRTDIR)/gcrt1.o
-CRTEND= $(LDCRTDIR)/crtend.o
-CRTN= $(LDCRTDIR)/crtn.o
+OBJA= obj0.o 
+#OBJA= obj0.o obj1.o
+#OBJB= obj2.o obj3.o
 
-CRTFRONT= $(CRT1) $(CRTI) $(VALUES) $(CRTBEGIN)
-CRTBACK= $(CRTEND) $(CRTN)
-
-CRT0= $(CRT1) $(CRTI) $(VALUES)
-CRTC= makedate.o
-
-LINT= lint
-LINTFLAGS= -uxn -Dlint
-
-NM= nm
-NMFLAGS= -xs
-
-CPP= cpp
-
-
-INCS= config.h defs.h
-
-
-OBJ00= main.o
-OBJ01= sub.o
-OBJ02=
-OBJ03=
-OBJ04=
-OBJ05=
-OBJ06=
-OBJ07=
-
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07)
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-
-OBJ= $(OBJA) $(OBJB)
-
-OBJS= $(CRTFRONT) $(OBJ) $(CRTC) $(CRTBACK)
-
-
-SOBJ= libtest.o
-
-
-.SUFFIXES:		.ls .i .cx .cs
+OBJ= $(OBJA)
 
 
 default:		$(T).x
 
 all:			$(ALL)
 
-.cc.o:
-	$(GPP) -c $(GPPFLAGS) $(CFLAGS) $(CPPFLAGS) $<
-
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
-
 .c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
+	$(LINT) -c $(LINTFLAGS) $(CPPFLAGS) $<
 
 .c.ls:
 	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
@@ -184,62 +84,51 @@ all:			$(ALL)
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
-.c.cx:
-	$(CXREF) -C $(CXREFFLAGS) $(CPPFLAGS) $<
+.c.o:
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
 
-.c.cs:
-	$(CXREF) $(CXREFFLAGS) $(CPPFLAGS) -o $(*).cs $<
+.cc.o:
+	$(CXX)  $(CPPFLAGS) $(CCFLAGS) -c $<
 
 
-$(T):			$(T).ee
-	cp -p $(T).ee $(T)
+$(T).x:			$(OBJ)
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
 
-${TSO}.so:		$(SOBJ) Makefile
-	$(LD) -G -o $@ $(SLDFLAGS) $(SOBJ) $(SLIBINFO) > $(TSO).lm
+$(T).nm:		$(T).so
+	$(NM) $(NMFLAGS) $(T).so > $(T).nm
 
-$(T).x:			$(OBJ) Makefile $(TSO).so
-	makedate -m $(T) > makedate.c
-	$(CC) -c $(CFLAGS) makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBINFO) > $(T).lm
-
-$(T).$(OFF) $(OFF):	$(T).x
-	cp -p $(T).x $(T).$(OFF)
-
-$(T).nm nm:		$(T).x
-	$(NM) $(NMFLAGS) $(T).x > $(T).nm
-
-strip:			$(T).x
-	strip $(T).x
-	rm -f $(T).$(OFF) $(T)
-
-install:		$(ALL)
-	bsdinstall $(ALL) $(BINDIR)
-
-install-raw:		$(T).x
-	cp -p $(T).x $(T)
-	rm -f $(BINDIR)/$(T).$(OFF)
-	bsdinstall $(T) $(BINDIR)
+$(T).order:		$(OBJ) $(T).a
+	$(LORDER) $(T).a | $(TSORT) > $(T).order
+	$(RM) $(T).a
+	while read O ; do $(AR) $(ARFLAGS) -cr $(T).a $${O} ; done < $(T).order
 
 again:
-	rm -f $(ALL) $(T).x
+	rm -f $(ALL)
 
-clean:			again
-	makeclean
+clean:
+	makeclean $(ALL)
 
 control:
-	uname -n > Control
-	date >> Control
+	(uname -n ; date) > Control
+
+envs:
+	env
 
 
-main.o:			main.c $(INCS)
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) main.c
+obj0.o:			$(OBJ0)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ0)
 
-whatinfo.o:		whatinfo.c config.h
+obj1.o:			$(OBJ1)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ1)
 
-sub.o:			sub.cc
-	$(GPP) -c $(GPPFLAGS) $(CFLAGS) $(CPPFLAGS) sub.cc
+obj2.o:			$(OBJ2)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ2)
 
-libtest.o:		libtest.cc
-	$(GPP) -c $(GPPFLAGS) $(CFLAGS) $(CPPFLAGS) libtest.cc
+obj3.o:			$(OBJ3)
+	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3)
+
+
+main.o:			main.cc prique.hh
+prique.o:		prique.cc prique.hh
 
 
