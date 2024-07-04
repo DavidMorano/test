@@ -19,11 +19,11 @@ VALDIR= $(CGS_VALDIR)
 CC= $(CGS_CC)
 GPP= $(CGS_GPP)
 
-GPPFLAGS= $(CGS_CCFLAGS)
+GPPFLAGS= $(CGS_CXXFLAGS)
 CCOPTS_GCCALL= -pthreads -fexceptions 
 CCOPTS_CCALL= -MT
 
-CCOPTS_GCCOPTSGPP= $(CGS_CCFLAGS)
+CCOPTS_GCCOPTSGPP= $(CGS_CXXFLAGS)
 CCOPTS_GCCOPTSPARC= -mcpu=ultrasparc
 CCOPTS_GCCLIBSPARC= -mno-app-regs
 
@@ -61,7 +61,7 @@ INCDIRS= -I$(INCDIR)
 CPPFLAGS= $(DEFS) $(INCDIRS)
 
 CFLAGS= $(CCOPTS)
-CCFLAGS= $(CCOPTS_GCCOPTSGPP) $(CCOPTS) 
+CXXFLAGS= $(CCOPTS_GCCOPTSGPP) $(CCOPTS) 
 GPPFLAGS= $(CCOPTS_GCCOPTSGPP) $(CCOPTS) 
 
 #LD= $(CC)
@@ -219,7 +219,7 @@ control:
 
 
 main.o:			main.cc $(INCS)
-	$(GPP) -c $(CCFLAGS) $(CPPFLAGS) main.cc
+	$(GPP) -c $(CXXFLAGS) $(CPPFLAGS) main.cc
 
 whatinfo.o:		whatinfo.c config.h
 
@@ -242,7 +242,7 @@ $(T01).x:		Makefile $(T01OBJ)
 	$(GPP) -o $@ $(T01OBJ) $(TLIBINFO)
 
 $(T01).o:		testsethand.cc sethand.h
-	$(GPP) -c $(CCFLAGS) $(CPPFLAGS) testsethand.cc
+	$(GPP) -c $(CXXFLAGS) $(CPPFLAGS) testsethand.cc
 
 
 T02= testsetint
@@ -260,7 +260,7 @@ $(T02).x:		Makefile $(T02OBJ)
 	$(LD) -o $@ $(LDFLAGS) -z defs $(T02OBJS) -lm $(TLIBINFO) > $(T02).lm
 
 $(T02).o:		testsetint.cc setint.h
-	$(GPP) -c $(CCFLAGS) $(CPPFLAGS) testsetint.cc
+	$(GPP) -c $(CXXFLAGS) $(CPPFLAGS) testsetint.cc
 
 
 T03= testop
@@ -278,7 +278,7 @@ $(T03).x:		Makefile $(T03OBJ)
 	$(LD) -o $@ $(LDFLAGS) -z defs $(T03OBJS) -lm $(TLIBINFO) > $(T03).lm
 
 $(T03).o:		$(T03).cc setint.h
-	$(GPP) -c $(CCFLAGS) $(CPPFLAGS) $(T03).cc
+	$(GPP) -c $(CXXFLAGS) $(CPPFLAGS) $(T03).cc
 
 
 T04= testnew
@@ -296,6 +296,6 @@ $(T04).x:		Makefile $(T04OBJ)
 	$(LD) -o $@ $(LDFLAGS) -z defs $(T04OBJS) -lm $(TLIBINFO) > $(T04).lm
 
 $(T04).o:		$(T04).cc setint.h
-	$(GPP) -c $(CCFLAGS) $(CPPFLAGS) $(T04).cc
+	$(GPP) -c $(CXXFLAGS) $(CPPFLAGS) $(T04).cc
 
 

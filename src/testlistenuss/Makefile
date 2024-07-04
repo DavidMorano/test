@@ -18,7 +18,7 @@ VALDIR= $(CGS_VALDIR)
 CC= $(CGS_CC)
 GPP= $(CGS_GPP)
 
-GPPFLAGS= $(CGS_CCFLAGS)
+GPPFLAGS= $(CGS_CXXFLAGS)
 CCOPTS= -O3 -mcpu=ultrasparc # -fpic
 #CCOPTS= -g -O
 #CCOPTS= -g
