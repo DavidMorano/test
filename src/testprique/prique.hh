@@ -135,6 +135,7 @@ enum priquemems {
 	priquemem_start,
 	priquemem_finish,
 	priquemem_count,
+	priquemem_pop,
 	priquemem_overlast
 } ;
 
@@ -176,6 +177,7 @@ public:
 	prique_co<K>	start ;
 	prique_co<K>	finish ;
 	prique_co<K>	count ;
+	prique_co<K>	pop ;
 	prique_rem<K>	rem ;
 	int		ins(const K &) noex ;
 	int		present(const K &) noex ;
@@ -197,6 +199,7 @@ public:
 	    start(this,priquemem_start) ;
 	    finish(this,priquemem_finish) ;
 	    count(this,priquemem_count) ;
+	    pop(this,priquemem_pop) ;
 	    rem(this) ;
 	} ; /* end ctor) */
 	~prique() noex {
@@ -347,6 +350,9 @@ int prique_co<K>::operator () (int a) noex {
 	        break ;
 	    case priquemem_count:
 	        rs = op->icount() ;
+	        break ;
+	    case priquemem_pop:
+	        rs = op->irem() ;
 	        break ;
 	    } /* end switch */
 	}

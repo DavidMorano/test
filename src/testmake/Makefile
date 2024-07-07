@@ -16,6 +16,8 @@ TOUCH	?= touch
 LINT	?= lint
 
 
+THING	= $(shell cat include.txt)
+
 UUCLIB= libuuc.a
 
 OBJ= a.o b.o
@@ -24,6 +26,7 @@ OBJ= a.o b.o
 default:
 	print -- CC=$(CC) CFLAGS=$(CFLAGS) CXX=$(CXX) CXXFLAGS=$(CXXFLAGS)
 	print -- CPP=$(CPP) NM=$(NM) LINT=$(LINT)
+	print -- THING=$(THING)
 
 ucc(%o):	%.o
 
