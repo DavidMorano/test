@@ -1,10 +1,8 @@
-/* main (testvecsorthand) */
+/* main SUPPORT (testvecsorthand) */
 /* lang=C++11 */
 
 /* sorted vector testing */
-
-
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -16,17 +14,13 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-
 #include	<envstandards.h>
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
-#include	<time.h>
-#include	<string.h>
-#include	<stdlib.h>
-
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cinttypes>
 #include	<cstring>
@@ -42,7 +36,6 @@
 #include	<ostream>
 #include	<iostream>
 #include	<iomanip>
-
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<field.h>
@@ -51,8 +44,6 @@
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
-#include	"config.h"
-#include	"defs.h"
 #include	"vecsorthand.h"
 
 
@@ -68,72 +59,47 @@
 using namespace	std ;
 
 
-/* typedefs */
+/* local typedefs */
 
 
 /* external subroutines */
 
-#if	CF_DEBUGS || CF_DEBUG
-extern "C" int	debugopen(cchar *) ;
-extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(cchar *,int,int) ;
-#endif
 
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
+/* external variables */
+
+
+/* local structures */
 
 
 /* forward references */
 
-static int	mainfins(vecsorthand *) ;
-static int	mainadd(vecsorthand *,int) ;
+static int	mainfins(vecsorthand *) noex ;
+static int	mainadd(vecsorthand *,int) noex ;
 
-static int	ourcmp(const void *,const void *) ;
+static int	ourcmp(cvoid *,cvoid *) noex ;
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
-	VECSORTHAND	ourlist ;
+int main(int,mainv,mainv) {
+	vecsorthand	slist ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ex = 0 ;
-	cchar		*progname ;
 
-
-#if	CF_DEBUGS
-	{
-	cchar		*cp ;
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
-	    rs = debugopen(cp) ;
-	    debugprintf("main: starting DFD=%d\n",rs) ;
-	}
-	}
-#endif /* CF_DEBUGS */
-
-	progname = argv[0] ;
-
-	if ((rs = vecsorthand_start(&ourlist,0,ourcmp)) >= 0) {
-	    const void	*ep ;
-	    int		i ;
+	if ((rs = vecsorthand_start(&slist,0,ourcmp)) >= 0) {
+	    cvoid	*ep ;
 	    int		v ;
 
-	    rs = mainadd(&ourlist,1) ;
-#if	CF_DEBUGS
-	    debugprintf("main: mainadd() rs=%d\n",rs) ;
-#endif
-	    mainadd(&ourlist,2) ;
-	    mainadd(&ourlist,3) ;
+	    rs = mainadd(&slist,1) ;
+	    mainadd(&slist,2) ;
+	    mainadd(&slist,3) ;
 
-#if	CF_DEBUGS
-	    debugprintf("main: getting\n") ;
-#endif
-
-	    for (i = 0 ; vecsorthand_get(&ourlist,i,&ep) >= 0 ; i += 1) {
-	        if (ep != NULL) {
+	    for (int i = 0 ; vecsorthand_get(&slist,i,&ep) >= 0 ; i += 1) {
+	        if (ep) {
 		    int	*ip = (int *) ep ;
 		    v = *ip ;
 		    cout << ' ' << v ;
@@ -141,16 +107,12 @@ int main(int argc,cchar **argv,cchar **envv)
 	    }
 	    cout << endl ;
 
-	    rs1 = mainfins(&ourlist) ;
+	    rs1 = mainfins(&slist) ;
 	    if (rs >= 0) rs = rs1 ;
 
-	    rs1 = vecsorthand_finish(&ourlist) ;
+	    rs1 = vecsorthand_finish(&slist) ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (vecsorthand) */
-
-#if	CF_DEBUGS
-	debugprintf("main: ret rs=%d\n",rs) ;
-#endif
 
 	if (rs < 0) ex = 1 ;
 	return ex ;
@@ -160,10 +122,8 @@ int main(int argc,cchar **argv,cchar **envv)
 
 /* local subroutines */
 
-
-static int mainadd(vecsorthand *vlp,int v)
-{
-	const int	esize = sizeof(int) ;
+static int mainadd(vecsorthand *vlp,int v) noex {
+	cint		esize = sizeof(int) ;
 	int		rs ;
 	int		*ip ;
 	if ((rs = uc_malloc(esize,&ip)) >= 0) {
@@ -174,9 +134,7 @@ static int mainadd(vecsorthand *vlp,int v)
 }
 /* end subroutine (mainadd) */
 
-
-static int mainfins(vecsorthand *vlp)
-{
+static int mainfins(vecsorthand *vlp) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		i ;
@@ -191,25 +149,26 @@ static int mainfins(vecsorthand *vlp)
 }
 /* end subroutine (mainfins) */
 
-
-static int ourcmp(const void *a1p,const void *a2p)
-{
+static int ourcmp(cvoid *a1p,cvoid *a2p) noex {
 	int		**e1pp = (int **) a1p ;
 	int		**e2pp = (int **) a2p ;
 	int		rc = 0 ;
-	if ((*e1pp != NULL) || (*e2pp != NULL)) {
-	    if (*e1pp != NULL) {
-	        if (*e2pp != NULL) {
-		    int	*i1p = (int *) *e1pp ;
-		    int	*i2p = (int *) *e2pp ;
-	            rc = (*i1p - *i2p) ;
-	        } else
-		    rc = -1 ;
-	    } else
-		rc = 1 ;
-	}
+	{
+	    int		*e1p = *e1pp ;
+	    int		*e2p = *e2pp ;
+	    if (e1p || e2p) {
+	        if (e1p) {
+	            if (e2p) {
+	                rc = (*e1p - *e2p) ;
+	            } else {
+		        rc = -1 ;
+		    }
+	        } else {
+		    rc = 1 ;
+		}
+	    }
+	} /* end block) */
 	return rc ;
-
 }
 /* end subroutine (ourcmp) */
 
