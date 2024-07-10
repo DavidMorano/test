@@ -27,8 +27,10 @@ default:
 	print -- CC=$(CC) CFLAGS=$(CFLAGS) CXX=$(CXX) CXXFLAGS=$(CXXFLAGS)
 	print -- CPP=$(CPP) NM=$(NM) LINT=$(LINT)
 	print -- THING=$(THING)
+	print -- VPATH=$(VPATH)
 
 ucc(%o):	%.o
+	print -- one
 
 
 $(UUCLIB):	$(OBJ)
