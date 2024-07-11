@@ -68,24 +68,30 @@ OBJA= obj0.o
 OBJ= $(OBJA)
 
 
+.SUFFIXES:		.hh .ii
+
+
 default:		$(T).x
 
 all:			$(ALL)
 
-.c.ln:
-	$(LINT) -c $(LINTFLAGS) $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
-
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
 .c.o:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+	$(COMPILE.c) $<
 
 .cc.o:
-	$(CXX)  $(CPPFLAGS) $(CXXFLAGS) -c $<
+	$(COMPILE.cc) $<
 
 
 $(T).x:			$(OBJ)
