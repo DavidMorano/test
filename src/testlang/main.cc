@@ -59,6 +59,7 @@ static int	sub0() noex ;
 static int	sub1() noex ;
 static int	sub2() noex ;
 static int	sub3() noex ;
+static int	sub4() noex ;
 
 
 /* local variables */
@@ -67,7 +68,8 @@ constexpr sub_f		subs[] = {
 	sub0,
 	sub1,
 	sub2,
-	sub3
+	sub3,
+	sub4
 } ;
 
 
@@ -84,6 +86,7 @@ int main(int argc,mainv argv,mainv) {
 	    for (int ai = 1 ; (rs >= 0) && (ai < argc) && argv[ai] ; ai += 1) {
 		cint	si = atoi(argv[ai]) ;
 		if (si < ns) {
+		    cerr << "sub=" << si << eol ;
 		    rs = (*subs[si])() ;
 		} else {
 		    cout << "out of range" << eol ;
@@ -132,6 +135,16 @@ static int sub3() noex {
 	void		*vp{} ;
 	cvp = vp ;
 	(void) cvp ;
+	return rs ;
+}
+
+static int sub4() noex {
+	int		rs = SR_OK ;
+	if (int	a = sub3()) {
+	    cout << "true a=" << a << eol ;
+	} else {
+	    cout << "false a=" << a << eol ;
+	}
 	return rs ;
 }
 
