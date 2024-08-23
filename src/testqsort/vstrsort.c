@@ -1,7 +1,8 @@
-/* vstrsort */
+/* vstrsort SUPPORT */
 /* lang=C20 */
 
 /* an insertion sort? on strings */
+/* version %I% last-modified %G% */
 
 
 /*******************************************************************
@@ -49,22 +50,27 @@
 
 /* local typedefs */
 
-typedef int (*vcmp_f)(const char **,const char **) ;
+extern "C" {
+    typedef int (*vcmp_f)(cchar **,cchar **) noex ;
+}
+
+
+/* local variables */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-void vstrsort(const char **argv,int n,vcmp_f fn) noex {
-	register int 	i ;
-	register int 	j ;
-	register int 	m ;
-	register int	c ;
-
+void vstrsort(cchar **argv,int n,vcmp_f fn) noex {
+	int 		i ;
+	int 		j ;
+	int 		m ;
+	int		c ;
 	int 		k ;
-
 	char**		ap ;
 	char*		s ;
-
 
 /* compute value for 'j' */
 
@@ -73,25 +79,16 @@ void vstrsort(const char **argv,int n,vcmp_f fn) noex {
 /* do it */
 
 	for (m = 2 * j - 1 ; m /= 2 ; /* CSTYLED */ ) {
-
 	    for ((j = 0, k = n - m) ; j < k ; j += 1) {
-
 	        for (i = j ; i >= 0 ; i -= m) {
-
 	            ap = &argv[i] ;
-	            c = (*fn)((const char **) &ap[m],(const char **) &ap[0]) ;
-
-		    if (c >= 0)
-	                break ;
-
+	            c = (*fn)((cchar **) &ap[m],(cchar **) &ap[0]) ;
+		    if (c >= 0) break ;
 	            s = ap[m] ;
 	            ap[m] = ap[0] ;
 	            ap[0] = s ;
-
 	        } /* end for */
-
 	    } /* end for */
-
 	} /* end for */
 
 /* VOIDRETURN */
