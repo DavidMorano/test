@@ -46,16 +46,11 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
-
 
 /* external variables */
 
 
-/* local structures (and methods) */
+/* local structures */
 
 
 /* forward references */
@@ -66,16 +61,17 @@ extern "C" char	*strwcpy(char *,cchar *,int) ;
 static const int	vals[] = { 3, 7, 19, 12, 43 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 	vecint		vi ;
 	int		rs ;
-
+	int		rs1 ;
 	if ((rs = vecint_start(&vi,5,0)) >= 0) {
-	    const int	n = nelem(vals) ;
+	    cint	n = nelem(vals) ;
 	    if ((rs = vecint_addlist(&vi,vals,n)) >= 0) {
 		if ((rs = vecint_assign(&vi,8,71)) >= 0) {
 	            int		i ;
@@ -86,9 +82,9 @@ int main(int argc,const char **argv,const char **envv)
 	            cout << endl ;
 	        }
 	    }
-	    vecint_finish(&vi) ;
+	    rs1 = vecint_finish(&vi) ;
+	    if (rs >= 0) rs = rs1 ;
 	} /* end if (vecint) */
-
 	return 0 ;
 }
 /* end subroutine (main) */
