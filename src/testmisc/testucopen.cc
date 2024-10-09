@@ -157,8 +157,8 @@ int main(int argc,const char **argv,const char **envv)
 
 static int dumpfile(int fd,int of) noex {
 	FILE		*ofp = stdout ;
-	cint		to = 5 ;
-	cint		fo = (of | O_NETWORK) ;
+	const int	to = 5 ;
+	const int	fo = (of | O_NETWORK) ;
 	int		rs ;
 	if (filer b ; (rs = filer_start(&b,fd,0z,0,fo)) >= 0) {
 	    cint	llen = LINEBUFLEN ;
