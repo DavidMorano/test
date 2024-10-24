@@ -628,7 +628,7 @@ char	*envv[] ;
 	            c_fifo -= 1 ;
 
 #if	CF_FIFOSTR
-	            fifostr_remove(&fs,strbuf,BUFLEN) ;
+	            fifostr_rem(&fs,strbuf,BUFLEN) ;
 #else
 	            vecstr_del(&vs,0) ;
 #endif
@@ -641,7 +641,7 @@ char	*envv[] ;
 	            for (k = 0 ; k < 50 ; k += 1) {
 
 #if	CF_FIFOSTR
-	                fifostr_remove(&fs,strbuf,BUFLEN) ;
+	                fifostr_rem(&fs,strbuf,BUFLEN) ;
 #else
 	                vecstr_del(&vs,0) ;
 #endif
@@ -682,7 +682,7 @@ char	*envv[] ;
 	    for (k = 0 ; k < c_fifo ; k += 1) {
 
 #if	CF_FIFOSTR
-	        fifostr_remove(&fs,strbuf,BUFLEN) ;
+	        fifostr_rem(&fs,strbuf,BUFLEN) ;
 #else
 	        vecstr_del(&vs,0) ;
 #endif /* CF_FIFOSTR */
