@@ -1,14 +1,13 @@
-/* mainlister */
+/* mainlister SUPPORT */
 /* lang=C++11 */
 
 /* test of SLIST object */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_DEBUGADD	1		/* debug adding */
 #define	CF_DEBUGONE	0		/* debug one */
-
 
 /* revision history:
 
@@ -23,11 +22,9 @@
 
 	We really are just (mostly) testing the SLIST object.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<cstdlib>
 #include	<cinttypes>
@@ -188,10 +185,7 @@ static int	printlist(slist<int> &,cchar *) ;
 
 /* exported subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv,mainv envv) {
 
 #if	CF_DEBUGS && CF_DEBUGMALL
 	uint		mo_start ;
@@ -202,6 +196,8 @@ int main(int argc,const char **argv,const char **envv)
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
+#else
+	(void) envv ;
 #endif /* CF_DEBUGS */
 
 #if	CF_DEBUGS && CF_DEBUGMALL
