@@ -160,16 +160,13 @@ int main()
 	    TMPX	ut ;
 	    TMPX_ENT	e ;
 	    TMPX_CUR	cur ;
-	    const char	*un = "dam" ;
+	    cchar	*un = "dam" ;
 
 
-	    rs = tmpx_open(&ut,NULL,O_RDONLY) ;
-
-	    if (rs >= 0) {
-
+	    if ((rs = tmpx_open(&ut,NULL,O_RDONLY)) >= 0) {
 	        tmpx_curbegin(&ut,&cur) ;
 
-	        while ((rs = tmpx_enum(&ut,&cur,&e)) >= 0) {
+	        while ((rs = tmpx_curenum(&ut,&cur,&e)) >= 0) {
 
 	            if (isproctype(e.ut_type)) {
 

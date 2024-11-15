@@ -1160,8 +1160,7 @@ const char	dbfname[] ;
 	    if ((rs = tmpx_curbegin(&ut,&ucur)) >= 0) {
 
 	while (rs >= 0) {
-
-	    rs1 = tmpx_enum(&ut,&ucur,up) ;
+	    rs1 = tmpx_curenum(&ut,&ucur,up) ;
 
 #if	CF_DEBUG
 	if (DEBUGLEVEL(3))
