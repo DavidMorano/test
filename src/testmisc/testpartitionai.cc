@@ -1,12 +1,12 @@
-/* testpartitionai */
+/* testpartitionai SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C++11 */
 
 /* test |partitionai()| function */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGPRINTA	1		/* print arrays */
-
 
 /* revision history:
 
@@ -23,34 +23,27 @@
 /*******************************************************************************
 
 	We test the |partitionai()| function described here below.
-
 	Partition an array of integers.
 
 	Synopsis:
-
 	int partitionai(int *a,int al,partpred_t partpred,int)
 
 	Arguments:
-
 	a		array
 	al		array length
 	partpred	function to evaluate the predicate
 	int		value to pass to the predicate function
 
 	Returns:
-
 	-	index of pivot (based from 'ri')
 
 	Notes:
-
         I knew this was correct from the start, but we had to get another
         oponion.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<limits.h>
 #include	<stdlib.h>
@@ -105,37 +98,35 @@ extern "C" cchar	*getourenv(cchar **,cchar *) ;
 
 static int	ourpred(int,int) ;
 static int	partest(int *,int,partpred_t,int) ;
-static int	isPart(const int *,int,partpred_t,int) ;
+static int	isPart(cint *,int,partpred_t,int) ;
 
 static void	loadrand(int *,int) ;
 static void	loadagain(int *,int *,int) ;
 static void	loadfromvec(int *,const vector<int> &,int) ;
-static void	vecload(vector<int> &,const int *,int) ;
+static void	vecload(vector<int> &,cint *,int) ;
 
 #if	CF_DEBUGS && CF_DEBUGPRINTA
-static int	debugprinta(const int *,int) ;
+static int	debugprinta(cint *,int) ;
 #endif
 
 
 /* local variables */
 
 
+/* exported variables */
+
+
 /* export subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
-	const int	al = 15 ;
+int main(int,mainv,mainv) {
+	cint	al = 15 ;
 	int		rs ;
 	int		ex = 0 ;
 	int		asize ;
-	int		*a ;
 
 #if	CF_DEBUGS
 	{
-	    cchar	*cp ;
-	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+	    if (cchar *cp ; (cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	        rs = debugopen(cp) ;
 	        debugprintf("main: starting DFD=%d\n",rs) ;
 	    }
@@ -143,17 +134,17 @@ int main(int argc,cchar **argv,cchar **envv)
 #endif /* CF_DEBUGS */
 
 	asize = (2*(al+1)*sizeof(int)) ;
-	if ((rs = uc_malloc(asize,&a)) >= 0) {
-	    const int	algo[] = { 0, 1, 2, 3 } ;
-	    const int	on = 100 ;
+	if (int *a ; (rs = uc_malloc(asize,&a)) >= 0) {
+	    cint	algo[] = { 0, 1, 2, 3 } ;
+	    cint	on = 100 ;
 	    int		i ;
 	    int		*aa = (a+(al+1)) ;
 	    for (i = 0 ; i < on ; i += 1) {
-		const int	gn = nelem(algo) ;
+		cint	gn = nelem(algo) ;
 		int		j ;
 	        loadrand(a,al) ;
 		for (j = 0 ; j < al ; j += 1) {
-		    const int	pv = a[j] ;
+		    cint	pv = a[j] ;
 		    int		gi ;
 		    int		ans[gn+1] ;
 #if	CF_DEBUGS
@@ -162,7 +153,7 @@ int main(int argc,cchar **argv,cchar **envv)
 			debugprinta(aa,al) ;
 #endif
 		    for (gi = 0 ; gi < gn ; gi += 1) {
-		        const int	g = algo[gi] ;
+		        cint	g = algo[gi] ;
 		        loadagain(aa,a,al) ;
 #if	CF_DEBUGS
 			debugprintf("main: i=%u j=%u pv=%u g=%u\n",i,j,pv,g) ;
@@ -243,17 +234,13 @@ int main(int argc,cchar **argv,cchar **envv)
 
 /* local subroutines */
 
-
-static int ourpred(int e,int pv)
-{
+static int ourpred(int e,int pv) {
 	return (e < pv) ;
 }
 
-static int partest(int *a,int al,partpred_t fn,int pv)
-{
-	int		i ;
+static int partest(int *a,int al,partpred_t fn,int pv) {
 	int		pi = 0 ;
-	for (i = 0 ; i < al ; i += 1) {
+	for (int i = 0 ; i < al ; i += 1) {
 	    int	f = (*fn)(a[i],pv) ;
 	    if (f) {
 		if (i != pi) arrswapi(a,i,pi) ;
@@ -264,14 +251,12 @@ static int partest(int *a,int al,partpred_t fn,int pv)
 }
 /* end subroutine (partest) */
 
-static int isPart(const int *a,int al,partpred_t fn,int pv)
-{
+static int isPart(cint *a,int al,partpred_t fn,int pv) {
 	int		f = TRUE ;
 	if (al > 1) {
-	    int		i ;
 	    int		is = al ;
-	    for (i = 0 ; i < al ; i += 1) {
-	        const int f_pred = (fn)(a[i],pv) ;
+	    for (int i = 0 ; i < al ; i += 1) {
+	        cint f_pred = (fn)(a[i],pv) ;
 		if (i < is) {
 		    if (is != al) {
 		        f = f_pred ;
@@ -288,38 +273,31 @@ static int isPart(const int *a,int al,partpred_t fn,int pv)
 }
 /* end subroutine (isPart) */
 
-static void loadrand(int *aa,int al)
-{
-	int		i ;
-	for (i = 0 ; i < al ; i += 1) {
+static void loadrand(int *aa,int al) {
+	for (int i = 0 ; i < al ; i += 1) {
 	    aa[i] = rand() % 100 ;
 	}
 }
 
-static void loadagain(int *aa,int *a,int al)
-{
-	const int	size = (al*sizeof(int)) ;
+static void loadagain(int *aa,int *a,int al) {
+	cint	size = (al*sizeof(int)) ;
 	memcpy(aa,a,size) ;
 }
 
-static void loadfromvec(int *aa,const vector<int> &v,int al) 
-{
+static void loadfromvec(int *aa,const vector<int> &v,int al) {
 	for (int i = 0 ; i < al ; i += 1) {
 	    aa[i] = v[i] ;
 	} 
 }
 
-static void vecload(vector<int> &v,const int *aa,int al) 
-{
+static void vecload(vector<int> &v,cint *aa,int al) {
 	for (int i = 0 ; i < al ; i += 1) {
 	    v.push_back(aa[i]) ;
 	} 
 }
 
-
 #if	CF_DEBUGS && CF_DEBUGPRINTA
-static int debugprinta(const int *a,int al)
-{
+static int debugprinta(cint *a,int al) {
 	int		i ;
 	for (i = 0 ; i < al ; i += 1) {
 	    debugprintf(" %2u\\",a[i]) ;
