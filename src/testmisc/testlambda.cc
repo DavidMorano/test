@@ -1,4 +1,5 @@
 /* testlambda SUPPORT */
+/* encoding=ISO8859-1 */
 /* C++20 */
 
 /* revision history:
@@ -12,13 +13,15 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<unistd.h>		/* |sleep(3c)| */
 #include	<iostream>
+#include	<localmisc.h>
 
 
 /* local defines */
 
 #ifndef	SR_OK
-#define	SR_OK	0
+#define	SR_OK		0
 #endif
 
 #ifndef	SR_LOCKLOST
@@ -33,17 +36,21 @@
 /* external subroutines */
 
 extern "C" {
-	static int	msleep(int) ;
+	static int	xsleep(int) noex ;
 }
 
 
 /* external variables */
 
-volatile sig_atomic_t	f_init = 0 ;
+volatile sig_atomic_t	f_init = true ;
 volatile sig_atomic_t	f_initdone = 0 ;
 
 
 using namespace	std ;
+
+int callout(auto lamb) noex {
+    return lamb() ;
+}
 
 class timewatch {
 	int	to ;
@@ -52,13 +59,11 @@ public:
 	template<typename L>
 	int operator () (L lamb) {
 	    int		rs = SR_OK ;
-	    int		i = 0 ;
-	    for (i = 0 ; (rs == 0) && (i < to) ; i += 1) {
-		if ((rs = msleep(1)) >= 0) {
-		    rs = lamb() ;
+	    for (int i = 0 ; (rs == 0) && (i < to) ; i += 1) {
+		if ((rs = xsleep(1)) >= 0) {
+		    rs = callout(lamb) ;
 		}
 	    } /* end for */
-	    if (i == to) rs = SR_TIMEDOUT ;
 	    return rs ;
 	} ;
 } ; /* end class (timewatch) */
@@ -70,9 +75,12 @@ int main(int,const char **,const char **) {
 	int	rs = SR_OK ;
 	cout << "Hello world!" << '\n' ;
 	{
-	    timewatch	tw(10) ;
-	    auto lamb = [] () -> int {
+	    timewatch	tw(5) ;
+	    int		c = 0 ;
+	    auto lamb = [&c,cn = int(0)] () mutable -> int {
 	        int		rs = SR_OK ;
+		cout << "c=" << c++ << '\n' ;
+		cout << "cn=" << cn++ << '\n' ;
 	        if (!f_init) {
 		    rs = SR_LOCKLOST ;
 	        } else if (f_initdone) {
@@ -80,7 +88,10 @@ int main(int,const char **,const char **) {
 	        }
 	        return rs ;
 	    } ;
+	    cint	rv = lamb() ;
+	    cout << "rv=" << rv << '\n' ;
 	    rs = tw(lamb) ;
+	    cout << "final c=" << c << '\n' ;
 	} /* end block */
 	cout << "exiting rs=" << rs << '\n' ;
 	return (rs >= 0) ? 1 : rs ;
@@ -95,7 +106,8 @@ int init() {
 }
 /* end subroutine (init) */
 
-static int msleep(int to) {
+static int xsleep(int to) noex {
+    	sleep(to) ;
 	return 0 ;
 }
 
