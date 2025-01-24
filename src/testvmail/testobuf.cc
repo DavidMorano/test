@@ -24,8 +24,8 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<climits>
-#include	<cstdio>
+#include	<limits.h>
+#include	<stdio.h>
 #include	<usystem.h>
 #include	<exitcodes.h>
 #include	"obuf.hh"

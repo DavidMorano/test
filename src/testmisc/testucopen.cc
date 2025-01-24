@@ -1,5 +1,5 @@
-/* testucopen SUPPORT */
-/* lang=C++20 */
+/* testucopen */
+/* lang=C89 */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
@@ -18,15 +18,17 @@
 	Synopsis:
 	$ testucopen.x <file>
 
+
 *******************************************************************************/
 
-#include	<envstandards.h>	/* MUST be ordered first to configure */
+
+#include	<envstandards.h>
+#include	<sys/types.h>
 #include	<stdarg.h>
 #include	<stdio.h>
 #include	<usystem.h>
 #include	<fsdir.h>
 #include	<filer.h>
-#include	<bufprintf.h>
 #include	<localmisc.h>
 
 #ifndef FILER_RCNET
@@ -40,6 +42,7 @@
 #define	VARDEBUGFNAME	"TESTUCOPEN_DEBUGFILE"
 
 extern int	fbwrite(FILE *,const void *,int) ;
+extern int	bufprintf(char *,int,const char *,...) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(const char *) ;
@@ -157,15 +160,23 @@ int main(int argc,const char **argv,const char **envv)
 
 static int dumpfile(int fd,int of) noex {
 	FILE		*ofp = stdout ;
-	const int	to = 5 ;
-	const int	fo = (of | O_NETWORK) ;
+	cint		to = 5 ;
+	cint		fo = (of | O_NETWORK) ;
 	int		rs ;
+#if	CF_DEBUGS
+	debugprintf("main/dumpfile: ent to=%d\n",to) ;
+#endif
 	if (filer b ; (rs = filer_start(&b,fd,0z,0,fo)) >= 0) {
-	    cint	llen = LINEBUFLEN ;
+	    const int	llen = LINEBUFLEN ;
 	    int		li ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    while ((rs = filer_readln(&b,lbuf,llen,to)) > 0) {
 	        int	len = rs ;
+#if	CF_DEBUGS
+	        debugprintf("main/dumpfile: readline() len=%d\n",len) ;
+	        debugprintf("main/dumpfile: l=>%t<\n",
+			lbuf,strlinelen(lbuf,len,50)) ;
+#endif
 	        fbwrite(ofp,lbuf,len) ;
 	        if (rs < 0) break ;
 	    } /* end while */
@@ -180,13 +191,18 @@ static int dumpfile(int fd,int of) noex {
 }
 /* end subroutine (dumpfile) */
 
-static int dumpdir(int fd,int of) noex {
+
+static int dumpdir(int fd,int of)
+{
 	FSDIR		d ;
 	FSDIR_ENT	de ;
-	cint		dlen = MAXPATHLEN ;
+	const int	dlen = MAXPATHLEN ;
 	int		rs ;
 	char		dbuf[USERNAMELEN+1] ;
 
+#if	CF_DEBUGS
+	debugprintf("main/dumpdir: ent\n") ;
+#endif
 	if ((rs = bufprintf(dbuf,dlen,"/dev/fd/%u",fd)) >= 0) {
 	    if ((rs = fsdir_open(&d,dbuf)) >= 0) {
 	        while ((rs = fsdir_read(&d,&de)) > 0) {
@@ -196,6 +212,9 @@ static int dumpdir(int fd,int of) noex {
 	    } /* end if (fsdir) */
 	} /* end if */
 
+#if	CF_DEBUGS
+	debugprintf("main/dumpdir: ret rs=%d\n",rs) ;
+#endif
 	return rs ;
 }
 /* end subroutine (dumpdir) */

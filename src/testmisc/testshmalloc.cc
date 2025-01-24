@@ -21,8 +21,8 @@
 #include	<sys/types.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstring>
-#include	<cstdio>
+#include	<string.h>
+#include	<stdio.h>
 #include	<usystem.h>
 #include	<randomvar.h>
 #include	<ucmallreg.h>

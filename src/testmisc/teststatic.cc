@@ -1,31 +1,45 @@
-/* teststatic SUPPORT */
+/* main SUPPORT (teststatic) */
 /* encoding=ISO8859-1 */
-/* lang=C++20 */
+/* lang=C20 */
 
-#include	<envstandards.h>	/* ordered first to configure */
+
+/* revision history:
+
+	= 2000-05-14, David A­D­ Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
+
+#include	<envstandards.h>
+#include	<sys/types.h>
 #include	<stdio.h>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
+#include	<usystem.h>
 #include	<localmisc.h>
 
-int statsub()  noex {
-    printf("statsub\n") ;
-    return 0 ;
-}
 
-void sub() noex {
-    static int	rsv = statsub() ;
-    printf("sub\n") ;
-}
+/* local defines */
 
-int main(int,mainv,mainv) {
-    printf("main ent\n") ;
-    sub() ;
-    sub() ;
-    printf("main ret\n") ;
-    return 0 ;
+
+/* forward references */
+
+	static void hello() ;
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main() {
+	hello() ;
+	return 0 ;
+}
+/* end subroutine (main) */
+
+static void hello() {
+    	printf("Hello world!\n") ;
 }
 
 
