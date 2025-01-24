@@ -1,4 +1,4 @@
-/* testconv SUPPORT (testconv) */
+/* testconst SUPPORT (testconst) */
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
@@ -53,6 +53,12 @@ using std::cout ;			/* variable */
 
 /* local variables */
 
+extern const char		str[] = "Hello world!" ;
+
+extern const float	fpi = 3.1415 ;
+
+const int	pi = 3 ;
+
 
 /* exported variables */
 
@@ -60,9 +66,7 @@ using std::cout ;			/* variable */
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
-	float	f = +42.1234 ;
-	size_t	s = f ;
-	cout << s << eol ;
+	cout << str << eol ;
 }
 /* end subroutine (main) */
 
