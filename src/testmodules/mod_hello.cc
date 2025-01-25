@@ -1,6 +1,6 @@
 /* hello MODULE */
 
-export module hello ;
+module ;
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
@@ -14,6 +14,12 @@ export module hello ;
 #include	<usysrets.h>
 #include	<usyscalls.h>
 #include	<localmisc.h>
+
+export module hello ;
+
+using std::cout ;			/* variable */
+
+export extern void hello_there() noex ;
 
 export void hello_there ()  noex {
 	cout << "Hello there!" << eol ;
