@@ -1,4 +1,4 @@
-/* mod_main SUPPORT (testmodules) */
+/* mod_sub SUPPORT (testmodules) */
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
@@ -43,8 +43,6 @@ using std::cout ;			/* variable */
 
 /* external subroutines */
 
-extern void	sub() noex ;
-
 
 /* external variables */
 
@@ -63,11 +61,10 @@ extern void	sub() noex ;
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
-    	hello_there("main") ;
-	sub() ;
+void sub() noex {
+    	hello_there("sub") ;
 }
-/* end subroutine (main) */
+/* end subroutine (sub) */
 
 
 /* local subroutines */

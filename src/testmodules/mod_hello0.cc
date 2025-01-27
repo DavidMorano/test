@@ -17,6 +17,6 @@ module ;
 
 export module hello ;
 
-export extern void hello_there() noex ;
+export extern void hello_there(cchar *) noex ;
 
 

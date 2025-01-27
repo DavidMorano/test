@@ -19,7 +19,7 @@ module hello ;
 
 using std::cout ;			/* variable */
 
-void hello_there ()  noex {
-	cout << "Hello there!" << eol ;
+void hello_there (cchar *sp)  noex {
+	cout << "Hello there! - " << sp << " - " << eol ;
 }
 
