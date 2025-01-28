@@ -1,4 +1,4 @@
-/* mod_main SUPPORT (testmodules) */
+/* testcharset SUPPORT */
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
@@ -10,14 +10,14 @@
 
 */
 
+/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
+
 /*******************************************************************************
 
   	Name:
-	mod_main
+	main
 
 *******************************************************************************/
-
-/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
@@ -40,8 +40,6 @@
 #include	<usysdefs.h>
 #include	<localmisc.h>
 
-import hello ;
-
 
 /* local defines */
 
@@ -52,8 +50,6 @@ using std::cout ;			/* variable */
 
 
 /* external subroutines */
-
-extern void	sub() noex ;
 
 
 /* external variables */
@@ -74,8 +70,7 @@ extern void	sub() noex ;
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
-    	hello_there("main") ;
-	sub() ;
+    	cout << "Hello world! - Jâck Smîth" << eol ;
 }
 /* end subroutine (main) */
 

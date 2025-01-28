@@ -1,4 +1,5 @@
-/* main SUPPORT (two) */
+/* testsqrt SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C99 */
 
 
@@ -20,10 +21,13 @@
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<math.h>
 #include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstdio>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
 #include	<localmisc.h>
 
 

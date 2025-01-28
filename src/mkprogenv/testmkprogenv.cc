@@ -1,4 +1,5 @@
 /* mktestprogenv SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
@@ -14,8 +15,9 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<fcntl.h>
-#include	<stdio.h>
-
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<localmisc.h>
 
@@ -29,37 +31,38 @@
 /* external subroutines */
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	debugopen(char *) ;
+extern int	debugprintf(char *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(char *,int,int) ;
 #endif
 
-extern const char	*getourenv(const char **,const char *) ;
+extern char	*getourenv(char **,char *) ;
 
 
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	MKPROGENV	m ;
 	int		rs ;
-	const char	*fn = "local§cotd" ;
-	const char	*cp ;
+	char		*fn = "local§cotd" ;
+	char		*cp ;
 	char		pr[MAXPATHLEN+1] = "/usr/add-on/local" ;
+	(void) envv ;
 
 #if	CF_DEBUGS
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getourenv(envv,VARDEBUGFD1)) == NULL)
 	        cp = getourenv(envv,VARDEBUGFD2) ;
 	}
-	if (cp != NULL)
+	if (cp != NULL) {
 	    debugopen(cp) ;
+	}
 	debugprintf("main: starting\n") ;
 #endif /* CF_DEBUGS */
 
 	if ((argc > 1) && (argv[1] != '\0')) fn = argv[1] ;
 
 	if ((rs = mkprogenv_start(&m,nvv)) >= 0) {
-	    const char	**ev ;
+	    char	**ev ;
 
 	    if ((rs = mkprogenv_getvec(&m,&ev)) >= 0) {
 	 	int	i ;
@@ -84,4 +87,5 @@ int main(int argc,const char **argv,const char **envv)
 	return 0 ;
 }
 /* end subroutine (main) */
+
 
