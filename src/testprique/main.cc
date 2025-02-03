@@ -1,4 +1,5 @@
 /* main SUPPORT (testprique) */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 /* test the PRIQUE object */

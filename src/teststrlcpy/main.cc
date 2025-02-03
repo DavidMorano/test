@@ -1,27 +1,31 @@
-/* main */
+/* main SUPPORT */
+/* encoding=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* test the |strlcpy(3c)| subroutine for performance */
+/* version %I% last-modified %G% */
 
 
 /******************************************************************************
 
+  	Description:
 	This little program tests the |strlcpy(3c)| and the
 	|strnlen(3c)| subroutines.
 
-
 ******************************************************************************/
 
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<signal.h>
-#include	<time.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<csignal>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cstring>
 #include	<usystem.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
@@ -47,9 +51,12 @@
 /* local variables */
 
 
+/* exported variables */
+
+
 /* export subroutines */
 
-int main(int,const char **,const char **) {
+int main(int,mainv,mainv) {
 	cint	sl = 10 ;
 	int	rs = 0 ;
 	int	n ;

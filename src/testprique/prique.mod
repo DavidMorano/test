@@ -1,4 +1,5 @@
-/* prique HEADER */
+/* prique MODULE (primary module interface) */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 /* implement a map container of blocks (of a given structure) */
@@ -8,7 +9,7 @@
 /* revision history:
 
 	= 2011-04-12, David A­D­ Morano
-	This subroutine was originally written. 
+	This code was originally written. 
 
 */
 
@@ -20,11 +21,12 @@
 	prique
 
 	Description:
-	This object implements a "priority queue" object.  It is
-	built from the standard C++ library class-template
-	|priority_queue(3c++)|.  Note that a C-language and C++-language
-	type of priority queue already exists in the form of the
-	|vecsorthand(3uc)| object.
+	This object implements a "priority queue" object -- with
+	the smallest item on the 'top'.  It is built from the
+	standard C++ library class-template |priority_queue(3c++)|.
+	Note that a C-language and C++-language type of priority
+	queue already exists in the form of the |vecsorthand(3uc)|
+	object.
 
 	Symopsis:
 	int prique_start<typename K,typename B>(int n = 0) noex
@@ -38,10 +40,7 @@
 
 *******************************************************************************/
 
-#ifndef	PRIQUE_INCLUDE
-#define	PRIQUE_INCLUDE
-#ifdef	__cplusplus /* everything is C++ only */
-
+module ;
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<new>
@@ -52,30 +51,32 @@
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
+#include	<usysdefs.h>
 #include	<usysrets.h>
 
+export module prique ;
 
-template<typename K> class prique ;
 
-template<typename K>
-using prique_is = std::priority_queue<K,std::vector<K>,std::greater<K>> ;
-
-template <typename K>
-class prique_iter {
-	using 		isiter_t = typename prique_is<K>::iterator ;
+export {
+    template<typename K> class prique ;
+    template<typename K>
+    using prique_is = std::priority_queue<K,std::vector<K>,std::greater<K>> ;
+    template <typename K> class prique_iter {
+        using 		isiter_t = typename prique_is<K>::iterator ;
+        using		pq_t = prique<K> ;
 	isiter_t	isit ;		
-public:
+    public:
 	prique_iter() noex { } ;
 	prique_iter(const prique_iter<K> &oit) noex {
 	    if (this != &oit) {
 	        isit = oit.isit ;
 	    }
-	} ;
+	} ; /* end ctor */
 	prique_iter(prique_iter<K> &&oit) noex {
 	    if (this != &oit) {
 	        isit = oit.isit ;
 	    }
-	} ;
+	} ; /* end ctor */
 	prique_iter(pq_t *pqp,bool fend) noex {
 	    if (pqp->mp) {
 	        if (fend) {
@@ -84,7 +85,7 @@ public:
 	            isit = pqp->mp->begin() ;
 	        }
 	    }
-	} ;
+	} ; /* end ctor */
 	prique_iter<K> &operator = (const prique_iter<K> &oit) noex {
 	    if (this != &oit) {
 	        isit = oit.isit ;
@@ -103,7 +104,7 @@ public:
 	    }
 	    return *this ;
 	} ;
-	std::pair<const K,B> &operator * () const noex {
+	K &operator * () const noex {
 	    return *isit ;
 	} ;
 	prique_iter<K> &operator ++ () noex { /* pre-increment */
@@ -115,7 +116,7 @@ public:
 	    isit++ ;
 	    return tmp ; /* returns previous PRVALUE */
 	} ;
-	prique_iter<K,B> &operator += (int inc) noex {
+	prique_iter<K> &operator += (int inc) noex {
 	    isit += inc ;
 	    return *this ;
 	} ;
@@ -129,19 +130,16 @@ public:
 	    return (i1.isit == i2.isit) ;
 	} ;
 	friend prique<K> ;
-} ; /* end class (prique_iter) */
-
-enum priquemems {
+    } ; /* end class (prique_iter) */
+    enum priquemems {
 	priquemem_start,
 	priquemem_finish,
 	priquemem_count,
 	priquemem_pop,
 	priquemem_overlast
-} ;
-
-template<typename K>
-struct prique_co {
-	typedef prique<K>	pq_t ;
+    } ; /* end enum (priquemems) */
+    template<typename K> struct prique_co {
+        using		pq_t = prique<K> ;
 	pq_t		*op = nullptr ;
 	int		w = -1 ;
 	constexpr void operator () (pq_t *p,int m) noex {
@@ -152,23 +150,19 @@ struct prique_co {
 	operator int () noex {
 	    return operator () () ;
 	} ;
-} ; /* end struct (prique_co) */
-
-template<typename K>
-struct prique_rem {
-	typedef prique<K>	pq_t ;
+    } ; /* end struct (prique_co) */
+    template<typename K> struct prique_rem {
+        using		pq_t = prique<K> ;
 	pq_t		*op = nullptr ;
 	constexpr void operator () (pq_t *p) noex {
 	    op = p ;
 	} ;
 	int operator () (const K &) noex ;
 	operator int () noex ;
-} ; /* end struct (prique_rem) */
-
-template<typename K>
-class prique {
+    } ; /* end struct (prique_rem) */
+    template<typename K> class prique {
 	prique_is<K>	*mp = nullptr ;
-public:
+    public:
 	typedef K			key_type ;
 	typedef prique_iter<K>		iterator ;
 	typedef const prique_iter<K>	const_iterator ;
@@ -202,18 +196,15 @@ public:
 	    pop(this,priquemem_pop) ;
 	    rem(this) ;
 	} ; /* end ctor) */
-	~prique() noex {
+	~prique() {
 	    if (mp) {
 	        delete mp ;
 		mp = nullptr ;
 	    }
 	} ; /* end dtor */
 	friend iterator ;
-} ; /* end class (prique) */
-
-template<typename K>
-int prique<K>::istart(int n) noex {
-	typedef decltype(std::nothrow)	nothrow_t ;
+    } ; /* end class (prique) */
+    template<typename K> int prique<K>::istart(int n) noex {
 	int		rs = SR_INVALID ;
 	if (n >= 0) {
 	    rs = SR_NOMEM ;
@@ -228,11 +219,8 @@ int prique<K>::istart(int n) noex {
 	    }
 	}
 	return rs ;
-}
-/* end method (prique::istart) */
-
-template<typename K>
-int prique<K>::ifinish() noex {
+    } /* end method (prique::istart) */
+    template<typename K> int prique<K>::ifinish() noex {
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
 	    delete mp ;
@@ -240,12 +228,8 @@ int prique<K>::ifinish() noex {
 	    rs = SR_OK ;
 	}
 	return rs ;
-}
-/* end method (prique::ifinish) */
-
-template<typename K>
-int prique<K,B>::ins(const K &k) noex {
-	typedef	typename maptype::iterator	isiter_t ;
+    } /* end method (prique::ifinish) */
+    template<typename K> int prique<K>::ins(const K &k) noex {
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
 	    rs = SR_OK ;
@@ -257,11 +241,8 @@ int prique<K,B>::ins(const K &k) noex {
 	    }
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (prique::ins) */
-
-template<typename K>
-int prique<K>::irem() noex {
+    } /* end method (prique::ins) */
+    template<typename K> int prique<K>::irem() noex {
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
 	    rs = SR_OK ;
@@ -272,11 +253,8 @@ int prique<K>::irem() noex {
 	    }
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (prique::irem) */
-
-template<typename K>
-int prique<K>::irem(const K &k) noex {
+    } /* end method (prique::irem) */
+    template<typename K> int prique<K>::irem(const K &k) noex {
 	typedef typename maptype::size_type	isitsize_t ;
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
@@ -289,11 +267,8 @@ int prique<K>::irem(const K &k) noex {
 	    }
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (prique::irem) */
-
-template<typename K>
-int prique<K>::present(const K &k) noex {
+    } /* end method (prique::irem) */
+    template<typename K> int prique<K>::present(const K &k) noex {
 	typedef typename maptype::iterator	isiter_t ;
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
@@ -302,11 +277,8 @@ int prique<K>::present(const K &k) noex {
 	    rs = (it != itend) ? SR_OK : SR_NOENT ;
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (prique::present) */
-
-template<typename K>
-int prique<K>::get(const K &k,K *vp) noex {
+    } /* end method (prique::present) */
+    template<typename K> int prique<K>::get(const K &k,K *vp) noex {
 	typedef typename maptype::iterator	isiter_t ;
 	int		rs = SR_FAULT ;
 	if (vp) {
@@ -324,21 +296,15 @@ int prique<K>::get(const K &k,K *vp) noex {
 	    } /* end if (non-null) */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (prique::get) */
-
-template<typename K>
-int prique<K>::icount() noex {
+    } /* end method (prique::get) */
+    template<typename K> int prique<K>::icount() noex {
 	int		rs = SR_BUGCHECK ;
 	if (mp) {
 	    rs = mp->size() ;
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (prique::icount) */
-
-template<typename K>
-int prique_co<K>::operator () (int a) noex {
+    } /* end method (prique::icount) */
+    template<typename K> int prique_co<K>::operator () (int a) noex {
 	int		rs = SR_BUGCHECK ;
 	if (op) {
 	    switch (w) {
@@ -357,31 +323,21 @@ int prique_co<K>::operator () (int a) noex {
 	    } /* end switch */
 	}
 	return rs ;
-}
-/* end method (prique_co::operator) */
-
-template<typename K>
-int prique_rem<K>::operator int () noex {
+    } /* end method (prique_co::operator) */
+    template<typename K> int prique_rem<K>::operator int () noex {
 	int		rs = SR_BUGCHECK ;
 	if (op) {
 	    rs = op->irem() ;
 	}
 	return rs ;
-}
-/* end method (prique_rem::operator) */
-
-template<typename K>
-int prique_rem<K>::operator () (const K &k) noex {
+    } /* end method (prique_rem::operator) */
+    template<typename K> int prique_rem<K>::operator () (const K &k) noex {
 	int		rs = SR_BUGCHECK ;
 	if (op) {
 	    rs = op->irem(k) ;
 	}
 	return rs ;
-}
-/* end method (prique_rem::operator) */
-
-
-#endif	/* __cplusplus */
-#endif /* PRIQUE_INCLUDE */
+    } /* end method (prique_rem::operator) */
+} /* end export (prique) */
 
 
