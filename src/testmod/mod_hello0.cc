@@ -1,4 +1,4 @@
-/* hello MODULE */
+/* mod_hello0 MODULE */
 
 module ;
 
@@ -17,6 +17,17 @@ module ;
 
 export module hello ;
 
+using std::cout ;
+
 export extern void hello_there(cchar *) noex ;
 
+void jackbean(cchar *sp) noex {
+    cout << "hello - " << sp << eol ;
+}
+
+namespace frank {
+	extern void subfrank(cchar *sp) noex {
+	    cout << "frank - " << sp << eol ;
+	}
+}
 

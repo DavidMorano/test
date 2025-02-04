@@ -61,10 +61,16 @@ using std::cout ;			/* variable */
 
 /* exported subroutines */
 
-void sub() noex {
-    	hello_there("sub") ;
+void sub(cchar *sp) noex {
+    	hello_there(sp) ;
 }
 /* end subroutine (sub) */
+
+namespace frank {
+    void subfrank(cchar *sp) noex {
+    	cout << sp << eol ;
+    }
+}
 
 
 /* local subroutines */

@@ -19,13 +19,7 @@ module hello ;
 
 using std::cout ;			/* variable */
 
-namespace frank {
-    extern void subfrank(cchar *) noex ;
-}
-
 void hello_there (cchar *sp)  noex {
 	cout << "Hello there! - " << sp << " - " << eol ;
-	jackbean("there-jackbean") ;
-	frank::subfrank("there-frank") ;
 }
 

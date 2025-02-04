@@ -53,7 +53,7 @@ using std::cout ;			/* variable */
 
 /* external subroutines */
 
-extern void	sub() noex ;
+extern void	sub(cchar *) noex ;
 
 
 /* external variables */
@@ -74,8 +74,8 @@ extern void	sub() noex ;
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
-    	hello_there("main") ;
-	sub() ;
+    	hello_there("main-there") ;
+	sub("main-sub") ;
 }
 /* end subroutine (main) */
 
