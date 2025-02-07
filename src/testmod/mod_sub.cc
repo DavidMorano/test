@@ -66,11 +66,9 @@ void sub(cchar *sp) noex {
 }
 /* end subroutine (sub) */
 
-namespace frank {
     void subfrank(cchar *sp) noex {
-    	cout << sp << eol ;
+    	cout << "sub-frank - " << sp << eol ;
     }
-}
 
 
 /* local subroutines */

@@ -56,7 +56,6 @@ module ;
 
 export module prique ;
 
-
 export {
     template<typename K> class prique ;
     template<typename K>

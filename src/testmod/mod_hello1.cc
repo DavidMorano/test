@@ -15,17 +15,18 @@ module ;
 #include	<usyscalls.h>
 #include	<localmisc.h>
 
+extern void header(cchar *) noex ;
+
 module hello ;
 
 using std::cout ;			/* variable */
 
-namespace frank {
-    extern void subfrank(cchar *) noex ;
-}
+extern "C++" void subfrank(cchar *sp) noex ;
 
 void hello_there (cchar *sp)  noex {
 	cout << "Hello there! - " << sp << " - " << eol ;
 	jackbean("there-jackbean") ;
-	frank::subfrank("there-frank") ;
+	subfrank("there-frank") ;
+	header("there") ;
 }
 

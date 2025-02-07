@@ -15,6 +15,10 @@ module ;
 #include	<usyscalls.h>
 #include	<localmisc.h>
 
+void header(cchar *s) noex {
+    std::cout << "header" << " - " << s << eol ;
+}
+
 export module hello ;
 
 using std::cout ;
@@ -25,9 +29,4 @@ void jackbean(cchar *sp) noex {
     cout << "hello - " << sp << eol ;
 }
 
-namespace frank {
-	extern void subfrank(cchar *sp) noex {
-	    cout << "frank - " << sp << eol ;
-	}
-}
 
