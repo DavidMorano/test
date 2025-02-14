@@ -65,7 +65,7 @@ OBJA= obj0.o
 OBJ= $(OBJA)
 
 
-.SUFFIXES:		.hh .ii .mod .ccm
+.SUFFIXES:		.hh .ii .ccm
 
 
 default:		$(T).x
@@ -91,8 +91,8 @@ all:			$(ALL)
 .cc.o:
 	$(COMPILE.cc) $<
 
-.mod.o:
-	makemodule $(*)
+.cc.o:
+	mak.ccmule $(*)
 
 
 $(T).x:			$(OBJ)
@@ -132,8 +132,9 @@ obj3.o:			$(OBJ3)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3)
 
 
-main.o:			main.cc prique.hh
-prique.mod:		prique.mod
-	makemodule prique
+main.o:			main.cc prique.o
+
+prique.o:		prique.ccm
+	mak.ccmule prique
 
 
