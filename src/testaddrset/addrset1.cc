@@ -1,4 +1,5 @@
 /* addrset SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 /* track memory addresses */
@@ -8,7 +9,7 @@
 /* revision history:
 
 	= 2011-04-12, David A­D­ Morano
-	This subroutine was originally written. This is a sort of
+	This code was originally written.  This is a sort of
 	test to replace the previous memory tracking implementation
 	inside of the |ucmemalloc(3uc)| facility (so loved).
 
@@ -35,7 +36,7 @@
 	addrset::ifinish
 
 	Description:
-	Reack memory blocks.
+	Track memory blocks.
 
 	Symopsis:
 	int addrset::start(int n) noex
@@ -47,36 +48,31 @@
 	>=0		OK
 	<0		error (system-return)
 
+	Notes:
+	This object uses the |unordered_map(3c++)| object for its
+	main dependency.
+
 *******************************************************************************/
+
+module ;
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<unistd.h>
 #include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
-#include	<utility>		/* |std::unreachable()| */
-#include	<new>
+#include	<utility>		/* |unreachable()| + |pair(3c++)| */
+#include	<new>			/* |nothrow(3c++)| */
 #include	<unordered_set>
 #include	<usystem.h>
 
-#include	"addrset.hh"
+/* local defines */
 
+#define	ADDRSET_MAGIC	0x65821293
+
+module addrset ;
 
 /* code comments */
-
-#ifdef	COMMENT
-struct addrset_ent {
-	void	*addr ;
-	int	asize ;
-} ;
-extern int	addrset_start(int) noex ;
-extern int	addrset_ins(void *,int) noex ;
-extern int	addrset_rem(void *) noex ;
-extern int	addrset_get(void *,addrset_ent *) noex ;
-extern int	addrset_finish() noex ;
-#endif /* COMMENT */
-
-
-/* local defines */
 
 
 /* imported namespaces */
@@ -89,17 +85,18 @@ using std::nothrow ;			/* constant */
 
 /* local typedefs */
 
-typedef	decltype(std::nothrow)		nothrow_t ;
 typedef unordered_set<addrset_ent>	track ;
 typedef unordered_set<addrset_ent> *	trackp ;
 typedef track::iterator			setiter ;
 typedef track::iterator	 *		setiterp ;
 typedef pair<setiter,bool>		setret ;
 typedef addrset_cur			cur ;
-typedef const nothrow_t			cnothrow ;
 
 
 /* external subroutines */
+
+
+/* external variables */
 
 
 /* local structures */
@@ -283,7 +280,7 @@ int addrset::istart(int n) noex {
 		    setp = tp ;
 		    magic = addrset_magic ;
 		    rs = SR_OK ;
-	        } /* end if (new-mapblock) */
+	        } /* end if (new-track) */
 	    } catch (...) {
 		rs = SR_NOMEM ;
 	    }
@@ -320,8 +317,7 @@ int addrset::icount() noex {
 void addrset::dtor() noex {
 	ulogerror("addrset",SR_BUGCHECK,"dtor called") ;
 	if (magic) {
-	    cint	rs = ifinish() ;
-	    if (rs < 0) {
+	    if (cint rs = ifinish() ; rs < 0) {
 		ulogerror("addrset",rs,"dtor-finish") ;
 	    }
 	}

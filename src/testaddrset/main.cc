@@ -26,8 +26,7 @@
 #include	<utypealiases.h>
 #include	<usysrets.h>
 
-#include	"addrset.hh"
-
+import addrset ;
 
 /* local defines */
 
@@ -40,7 +39,14 @@
 
 /* imported namespaces */
 
-using namespace	std ;
+using std::nullptr_t ;			/* type */
+using std::clog ;			/* variable */
+using std::cerr ;			/* variable */
+using std::cout ;			/* variable */
+using std::nothrow ;			/* constant */
+
+
+/* local typedefs */
 
 
 /* external subroutines */
@@ -95,8 +101,7 @@ int main(int,mainv,mainv) {
 	cerr << "ent\n" ;
 	if ((ents = new(nothrow) addrset_ent[nents + 1]) != nullptr) {
 	    if ((rs = ents_load(ents)) >= 0) {
-	        addrset		t ;
-	        if ((rs = t.start) >= 0) {
+	        if (addrset t ; (rs = t.start) >= 0) {
 		    for (cauto &f : funcs) {
 			rs = f(ents,&t) ;
 			if (rs < 0) break ;

@@ -27,6 +27,7 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysrets.h>
+#include	<localmisc.h>
 
 import prique ;
 
@@ -43,7 +44,12 @@ import prique ;
 /* imported namespaces */
 
 using std::nullptr_t ;			/* type */
+using std::cerr ;			/* variable */
+using std::cout ;			/* variable */
 using std::nothrow ;			/* constant */
+
+
+/* local typedefs */
 
 
 /* external subroutines */
@@ -54,28 +60,32 @@ using std::nothrow ;			/* constant */
 
 /* local structures */
 
-struct prique_ent {
+namespace {
+    struct prique_ent {
 	cvoid		*addr ;
-	size_t		sz ;
-} ;
+	size_t		asz ;
+    } ;
+}
+
+typedef prique<prique_ent>	priobj ;
 
 
 /* forward references */
 
 static int ents_load(prique_ent *) noex ;
-static int ents_ins(prique_ent *,prique *) noex ;
-static int ents_present(prique_ent *,prique *) noex ;
-static int ents_get(prique_ent *,prique *) noex ;
+static int ents_ins(prique_ent *,priobj *) noex ;
+static int ents_present(prique_ent *,priobj *) noex ;
+static int ents_get(prique_ent *,priobj *) noex ;
 static int ents_have(prique_ent *,prique_ent *) noex ;
-static int ents_cents(prique_ent *,prique *) noex ;
-static int ents_enum(prique_ent *,prique *) noex ;
-static int ents_rem(prique_ent *,prique *) noex ;
-static int ents_czero(prique_ent *,prique *) noex ;
+static int ents_cents(prique_ent *,priobj *) noex ;
+static int ents_enum(prique_ent *,priobj *) noex ;
+static int ents_rem(prique_ent *,priobj *) noex ;
+static int ents_czero(prique_ent *,priobj *) noex ;
 
 
 /* local variables */
 
-typedef int (*ents_f)(prique_ent *,prique *) noex ;
+typedef int (*ents_f)(prique_ent *,priobj *) noex ;
 
 constexpr ents_f	funcs[] = {
 	ents_ins,
@@ -102,7 +112,7 @@ int main(int,mainv,mainv) {
 	int		rs ;
 	int		rs1 ;
 	cerr << "ent\n" ;
-	if ((ents = new(nothrow) prique_ent[nents + 1]) != nullptr) {
+	if ((ents = new(nothrow) prique_ent[nents + 1]) != np) {
 	    if ((rs = ents_load(ents)) >= 0) {
 	        prique<prique_ent>	t ;
 	        if ((rs = t.start) >= 0) {
@@ -139,27 +149,27 @@ static int ents_load(prique_ent *ents) noex {
 	    int		rn = rand() ;
 	    sz = size_t(rn % 100000) + 1 ;
 	    ents[i].addr = addr ;
-	    ents[i].asize = sz ;
+	    ents[i].asz = sz ;
 	} /* end for */
 	cerr << "ents_load: ret rs=" << rs << eol ;
 	return rs ;
 }
 /* end subroutine (ents_load) */
 
-static int ents_ins(prique_ent *ents,prique *tp) noex {
+static int ents_ins(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_ins: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
 	    cvoid	*addr = ents[i].addr ;
-	    csize	asize = ents[i].asize ;
-	    rs = tp->ins(addr,asize) ;
+	    csize	asz = ents[i].asz ;
+	    rs = tp->ins(addr,asz) ;
 	} /* end for */
 	cerr << "ents_ins: ret rs=" << rs << eol ;
 	return rs ;
 }
 /* end subroutine (ents_ins) */
 
-static int ents_present(prique_ent *ents,prique *tp) noex {
+static int ents_present(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_present: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -171,7 +181,7 @@ static int ents_present(prique_ent *ents,prique *tp) noex {
 }
 /* end subroutine (ents_present) */
 
-static int ents_get(prique_ent *ents,prique *tp) noex {
+static int ents_get(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_get: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -191,7 +201,7 @@ static int ents_have(prique_ent *ents,prique_ent *ep) noex {
 	bool		f = false ;
 	for (int i = 0 ; (!f) && (i < nents) ; i += 1) {
 	    if (ents[i].addr == ep->addr) {
-		f = (ents[i].asize == ep->asize) ;
+		f = (ents[i].asz == ep->asz) ;
 	    }
 	} /* end for */
 	if (!f) rs = SR_NOTFOUND ;
@@ -199,7 +209,7 @@ static int ents_have(prique_ent *ents,prique_ent *ep) noex {
 }
 /* end subroutine (ents_have) */
 
-static int ents_rem(prique_ent *ents,prique *tp) noex {
+static int ents_rem(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_rem: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -211,7 +221,7 @@ static int ents_rem(prique_ent *ents,prique *tp) noex {
 }
 /* end subroutine (ents_get) */
 
-static int ents_cents(prique_ent *,prique *tp) noex {
+static int ents_cents(prique_ent *,priobj *tp) noex {
 	int		rs ;
 	if ((rs = tp->count) >= 0) {
 	    cint	c = rs ;
@@ -224,7 +234,7 @@ static int ents_cents(prique_ent *,prique *tp) noex {
 }
 /* end subroutine (ents_cents) */
 
-static int ents_enum(prique_ent *ents,prique *tp) noex {
+static int ents_enum(prique_ent *ents,priobj *tp) noex {
 	int		rs ;
 	int		rs1 ;
 	prique_cur	cur ;
@@ -242,7 +252,7 @@ static int ents_enum(prique_ent *ents,prique *tp) noex {
 	return rs ;
 }
 
-static int ents_czero(prique_ent *,prique *tp) noex {
+static int ents_czero(prique_ent *,priobj *tp) noex {
 	int		rs ;
 	if ((rs = tp->count) >= 0) {
 	    cint	c = rs ;

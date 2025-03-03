@@ -91,8 +91,8 @@ all:			$(ALL)
 .cc.o:
 	$(COMPILE.cc) $<
 
-.cc.o:
-	mak.ccmule $(*)
+.ccm.o:
+	makemodule $(*)
 
 
 $(T).x:			$(OBJ)
@@ -132,9 +132,9 @@ obj3.o:			$(OBJ3)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3)
 
 
-main.o:			main.cc prique.o
+main.o:			main.cc prique.ccm
 
 prique.o:		prique.ccm
-	mak.ccmule prique
+	makemodule
 
 
