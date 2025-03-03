@@ -22,12 +22,13 @@
 #include	<cstdlib>		/* |EXIT_{xx}| */
 #include	<cstdio>
 #include	<iostream>
+#include	<new>			/* |nothrow(3c++)| */
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysrets.h>
 
-#include	"prique.hh"
+import prique ;
 
 
 /* local defines */
@@ -41,7 +42,8 @@
 
 /* imported namespaces */
 
-using namespace	std ;
+using std::nullptr_t ;			/* type */
+using std::nothrow ;			/* constant */
 
 
 /* external subroutines */
@@ -94,6 +96,7 @@ constexpr int		nents = NENTS ;
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
+    	cnullptr	np{} ;
 	prique_ent	*ents ;
 	int		ex = EXIT_SUCCESS ;
 	int		rs ;
