@@ -133,8 +133,9 @@ obj3.o:			$(OBJ3)
 
 
 main.o:			main.cc prique.ccm
+	makemodule prique
+	$(COMPILE.cc) main.cc
 
 prique.o:		prique.ccm
-	makemodule
 
 

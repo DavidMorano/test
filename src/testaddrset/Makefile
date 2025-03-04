@@ -75,20 +75,23 @@ default:		$(T).x
 all:			$(ALL)
 
 
-.c.ln:
-	$(LINT) -c $(LINTFLAGS) $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
-
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
 .c.o:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $<
+	$(COMPILE.c) $<
 
 .cc.o:
-	$(CXX)  $(CPPFLAGS) $(CXXFLAGS) -c $<
+	$(COMPILE.cc) $<
 
 .ccm.o:
 	makemodule $(*)
@@ -132,8 +135,13 @@ obj3.o:			$(OBJ3)
 
 
 main.o:			main.cc addrset.ccm
+	makemodule addrset
+	$(COMPILE.cc) main.cc
+
 addrset.o:		addrset.ccm
 addrset1.o:		addrset1.cc addrset.ccm
+	makemodule addrset
+	$(COMPILE.cc) addrset1.cc
 
 addrset.o:		addrset0.o addrset1.o
 	$(LD) $(LDFLAGS) -r -o $@ addrset0.o addrset1.o
