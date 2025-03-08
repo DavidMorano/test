@@ -62,8 +62,7 @@ using std::nothrow ;			/* constant */
 
 namespace {
     struct prique_ent {
-	cvoid		*addr ;
-	size_t		asz ;
+	time_t		val ;
     } ;
 }
 
@@ -87,6 +86,7 @@ static int ents_czero(prique_ent *,priobj *) noex ;
 
 typedef int (*ents_f)(prique_ent *,priobj *) noex ;
 
+#ifdef	COMMENT
 constexpr ents_f	funcs[] = {
 	ents_ins,
 	ents_present,
@@ -96,7 +96,11 @@ constexpr ents_f	funcs[] = {
 	ents_rem,
 	ents_czero
 } ;
-
+#else /* COMMENT */
+constexpr ents_f	funcs[] = {
+	ents_ins
+} ;
+#endif /* COMMENT */
 constexpr int		nents = NENTS ;
 
 
@@ -112,7 +116,7 @@ int main(int,mainv,mainv) {
 	int		rs ;
 	int		rs1 ;
 	cerr << "ent\n" ;
-	if ((ents = new(nothrow) prique_ent[nents + 1]) != np) {
+	if ((ents = new(nothrow) prique_ent[nents]) != np) {
 	    if ((rs = ents_load(ents)) >= 0) {
 	        prique<prique_ent>	t ;
 	        if ((rs = t.start) >= 0) {
@@ -168,6 +172,8 @@ static int ents_ins(prique_ent *ents,priobj *tp) noex {
 	return rs ;
 }
 /* end subroutine (ents_ins) */
+
+#ifdef	COMMENT
 
 static int ents_present(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
@@ -264,5 +270,7 @@ static int ents_czero(prique_ent *,priobj *tp) noex {
 	return rs ;
 }
 /* end subroutine (ents_czero) */
+
+#endif /* COMMENT */
 
 
