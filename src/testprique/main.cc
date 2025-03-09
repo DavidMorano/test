@@ -148,12 +148,7 @@ static int ents_load(prique_ent *ents) noex {
 	    srand(us) ;
 	}
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
-	    cvoid	*addr = cast_reinterpret<voidp>(i+1) ;
-	    size_t	sz ;
-	    int		rn = rand() ;
-	    sz = size_t(rn % 100000) + 1 ;
-	    ents[i].addr = addr ;
-	    ents[i].asz = sz ;
+	    ents[i].val = rand() ;
 	} /* end for */
 	cerr << "ents_load: ret rs=" << rs << eol ;
 	return rs ;
@@ -164,9 +159,8 @@ static int ents_ins(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_ins: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
-	    cvoid	*addr = ents[i].addr ;
-	    csize	asz = ents[i].asz ;
-	    rs = tp->ins(addr,asz) ;
+	    cint	val = ents[i].val ;
+	    rs = tp->ins(val) ;
 	} /* end for */
 	cerr << "ents_ins: ret rs=" << rs << eol ;
 	return rs ;
