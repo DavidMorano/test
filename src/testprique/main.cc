@@ -21,6 +21,7 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |EXIT_{xx}| */
 #include	<cstdio>
+#include	<functional>		/* |hash(3c++)| */
 #include	<iostream>
 #include	<new>			/* |nothrow(3c++)| */
 #include	<clanguage.h>
@@ -34,7 +35,7 @@ import prique ;
 
 /* local defines */
 
-#define	NENTS		1000
+#define	NENTS		10
 
 #ifndef	eol
 #define	eol		'\n'
@@ -44,6 +45,7 @@ import prique ;
 /* imported namespaces */
 
 using std::nullptr_t ;			/* type */
+using std::hash ;			/* type */
 using std::cerr ;			/* variable */
 using std::cout ;			/* variable */
 using std::nothrow ;			/* constant */
@@ -63,6 +65,23 @@ using std::nothrow ;			/* constant */
 namespace {
     struct prique_ent {
 	time_t		val ;
+	bool operator > (const prique_ent &o) const noex {
+	    return (val > o.val) ;
+	} ;
+	bool operator < (const prique_ent &o) const noex {
+	    return (val < o.val) ;
+	} ;
+	bool operator == (const prique_ent &o) const noex {
+	    return (val == o.val) ;
+	} ;
+    } ;
+}
+
+namespace std {
+    template<> struct hash<prique_ent> {
+        size_t operator () (const prique_ent &e) const noex {
+	    return e.val ;
+        } ;
     } ;
 }
 
@@ -73,11 +92,7 @@ typedef prique<prique_ent>	priobj ;
 
 static int ents_load(prique_ent *) noex ;
 static int ents_ins(prique_ent *,priobj *) noex ;
-static int ents_present(prique_ent *,priobj *) noex ;
-static int ents_get(prique_ent *,priobj *) noex ;
-static int ents_have(prique_ent *,prique_ent *) noex ;
 static int ents_cents(prique_ent *,priobj *) noex ;
-static int ents_enum(prique_ent *,priobj *) noex ;
 static int ents_rem(prique_ent *,priobj *) noex ;
 static int ents_czero(prique_ent *,priobj *) noex ;
 
@@ -86,21 +101,13 @@ static int ents_czero(prique_ent *,priobj *) noex ;
 
 typedef int (*ents_f)(prique_ent *,priobj *) noex ;
 
-#ifdef	COMMENT
 constexpr ents_f	funcs[] = {
 	ents_ins,
-	ents_present,
-	ents_get,
 	ents_cents,
-	ents_enum,
 	ents_rem,
 	ents_czero
 } ;
-#else /* COMMENT */
-constexpr ents_f	funcs[] = {
-	ents_ins
-} ;
-#endif /* COMMENT */
+
 constexpr int		nents = NENTS ;
 
 
@@ -111,17 +118,17 @@ constexpr int		nents = NENTS ;
 
 int main(int,mainv,mainv) {
     	cnullptr	np{} ;
-	prique_ent	*ents ;
 	int		ex = EXIT_SUCCESS ;
 	int		rs ;
 	int		rs1 ;
 	cerr << "ent\n" ;
-	if ((ents = new(nothrow) prique_ent[nents]) != np) {
+	if (prique_ent *ents ; (ents = new(nothrow) prique_ent[nents]) != np) {
 	    if ((rs = ents_load(ents)) >= 0) {
 	        prique<prique_ent>	t ;
 	        if ((rs = t.start) >= 0) {
 		    for (cauto &f : funcs) {
 			rs = f(ents,&t) ;
+			cerr << "main: loop rs= " << rs << eol ;
 			if (rs < 0) break ;
 		    } /* end for */
 	            rs1 = t.finish ;
@@ -166,60 +173,6 @@ static int ents_ins(prique_ent *ents,priobj *tp) noex {
 }
 /* end subroutine (ents_ins) */
 
-#ifdef	COMMENT
-
-static int ents_present(prique_ent *ents,priobj *tp) noex {
-	int		rs = SR_OK ;
-	cerr << "ents_present: ent" << eol ;
-	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
-	    cvoid	*addr = ents[i].addr ;
-	    rs = tp->present(addr) ;
-	} /* end for */
-	cerr << "ents_present: ret rs=" << rs << eol ;
-	return rs ;
-}
-/* end subroutine (ents_present) */
-
-static int ents_get(prique_ent *ents,priobj *tp) noex {
-	int		rs = SR_OK ;
-	cerr << "ents_get: ent" << eol ;
-	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
-	    prique_ent	e ;
-	    cvoid	*addr = ents[i].addr ;
-	    if ((rs = tp->get(addr,&e)) >= 0) {
-		rs = ents_have(ents,&e) ;
-	    }
-	} /* end for */
-	cerr << "ents_get: ret rs=" << rs << eol ;
-	return rs ;
-}
-/* end subroutine (ents_get) */
-
-static int ents_have(prique_ent *ents,prique_ent *ep) noex {
-	int		rs = SR_OK ;
-	bool		f = false ;
-	for (int i = 0 ; (!f) && (i < nents) ; i += 1) {
-	    if (ents[i].addr == ep->addr) {
-		f = (ents[i].asz == ep->asz) ;
-	    }
-	} /* end for */
-	if (!f) rs = SR_NOTFOUND ;
-	return rs ;
-}
-/* end subroutine (ents_have) */
-
-static int ents_rem(prique_ent *ents,priobj *tp) noex {
-	int		rs = SR_OK ;
-	cerr << "ents_rem: ent" << eol ;
-	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
-	    cvoid	*addr = ents[i].addr ;
-	    rs = tp->rem(addr) ;
-	} /* end for */
-	cerr << "ents_rem: ret rs=" << rs << eol ;
-	return rs ;
-}
-/* end subroutine (ents_get) */
-
 static int ents_cents(prique_ent *,priobj *tp) noex {
 	int		rs ;
 	if ((rs = tp->count) >= 0) {
@@ -229,27 +182,25 @@ static int ents_cents(prique_ent *,priobj *tp) noex {
 		rs = SR_OK ;
 	    }
 	}
+	cerr << "ents_cents: ret rs=" << rs << eol ;
 	return rs ;
 }
 /* end subroutine (ents_cents) */
 
-static int ents_enum(prique_ent *ents,priobj *tp) noex {
-	int		rs ;
+static int ents_rem(prique_ent *ents,priobj *tp) noex {
+    	cint		rsn = SR_NOENT ;
+	int		rs = SR_OK ;
 	int		rs1 ;
-	prique_cur	cur ;
-	cerr << "ents_enum: ent" << eol ;
-	if ((rs = tp->curbegin(&cur)) >= 0) {
-	    prique_ent		e ;
-	    while ((rs = tp->curenum(&cur,&e)) > 0) {
-		rs = ents_have(ents,&e) ;
-		if (rs < 0) break ;
-	    } /* end while */
-	    rs1 = tp->curend(&cur) ;
-	    if (rs >= 0) rs = rs1 ;
-	} /* end if (prique-cur) */
-	cerr << "ents_enum: ret rs=" << rs << eol ;
+	(void) ents ;
+	cerr << "ents_rem: ent" << eol ;
+	for (prique_ent e ; (rs1 = tp->rem(&e)) >= 0 ; ) {
+	    cerr << "ents_rem: val= " << e.val << eol ;
+	} /* end for */
+	if ((rs >= 0) && (rs1 != rsn)) rs = rs1 ;
+	cerr << "ents_rem: ret rs=" << rs << eol ;
 	return rs ;
 }
+/* end subroutine (ents_rem) */
 
 static int ents_czero(prique_ent *,priobj *tp) noex {
 	int		rs ;
@@ -260,10 +211,9 @@ static int ents_czero(prique_ent *,priobj *tp) noex {
 		rs = SR_OK ;
 	    }
 	}
+	cerr << "ents_czero: ret rs=" << rs << eol ;
 	return rs ;
 }
 /* end subroutine (ents_czero) */
-
-#endif /* COMMENT */
 
 
