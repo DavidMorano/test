@@ -159,8 +159,7 @@ static int ents_ins(prique_ent *ents,priobj *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_ins: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
-	    cint	val = ents[i].val ;
-	    rs = tp->ins(val) ;
+	    rs = tp->ins(ents+i) ;
 	} /* end for */
 	cerr << "ents_ins: ret rs=" << rs << eol ;
 	return rs ;
