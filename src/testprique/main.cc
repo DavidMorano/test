@@ -124,8 +124,7 @@ int main(int,mainv,mainv) {
 	cerr << "ent\n" ;
 	if (prique_ent *ents ; (ents = new(nothrow) prique_ent[nents]) != np) {
 	    if ((rs = ents_load(ents)) >= 0) {
-	        prique<prique_ent>	t ;
-	        if ((rs = t.start) >= 0) {
+	        if (prique<prique_ent> t ; (rs = t.start) >= 0) {
 		    for (cauto &f : funcs) {
 			rs = f(ents,&t) ;
 			cerr << "main: loop rs= " << rs << eol ;
