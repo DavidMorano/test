@@ -45,10 +45,17 @@ using std::cout ;			/* variable */
 
 extern "C++" void subfrank(cchar *sp) noex ;
 
+void access() noex {
+    	hidden	a{} ;
+	cout << "v=" << a.v << eol ;
+}
+
 void hello_there (cchar *sp)  noex {
 	cout << "Hello there! - " << sp << " - " << eol ;
 	jackbean("there-jackbean") ;
 	subfrank("there-frank") ;
 	header("there") ;
+	hello_hidden() ;
+	access() ;
 }
 

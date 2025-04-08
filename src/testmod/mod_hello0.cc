@@ -51,4 +51,12 @@ void jackbean(cchar *sp) noex {
     cout << "hello - " << sp << eol ;
 }
 
+struct hidden {
+    	int	v ;
+} ;
+
+void hello_hidden() noex {
+    	cout << "hello-hidden" << eol ;
+}
+
 
