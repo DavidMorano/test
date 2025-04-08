@@ -2,6 +2,9 @@
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
+/* test modules */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
