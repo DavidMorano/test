@@ -1,11 +1,56 @@
-/* main (testenum) */
+/* main SUPPORT (testenum) */
+/* encoding=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test enumerations */
+/* version %I% last-modified %G% */
 
 
+/* revision history:
 
+	= 1989-03-01, David A.D. Morano
+	This subroutine was originally written.
+
+*/
+
+/* Copyright © 1989 David A­D­ Morano.  All rights reserved. */
+
+#include	<envstandards.h>	/* MUST be first to configure */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
+#include	<usyscalls.h>
+#include	<localmisc.h>
 #include	<stdio.h>
 
 
+/* local defines */
 
+
+/* local namespaces */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
+
+
+/* forward references */
+
+
+/* local variables */
+
+
+/* exported variables */
 
 enum keys {
 	key_zero,
@@ -18,14 +63,11 @@ enum keys {
 static int sub(enum keys) ;
 
 
+/* export subroutines */
 
-
-int main()
-{
+int main() {
 	enum keys	a ;
-
 	int		i ;
-
 
 	printf("sizeof=%d\n",sizeof(enum keys)) ;
 
@@ -36,28 +78,15 @@ int main()
 	printf("i=%d\n",i) ;
 
 	sub(key_two) ;
-
-	fclose(stdout) ;
-
-	return 0 ;
 }
 /* end subroutine (main) */
 
 
+/* local subroutine */
 
-/* LOCAL SUBROUTINES */
-
-
-
-static int sub(n)
-enum keys	n ;
-{
-
-
+static int sub(keys n) noex {
 	printf("sub: n=%d\n",n) ;
-
 }
 /* end subroutine (sub) */
-
 
 
