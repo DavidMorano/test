@@ -53,7 +53,11 @@ using std::cout ;			/* variable */
 
 /* local variables */
 
-extern const char		str[] = "Hello world!" ;
+static const char	staticstr[] = "staticstr" ;
+
+const char		localstr[] = "localstr" ;
+
+extern const char	str[] = "Hello world!" ;
 
 extern const float	fpi = 3.1415 ;
 
@@ -66,7 +70,11 @@ const int	pi = 3 ;
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
+	cout << staticstr << eol ;
 	cout << str << eol ;
+	cout << "fpi=" << fpi << eol ;
+	cout << "pi=" << pi << eol ;
+	cout << localstr << eol ;
 }
 /* end subroutine (main) */
 
