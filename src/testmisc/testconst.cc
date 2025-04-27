@@ -2,6 +2,9 @@
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
+/* test constant evaluations */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -47,6 +50,20 @@ using std::cout ;			/* variable */
 
 /* local structures (and methods) */
 
+consteval int subval(int v) noex {
+    	return (v * 1) ;
+}
+
+struct values {
+    	int	res ;
+	consteval values() noex {
+	    res = 1 ;
+	    for (int i = 1 ; i < 10 ; i += 1) {
+		res *= subval(i) ;
+	    }
+	} ;
+} ;
+
 
 /* forward references */
 
@@ -70,11 +87,13 @@ const int	pi = 3 ;
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
+    	constexpr values	val ;
 	cout << staticstr << eol ;
 	cout << str << eol ;
 	cout << "fpi=" << fpi << eol ;
 	cout << "pi=" << pi << eol ;
 	cout << localstr << eol ;
+	cout << val.res << eol ;
 }
 /* end subroutine (main) */
 
