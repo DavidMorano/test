@@ -14,7 +14,7 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered fist to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -24,7 +24,7 @@
 #include	<cstdlib>
 #include	<cinttypes>
 #include	<cstring>
-#include	<new>
+#include	<new>			/* |nothrow(3c++)| */
 #include	<initializer_list>
 #include	<utility>
 #include	<functional>
@@ -76,8 +76,9 @@ using namespace	std ;
 static int	mainfins(vecsorthand *) noex ;
 static int	mainadd(vecsorthand *,int) noex ;
 
-static int	ourcmp(cvoid *,cvoid *) noex ;
-
+extern "C" {
+    static int	ourcmp(cvoid *,cvoid *) noex ;
+}
 
 /* exported variables */
 
@@ -90,26 +91,26 @@ int main(int,mainv,mainv) {
 	int		rs1 ;
 	int		ex = 0 ;
 
-	if ((rs = vecsorthand_start(&slist,0,ourcmp)) >= 0) {
+	if ((rs = vecsorthand_start(&slist,ourcmp,0)) >= 0) {
 	    cvoid	*ep ;
-	    int		v ;
 
 	    rs = mainadd(&slist,1) ;
 	    mainadd(&slist,2) ;
 	    mainadd(&slist,3) ;
 
 	    for (int i = 0 ; vecsorthand_get(&slist,i,&ep) >= 0 ; i += 1) {
+		int	v ;
 	        if (ep) {
 		    int	*ip = (int *) ep ;
 		    v = *ip ;
 		    cout << ' ' << v ;
 	        }
 	    }
-	    cout << endl ;
-
-	    rs1 = mainfins(&slist) ;
-	    if (rs >= 0) rs = rs1 ;
-
+	    cout << eol ;
+	    {
+	        rs1 = mainfins(&slist) ;
+	        if (rs >= 0) rs = rs1 ;
+	    }
 	    rs1 = vecsorthand_finish(&slist) ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (vecsorthand) */
