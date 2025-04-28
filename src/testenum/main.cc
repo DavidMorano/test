@@ -16,6 +16,8 @@
 /* Copyright © 1989 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
@@ -86,6 +88,7 @@ int main() {
 
 static int sub(keys n) noex {
 	printf("sub: n=%d\n",n) ;
+	return 0 ;
 }
 /* end subroutine (sub) */
 
