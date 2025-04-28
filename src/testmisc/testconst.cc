@@ -20,7 +20,7 @@
 #include	<cstdlib>
 #include	<cinttypes>
 #include	<cstring>
-#include	<new>
+#include	<new>			/* |nothrow(3c++)| */
 #include	<initializer_list>
 #include	<utility>
 #include	<functional>
