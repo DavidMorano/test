@@ -35,6 +35,8 @@ DEFS +=
 
 INCS += testmod.h
 
+MODS += modhello.ccm
+
 LIBS +=
 
 
