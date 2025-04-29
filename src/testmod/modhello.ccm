@@ -37,8 +37,10 @@ module ;
 #include	<usyscalls.h>
 #include	<localmisc.h>
 
+static const char	headstr[] = "header" ;
+
 void header(cchar *s) noex {
-    std::cout << "header" << " - " << s << eol ;
+    std::cout << headstr << " - " << s << eol ;
 }
 
 export module modhello ;
