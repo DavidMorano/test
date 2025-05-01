@@ -1,5 +1,10 @@
 /* testinit SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C++98 */
+
+/* test program initialization */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -12,11 +17,14 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getprogname(3c)| */
+#include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
 #include	<cstdio>
 #include	<iostream>
-#include	<utypedefs.h>
 #include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<localmisc.h>
 
 
 #ifndef	eol
@@ -46,11 +54,15 @@ extern "C" {
 
 int main(int argc,mainv argv,mainv) {
 	static cint	srs = mkterms() ;
+	static cchar	*under = getenv("_") ;
 	int		rs ;
 	int		ex = 0 ;
 	if ((rs = srs) >= 0) {
 	    if ((argc > 0) && argv[0]) {
 		cout << "argz=" << argv[0] << eol ;
+	    }
+	    if (under) {
+		cout << "under=" << under << eol ;
 	    }
 	    printf("aa.a=%08x aa.b=%08x\n",aa.a,aa.b) ;
 	    {
