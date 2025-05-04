@@ -79,6 +79,7 @@ template<stdintx T> struct cfashelp {
 	} ; /* end ctor */
 	int getsign() noex {
     	    cint rs = cfx::getsign(sp,sl,&fneg) ;
+	    sp += (sl - rs) ;
 	    sl = rs ;
 	    return rs ;
 	} ; /* end if (getsign) */
