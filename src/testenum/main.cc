@@ -18,6 +18,7 @@
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
+#include	<cstdio>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
@@ -25,7 +26,6 @@
 #include	<usysrets.h>
 #include	<usyscalls.h>
 #include	<localmisc.h>
-#include	<stdio.h>
 
 
 /* local defines */
@@ -45,15 +45,6 @@
 
 /* local structures */
 
-
-/* forward references */
-
-
-/* local variables */
-
-
-/* exported variables */
-
 enum keys {
 	key_zero,
 	key_one,
@@ -62,16 +53,24 @@ enum keys {
 } ;
 
 
-static int sub(enum keys) ;
+/* forward references */
+
+static int sub(keys) noex ;
+
+
+/* local variables */
+
+
+/* exported variables */
 
 
 /* export subroutines */
 
-int main() {
-	enum keys	a ;
+int main(int,mainv,mainv) {
+	keys	a ;
 	int		i ;
 
-	printf("sizeof=%d\n",sizeof(enum keys)) ;
+	printf("sizeof=%d\n",szof(keys)) ;
 
 	a = key_one ;
 	printf("a=%d zero=%d\n",a,key_zero) ;
