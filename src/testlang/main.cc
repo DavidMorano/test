@@ -1,4 +1,5 @@
 /* main SUPPORT (testlang) */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 /* test the language itself */
@@ -86,7 +87,8 @@ int main(int argc,mainv argv,mainv) {
 	    for (int ai = 1 ; (rs >= 0) && (ai < argc) && argv[ai] ; ai += 1) {
 		cint	si = atoi(argv[ai]) ;
 		if (si < ns) {
-		    cerr << "sub=" << si << eol ;
+		    typeof(si) dummy = si ;
+		    cerr << "sub=" << si << " dummy=" << dummy << eol ;
 		    rs = (*subs[si])() ;
 		} else {
 		    cout << "out of range" << eol ;
