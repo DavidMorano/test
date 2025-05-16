@@ -1,4 +1,4 @@
-/* testinit SUPPORT (Test-Initialization) */
+/* testproc SUPPORT (Test-PorcInfo) */
 /* encoding=ISO8859-1 */
 /* lang=C++98 */
 
@@ -16,6 +16,8 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<unistd.h>		/* |getpid(2)| */
+#include	<libproc.h>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
 #include	<cstdio>
@@ -34,60 +36,36 @@
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
 
-typedef const char *const 	*mainv ;
-
-struct multi {
-	int	a ;
-	int	b ;
-	int	c ;
-} ;
-
-static int	mkterms() noexcept ;
-
-static multi	aa = { 1 } ;
-
-extern "C" {
-    static void __attribute__ ((constructor)) init() noexcept {
-	printf("init\n") ;
-    }
-}
-
 int main(int argc,mainv argv,mainv) {
-	static cint	srs = mkterms() ;
-	static cchar	*under = getenv("_") ;
-	int		rs ;
+    	const pid_t	pid = getpid() ;
+	int		rs = 0 ;
 	int		ex = 0 ;
-	if ((rs = srs) >= 0) {
-	    if ((argc > 0) && argv[0]) {
-		cout << "argz=" << argv[0] << eol ;
+	printf("entered argc=%d\n",argc) ;
+	{
+	    printf("argc=%d\n",argc) ;
+	    if ((argc > 0) && argv && argv[0]) {
+	    printf("az=%s\n",argv[0]) ;
 	    }
-	    if (under) {
-		cout << "under=" << under << eol ;
-	    }
-	    printf("aa.a=%08x aa.b=%08x\n",aa.a,aa.b) ;
+	}
 	    {
 		cchar	*pn = getprogname() ;
 		if (pn) {
-		    cout << "pn=" << pn << eol ; 
+		    printf("pn=%s\n",pn) ;
 		} else {		
-		    cerr << "pn=NULL" << eol ;
+		    printf("pn=NULL\n") ;
 		}
 	    } /* end block */
-	} /* end if */
+	    {
+		cint	psz = MAXPATHLEN ;
+		char	pbuf[MAXPATHLEN + 1] ;
+		rs = proc_name(pid,pbuf,psz) ;
+		printf("pidname rs=%d name=%s\n",rs,pbuf) ;
+		rs = proc_pidpath(pid,pbuf,psz) ;
+		printf("pidpath rs=%d path=%s\n",rs,pbuf) ;
+	    }
 	if (rs < 0) ex = 1 ;
 	return ex ;
 }
 /* end subroutine (main) */
-
-extern "C" {
-    static void __attribute__ ((destructor)) fini() noexcept {
-	printf("fini\n") ;
-    }
-}
-
-static int mkterms() noexcept {
-    cout << "mkterms\n" ;
-    return 0 ;
-}
 
 

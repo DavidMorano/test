@@ -1,4 +1,5 @@
 /* main SUPPORT (testproginfo) */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
 
 
@@ -24,12 +25,11 @@
 /* exported subroutines */
 
 int main(int argc,mainv argv) {
-	cchar		*cp ;
+	cchar		*cp = getenv("_") ;
 
 	printf("argname=%s\n", ((argc > 0) ? argv[0] : "")) ;
 
-	cp = getenv("_") ;
-	printf("prgfname=%s\n", ((cp != nullptr) ? cp : "")) ;
+	printf("progfname=%s\n", ((cp != nullptr) ? cp : "")) ;
 
 	cp = getprogname() ;
 	printf("progname=%s\n", ((cp != nullptr) ? cp : "")) ;

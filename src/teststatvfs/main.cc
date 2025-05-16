@@ -17,7 +17,7 @@ int	argc ;
 char	*argv[] ;
 char	*envv[] ;
 {
-	struct statvfs	fsb ;
+	STATVFS	fsb ;
 
 	bfile	outfile ;
 

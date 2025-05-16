@@ -1,4 +1,6 @@
-/* main */
+/* main SUPPORT */
+/* encoding=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* generic (pretty much) front end program subroutine */
 /* version %I% last-modified %G% */
@@ -15,9 +17,7 @@
 /* revision history:
 
 	= 1998-09-01, David A­D­ Morano
-
 	This program was originally written for PCS.
-
 
 */
 
@@ -35,12 +35,9 @@
 	of increasingly draconian security restrictions imposed on the
 	computers in the DEFINITY development organization.
 
-
 *****************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -177,19 +174,6 @@ static int	svarsfree(struct proginfo *,vecstr *) ;
 
 /* local variables */
 
-static const char *argopts[] = {
-	"ROOT",
-	"VERSION",
-	"VERBOSE",
-	"CONFIG",
-	"TMPDIR",
-	"LOGFILE",
-	"HELP",
-	"sn",
-	"caf",
-	NULL
-} ;
-
 enum argopts {
 	argopt_root,
 	argopt_version,
@@ -203,27 +187,25 @@ enum argopts {
 	argopt_overlast
 } ;
 
+static const char *argopts[] = {
+	"ROOT",
+	"VERSION",
+	"VERBOSE",
+	"CONFIG",
+	"TMPDIR",
+	"LOGFILE",
+	"HELP",
+	"sn",
+	"caf",
+	NULL
+} ;
+
 static const struct pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
 	PROGRAMROOT,
 	VARPRLOCAL
-} ;
-
-static const char *configopts[] = {
-	"marktime",
-	"defacc",
-	"vardir",
-	"spooldir",
-	"req",
-	"shm",
-	"orgcode",
-	"msfile",
-	"mspoll",
-	"speedname",
-	"nopass",
-	NULL
 } ;
 
 enum configopts {
@@ -239,6 +221,21 @@ enum configopts {
 	configopt_speedname,
 	configopt_nopass,
 	configopt_overlast
+} ;
+
+static const char *configopts[] = {
+	"marktime",
+	"defacc",
+	"vardir",
+	"spooldir",
+	"req",
+	"shm",
+	"orgcode",
+	"msfile",
+	"mspoll",
+	"speedname",
+	"nopass",
+	NULL
 } ;
 
 /* 'conf' for most regular programs */
@@ -284,19 +281,17 @@ static const unsigned char 	oterms[32] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
+int main(int argc,mainv argv,mainv envv) {
 	struct proginfo	pi, *pip = &pi ;
 
 	struct servent	*sep ;
 
-	struct ustat	sb ;
+	USTAT		sb ;
 
 	USERINFO	u ;
 
@@ -2448,7 +2443,7 @@ struct proginfo	*pip ;
 const char	dname[] ;
 int		mode ;
 {
-	struct ustat	sb ;
+	USTAT		sb ;
 
 	int	rs ;
 
@@ -2508,7 +2503,7 @@ static int checkfiledir(pip,fname)
 struct proginfo	*pip ;
 const char	fname[] ;
 {
-	struct ustat	sb ;
+	USTAT		sb ;
 
 	int	rs ;
 	int	sl ;
