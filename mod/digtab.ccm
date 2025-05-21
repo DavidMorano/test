@@ -34,7 +34,7 @@
 	(for some now-unknown historical reason).
 
 	Synopsis:
-	int getdig(int v) noex 
+	char getdig(int v) noex 
     	char digtab_enc(int v) noex
 
 	Argument:
