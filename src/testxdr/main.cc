@@ -33,8 +33,8 @@
 #include	<rpc/xdr.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
-#include	<signal.h>
+#include	<cstdlib>
+#include	<csignal>
 #include	<termios.h>
 
 #include	<usystem.h>

@@ -37,12 +37,12 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<time.h>
-#include	<string.h>
+#include	<cstring>
 #include	<ctype.h>
 #include	<libgen.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<netdb.h>
 
 #include	<usystem.h>

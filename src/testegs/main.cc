@@ -43,11 +43,11 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<time.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 #include	<ctype.h>
 #include	<libgen.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<netdb.h>
 
 #include	<usystem.h>

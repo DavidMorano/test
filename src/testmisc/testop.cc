@@ -27,8 +27,8 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<limits.h>
-#include	<stdio.h>
+#include	<climits>
+#include	<cstdio>
 #include	<cinttypes>
 #include	<new>
 #include	<initializer_list>

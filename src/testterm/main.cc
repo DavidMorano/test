@@ -37,8 +37,8 @@
 #include	<sys/unistd.h>
 #include	<termios.h>
 #include	<fcntl.h>
-#include	<signal.h>
-#include	<errno.h>
+#include	<csignal>
+#include	<cerrno>
 
 #include	<field.h>
 #include	<localmisc.h>

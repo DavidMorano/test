@@ -8,8 +8,8 @@
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<sys/syslog.h>
-#include	<stdlib.h>
-#include	<stdio.h>
+#include	<cstdlib>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<ucmallreg.h>
 #include	<localmisc.h>

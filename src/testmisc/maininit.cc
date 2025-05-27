@@ -1,6 +1,6 @@
 /* testopt */
 
-#include	<stdio.h>
+#include	<cstdio>
 
 
 /* ARGSUSED */

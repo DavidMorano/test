@@ -19,11 +19,11 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<time.h>
 #include	<dirent.h>
-#include	<string.h>
-#include	<stdlib.h>
+#include	<cstring>
+#include	<cstdlib>
 #include	<ftw.h>
 
 #include	<usystem.h>

@@ -14,7 +14,7 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<getbufsize.h>
 #include	<usystem.h>
 #include	<grcache.h>

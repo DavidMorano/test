@@ -3,7 +3,7 @@
 
 
 #include	<sys/types.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<math.h>
 
 #include	<usystem.h>

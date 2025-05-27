@@ -5,8 +5,8 @@
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<stdarg.h>
-#include	<stdio.h>
+#include	<cstdarg>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<sockaddress.h>
 #include	<openport.h>

@@ -11,9 +11,9 @@
 
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<cstdlib>
+#include	<cstring>
+#include	<cstdio>
 
 #include	<usystem.h>
 #include	<ucmallreg.h>

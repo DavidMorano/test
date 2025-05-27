@@ -22,12 +22,12 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<time.h>
 #include	<ftw.h>
 #include	<dirent.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 
 #include	<bfile.h>
 #include	<field.h>

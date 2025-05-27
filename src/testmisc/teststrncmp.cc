@@ -15,7 +15,7 @@
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<sys/time.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<cthex.h>
 #include	<usystem.h>
 

@@ -1,7 +1,7 @@
 /* main */
 
 
-#include <stdio.h>
+#include <cstdio>
 
 #include "SWBrandom.h"
 

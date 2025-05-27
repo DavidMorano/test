@@ -15,9 +15,9 @@
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<sys/time.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<cstdlib>
+#include	<cstring>
+#include	<cstdio>
 #include	<vecpstr.h>
 #include	<cthex.h>
 #include	<usystem.h>

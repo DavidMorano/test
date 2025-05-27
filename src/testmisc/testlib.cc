@@ -1,5 +1,5 @@
 
-#include	<stdio.h>
+#include	<cstdio>
 
 extern void	sub1(int) ;
 extern void	sub2(int) ;

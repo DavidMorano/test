@@ -13,7 +13,7 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<tmpx.h>
 

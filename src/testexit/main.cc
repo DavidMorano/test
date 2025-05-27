@@ -1,6 +1,6 @@
 /* main SUPPORT (testexit) */
 
-#include	<stdio.h>
+#include	<cstdio>
 #include	<iostream>
 
 int main(argc,const char **argv,const char **envv) {

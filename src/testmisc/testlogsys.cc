@@ -2,7 +2,7 @@
 
 #include	<sys/types.h>
 #include	<sys/syslog.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	"logsys.h"
 

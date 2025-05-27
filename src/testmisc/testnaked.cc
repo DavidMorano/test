@@ -22,8 +22,8 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/param.h>
 #include	<time.h>
-#include	<stdarg.h>
-#include	<stdio.h>
+#include	<cstdarg>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<ugetpid.h>
 #include	<localmisc.h>

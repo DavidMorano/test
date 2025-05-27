@@ -2,7 +2,7 @@
 
 
 #include	<complex.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 
 int main()

@@ -37,14 +37,14 @@
 #include	<unistd.h>
 #include	<stropts.h>
 #include	<fcntl.h>
-#include	<signal.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<csignal>
+#include	<cstdlib>
+#include	<cstring>
 #include	<ctype.h>
 #include	<time.h>
 #include	<pwd.h>
 #include	<netdb.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<usystem.h>
 #include	<field.h>

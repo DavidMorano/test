@@ -1,6 +1,6 @@
 /* main (testvla) */
 
-#include	<stdio.h>
+#include	<cstdio>
 
 #define	NA	10
 

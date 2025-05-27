@@ -3,7 +3,7 @@
 #include	<sys/types.h>
 #include	<sys/statvfs.h>
 #include	<sys/stat.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<bfile.h>
 #include	<exitcodes.h>

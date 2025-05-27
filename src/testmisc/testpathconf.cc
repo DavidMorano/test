@@ -4,7 +4,7 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<unistd.h>		/* requests for |pathconf(2)| */
-#include	<stdio.h>
+#include	<cstdio>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>

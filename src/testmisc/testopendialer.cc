@@ -4,7 +4,7 @@
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #include	<envstandards.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<filer.h>
 #include	<localmisc.h>

@@ -9,7 +9,7 @@
 	GCC-12 and GCC-13 versions.  Amazingly (but rather expected
 	when dealing with people who do not know how to debug
 	properly) the GNU compiler fails on certain combinations
-	of using the C-language header |stdlib.h| when also using
+	of using the C-language header |cstdlib| when also using
 	a compilation environment pre-processor define named
 	_XOPEN_SOURCE!
 
@@ -40,8 +40,8 @@
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<ucontext.h>
-#include	<stdlib.h>
-#include	<stdio.h>
+#include	<cstdlib>
+#include	<cstdio>
 
 
 /* local defines */

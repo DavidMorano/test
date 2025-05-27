@@ -16,10 +16,10 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
-#include	<signal.h>
-#include	<stdlib.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<csignal>
+#include	<cstdlib>
+#include	<cstring>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<sigblocker.h>
 #include	<localmisc.h>

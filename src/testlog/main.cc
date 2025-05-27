@@ -6,7 +6,7 @@
 
 
 #include	<math.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 
 /* local defines */

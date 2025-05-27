@@ -30,7 +30,7 @@
 #include	<sys/param.h>
 #include	<ucontext.h>
 #include	<dlfcn.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<usystem.h>
 #include	<sbuf.h>

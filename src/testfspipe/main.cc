@@ -44,9 +44,9 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<termios.h>
-#include	<signal.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<csignal>
+#include	<cstdlib>
+#include	<cstring>
 #include	<ctype.h>
 
 #include	<usystem.h>

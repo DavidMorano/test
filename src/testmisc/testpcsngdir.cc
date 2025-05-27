@@ -12,7 +12,7 @@
 
 #define	CF_DEBUGS	1
 #include	<envstandards.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<usystem.h>
 
 #ifndef	PCS

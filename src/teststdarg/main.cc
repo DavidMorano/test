@@ -2,16 +2,16 @@
 
 
 #define	CF_VARG		1		/* use 'varg(3dam)' */
-#define	CF_STDARG	1		/* force include of 'stdarg.h' */
+#define	CF_STDARG	1		/* force include of 'cstdarg' */
 #define	CF_OLDARG	0		/* use old-style arguments */
 #define	CF_FORWARD	1
 
 
 #include	<envstandard.h>
 
-#include	<stdarg.h>
+#include	<cstdarg>
 
-#include	<stdio.h>
+#include	<cstdio>
 
 
 

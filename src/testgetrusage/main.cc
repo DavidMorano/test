@@ -2,7 +2,7 @@
 
 #include	<sys/resource.h>
 
-#include	<stdio.h>
+#include	<cstdio>
 
 
 

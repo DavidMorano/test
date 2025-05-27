@@ -27,9 +27,9 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
-#include	<limits.h>
-#include	<string.h>
-#include	<stdlib.h>
+#include	<climits>
+#include	<cstring>
+#include	<cstdlib>
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<envhelp.h>

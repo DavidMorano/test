@@ -6,9 +6,9 @@
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/timeb.h>
-#include	<limits.h>
+#include	<climits>
 #include	<time.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	"config.h"
 #include	"defs.h"

@@ -4,7 +4,7 @@
 
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	"localmisc.h"
 

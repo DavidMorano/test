@@ -27,7 +27,7 @@
 #include	<envstandards.h>
 
 #include	<sys/types.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 
 #include	<usystem.h>
 #include	<ascii.h>

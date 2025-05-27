@@ -1,9 +1,9 @@
 
 
 #include	<sys/types.h>
-#include	<limits.h>
-#include	<stdlib.h>
-#include	<stdio.h>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstdio>
 
 #include	"localmisc.h"
 

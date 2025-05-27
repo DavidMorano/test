@@ -37,9 +37,9 @@
 #include	<sys/mman.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<termios.h>
-#include	<signal.h>
+#include	<csignal>
 
 #include	<usystem.h>
 #include	<field.h>

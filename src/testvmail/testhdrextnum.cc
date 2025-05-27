@@ -17,7 +17,7 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<clanguage.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<hdrextnum.h>
 #include	<localmisc.h>
 

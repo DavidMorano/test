@@ -1,5 +1,9 @@
 /* testconstdiv SUPPORT */
+/* encoding=ISO8859-1 */
 /* lang=C++20 */
+
+/* test constant division two ways */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -17,16 +21,15 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstdio>
 #include	<usystem.h>
-#include	<valuelims.hh>
-#include	<digbufsizes.hh>
-#include	<ucvariables.hh>
 #include	<localmisc.h>
 
-#include	"constdiv.hh"
-#include	"int_fastdiv.h"
+#include	<int_fastdiv.hh>
 
+import constdiv ;
 
 /* forward references */
 
@@ -41,7 +44,6 @@ int main(int,cchar **,cchar **) {
 	uint	nums[] = { 2, 11, 10, 16, 21675, 1836482, 1398795416 } ;
 	int	ex = 0 ;
 	int	rs = SR_OK ;
-	int	rs1 ;
 
 	    fprintf(ofp,"ent\n") ;
 	    fflush(ofp) ;
@@ -84,20 +86,22 @@ int main(int,cchar **,cchar **) {
 	{
 	    constexpr uint	d = 100 ;
 	    constdiv	div100(100) ;
-	    bdduool	f_bad = false ;
+	    int		idx = 0 ;
+	    bool	f_bad = false ;
 	    fprintf(ofp,"m=%08x s=%08x\n",div100.m,div100.s) ;
-	    for (int i = 0 ; ((!f_bad) && (i < nelem(nums)) ; i += 1) {
+	    for (int i = 0 ; (!f_bad) && (i < nelem(nums)) ; i += 1) {
 		const uint	n = nums[i] ;
 		uint q1 = div100(n) ;
 		uint q2 = n/d ;
 		f_bad = (q1 != q2) ;
-		if (f_bad) break ;
+		if ((idx = i),f_bad) break ;
 		i += 1 ;
 	    } /* end while */
-	    fprintf(ofp,"fbad=%u i=%d\n",f_bad,i) ;
+	    fprintf(ofp,"fbad=%u i=%d\n",f_bad,idx) ;
  	    if (f_bad) ex = 1 ;
 	}
 
+	if (rs < 0) ex = 1 ;
 	return ex ;
 }
 /* end subroutine (main) */

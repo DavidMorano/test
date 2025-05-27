@@ -1,4 +1,4 @@
-#include	<stdio.h>
+#include	<cstdio>
 extern int	_lib_version ;
 
 int main()

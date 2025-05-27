@@ -10,8 +10,8 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<math.h>
-#include	<stdio.h>
-#include	<errno.h>
+#include	<cstdio>
+#include	<cerrno>
 
 int main()
 {

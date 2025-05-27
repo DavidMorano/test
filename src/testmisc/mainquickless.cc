@@ -24,7 +24,7 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<new>
 #include	<utility>
 #include	<functional>

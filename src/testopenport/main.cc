@@ -46,12 +46,12 @@
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/socket.h>
-#include	<limits.h>
+#include	<climits>
 #include	<stropts.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<cstdlib>
+#include	<cstring>
 #include	<ctype.h>
 #include	<pwd.h>
 #include	<grp.h>

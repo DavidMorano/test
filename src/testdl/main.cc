@@ -8,7 +8,7 @@
 
 #include	<sys/types.h>
 #include	<dlfcn.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<usystem.h>
 #include	<localmisc.h>

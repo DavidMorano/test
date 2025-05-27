@@ -35,9 +35,9 @@
 #include	<netinet/in.h>
 #include	<unistd.h>
 #include	<stropts.h>
-#include	<signal.h>
-#include	<stdlib.h>
-#include	<string.h>
+#include	<csignal>
+#include	<cstdlib>
+#include	<cstring>
 #include	<netdb.h>
 #include	<time.h>
 

@@ -17,11 +17,11 @@
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<stdlib.h>
-#include	<stdio.h>
+#include	<cstdlib>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<stdintx.h>
-#include	<valuelimits.hh>
+#include	<valueclimitsh>
 #include	<digbufsizes.hh>
 #include	<ucvariables.hh>
 #include	<localmisc.h>

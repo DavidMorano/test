@@ -1,6 +1,6 @@
 /* testscope */
 
-#include	<stdio.h>
+#include	<cstdio>
 
 static int	a ;
 

@@ -76,9 +76,20 @@ const char		localstr[] = "localstr" ;
 
 extern const char	str[] = "Hello world!" ;
 
-extern const float	fpi = 3.1415 ;
+extern const float	fpi = floatconv(3.1415) ;
 
 const int	pi = 3 ;
+
+    struct ginit {
+        int	gval ;
+	constexpr ginit() noex {
+	    gval = 1 ; 
+	} ;
+    } ;
+
+extern const ginit	gi ;
+
+constinit const ginit		gi ;
 
 
 /* exported variables */

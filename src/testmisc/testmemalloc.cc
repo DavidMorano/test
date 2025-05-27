@@ -14,7 +14,7 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<fcntl.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<usystem.h>
 #include	<localmisc.h>

@@ -14,7 +14,7 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<new>
 #include	<initializer_list>
 #include	<utility>

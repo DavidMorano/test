@@ -1,6 +1,6 @@
 /* main SUPPORT (test-harvard) */
 
-#include	<stdio.h>
+#include	<cstdio>
 
 typedef unsigned int	uint ;
 

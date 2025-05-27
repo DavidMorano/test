@@ -7,7 +7,7 @@
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUGN	0		/* special debugging */
 #define	CF_PROGINFO	0		/* use 'maininfo_xxx()' */
-#define	CF_SIGHAND	1		/* install signal handlers */
+#define	CF_SIGHAND	1		/* install csignalandlers */
 #define	CF_SIGALTSTACK	0		/* do *not* define */
 
 /* revision history:
@@ -31,8 +31,8 @@
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<limits.h>
-#include	<stdlib.h>
+#include	<climits>
+#include	<cstdlib>
 #include	<usystem.h>
 #include	<vecstr.h>
 #include	<upt.h>

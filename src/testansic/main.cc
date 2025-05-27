@@ -15,7 +15,7 @@
 */
 
 
-#include	<stdio.h>
+#include	<cstdio>
 
 int main(int,const char **,const char **) {
 	int		iw = -1 ;

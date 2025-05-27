@@ -12,7 +12,7 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/param.h>
 #include	<sys/time.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<mtime.h>
 #include	<cfdec.h>

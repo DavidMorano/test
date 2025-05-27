@@ -30,7 +30,7 @@
 #include	<time.h>
 #include	<pwd.h>
 #include	<ctype.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 #include	<bfile.h>
 #include	<termstr.h>

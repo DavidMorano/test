@@ -17,7 +17,7 @@
 
 #include	<envstandards.h>
 
-#include	<stdio.h>
+#include	<cstdio>
 #include	<cinttypes>
 #include	<new>
 #include	<initializer_list>

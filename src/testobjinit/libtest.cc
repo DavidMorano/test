@@ -4,7 +4,7 @@
 #include	<envstandards.h>
 #include	<new>
 #include	<utility>
-#include	<stdio.h>
+#include	<cstdio>
 
 using namespace	std ;
 

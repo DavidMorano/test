@@ -16,8 +16,8 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/random.h>
-#include	<stdarg.h>
-#include	<stdio.h>
+#include	<cstdarg>
+#include	<cstdio>
 #include	<usystem.h>
 #include	<localmisc.h>
 

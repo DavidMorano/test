@@ -32,7 +32,7 @@
 #include	<sys/stat.h>
 #include	<sys/param.h>
 #include	<time.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<ctype.h>
 
 #include	<exitcodes.h>

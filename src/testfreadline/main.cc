@@ -1,6 +1,6 @@
 
 
-#include	<stdio.h>
+#include	<cstdio>
 
 
 #define	LINELEN		100

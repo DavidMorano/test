@@ -24,8 +24,8 @@
 *****************************************************************************/
 
 #include	<envstandards.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<cstring>
+#include	<cstdio>
 #include	<localmisc.h>
 
 extern int	nchr(const char *,int,int) ;

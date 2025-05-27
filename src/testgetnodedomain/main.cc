@@ -9,9 +9,9 @@
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<unistd.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<netdb.h>
-#include	<stdio.h>
+#include	<cstdio>
 #include	<localmisc.h>
 
 #include	"config.h"

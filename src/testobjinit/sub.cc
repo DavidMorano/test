@@ -1,7 +1,7 @@
 /* sub */
 /* lang=C++11 */
 
-#include	<stdio.h>
+#include	<cstdio>
 
 extern "C" void	sub_init() ;
 extern "C" void	sub_fini() ;

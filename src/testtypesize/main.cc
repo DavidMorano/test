@@ -1,6 +1,6 @@
 #include	<sys/types.h>
 #include	<unistd.h>
-#include	<stdio.h>
+#include	<cstdio>
 int main()
 {
 	printf("sizeof(off_t)=%u\n",sizeof(off_t)) ;

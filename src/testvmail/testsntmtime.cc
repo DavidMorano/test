@@ -19,9 +19,9 @@
 #include	<envstandards.h>
 
 #include	<sys/types.h>
-#include	<limits.h>
-#include	<stdlib.h>
-#include	<stdio.h>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstdio>
 
 #include	<usystem.h>
 #include	<bfile.h>

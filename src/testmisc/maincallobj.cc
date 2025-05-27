@@ -7,7 +7,7 @@
 #define	CF_DEBUGS	1		/* non-switchable debug print-outs */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #define	CF_DEBUGN	1		/* special debugging */
-#define	CF_SIGHAND	1		/* install signal handlers */
+#define	CF_SIGHAND	1		/* install csignalandlers */
 
 
 /* revision history:
@@ -29,12 +29,12 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<ucontext.h>
 #include	<dlfcn.h>
-#include	<limits.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<climits>
+#include	<cstring>
+#include	<cstdio>
 #include	<new>
 #include	<initializer_list>
 #include	<stdexcept>

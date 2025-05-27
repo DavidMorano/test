@@ -42,12 +42,12 @@
 #include	<sys/mkdev.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 #include	<time.h>
 #include	<ctype.h>
-#include	<string.h>
+#include	<cstring>
 #include	<libgen.h>
-#include	<signal.h>
+#include	<csignal>
 #include	<netdb.h>
 
 #include	<usystem.h>

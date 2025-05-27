@@ -20,8 +20,8 @@
 
 #include	<sys/types.h>
 #include	<time.h>
-#include	<string.h>
-#include	<stdio.h>
+#include	<cstring>
+#include	<cstdio>
 
 
 

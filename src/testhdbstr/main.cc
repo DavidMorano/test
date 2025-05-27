@@ -26,8 +26,8 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<signal.h>
-#include	<string.h>
+#include	<csignal>
+#include	<cstring>
 #include	<time.h>
 
 #include	<usystem.h>

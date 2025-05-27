@@ -29,7 +29,7 @@
 *******************************************************************************/
 
 #include	<envstandards.h>
-#include	<stdio.h>
+#include	<cstdio>
 
 
 /* local defines */

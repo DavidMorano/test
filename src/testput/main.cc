@@ -28,7 +28,7 @@
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<time.h>
-#include	<stdlib.h>
+#include	<cstdlib>
 
 #include	<bfile.h>
 #include	<localmisc.h>
