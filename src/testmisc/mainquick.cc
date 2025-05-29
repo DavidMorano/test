@@ -1,4 +1,5 @@
 /* mainquick */
+/* encoding=ISO8859-1 */
 /* lang=C++98 */
 
 
@@ -26,8 +27,7 @@
 
 /* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered fist to configure */
 #include	<sys/types.h>
 #include	<climits>
 #include	<cstring>
@@ -94,7 +94,7 @@ extern "C" cchar	*getourenv(cchar **,cchar *) ;
 #if	CF_SUBQUICK
 static int	partpred1(int,int) ;
 static int	partpred2(int,int) ;
-static int	getpivot(const int *,int) ;
+static int	getpivot(cint *,int) ;
 #endif
 
 #if	CF_PAR1
@@ -119,28 +119,28 @@ static void	printv(const vector<int> &,int) ;
 
 #if	CF_SEL1 || CF_SEL2 || CF_SUBQUICK
 #if	CF_SEL1 || CF_SUBQUICK
-static int	arr_load(int *,const int *,int) ;
+static int	arr_load(int *,cint *,int) ;
 #endif
 #if	CF_SEL2
-static int	vec_load(vector<int> &,const int *,int) ;
+static int	vec_load(vector<int> &,cint *,int) ;
 #endif
 #endif
 
 #if	CF_PRINTA
-static void	printa(const int *,int) ;
+static void	printa(cint *,int) ;
 #endif /* CF_PRINTA */
 
 #if	CF_DEBUGS && CF_SUBQUICK
-static int	debugprinta(const int *,int) ;
+static int	debugprinta(cint *,int) ;
 #endif
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,cchar **argvv,cchar **envv)
-{
+int main(int,mainv,mainv) {
 	int		rs = SR_OK ;
 	int		ex = 0 ;
 
@@ -186,8 +186,8 @@ int main(int argc,cchar **argvv,cchar **envv)
 #if	CF_NTH
 	if (rs >= 0) {
 	    const vector<int> a = { 10,10,20,7,3,3,6,5,6,9,8,7,6,5,4,3,2,1,0 } ;
-	    const int	algo[] = { 1, 2 } ;
-	    const int	nn = 21 ;
+	    cint	algo[] = { 1, 2 } ;
+	    cint	nn = 21 ;
 	    int		al ;
 	    al = a.size() ;
 	    for (int n = 0 ; n < MIN(nn,al) ; n += 1) {
@@ -224,8 +224,8 @@ int main(int argc,cchar **argvv,cchar **envv)
 
 #if	CF_SEL1 || CF_SEL2
 	if (rs >= 0) {
-	    const int	a[] = { 10,9,8,7,6,5,4,3,2,1,0 } ;
-	    const int	k = 4 ; /* kth element (by index) */
+	    cint	a[] = { 10,9,8,7,6,5,4,3,2,1,0 } ;
+	    cint	k = 4 ; /* kth element (by index) */
 	    int		n ;
 	    n = nelem(a) ;
 
@@ -275,15 +275,13 @@ int main(int argc,cchar **argvv,cchar **envv)
 
 /* local subroutines */
 
-
 #if	CF_PAR1
-static int subpar1(const vector<int> &a,int al,int n)
-{
+static int subpar1(const vector<int> &a,int al,int n) {
 	int		rs = SR_OK ;
 
 	if (n < al) {
 	vector<int>	aa = a ;
-	const int	pv = a[n] ;
+	cint	pv = a[n] ;
 
 	auto pfunc = [pv] (int e) -> bool { 
 	    bool f = ( e < pv ) ; 
@@ -316,23 +314,20 @@ static int subpar1(const vector<int> &a,int al,int n)
 /* end subroutine (subpar1) */
 #endif /* CF_PAR1 */
 
-
 #if	CF_PAR2
-static int partpred(int e,int p)
-{
+static int partpred(int e,int p) {
 	return (e < p) ;
 }
 
-static int subpar2(const vector<int> &a,int al,int n)
-{
+static int subpar2(const vector<int> &a,int al,int n) {
 	int		rs = SR_OK ;
 	int		size ;
 
 	if (n < al) {
-	    const int	size = ((al+1)*sizeof(int)) ;
+	    cint	size = ((al+1)*sizeof(int)) ;
 	    int		*aa ;
 	if ((rs = uc_malloc(size,&aa)) >= 0) {
-	    const int	pv = a[n] ;
+	    cint	pv = a[n] ;
 	    int		is ;
 	    int		i ;
 
@@ -356,10 +351,8 @@ static int subpar2(const vector<int> &a,int al,int n)
 /* end subroutine (subpar2) */
 #endif /* CF_PAR2 */
 
-
 #if	CF_PARNTH || CF_NTH
-static int subparnth(const vector<int> &a,int al,int n)
-{
+static int subparnth(const vector<int> &a,int al,int n) {
 	int		rs ;
 	int		size ;
 	int		*aa ;
@@ -380,11 +373,9 @@ static int subparnth(const vector<int> &a,int al,int n)
 /* end subroutine (subparnth) */
 #endif /* CF_PARNTH */
 
-
 #if	CF_SUBQUICK
 
-static int oursort(int lvl,int *a,int first,int last)
-{
+static int oursort(int lvl,int *a,int first,int last) {
 	int		ff = FALSE ;
 #if	CF_DEBUGS
 	debugprintf("oursort: ent lvl=%u f=%u l=%u\n",lvl,first,last) ;
@@ -393,7 +384,7 @@ static int oursort(int lvl,int *a,int first,int last)
 	    if (a[first] > a[last-1]) arrswapi(a,first,(last-1)) ;
 	    ff = TRUE ;
 	} else if ((last-first) > 2) {
-	    const int	pv = getpivot(a+first,(last-first)) ;
+	    cint	pv = getpivot(a+first,(last-first)) ;
 	    int		m1, m2 ;
 	    ff = TRUE ;
 #if	CF_DEBUGS
@@ -416,10 +407,9 @@ static int oursort(int lvl,int *a,int first,int last)
 }
 /* end subroutine (oursort) */
 
-static int subquick() 
-{
-	const int	a[] = { 10,10,20,7,3,3,6,5,6,9,8,7,6,5,4,3,2,1,0 } ;
-	const int	nn = 21 ;
+static int subquick() {
+	cint	a[] = { 10,10,20,7,3,3,6,5,6,9,8,7,6,5,4,3,2,1,0 } ;
+	cint	nn = 21 ;
 	int		al = nelem(a) ;
 	int		rs ;
 	int		asize ;
@@ -444,18 +434,15 @@ static int subquick()
 }
 /* end subroutine (subquick) */
 
-static int partpred1(int e,int pv)
-{
+static int partpred1(int e,int pv) {
 	return (e < pv) ;
 }
 
-static int partpred2(int e,int pv)
-{
+static int partpred2(int e,int pv) {
 	return (e <= pv) ;
 }
 
-static int getpivot(const int *a,int al)
-{
+static int getpivot(cint *a,int al) {
 	int	pvi = (al/2) ;
 	if (pvi == 0) {
 	    if (al > 1) pvi = 1 ;
@@ -465,13 +452,11 @@ static int getpivot(const int *a,int al)
 
 #endif /* CF_SUBQUICK */
 
-
 #if	CF_SEL1 || CF_SEL2 || CF_SUBQUICK
 
 #if	CF_SEL1 || CF_SUBQUICK
 
-static int arr_load(int *aa,const int *a,int n)
-{
+static int arr_load(int *aa,cint *a,int n) {
 	int	i ;
 	for (i = 0 ; i < n ; i += 1) {
 	    aa[i] = a[i] ;
@@ -481,8 +466,7 @@ static int arr_load(int *aa,const int *a,int n)
 #endif /* CF_SEL1 */
 
 #if	CF_SEL2
-static int vec_load(vector<int> &va,const int *a,int n)
-{
+static int vec_load(vector<int> &va,cint *a,int n) {
 	int	i ;
 	for (i = 0 ; i < n ; i += 1) {
 	    va[i] = a[i] ;
@@ -493,10 +477,8 @@ static int vec_load(vector<int> &va,const int *a,int n)
 
 #endif /* CF_SEL1 || CF_SEL2 */
 
-
 #if	CF_PAR1 || CF_PAR2 || CF_NTH || CF_SEL2
-static void printv(const vector<int> &a,int al)
-{
+static void printv(const vector<int> &a,int al) {
 	int		i ;
 	for (i = 0 ; i < al ; i += 1) {
 	    cout << " " << setw(2) << a[i] ;
@@ -506,12 +488,9 @@ static void printv(const vector<int> &a,int al)
 /* end subroutine (printv) */
 #endif
 
-
 #if	CF_PRINTA
-static void printa(const int *a,int n)
-{
-	int		i ;
-	for (i = 0 ; i < n ; i += 1) {
+static void printa(cint *a,int n) {
+	for (int i = 0 ; i < n ; i += 1) {
 	    cout << " " << setw(2) << a[i] ;
 	}
 	cout << endl ;
@@ -519,12 +498,9 @@ static void printa(const int *a,int n)
 /* end subroutine (printa) */
 #endif /* CF_PRINTA */
 
-
 #if	CF_DEBUGS && CF_SUBQUICK
-static int debugprinta(const int *a,int al)
-{
-	int		i ;
-	for (i = 0 ; i < al ; i += 1) {
+static int debugprinta(cint *a,int al) {
+	for (int i = 0 ; i < al ; i += 1) {
 	    debugprintf(" %2u\\",a[i]) ;
 	}
 	debugprintf("\n") ;
