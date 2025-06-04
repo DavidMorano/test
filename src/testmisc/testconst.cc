@@ -85,11 +85,12 @@ const int	pi = 3 ;
 	constexpr ginit() noex {
 	    gval = 1 ; 
 	} ;
+	constexpr int geter() const noex ;
     } ;
 
 extern const ginit	gi ;
 
-constinit const ginit		gi ;
+constinit const ginit	gi ;
 
 
 /* exported variables */
@@ -105,8 +106,13 @@ int main(int,mainv,mainv) {
 	cout << "pi=" << pi << eol ;
 	cout << localstr << eol ;
 	cout << val.res << eol ;
+	cout << gi.geter() << eol ;
 }
 /* end subroutine (main) */
+
+constexpr int ginit::geter() const noex {
+    return gval ;
+}
 
 
 /* local subroutines */
