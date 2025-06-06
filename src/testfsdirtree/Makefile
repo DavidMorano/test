@@ -1,65 +1,34 @@
-# MAKEFILE
+# MAKEFILE (testfsdir)
 
-T= testfsdirtree
+T= testfsdir
 
-ALL= $(T)
-
-SRCROOT= $(LOCAL)
+ALL= $(T).x
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
-MANDIR= $(SRCROOT)/man/man1
-HELPDIR= $(SRCROOT)/share/help
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
 
-#LDCRTDIR= /opt/SUNWspro/WS6/lib
-#LDCRTDIR= /opt/SUNWspro/SC5.0/lib
-#LDCRTDIR= /opt/SUNWspro/SC4.0/lib
-#LDCRTDIR= /opt/SUNWspro/lib
-LDCRTDIR= $(SRCROOT)/lib
-
-
-# NOTES:
-#
-# To 'make' for 'prof(1)' profiling, execute 'make bb.prof'.
-# To 'make' for 'gprof(1)' profiling, execute 'make bb.prof'.
-#
-#
-
-CC= gcc
-GPP= g++
-
-CCOPTS_GCCALL= -pthreads -fexceptions
-CCOPTS_CCALL= -MT
-
-CCOPTS_GCCOPTSPARC= -mcpu=ultrasparc
-CCOPTS_GCCLIBSPARC= -mno-app-regs
-
-CCOPTS= $(CCOPTS_GCCALL) -O $(CCOPTS_GCCOPTSPARC)
-#CCOPTS= $(CCOPTS_GCCALL) -g -O
-#CCOPTS= $(CCOPTS_GCCALL) -g -pg
-#CCOPTS= $(CCOPTS_GCCALL) -g -Wstrict-aliasing
-
-CCOPTS_GCCLIB= -fpic $(CCOPTS_GCCLIBSPARC)
-
-#CCOPTS= $(CCOPTS_CCALL) -g -xs
-
-# HyperSPARC
-# regular
-#CCOPTS= -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-# profiling 'prof(1)'
-#CCOPTS= -p -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-# profiling 'gprof(1)' 
-#CCOPTS= -xpg -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-
-# UltraSPARC
-# regular
-#CCOPTS= -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
-# profiling 'prof(1)'
-#CCOPTS= -p -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
-# profiling 'gprof(1)' 
-#CCOPTS= -xpg -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
 DEF0=
@@ -73,82 +42,41 @@ DEF7= $(LF_DEFS)
 
 DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6) $(DEF7)
 
+INCS += fsdir.h
 
-INCDIRS= -I$(INCDIR)
+MODS += 
 
-CPPFLAGS= $(DEFS) $(INCDIRS)
+LIBS += -luo -lu
 
-CFLAGS= $(CCOPTS)
 
-#LD= $(CC)
-#LD= cc
-LD= ld
-
-# regular
-LDFLAGS= -m $(LF_LDFLAGS) -R$(LIBDIR)
-# for profiling
-#LDFLAGS= -L/usr/lib/libp # -m -R$(LIBDIR)
-
+INCDIRS=
 
 LIBDIRS= -L$(LIBDIR)
 
-LIB0=
-LIB1= -ldam -lb
-LIB2= -ldebug
-LIB3= -luc -lu
-LIB4= -L$(GNU)/lib -lstdc++ -lgcc_eh -lgcc
-LIB5= 
-LIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-LIB7= -ldl -lc
 
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
 
-CRT1= $(LDCRTDIR)/crt1.o
-CRTI= $(LDCRTDIR)/crti.o
-VALUES= $(LDCRTDIR)/values-xa.o
-CRTBEGIN= $(LDCRTDIR)/crtbegin.o
-MCRT1= $(LDCRTDIR)/mcrt1.o
-GCRT1= $(LDCRTDIR)/gcrt1.o
-CRTEND= $(LDCRTDIR)/crtend.o
-CRTN= $(LDCRTDIR)/crtn.o
-
-CRTFRONT= $(CRT1) $(CRTI) $(VALUES) $(CRTBEGIN)
-CRTBACK= $(CRTEND) $(CRTN)
-
-# for regular (no profiling)
-CRT0= $(CRT1) $(CRTI) $(VALUES)
-# for 'prof(1)'
-MCRT0= $(CRTI) $(MCRT1) $(VALUES)
-# for 'gprof(1)'
-GCRT0= $(CRTI) $(GCRT1) $(VALUES)
-
-CRTC= makedate.o
-
-LINT= lint
-LINTFLAGS= -uxn -Dlint
-
-NM= nm
-NMFLAGS= -xs -v
-
-CPP= cpp
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS)
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
 
 
-INCS= config.h defs.h
-
-
-OBJ00= main.o whatinfo.o proginfo.o proginfo_setpiv.o
+OBJ00= fsdirtree_main.o
 OBJ01=
 OBJ02=
 OBJ03= fsdirtree.o
 OBJ04= 
 OBJ05=
-OBJ06= printhelp.o 
+OBJ06=
 OBJ07=
 OBJ08=
 OBJ09=
 OBJ10=
 OBJ11=
-#OBJ12= debug.o
+OBJ12=
 OBJ13=
 OBJ14=
 OBJ15=
@@ -158,61 +86,48 @@ OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
 
 OBJ= $(OBJA) $(OBJB)
 
-# for regular (no profiling)
-OBJS= $(CRTFRONT) $(OBJ) $(CRTC) $(CRTBACK)
-# for 'prof(1)'
-MOBJS= $(MCRT0) $(OBJ) $(CRTC)
-# for 'gprof(1)'
-GOBJS= $(GCRT0) $(OBJ) $(CRTC)
 
-
-
-.SUFFIXES:		.ls .i .cx .cs
+.SUFFIXES:		.hh .ii .ccm
 
 
 default:		$(T).x
 
 all:			$(ALL)
 
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.cc.o:
-	$(GPP) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
 
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
-.c.cx:
-	$(CXREF) -C $(CXREFFLAGS) $(CPPFLAGS) $<
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
 
-.c.cs:
-	$(CXREF) $(CXREFFLAGS) $(CPPFLAGS) -o $(*).cs $<
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
+.c.o:
+	$(COMPILE.c) $<
+
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	makemodule $(*)
 
 
 $(T):			$(T).ee
 	cp -p $(T).ee $(T)
 
 $(T).x:			$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS) > $(T).lm
+	$(LD) -o $@ $(LDFLAGS) $(OBJ) $(LIBDIRS) $(LIBS) > $(T).lm
 
 $(T).prof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(MOBJS) $(LIBDIRS) $(LIBS)
+	$(LD) -o $@ $(LDFLAGS) $(MOBJ) $(LIBDIRS) $(LIBS)
 
 $(T).gprof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(GOBJS) $(LIBDIRS) $(LIBS)
+	$(LD) -o $@ $(LDFLAGS) $(GOBJ) $(LIBDIRS) $(LIBS)
 
 $(T).$(OFF) $(OFF):	$(T).x
 	cp -p $(T).x $(T).$(OFF)
@@ -250,36 +165,17 @@ control:
 	date >> Control
 
 
-main.o:			main.c $(INCS) 
+fsdirtree_main.o:	fsdirtree_main.cc 			$(INCS) 
 
-whatinfo.o:		whatinfo.c config.h
+fsdirtree.o:		fsdirtree.cc fsdirtree.h		$(INCS)
 
-proginfo.o:		proginfo.c $(INCS)
+fsdir.o:		fsdir.dir
+fsdir.dir:
+	makesubdir $@
 
-proginfo_setpiv.o:	proginfo_setpiv.c $(INCS)
+libutil.ccm:
+	makemodcurrent $@
 
-expander.o:		expander.c $(INCS)
-
-procdname.o:		procdname.c $(INCS)
-
-
-vecstr_loadfile.o:	vecstr_loadfile.c
-
-vecstr_env.o:		vecstr_env.c
-
-fsdirtree.o:		fsdirtree.c fsdirtree.h
-
-fsdir.o:		fsdir.c fsdir.h
-
-msg.o:			msg.c msg.h
-
-filebuf.o:		filebuf.c filebuf.h
-
-matenv.o:		matenv.c matenv.h
-
-lfm.o:			lfm.c lfm.h
-
-pq.o:			pq.c pq.h
-
+libutil.o:		libutil.ccm
 
 

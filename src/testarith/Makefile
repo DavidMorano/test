@@ -147,9 +147,8 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $(OBJB)
 
 
-main.o:			main.cc				$(INCS)
+arith_main.o:		arith_main.cc				$(INCS)
 
 varigthmetic.o:		varithmetic.ccm
-
 
 

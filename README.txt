@@ -1,5 +1,5 @@
 TEST
 
-This repository contains various test for objects and subroutines
+This repository contains various tests for objects and subroutines
 residing in other repositoies.
 
