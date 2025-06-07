@@ -1,3 +1,4 @@
+/* fsdir_main SUPPORT (testfsdir) */
 /* encoding=ISO8859-1 */
 /* lang=C++98 */
 
@@ -38,23 +39,23 @@
 
 import libutil ;
 
-using std::nullptr_t ;
-using std::cout ;
-using libu::umalloc ;
-using libu::ufree ;
-using std::nothrow ;
+using std::nullptr_t ;			/* type */
+using libu::umalloc ;			/* type */
+using libu::ufree ;			/* type */
+using std::cout ;			/* variable */
+using std::nothrow ;			/* constant */
 
 typedef fsdir_ent	ent ;
 
-int main(int,mainv,mainv) {
+static int dirlist(cchar *name) noex {
     	cnullptr	np{} ;
-    	int		ex = 0 ;
-	int		rs = 0 ;
+    	int		rs = SR_INVALID ;
 	int		rs1 ;
-	{
+	if (name[0]) {
 	    cint	nlen = MAXNAMELEN ;
+	    rs = SR_NOMEM ;
 	    if (char *nbuf ; (nbuf = new(nothrow) char[nlen + 1]) != np) {
-	        if (fsdir dir ; (rs = dir.open(".")) >= 0) {
+	        if (fsdir dir ; (rs = dir.open(name)) >= 0) {
 		    for (ent de ; (rs = dir.read(&de,nbuf,nlen)) > 0 ; ) {
 			cout << nbuf << eol ;
 		    } /* end while */
@@ -63,7 +64,19 @@ int main(int,mainv,mainv) {
 	        } /* end if (fsdir) */
 	        delete [] nbuf ;
 	    } /* end if (m-a-f) */
-	} /* end block */
+	}
+	return rs ;
+} /* end subroutine (dirlist) */
+
+int main(int argc,mainv argv,mainv) {
+    	int		ex = 0 ;
+	int		rs = SR_OK ;
+	for (int ai = 1 ; (rs >= 0) && (ai < argc) ; ai += 1) {
+	    if (argv[ai]) {
+		cchar	*dirname = argv[ai] ;
+		rs = dirlist(dirname) ;
+	    }
+	} /* end for */
 	if (rs < 0) ex = 1 ;
 	return ex ;
 }

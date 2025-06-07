@@ -64,10 +64,10 @@ ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
 
-OBJ00= fsdirtree_main.o
-OBJ01=
+OBJ00= fsdir_main.o
+OBJ01= fsdir.o
 OBJ02=
-OBJ03= fsdirtree.o
+OBJ03=
 OBJ04= 
 OBJ05=
 OBJ06=
@@ -165,7 +165,7 @@ control:
 	date >> Control
 
 
-fsdirtree_main.o:	fsdirtree_main.cc 			$(INCS) 
+fsdir_main.o:		fsdir_main.cc 				$(INCS) 
 
 fsdirtree.o:		fsdirtree.cc fsdirtree.h		$(INCS)
 

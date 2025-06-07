@@ -1,4 +1,4 @@
-/* fsdirtree_main SUPPORT */
+/* fsdirtree_main SUPPORT (testfsdirtree) */
 /* encoding=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -8,7 +8,7 @@
 
 /* revision history:
 
-	= 1994-09-01, David A­D­ Morano
+	= 1998-09-01, David A­D­ Morano
 	This subroutine was borrowed and modified from previous
 	generic front-end 'main' subroutines!
 
