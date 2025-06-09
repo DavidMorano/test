@@ -8,7 +8,7 @@
 
 /* revision history:
 
-	= David A.D. Morano, February 88
+	= David A-D- Morano, February 88
 
 
 */

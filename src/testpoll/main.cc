@@ -14,7 +14,7 @@
 
 /* revision history:
 
-	= David A.D. Morano, January 88
+	= David A-D- Morano, January 88
 
 	This is a hack to test the SYSV 'poll(2)' system call.
 
