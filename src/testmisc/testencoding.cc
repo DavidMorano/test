@@ -1,4 +1,4 @@
-/* testcharset SUPPORT */
+/* testencoding SUPPORT */
 /* encoding=ISO8859-1 */
 /* lang=C++20 */
 
@@ -18,7 +18,7 @@
 	main
 
 	Description:
-	I test something to do with a character set.
+	I test something to do with text encodings.
 
 *******************************************************************************/
 
@@ -97,7 +97,32 @@ int main(int,mainv,mainv) {
 /* local subroutines */
 
 void encoding() {
-    cout << "encoding" << eol ;
+    // literal encoding is known at compile-time
+    constexpr std::text_encoding literal_encoding = 
+		std::text_encoding::literal();
+ 
+    // check for literal encoding
+    static_assert(literal_encoding.mib() != std::text_encoding::other &&
+                  literal_encoding.mib() != std::text_encoding::unknown);
+ 
+    // environment encoding is only known at runtime
+    std::text_encoding env_encoding = std::text_encoding::environment();
+ 
+    // associated encoding of the default locale
+    std::text_encoding locale_encoding = std::locale("").encoding();
+ 
+    std::println("The literal encoding is {}", literal_encoding.name());
+    std::println("The aliases of literal encoding:");
+    for (const char* alias_name : literal_encoding.aliases())
+        std::println(" -> {}", alias_name);
+ 
+    if (env_encoding == locale_encoding)
+        std::println("Both environment and locale encodings are the same");
+ 
+    std::println("The environment encoding is {}", env_encoding.name());
+    std::println("The aliases of environment encoding:");
+    for (const char* alias_name : env_encoding.aliases())
+        std::println(" -> {}", alias_name);
 } /* end subroutine (encoding) */
 
 
