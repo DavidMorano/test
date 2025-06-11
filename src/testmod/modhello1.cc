@@ -16,7 +16,7 @@
 /*******************************************************************************
 
   	Name:
-	mod_main
+	modhello1
 
 *******************************************************************************/
 
@@ -25,10 +25,7 @@
 module ;
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
 #include	<iostream>
-#include	<iomanip>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
@@ -41,7 +38,9 @@ extern void header(cchar *) noex ;
 
 module modhello ;
 
+using std::string ;
 using std::cout ;
+using std::hex ;
 
 extern "C++" void subfrank(cchar *sp) noex ;
 
@@ -51,6 +50,7 @@ void access() noex {
 }
 
 void hello_there (cchar *sp)  noex {
+    	string	s = "jack-in-the-box" ;
 	cout << "Hello there! - " << sp << " - " << eol ;
 	jackbean("there-jackbean") ;
 	subfrank("there-frank") ;
@@ -58,5 +58,6 @@ void hello_there (cchar *sp)  noex {
 	hello_hidden() ;
 	access() ;
 	cout << "one=" << hello_one << " two=" << hello_two << eol ;
+	cout << hex << s << eol ;
 }
 

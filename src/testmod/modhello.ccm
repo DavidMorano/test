@@ -27,8 +27,8 @@ module ;
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
+#include	<string>		/* <- test */
 #include	<iostream>
-#include	<iomanip>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
@@ -45,13 +45,14 @@ void header(cchar *s) noex {
 
 export module modhello ;
 
+using std::cout ;
+
+
 enum hellos {
     hello_one,
     hello_two,
     hello_overlast
 } ;
-
-using std::cout ;
 
 export {
     extern void hello_there(cchar *) noex ;

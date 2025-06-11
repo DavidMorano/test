@@ -66,6 +66,8 @@ OBJA= obj0.o
 
 OBJ= obja.o
 
+DEPS_MAIN=		modhello.o
+
 
 .SUFFIXES:		.hh .ii .ccm
 
@@ -100,13 +102,8 @@ all:			$(ALL)
 $(T).x:			$(OBJ)
 	$(LD) -o $@ $(LDFLAGS) $(OBJ)
 
-$(T).nm:		$(T).so
-	$(NM) $(NMFLAGS) $(T).so > $(T).nm
-
-$(T).order:		$(OBJ) $(T).a
-	$(LORDER) $(T).a | $(TSORT) > $(T).order
-	$(RM) $(T).a
-	while read O ; do $(AR) $(ARFLAGS) -cr $(T).a $${O} ; done < $(T).order
+$(T).nm:		$(T).x
+	$(NM) $(NMFLAGS) $(T).x > $(T).nm
 
 again:
 	$(RM) $(ALL)
@@ -148,12 +145,12 @@ modhello1.o:		modhello1.cc modhello.ccm
 	makemodule modhello
 	$(COMPILE.cc) modhello1.cc
 
-testmod_sub.o:		testmod_sub.cc testmod_sub.hh modhello.ccm
+testmod_main.o:		testmod_main.cc testmod_sub.hh $(DEPS_MAIN)
 	makemodule modhello
-	$(COMPILE.cc) testmod_sub.cc
+	$(COMPILE.cc) $<
 
-testmod_main.o:		testmod_main.cc testmod_sub.hh modhello.ccm
+testmod_sub.o:		testmod_sub.cc testmod_sub.hh $(DEPS_MAIN)
 	makemodule modhello
-	$(COMPILE.cc) testmod_main.cc
+	$(COMPILE.cc) $<
 
 
