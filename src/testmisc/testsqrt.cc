@@ -1,5 +1,5 @@
 /* testsqrt SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C99 */
 
 
@@ -38,7 +38,6 @@ int main(int argc,mainv,mainv) {
 	b = sqrt(a) ;
 	printf("sqrt(2)=%2.40f\n",b) ;
 
-	return 0 ;
 }
 /* end subroutine (main) */
 

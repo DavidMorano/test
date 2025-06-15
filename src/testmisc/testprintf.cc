@@ -1,5 +1,5 @@
 /* testprintf SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
 #include	<envstandards.h>	/* must be ordered fist to configure */

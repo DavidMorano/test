@@ -1,5 +1,5 @@
 /* testonce SUPPORT (Test-Once) */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* test calling once */

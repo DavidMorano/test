@@ -1,5 +1,5 @@
 /* testinit SUPPORT (Test-Initialization) */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* test program initialization */

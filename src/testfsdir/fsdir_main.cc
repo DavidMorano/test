@@ -1,5 +1,5 @@
 /* fsdir_main SUPPORT (testfsdir) */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* test calling once */
@@ -40,8 +40,8 @@
 import libutil ;
 
 using std::nullptr_t ;			/* type */
-using libu::umalloc ;			/* type */
-using libu::ufree ;			/* type */
+using libu::umemalloc ;			/* subroutine */
+using libu::umemfree ;			/* subroutine */
 using std::cout ;			/* variable */
 using std::nothrow ;			/* constant */
 

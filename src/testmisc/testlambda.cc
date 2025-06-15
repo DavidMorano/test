@@ -1,5 +1,5 @@
 /* testlambda SUPPORT */
-/* encoding=ISO8859-1 */
+/* charset=ISO8859-1 */
 /* C++20 */
 
 /* revision history:

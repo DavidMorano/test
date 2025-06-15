@@ -1,11 +1,13 @@
-/* testsysrealname */
+/* testsysrealname SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered fist to configure */
 #include	<sys/types.h>
 #include	<sys/syslog.h>
 #include	<cstdlib>
@@ -43,13 +45,13 @@ struct arginfo {
 
 static int procargs(struct ainfo *,SYSREALNAME *) ;
 
+
+/* exported variables */
+
+
 /* exported subroutines */
 
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+int main(int argc,mainv argv,mainv envv) {
 	struct arginfo	ainfo ;
 	SYSREALNAME	grm ;
 
@@ -152,12 +154,11 @@ const char	*envv[] ;
 
 /* local subroutines */
 
-
-static int procargs(struct ainfo *aip,SYSREALNAME *snp)
-{
-	int	rs = SR_OK ;
-	int	ai ;
-		int	c = 0 ;
+static int procargs(struct ainfo *aip,SYSREALNAME *snp) {
+	int		rs = SR_OK ;
+	int		rs1 ;
+	int		ai ;
+	int		c = 0 ;
 
 		for (ai = 1 ; argv[ai] != NULL ; ai += 1) {
 		    SYSREALNAME_CUR	cur ;
@@ -170,12 +171,13 @@ static int procargs(struct ainfo *aip,SYSREALNAME *snp)
 			      printf("before lookup gn=%s\n",gn) ;
 #endif
 			if ((rs1 = sysrealname_lookup(&grm,&cur,gn,-1)) >= 0) {
-			  char		ub[USERNAMELEN+1] ;
-			  const int	ul = USERNAMELEN ;
+			    auto srn_lu = sysrealname_lookread ;
+			  char	ub[USERNAMELEN+1] ;
+			  cint	ul = USERNAMELEN ;
 #if	CF_PRINTBEF
 			      printf("before lookread gn=%s\n",gn) ;
 #endif
-			  while ((rs = sysrealname_lookread(&grm,&cur,ub,ul)) >= 0) {
+			  while ((rs = srn_lu(&grm,&cur,ub,ul)) >= 0) {
 				c += 1 ;
 #if	CF_DEBUGS
 		debugprintf("main: sysrealname_lookread() rs=%d\n",rs) ;
@@ -194,7 +196,8 @@ static int procargs(struct ainfo *aip,SYSREALNAME *snp)
 			} else {
 			    printf("not-found (%d)\n",rs1) ;
 			} /* end if */
-			sysrealname_curend(&grm,&cur) ;
+			rs1 = sysrealname_curend(&grm,&cur) ;
+			if (rs >= 0) rs = rs1 ;
 		    } /* end if (cursor) */
 		} /* end for */
 
