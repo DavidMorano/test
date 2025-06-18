@@ -1,7 +1,9 @@
-/* main */
+/* testutmpx_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* this is a generic "main" module for the WEBCOUNTER program */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* run-time debugging */
 #define	CF_DEBUG	1		/* compile-time debugging */
@@ -9,14 +11,11 @@
 #define	CF_WTMP		0		/* use WTMP */
 #define	CF_SYSLEN	0		/* use UTMPX 'syslen' */
 
-
 /* revision history:
 
 	= 1998-03-01, David A­D­ Morano
-
 	The program was written from scratch to do what the previous
 	program by the same name did.
-
 
 */
 
@@ -24,12 +23,11 @@
 
 /*******************************************************************************
 
+  	Description:
 	This is a fairly generic front-end subroutine for small
 	programs.
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>	/* MUST be first to configure */
 
@@ -51,6 +49,7 @@
 #include	<vecstr.h>
 #include	<paramopt.h>
 #include	<mapstrint.h>
+#include	<strn.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -90,8 +89,6 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern char	*strnchr(const char *,int,int) ;
-extern char	*strnpbrk(const char *,int,const char *) ;
 extern char	*timestr_logz(time_t,char *) ;
 
 

@@ -1,4 +1,5 @@
 /* testmapblock SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* test the object |mapblock(3uc)| */
@@ -29,8 +30,8 @@
 #include	<localmisc.h>
 
 #include	"singlist.hh"
-#include	"mapblock.hh"
 
+import mapblock ;
 
 using namespace std ;
 
