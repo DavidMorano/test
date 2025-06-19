@@ -460,7 +460,7 @@ static int writethem(name,fp)
 char	name[] ;
 bfile	*fp ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	len ;

@@ -130,7 +130,7 @@ char	*envv[] ;
 {
 	struct proginfo	pi, *pip = &pi ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
@@ -629,7 +629,7 @@ char	*envv[] ;
 /* open a block to enumerate the server entries */
 
 	{
-	    struct ustat	sb ;
+	    ustat	sb ;
 
 	    MSGID		db ;
 

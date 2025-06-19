@@ -924,7 +924,7 @@ const char	name[] ;
 static int dirok(dname)
 const char	dname[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	preumask ;
@@ -971,7 +971,7 @@ static int ensuremode(tmpdname,m)
 const char	tmpdname[] ;
 mode_t		m ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	fd ;
