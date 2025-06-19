@@ -153,7 +153,7 @@ char	*argv[] ;
 	bfile		infile, *ifp = &infile ;
 	bfile		outfile, *ofp ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	LFM		lk ;
 

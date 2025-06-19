@@ -1220,7 +1220,7 @@ const char	*envv[] ;
 
 	if ((rs >= 0) && (pip->younger == 0)) {
 	    if ((yfname != NULL) && (yfname[0] != '\0')) {
-	        struct ustat	sb ;
+	        ustat	sb ;
 	        int rs1 = uc_stat(yfname,&sb) ;
 	        if (rs1 >= 0) {
 	            pip->have.younger = TRUE ;

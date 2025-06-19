@@ -1138,7 +1138,7 @@ int	mxu ;
 {
 	struct pollfd	fds[NFDS] ;
 	struct fpstat	fp[NFDS] ;
-	struct ustat	sb ;
+	ustat	sb ;
 	time_t	t_pollsanity ;
 	time_t	t_sanity ;
 	int	rs ;

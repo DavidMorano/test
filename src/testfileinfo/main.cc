@@ -40,7 +40,7 @@ int main()
 static int putinfo(fd)
 int	fd ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 

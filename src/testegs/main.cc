@@ -170,7 +170,7 @@ char	*argv[] ;
 {
 	struct proginfo	g, *pip = &g ;
 	struct sigaction	sigs ;
-	struct ustat	sb ;
+	ustat	sb ;
 
 	USERINFO	u ;
 

@@ -141,7 +141,7 @@ char	*argv[] ;
 
 	sigset_t	signalmask ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	struct proginfo	g, *gp = &g ;
 

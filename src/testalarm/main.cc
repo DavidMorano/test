@@ -170,7 +170,7 @@ char	*argv[] ;
 
 	sigset_t	signalmask ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	struct lfm	lk ;
 

@@ -43,7 +43,7 @@
 
 int main()
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	pipes[2] ;
