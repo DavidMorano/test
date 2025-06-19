@@ -93,7 +93,7 @@ char	*argv[] ;
 
 	struct proginfo		pi, *pip = &pi ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	argr, argl, aol, akl, avl, npa, maxai, kwi ;
 	int	pan ;

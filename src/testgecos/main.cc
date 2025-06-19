@@ -149,7 +149,7 @@ int	argc ;
 char	*argv[] ;
 char	*envv[] ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	PROGINFO	pi, *pip = &pi ;
 

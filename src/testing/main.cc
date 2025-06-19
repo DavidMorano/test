@@ -82,7 +82,7 @@ char	*argv[] ;
 	bfile	errfile, *efp = &errfile ;
 
 	struct passwd	*pwsp ;
-	struct ustat	ss, *sp = &ss ;
+	ustat	ss, *sp = &ss ;
 
 	pid_t	ppid, pid ;
 	pid_t	pgid ;

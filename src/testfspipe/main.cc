@@ -381,7 +381,7 @@ bfile	*fp ;
 {
 	FSPIPE		p ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs ;
 	int	len ;

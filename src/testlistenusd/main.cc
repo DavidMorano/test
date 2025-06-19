@@ -160,7 +160,7 @@ char	*argv[] ;
 
 	struct iovec	vecs[NIOVECS] ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	struct userinfo	u ;
 

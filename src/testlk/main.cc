@@ -198,7 +198,7 @@ char	*argv[], *envv[] ;
 {
 	struct proginfo		pi, *pip = &pi ;
 
-	struct ustat		sb ;
+	ustat		sb ;
 
 	struct group		ge ;
 
