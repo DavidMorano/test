@@ -31,7 +31,7 @@
 #include	<sys/param.h>
 #include	<limits.h>
 
-#include	<usystem.h>		/* for 'struct ustat' */
+#include	<usystem.h>		/* for 'ustat' */
 #include	<localmisc.h>
 
 
@@ -43,7 +43,7 @@
 struct filemap_head {
 	const char	*bp ;
 	const void	*mapdata ;
-	struct ustat	sb ;		/* requires 'usystem.h' */
+	ustat	sb ;		/* requires 'usystem.h' */
 	size_t		mapsize ;
 	size_t		maxsize ;
 } ;
@@ -56,7 +56,7 @@ extern "C" {
 #endif
 
 extern int	filemap_open(FILEMAP *,const char *,int,size_t) ;
-extern int	filemap_stat(FILEMAP *,struct ustat *) ;
+extern int	filemap_stat(FILEMAP *,ustat *) ;
 extern int	filemap_read(FILEMAP *,int,void *) ;
 extern int	filemap_getline(FILEMAP *,const char **) ;
 extern int	filemap_seek(FILEMAP *,offset_t,int) ;

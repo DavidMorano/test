@@ -146,7 +146,7 @@ extern char	*timestr_elapsed(time_t,char *) ;
 
 /* local structures */
 
-struct ustats {
+struct stats {
 	int	t, vs, strs, stab ;
 } ;
 
@@ -821,9 +821,9 @@ struct proginfo	*pip ;
 bfile		*ofp ;
 const char	ifname[] ;
 {
-	struct ustats	s ;
+	struct stats	s ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	struct mallstate	ms_sub ;
 	struct mallstate	ms_hdb ;
@@ -864,7 +864,7 @@ const char	ifname[] ;
 	}
 #endif /* CF_DEBUG */
 
-	memset(&s,0,sizeof(struct ustats)) ;
+	memset(&s,0,sizeof(struct stats)) ;
 
 #if	CF_WFIELD
 	rs = bopen(&wf,"fs","wct",0666) ;

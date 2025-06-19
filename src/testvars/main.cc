@@ -1382,7 +1382,7 @@ const char	fname[] ;
 
 	struct filemap	fm ;
 
-	struct ustat	sb ;
+	ustat	sb ;
 
 	int	rs = SR_OK ;
 
@@ -1426,7 +1426,7 @@ static int locinfo_fileload(lip,fmp)
 struct locinfo	*lip ;
 struct filemap	*fmp ;
 {
-	struct ustat	sb ;
+	ustat	sb ;
 
 	size_t	fsize = 0 ;
 

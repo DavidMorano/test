@@ -198,7 +198,7 @@ int main(argc,argv,envv)
 int	argc ;
 char	*argv[], *envv[] ;
 {
-	struct ustat		sb ;
+	ustat		sb ;
 
 	struct proginfo		pi, *pip = &pi ;
 
