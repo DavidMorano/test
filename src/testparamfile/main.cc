@@ -194,7 +194,7 @@ const char	*envv[] ;
 
 	        while (rs >= 0) {
 
-	            el = paramfile_enum(&params,&cur,&pe,ebuf,EBUFLEN) ;
+	            el = paramfile_curenum(&params,&cur,&pe,ebuf,EBUFLEN) ;
 		    if (el == SR_NOTFOUND) break ;
 		    rs = el ;
 		    if (rs < 0) break ;
