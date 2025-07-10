@@ -3,7 +3,7 @@
 /* lang=C++20 (conformance reviewed) */
 
 
-#include	<envstandards.h>	/* must be ordered fist to configure */
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<unistd.h>		/* |sysconf(2)| */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>

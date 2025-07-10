@@ -1,4 +1,4 @@
-/* mainquick */
+/* mainquick SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++98 */
 
@@ -27,9 +27,11 @@
 
 /* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>	/* must be ordered fist to configure */
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<utility>

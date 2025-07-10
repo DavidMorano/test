@@ -1,4 +1,5 @@
 /* main SUPPORT (testvecsorthand) */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* sorted vector testing */
@@ -14,7 +15,7 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>	/* must be ordered fist to configure */
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>

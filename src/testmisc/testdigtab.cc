@@ -1,5 +1,8 @@
 /* main SUPPORT (testdigtab) */
-#include	<envstandards.h>	/* must be ordered fist to configure */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<climits>		/* |UCHAR_MAX| */
 #include	<iostream>
 #include	<clanguage.h>
@@ -18,3 +21,5 @@ int main() {
 	}
     }
 }
+
+

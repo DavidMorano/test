@@ -3,6 +3,7 @@
 /* lang=C++20 (conformance reviewed) */
 
 #define	CF_DEBUGS	1
+
 #include	<envstandards.h>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
@@ -45,8 +46,6 @@ int main(int argc,mainv argv,mainv envv) {
 #if	CF_DEBUGS
 	debugclose() ;
 #endif
-
-	return 0 ;
 }
 /* end subroutine (main) */
 

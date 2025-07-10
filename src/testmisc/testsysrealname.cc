@@ -7,7 +7,7 @@
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
 
-#include	<envstandards.h>	/* must be ordered fist to configure */
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/syslog.h>
 #include	<cstdlib>
@@ -25,20 +25,20 @@
 /* external subroutines */
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern const char	*getourenv(const char **,const char *) ;
+extern cchar	*getourenv(cchar **,cchar *) ;
 
 /* local structures */
 
 struct arginfo {
 	int		argc ;
 	int		ai, ai_max, ai_pos ;
-	const char	**argv ;
+	cchar	**argv ;
 } ;
 
 /* forward references */
@@ -66,7 +66,7 @@ int main(int argc,mainv argv,mainv envv) {
 	int	ttl = (10*60) ;
 	int	opts = 0 ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 #if	CF_DEBUGS
 	if ((cp = getenv(VARDEBUGFNAME)) != NULL) {
@@ -118,7 +118,7 @@ int main(int argc,mainv argv,mainv envv) {
 		UCMALLREG_REG	reg ;
 		const int	size = (10*sizeof(uint)) ;
 		int		rs1 ;
-		const char	*ids = "main" ;
+		cchar	*ids = "main" ;
 		uc_mallinfo(mi,size) ;
 	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
 	        debugprintf("main: MIoutnummax=%u\n",mi[ucmallreg_outnummax]) ;
@@ -162,7 +162,7 @@ static int procargs(struct ainfo *aip,SYSREALNAME *snp) {
 
 		for (ai = 1 ; argv[ai] != NULL ; ai += 1) {
 		    SYSREALNAME_CUR	cur ;
-		    const char	*gn = argv[ai] ;
+		    cchar	*gn = argv[ai] ;
 #if	CF_PRINTBEF
 			      printf("before cursor gn=%s\n",gn) ;
 #endif
