@@ -4,34 +4,40 @@
 #define	CF_DEBUGS	1		/* compile-time debugging */
 
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstdio>
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysdefs.h>
+#include	<usysrets.h>
+#include	<localmisc.h>
 
 #include	"testprgetprogpath_config.h"
 
 
 #if	CF_DEBUGS || CF_DEBUGN
-extern int	nprintf(const char *,const char *,...) ;
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	nprintf(cchar *,cchar *,...) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-extern const char	*getourenv(const char **,const char *) ;
+extern cchar	*getourenv(cchar **,cchar *) ;
 
 
-int main(int argc, const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	int	rs = 0 ;
 
-	const char	*pr = "/usr/add-on/local" ;
-	const char	*pn = "imail" ;
+	cchar	*pr = "/usr/add-on/local" ;
+	cchar	*pn = "imail" ;
 	char		progfname[MAXPATHLEN+1] ;
 
 #if	CF_DEBUGS 
@@ -49,9 +55,7 @@ int main(int argc, const char **argv,const char **envv)
 	debugclose() ;
 #endif
 
-	return 0 ;
 }
 /* end subroutine (main) */
-
 
 
