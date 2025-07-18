@@ -117,10 +117,10 @@ constexpr uint		addrset_magic = ADDRSET_MAGIC ;
 
 int addrset::ins(cvoid *addr,size_t asize) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    trackp	tp = trackp(setp) ;
 	    rs = SR_INVALID ;
-	    if (addr && (asize > 0)) {
+	    if (addr && (asize > 0)) ylikely {
 		const ent	e = { addr, asize } ;
 		try {
 		    setret	ret = tp->insert(e) ;
@@ -140,11 +140,11 @@ int addrset::ins(cvoid *addr,size_t asize) noex {
 
 int addrset::rem(cvoid *addr) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    trackp	tp = trackp(setp) ;
 	    ent		e = { addr, 0uz } ;
 	    rs = SR_INVALID ;
-	    if (addr) {
+	    if (addr) ylikely {
 		csize r = tp->erase(e) ;
 		rs = (r) ? SR_OK : SR_NOEXIST ;
 	    } /* end if (valid addr) */
@@ -155,11 +155,11 @@ int addrset::rem(cvoid *addr) noex {
 
 int addrset::present(cvoid *addr) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    trackp	tp = trackp(setp) ;
 	    ent		e = { addr, 0uz } ;
 	    rs = SR_INVALID ;
-	    if (addr) {
+	    if (addr) ylikely {
 		if (bool f ; (f = tp->contains(e)) == true) {
 		    rs = SR_OK ;
 		} else {
@@ -173,11 +173,11 @@ int addrset::present(cvoid *addr) noex {
 
 int addrset::get(cvoid *addr,addrset_ent *ep) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    trackp	tp = trackp(setp) ;
 	    ent		e = { addr, 0uz } ;
 	    rs = SR_INVALID ;
-	    if (addr) {
+	    if (addr) ylikely {
 		setiter ite = tp->end() ;
 		setiter	it = tp->find(e) ;
 		if (it != ite) {
@@ -195,9 +195,9 @@ int addrset::get(cvoid *addr,addrset_ent *ep) noex {
 
 int addrset::curbegin(cur *curp) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    rs = SR_FAULT ;
-	    if (curp) {
+	    if (curp) ylikely {
 	        cnullptr	np{} ;
 		cnothrow	nt = nothrow ;
 	        trackp		tp = trackp(setp) ;
@@ -227,9 +227,9 @@ int addrset::curbegin(cur *curp) noex {
 
 int addrset::curend(cur *curp) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    rs = SR_FAULT ;
-	    if (curp) {
+	    if (curp) ylikely {
 	        setiter		*itcp = setiterp(curp->vitcp) ;
 	        setiter		*itep = setiterp(curp->vitep) ;
 		delete itcp ;
@@ -244,11 +244,11 @@ int addrset::curend(cur *curp) noex {
 
 int addrset::curenum(cur *curp,ent *ep) noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    rs = SR_FAULT ;
-	    if (curp && ep) {
+	    if (curp && ep) ylikely {
 		rs = SR_NOTOPEN ;
-		if (curp->vitcp && curp->vitep) {
+		if (curp->vitcp && curp->vitep) ylikely {
 	            setiter	*itcp = setiterp(curp->vitcp) ;
 	            setiter	*itep = setiterp(curp->vitep) ;
 		    {
@@ -274,7 +274,7 @@ int addrset::curenum(cur *curp,ent *ep) noex {
 
 int addrset::istart(int n) noex {
 	int		rs = SR_INVALID ;
-	if (n >= 0) {
+	if (n >= 0) ylikely {
 	    try {
 	        if (trackp tp ; (tp = new(nothrow) track) != nullptr) {
 		    setp = tp ;
@@ -291,7 +291,7 @@ int addrset::istart(int n) noex {
 
 int addrset::ifinish() noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    trackp	tp = trackp(setp) ;
 	    rs = SR_OK ;
 	    {
@@ -306,7 +306,7 @@ int addrset::ifinish() noex {
 
 int addrset::icount() noex {
 	int		rs = SR_NOTOPEN ;
-	if (magic == addrset_magic) {
+	if (magic == addrset_magic) ylikely {
 	    trackp	tp = trackp(setp) ;
 	    rs = int(tp->size()) ;
 	} /* end if (was open) */
@@ -315,18 +315,16 @@ int addrset::icount() noex {
 /* end method (addrset::icount) */
 
 void addrset::dtor() noex {
-	ulogerror("addrset",SR_BUGCHECK,"dtor called") ;
 	if (magic) {
 	    if (cint rs = ifinish() ; rs < 0) {
 		ulogerror("addrset",rs,"dtor-finish") ;
 	    }
 	}
-}
-/* end method (addrset::dtor) */
+} /* end method (addrset::dtor) */
 
 int addrset_co::operator () (int a) noex {
 	int		rs = SR_BUGCHECK ;
-	if ((w >= 0) && op) {
+	if ((w >= 0) && op) ylikely {
 	    switch (w) {
 	    case addrsetmem_start:
 		rs = op->istart(a) ;
@@ -342,7 +340,6 @@ int addrset_co::operator () (int a) noex {
 	    } /* end switch */
 	} /* end if (valid) */
 	return rs ;
-}
-/* end method (addrset_co::operator int) */
+} /* end method (addrset_co::operator) */
 
 
