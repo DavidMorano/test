@@ -20,16 +20,16 @@
 
 extern int	getportnum(cchar *,cchar *) ;
 extern int	fbwrite(FILE *,const void *,int) ;
-extern int	bufprintf(char *,int,const char *,...) ;
+extern int	bufprintf(char *,int,cchar *,...) ;
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(const char **,const char *) ;
+extern cchar 	*getourenv(cchar **,cchar *) ;
 
 extern char	*timestr_logz(time_t,char *) ;
 
@@ -41,7 +41,7 @@ static int procopen(cchar *) ;
 /* exported subroutines */
 
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 
 #if	CF_DEBUGS && CF_DEBUGMALL
@@ -53,7 +53,7 @@ int main(int argc,const char **argv,const char **envv)
 
 #if	CF_DEBUGS
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	        rs = debugopen(cp) ;
 	        debugprintf("main: starting rs=%d\n",rs) ;
@@ -69,23 +69,23 @@ int main(int argc,const char **argv,const char **envv)
 	if (argv != NULL) {
 	    int		ai ;
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
-		const int	to = 60 ;
-	        const int	of = O_RDONLY ;
-	        const char	*ps = argv[ai] ;
+		cint	to = 60 ;
+	        cint	of = O_RDONLY ;
+	        cchar	*ps = argv[ai] ;
 		cchar		*sp = "hello world!\n" ;
 #if	CF_DEBUGS
 	        debugprintf("main: ps=%s\n",ps) ;
 #endif
 		if ((rs = procopen(ps)) >= 0) {	
 		    SOCKADDR	sa ;
-		    const int	sfd = rs ;
-		    const int	sl = strlen(sp) ;
+		    cint	sfd = rs ;
+		    cint	sl = strlen(sp) ;
 		    int		sal = 0 ;
 #if	CF_DEBUGS
 	        debugprintf("main: procopen() rs=%d\n",rs) ;
 #endif
 		    while ((rs = uc_accepte(sfd,&sa,&sal,to)) >= 0) {
-			const int	cfd = rs ;
+			cint	cfd = rs ;
 			{
 			    if ((rs = uc_writen(cfd,sp,sl)) >= 0) {
 				u_close(cfd) ;
@@ -129,45 +129,35 @@ int main(int argc,const char **argv,const char **envv)
 
 /* local subroutines */
 
-
-static int procopen(cchar *ps)
-{
-	SOCKADDRESS	sa ;
-	const int	alen = INETXADDRLEN ;
-	const int	af = AF_INET ;
-	const int	fl = 0 ;
+static int procopen(cchar *ps) noex {
+	cint		alen = INETXADDRLEN ;
+	cint		af = AF_INET ;
+	cint		fl = 0 ;
 	int		rs ;
+	int		rs1 ;
 	int		fd = -1 ;
 	cchar		*pn = "tcp" ;
 	char		addr[INETXADDRLEN+1] ;
-
+	(void) alen ;
 	if ((rs = getportnum(pn,ps)) >= 0) {
-	    const int	port = rs ;
-	    if ((rs = sockaddress_startaddr(&sa,af,addr,alen,port,fl)) >= 0) {
-		const int	pf = PF_INET4 ;
-		const int	st = SOCK_STREAM ;
-		const int	proto = 0 ;
-		
+	    cint	port = rs ;
+	    sockaddress	sa ;
+	    if ((rs = sockaddress_start(&sa,af,addr,port,fl)) >= 0) {
+		cint	pf = PF_INET4 ;
+		cint	st = SOCK_STREAM ;
+		cint	proto = 0 ;
 		if ((rs = openport(pf,st,proto,&sa)) >= 0) {
 	            fd = rs ;
-
-#if	CF_DEBUGS
-	            debugprintf("listenspec_openporter: openport() rs=%d\n",
-			rs) ;
-#endif
-
 	            rs = u_listen(fd,10) ;
-
 		    if ((rs < 0) && (fd >= 0)) {
 			u_close(fd) ;
 			fd = -1 ;
-		    }
+		    } /* end if (error) */
 	        } /* end if (openport) */
-
-	        sockaddress_finish(&sa) ;
-	} /* end if (sockaddress) */
+	        rs1 = sockaddress_finish(&sa) ;
+		if (rs >= 0) rs = rs1 ;
+	    } /* end if (sockaddress) */
 	} /* end if (getportnum) */
-
 	return (rs >= 0) ? fd : rs ;
 }
 /* end subroutine (procoptn) */
