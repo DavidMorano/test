@@ -1,9 +1,8 @@
-/* mainheap */
+/* mainheap SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
-
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -16,18 +15,15 @@
 
 /*******************************************************************************
 
-	We look at a heap and find the nth (by index) smallest element in a
-	(modifiable) sequence of numbers.
+	We look at a heap and find the nth (by index) smallest
+	element in a (modifiable) sequence of numbers.
 
 	Algoirthms:
-
 	A	max-heap smart
 	B	max-heap dumb
 	C	nth_element()
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>
 #include	<sys/types.h>
@@ -64,11 +60,6 @@ typedef vector<int>::iterator	vit ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
-
 
 /* external variables */
 
@@ -91,12 +82,12 @@ static int printv(vector<int> &,int) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv,mainv) {
 	vector<int>	v ;
 	string		s = "hello world!" ;
 	const int	n = 4 ; /* nth (smallest) element */
