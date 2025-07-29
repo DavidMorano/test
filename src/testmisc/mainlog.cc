@@ -1,9 +1,8 @@
-/* mainlog */
+/* mainlog SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
-
 #define	CF_DEBUGS	1		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -17,8 +16,9 @@
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<cmath>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -32,6 +32,7 @@
 #include	<iostream>
 #include	<iomanip>
 #include	<usystem.h>
+#include	<getourenv.h>
 #include	<localmisc.h>
 
 
@@ -49,19 +50,12 @@ using namespace std ;
 
 extern "C" double	log2(double) ;
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -76,11 +70,12 @@ extern "C" char	*strwcpy(char *,cchar *,int) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = 0 ;
 	cchar		*cp ;
