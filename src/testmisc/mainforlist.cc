@@ -1,9 +1,8 @@
-/* mainforlist */
+/* mainforlist SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
-
 #define	CF_DEBUGS	1		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -14,10 +13,11 @@
 
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -25,12 +25,14 @@
 #include	<functional>
 #include	<algorithm>
 #include	<forward_list>
-#include	<vector>
+#include	<usystem.h>
 #include	<string>
+#include	<vector>
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
 #include	<usystem.h>
+#include	<getourenv.h>
 #include	<localmisc.h>
 
 
@@ -46,19 +48,12 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -80,11 +75,12 @@ static int forlist_add(ourlist &,ourlist::iterator &,int) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv,mainv envv) {
 	int			rs = SR_OK ;
 	cchar			*cp ;
 #if	CF_DEBUGS
@@ -92,6 +88,8 @@ int main(int argc,cchar **argv,cchar **envv)
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
+#else
+	(void) envv ;
 #endif /* CF_DEBUGS */
 	{
 	    forward_list<int>	srclist = { 2, 4, 8, 1, 0 	} ;
