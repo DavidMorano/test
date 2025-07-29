@@ -1,11 +1,11 @@
-/* mainhide */
+/* mainhide SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* name hiding in C++ */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -16,10 +16,11 @@
 
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -41,11 +42,6 @@ using namespace std ;
 
 
 /* external subroutines */
-
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -120,11 +116,12 @@ public:
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv,mainv) {
 	hunker		h ;
 	junker		j ;
 	b		b1 ;
