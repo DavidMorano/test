@@ -1,11 +1,11 @@
-/* mainlistadd */
+/* mainlistadd SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* test of list addition operations */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -18,16 +18,16 @@
 
 /*******************************************************************************
 
-	This is really a sort of game.  We add numbers in two lists and put the
-	results into a third list.
-
+	This is really a sort of game.  We add numbers in two lists
+	and put the results into a third list.
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -35,12 +35,13 @@
 #include	<functional>
 #include	<algorithm>
 #include	<forward_list>
-#include	<vector>
 #include	<string>
+#include	<vector>
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
 #include	<usystem.h>
+#include	<getourenv.h>
 #include	<localmisc.h>
 
 
@@ -56,19 +57,12 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -164,11 +158,12 @@ public:
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv,mainv envv) {
 	forward_list<int>	l1 = { 2, 4, 8, 1, 0 } ;
 	forward_list<int>	l2 = { 1, 5, 3, 2, 9 } ;
 	vector<int>		lr ;
@@ -181,6 +176,8 @@ int main(int argc,const char **argv,const char **envv)
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
+#else
+	(void) envv ;
 #endif /* CF_DEBUGS */
 
 	{
