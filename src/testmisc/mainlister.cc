@@ -1,4 +1,5 @@
 /* mainlister SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* test of SLIST object */
@@ -26,8 +27,9 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -42,6 +44,9 @@
 #include	<iomanip>
 #include	<usystem.h>
 #include	<ucmallreg.h>
+#include	<getourenv.h>
+#include	<ctdec.h>
+#include	<strwcpy.h>
 #include	<localmisc.h>
 
 #include	"slist.hh"
@@ -63,9 +68,6 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-extern "C" int	ctdeci(char *,int,int) ;
 
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
@@ -75,9 +77,6 @@ extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
 
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
