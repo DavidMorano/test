@@ -1,9 +1,8 @@
-/* mainstring */
+/* mainstring SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
-
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -23,12 +22,16 @@
 #include	<utility>
 #include	<functional>
 #include	<algorithm>
-#include	<vector>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<string>
+#include	<vector>
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
 #include	<usystem.h>
+#include	<mkx.h>
+#include	<strwcpy.h>
 #include	<localmisc.h>
 
 
@@ -38,11 +41,6 @@ using namespace std ;
 
 
 /* external subroutines */
-
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -62,7 +60,9 @@ extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 /* exported subroutines */
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,mainv argv,mainv envv) {
+    	cnothrow	nt{} ;
+	cnullptr	np{} ;
 	string		s = "hello world!" ;
 	string		w ;
 	int		i ;
@@ -90,23 +90,25 @@ int main(int argc,const char **argv,const char **envv) {
 /* three */
 
 	{
-	    const int	sl = s.length() ;
+	    cint	sl = s.length() ;
 	    cchar	*sp = s.c_str() ;
 	    char	*bp ;
 	    if ((bp = new(nothrow) char [sl+1]) != NULL) {
-		const int	bl = sl ;
+		cint	bl = sl ;
 		strwcpy(bp,sp,sl) ;
 
-		mkrevstr(bp,bl) ;
-
-		cout << bp << endl ;
+		cint	rlen = sl ;
+		if (char *rbuf ; (rbuf = new(nt) char[rlen + 1]) != np) {
+		    mklineclean(rbuf,rlen,bp,bl) ;
+		    cout << rbuf << endl ;
+		    delete {} rbuf ;
+		}
 
 		delete [] bp ;
 	    } else {
 		rs = SR_NOMEM ;
 	    } /* end if (m-a-f) */
 	}
-
 
 	return 0 ;
 }
