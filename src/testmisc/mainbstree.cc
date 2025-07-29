@@ -1,6 +1,6 @@
-/* mainbstree */
+/* mainbstree SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
-
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGPL	0
@@ -10,7 +10,6 @@
 #define	CF_PRINTLIST	1		/* |printlist()| */
 #define	CF_CLASSLESS	1		/* class |less| */
 #define	CF_DEPTH	1		/* find max-depth */
-
 
 /* revision history:
 
@@ -25,14 +24,13 @@
 
 	This is the test jig for testing the BSTREE object.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -49,6 +47,9 @@
 #include	<iomanip>
 #include	<usystem.h>
 #include	<ucmallreg.h>
+#include	<getourenv.h>
+#include	<ctdec.h>
+#include	<strwcpy.h>
 #include	<localmisc.h>
 
 #include	"bstree.hh"
@@ -70,10 +71,6 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-extern "C" int	ctdeci(char *,int,int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
@@ -81,10 +78,6 @@ extern "C" int	debugprinthexblock(cchar *,int,const void *,int) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
 
 
 /* external variables */
@@ -127,11 +120,12 @@ static int	printlist(ourlist &,cchar *) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv,mainv envv) {
 #if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
 	uint		mo_start ;
 #endif
@@ -142,6 +136,8 @@ int main(int argc,const char **argv,const char **envv)
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
+#else
+	(void) envv ;
 #endif /* CF_DEBUGS */
 #if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
 	uc_mallset(1) ;
