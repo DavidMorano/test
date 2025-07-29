@@ -1,9 +1,8 @@
-/* mainprique */
+/* mainprique SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
-
 #define	CF_DEBUGS	0		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -16,8 +15,10 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<cstdlib>
 #include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstdlib>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -41,11 +42,6 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	mkrevstr(char *,int) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
-
 
 /* external variables */
 
@@ -61,11 +57,12 @@ static int	printa(const int *,int) ;
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	priority_queue<int,vector<int>,greater<int>>	pq ;
 	string		s = "hello world!" ;
 	int		rs = SR_OK ;
