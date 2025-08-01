@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test how the (given) compiler treats non-ASCII characters */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -70,9 +73,14 @@ static void encoding() ;
 
 /* local variables */
 
-extern cchar	gﬂstr[] ;
-
 const cchar	gﬂstr[] = "g-str" ;
+const cchar	µgﬂstr[] = "l-str" ;
+const cchar	™gﬂstr[] = "str2" ;
+const cchar	∫gﬂstr[] = "str3" ;
+const cchar	ﬂgﬂstr[] = "str4" ;
+const cchar	ﬂgﬂstrπ[] = "strπ" ;
+const cchar	ﬂgﬂstr≤[] = "str≤" ;
+const cchar	ﬂgﬂstr≥[] = "str≥" ;
 
 
 /* exported variables */
@@ -83,11 +91,22 @@ const cchar	gﬂstr[] = "g-str" ;
 int main(int,mainv,mainv) {
     	cout << "Hello world! - J‚ck SmÓth" << eol ;
 	{
+	    int	∫ch = '‡' ;
+	    cout << "ch=" << ∫ch << eol ;
+	}
+	{
 	    cchar	*ﬂthere = "xx-there" ;
 	    cout << ﬂthere << eol ;
 	}
 	{
 	    cout << gﬂstr << eol ;
+	    cout << µgﬂstr << eol ;
+	    cout << ™gﬂstr << eol ;
+	    cout << ∫gﬂstr << eol ;
+	    cout << ﬂgﬂstr << eol ;
+	    cout << ﬂgﬂstrπ << eol ;
+	    cout << ﬂgﬂstr≤ << eol ;
+	    cout << ﬂgﬂstr≥ << eol ;
 	}
 	encoding() ;
 }
