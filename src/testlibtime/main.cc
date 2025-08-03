@@ -1,4 +1,6 @@
-/* testlibtime */
+/* testlibtime SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 
 #define	CF_TZSET	0		/* call 'tzset(3)' */
