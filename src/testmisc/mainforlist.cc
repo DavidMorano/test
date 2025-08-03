@@ -117,7 +117,6 @@ int main(int argc,mainv,mainv envv) {
 
 /* local subroutines */
 
-
 /* extreme danger: only increment iterator after the insert call */
 static int forlist_add(ourlist &ll,ourlist::iterator &it,int v) { 
 	int		rs = SR_OK ;
@@ -132,9 +131,7 @@ static int forlist_add(ourlist &ll,ourlist::iterator &it,int v) {
 }
 /* end subroutine (forlist_add) */
 
-
-static int printlist(forward_list<int> &l,cchar *s)
-{
+static int printlist(forward_list<int> &l,cchar *s) {
 	int	c = 0 ;
 	cout << s ;
 	for (auto v : l) {
@@ -146,11 +143,9 @@ static int printlist(forward_list<int> &l,cchar *s)
 }
 /* end subroutine (printlist) */
 
-
-static int printvec(vector<int> &l,cchar *s)
-{
+static int printvec(vector<int> &l,cchar *s) {
 	int	c = 0 ;
-	for (auto v : l) {
+	for (cauto v : l) {
 	    c += 1 ;
 	    cout << " " << v ;
 	}
