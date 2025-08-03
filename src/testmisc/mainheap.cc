@@ -25,8 +25,9 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cinttypes>
 #include	<cstring>
@@ -69,8 +70,8 @@ typedef vector<int>::iterator	vit ;
 
 /* forward references */
 
-static int ntha(const vector<int> &,const int n) ;
-static int nthb(const vector<int> &,const int n) ;
+static int ntha(const vector<int> &,cint n) ;
+static int nthb(const vector<int> &,cint n) ;
 
 static int heapleft(int) ;
 static int heapright(int) ;
@@ -90,7 +91,7 @@ static int printv(vector<int> &,int) ;
 int main(int argc,mainv,mainv) {
 	vector<int>	v ;
 	string		s = "hello world!" ;
-	const int	n = 4 ; /* nth (smallest) element */
+	cint	n = 4 ; /* nth (smallest) element */
 	int		rs = SR_OK ;
 	int		ex = 0 ;
 
@@ -137,7 +138,7 @@ int main(int argc,mainv,mainv) {
 	    cout << "B nth=" << nth << endl ;
 	    {
 	        typedef less<int>	icmp_t ;
-	        const int		vl = v.size() ;
+	        cint		vl = v.size() ;
 	        if (n < vl) {
 	            icmp_t	icmp ;
 	            vit		end = v.end() ;
@@ -159,12 +160,9 @@ int main(int argc,mainv,mainv) {
 
 /* local subroutines */
 
-
-/* smarter */
-static int ntha(const vector<int> &s,const int n)
-{
+static int ntha(const vector<int> &s,cint n) {
 	priority_queue<int>		maxheap ;
-	const int	sl = s.size() ;
+	cint	sl = s.size() ;
 	int		ch ;
 	int		maxch ;
 	int		nth = 0 ;
@@ -186,12 +184,9 @@ static int ntha(const vector<int> &s,const int n)
 }
 /* end subroutine (ntha) */
 
-
-/* dumber */
-static int nthb(const vector<int> &s,const int n)
-{
+static int nthb(const vector<int> &s,cint n) {
 	priority_queue<int>		maxheap ;
-	const int	sl = s.size() ;
+	cint	sl = s.size() ;
 	int		ch ;
 	int		nth = 0 ;
 	int		i ;
@@ -207,20 +202,16 @@ static int nthb(const vector<int> &s,const int n)
 }
 /* end subroutine (nthb) */
 
-
-static int heapleft(int n)
-{
+static int heapleft(int n) {
 	return (2*n +1) ;
 }
 
-static int heapright(int n)
-{
+static int heapright(int n) {
 	return (2*n + 2) ;
 }
 
-static int printnodes(vector<int> &v,int n)
-{
-	const int	vl = (int) v.size() ;
+static int printnodes(vector<int> &v,int n) {
+	cint	vl = (int) v.size() ;
 	if (n < vl) {
 	    cout << " " << v[n] ;
 	    printnodes(v,heapleft(n)) ;
@@ -232,15 +223,13 @@ static int printnodes(vector<int> &v,int n)
 }
 /* end subroutine (printnodes) */
 
-
-static int printv(vector<int> &v,int n)
-{
+static int printv(vector<int> &v,int n) {
 	int		i = 0 ;
 	for (auto e : v) {
 	    if (i++ < n) {
 	        cout << " " << e ;
 	    }
-	}
+	} /* end for */
 	cout << endl ;
 	return 0 ;
 }
