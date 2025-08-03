@@ -2,7 +2,6 @@
 /* charset=ISO8859-1 */
 /* lang=C++98 */
 
-
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_PRINTA	1		/* define |printa()| */
 #define	CF_NTH		0		/* nth element */
@@ -13,15 +12,14 @@
 #define CF_SEL1		1		/* selection-1 */
 #define CF_SEL2		1		/* selection-2 */
 
-
 /* revision history:
 
 	= 2000-05-14, David A­D­ Morano
 	Originally written for Rightcore Network Services.
 
 	= 2017-09-15, David A­D­ Morano
-	Looking over again. Added standard |quickselecti()| in the form of the
-	C++ STL |partial_sort()| function.
+	Looking over again.  Added standard |quickselecti()| in the
+	form of the C++ STL |partial_sort()| function.
 
 */
 
@@ -323,12 +321,11 @@ static int partpred(int e,int p) {
 
 static int subpar2(const vector<int> &a,int al,int n) {
 	int		rs = SR_OK ;
-	int		size ;
+	int		sz ;
 
 	if (n < al) {
-	    cint	size = ((al+1)*sizeof(int)) ;
-	    int		*aa ;
-	if ((rs = uc_malloc(size,&aa)) >= 0) {
+	    cint	sz = ((al+1)*szof(int)) ;
+	    if (int *aa ; (rs = uc_malloc(sz,&aa)) >= 0) {
 	    cint	pv = a[n] ;
 	    int		is ;
 	    int		i ;
@@ -356,17 +353,15 @@ static int subpar2(const vector<int> &a,int al,int n) {
 #if	CF_PARNTH || CF_NTH
 static int subparnth(const vector<int> &a,int al,int n) {
 	int		rs ;
-	int		size ;
-	int		*aa ;
+	int		sz ;
 
-	size = ((al+1)*sizeof(int)) ;
-	if ((rs = uc_malloc(size,&aa)) >= 0) {
-	    int		i ;
-	    for (i = 0 ; i < al ; i += 1) aa[i] = a[i] ;
-
+	sz = ((al+1)*sizeof(int)) ;
+	if (int *aa ; (rs = uc_malloc(size,&aa)) >= 0) {
+	    for (int i = 0 ; i < al ; i += 1) {
+		aa[i] = a[i] ;
+	    }
 	    rs = nthai(aa,0,al,n) ;
 	    printa(aa,al) ;
-
 	    uc_free(aa) ;
 	} /* end if (m-a-f) */
 
@@ -415,9 +410,8 @@ static int subquick() {
 	int		al = nelem(a) ;
 	int		rs ;
 	int		asize ;
-	int		*aa ;
-	asize = ((al+1)*sizeof(int)) ;
-	if ((rs = uc_malloc(asize,&aa)) >= 0) {
+	asize = ((al+1)*szof(int)) ;
+	if (int *aa ; (rs = uc_malloc(asize,&aa)) >= 0) {
 	    for (int n = 1 ; n <= MIN(nn,al) ; n += 1) {
 		cout << "n=" << n << endl ;
 		printa(a,al) ;
@@ -459,7 +453,7 @@ static int getpivot(cint *a,int al) {
 #if	CF_SEL1 || CF_SUBQUICK
 
 static int arr_load(int *aa,cint *a,int n) {
-	int	i ;
+	int	i ; /* used-afterwards */
 	for (i = 0 ; i < n ; i += 1) {
 	    aa[i] = a[i] ;
 	}
@@ -469,7 +463,7 @@ static int arr_load(int *aa,cint *a,int n) {
 
 #if	CF_SEL2
 static int vec_load(vector<int> &va,cint *a,int n) {
-	int	i ;
+	int	i ; /* used-afterwards */
 	for (i = 0 ; i < n ; i += 1) {
 	    va[i] = a[i] ;
 	}
@@ -481,8 +475,7 @@ static int vec_load(vector<int> &va,cint *a,int n) {
 
 #if	CF_PAR1 || CF_PAR2 || CF_NTH || CF_SEL2
 static void printv(const vector<int> &a,int al) {
-	int		i ;
-	for (i = 0 ; i < al ; i += 1) {
+	for (int i = 0 ; i < al ; i += 1) {
 	    cout << " " << setw(2) << a[i] ;
 	}
 	cout << endl ;
