@@ -40,6 +40,18 @@ MODS+=
 LIBS+= -luo -lu
 
 
+DEPS_MAIN += 
+DEPS_MAIN += 
+DEPS_MAIN += 
+DEPS_MAIN += 
+
+OBJ_FILES += testema_main.o 
+OBJ_FILES += 
+OBJ_FILES += 
+
+OBJ_MAIN= obj_main.o
+
+
 INCDIRS=
 #INCDIRS= -I$(INCDIR)
 
@@ -57,19 +69,7 @@ ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
 
-DEPS_MAIN += 
-DEPS_MAIN += 
-DEPS_MAIN += 
-DEPS_MAIN += 
-
-OBJ_FILES += testema_main.o 
-OBJ_FILES += 
-OBJ_FILES += 
-
-OBJ_MAIN= obj_main.o
-
-
-.SUFFIXES:		.hh .ii .ccm
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
@@ -82,6 +82,9 @@ all:			$(ALL)
 
 .cc.ii:
 	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
 
 .c.s:
 	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
