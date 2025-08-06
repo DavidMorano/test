@@ -1,4 +1,4 @@
 TESTBASENAME
 
-This program tests the 'sfbasename(3dam)' subroutine.
+This program tests the 'sfbasename(3uc)' subroutine.
 
