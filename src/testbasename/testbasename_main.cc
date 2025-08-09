@@ -79,6 +79,8 @@ extern "C" {
 
 /* local variables */
 
+cint		maxlinelen = LINEBUFLEN ;
+
 
 /* exported variables */
 
@@ -91,9 +93,9 @@ int main(int,mainv,mainv) {
     	FILE		*fp = stdin ;
 	int		rs = SR_OK ;
 	int		ex = EX_OK ;
-	int		llen = LINEBUFLEN ;
+	int		llen = maxlinelen ;
 	if (char *lbuf ; (lbuf = new(nt) char[llen + 1]) != np) {
-	    int		blen = LINEBUFLEN ;
+	    int		blen = maxlinelen ;
 	    if (char *bbuf ; (bbuf = new(nt) char[blen + 1]) != np) {
 	        while ((rs = freadln(fp,lbuf,llen)) > 0) {
 		    rs = rmeol(lbuf,rs) ;
