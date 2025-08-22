@@ -113,16 +113,19 @@ void encoding() {
  
     std::println("The literal encoding is {}", literal_encoding.name());
     std::println("The aliases of literal encoding:");
-    for (const char* alias_name : literal_encoding.aliases())
+    for (const char* alias_name : literal_encoding.aliases()) {
         std::println(" -> {}", alias_name);
+    }
  
-    if (env_encoding == locale_encoding)
+    if (env_encoding == locale_encoding) {
         std::println("Both environment and locale encodings are the same");
+    }
  
     std::println("The environment encoding is {}", env_encoding.name());
     std::println("The aliases of environment encoding:");
-    for (const char* alias_name : env_encoding.aliases())
+    for (const char* alias_name : env_encoding.aliases()) {
         std::println(" -> {}", alias_name);
+    }
 } /* end subroutine (encoding) */
 
 
