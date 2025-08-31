@@ -23,9 +23,7 @@
 
 	We (try to) test the idea of receiving time-out call-backs.
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>
 #include	<sys/types.h>
@@ -52,7 +50,6 @@
 #include	<timespec.h>
 #include	<itimerspec.h>
 #include	<timeout.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
