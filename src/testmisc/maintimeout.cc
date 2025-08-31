@@ -3,13 +3,11 @@
 
 /* test the TIMEOUT facility */
 
-
 #define	CF_DEBUGS	1		/* non-switchable debug print-outs */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #define	CF_DEBUGN	1		/* special debugging */
 #define	CF_SIGHAND	1		/* install csignalandlers */
 #define	CF_CALLFINI	0		/* call |uctimeout_fini()| */
-
 
 /* revision history:
 
@@ -24,9 +22,7 @@
 
 	We (try to) test the TIMEOUT facility.
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>
 #include	<sys/types.h>
@@ -47,7 +43,6 @@
 #include	<iostream>
 #include	<usystem.h>
 #include	<sighand.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
