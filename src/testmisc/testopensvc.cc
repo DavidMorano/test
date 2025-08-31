@@ -25,7 +25,6 @@
 #include	<usystem.h>
 #include	<fsdir.h>
 #include	<filer.h>
-#include	<ucmallreg.h>
 #include	<localmisc.h>
 
 #ifndef FILER_RCNET
