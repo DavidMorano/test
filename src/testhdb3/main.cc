@@ -25,9 +25,7 @@
 
 	This program is used to debug the HDB object.
 
-
 ******************************************************************************/
-
 
 #include	<envstandards.h>	/* MUST be first to configure */
 
@@ -48,7 +46,6 @@
 #include	<vecstr.h>
 #include	<baops.h>
 #include	<mallocstuff.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
