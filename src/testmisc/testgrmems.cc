@@ -11,7 +11,6 @@
 #include	<cstdlib>
 #include	<cstdio>
 #include	<usystem.h>
-#include	<ucmallreg.h>
 #include	<localmisc.h>
 
 #include	"grmems.h"
