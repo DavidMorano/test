@@ -49,22 +49,7 @@ MODS +=
 LIBS += -luo -lu
 
 
-INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
-
-
-RUNINFO= -rpath $(RUNDIR)
-LIBINFO= $(LIBDIRS) $(LIBS)
-
-CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
-CFLAGS		?= $(MAKECFLAGS)
-CXXFLAGS	?= $(MAKECXXFLAGS)
-ARFLAGS		?= $(MAKEARFLAGS)
-LDFLAGS		?= $(MAKELDFLAGS)
-
-
-OBJ00= fsdir_main.o
+OBJ00= testfsdir_main.o
 OBJ01= fsdir.o
 OBJ02=
 OBJ03=
@@ -87,7 +72,22 @@ OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
 OBJ= $(OBJA) $(OBJB)
 
 
-.SUFFIXES:		.hh .ii .ccm
+INCDIRS=
+
+LIBDIRS= -L$(LIBDIR)
+
+
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
+
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS)
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
+
+
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
@@ -100,6 +100,9 @@ all:			$(ALL)
 
 .cc.ii:
 	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
 
 .c.s:
 	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
@@ -121,7 +124,7 @@ $(T):			$(T).ee
 	cp -p $(T).ee $(T)
 
 $(T).x:			$(OBJ) Makefile
-	$(LD) -o $@ $(LDFLAGS) $(OBJ) $(LIBDIRS) $(LIBS) > $(T).lm
+	$(CXX) -o $@ $(LDFLAGS) $(OBJ) $(LIBDIRS) $(LIBS)
 
 $(T).prof:		$(OBJ) Makefile
 	$(LD) -o $@ $(LDFLAGS) $(MOBJ) $(LIBDIRS) $(LIBS)
