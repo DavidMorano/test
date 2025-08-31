@@ -44,7 +44,6 @@
 #include	<iostream>
 #include	<usystem.h>
 #include	<sighand.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
