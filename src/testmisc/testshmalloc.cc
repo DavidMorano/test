@@ -16,7 +16,6 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-
 #include	<envstandards.h>
 #include	<sys/types.h>
 #include	<unistd.h>
@@ -25,7 +24,6 @@
 #include	<cstdio>
 #include	<usystem.h>
 #include	<randomvar.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 #include	"testshmalloc.h"
