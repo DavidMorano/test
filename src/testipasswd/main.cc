@@ -13,9 +13,7 @@
 /* revision history:
 
 	= 1998-11-01, David A­D­ Morano
-
 	This subroutine was written for Rightcore Network Services.
-
 
 */
 
@@ -25,10 +23,7 @@
 
 	This little subroutine tests the IPASWD object.
 
-
-
 ******************************************************************************/
-
 
 #include	<envstandards.h>
 
@@ -44,7 +39,6 @@
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<field.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
