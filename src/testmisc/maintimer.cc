@@ -23,9 +23,7 @@
 
 	We (try to) test the TIMER facility.
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>
 #include	<sys/types.h>
@@ -50,7 +48,6 @@
 #include	<timespec.h>
 #include	<itimerspec.h>
 #include	<timeout.h>
-#include	<ucmallreg.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
