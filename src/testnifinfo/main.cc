@@ -22,7 +22,6 @@
 #include	<iostream>
 #include	<usystem.h>
 #include	<nifinfo.h>
-#include	<ucmallreg.h>
 #include	<strwcpy.h>
 #include	<getourenv.h>
 #include	<localmisc.h>
