@@ -46,7 +46,6 @@
 #include	<iostream>
 #include	<iomanip>
 #include	<usystem.h>
-#include	<ucmallreg.h>
 #include	<getourenv.h>
 #include	<ctdec.h>
 #include	<strwcpy.h>
