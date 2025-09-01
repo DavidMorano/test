@@ -105,7 +105,7 @@ int vecsorthand_start(vecsorthand *op,cmp_f cmpfunc,int vn) noex {
 	if (vn <= 1) vn = defents ;
 	if ((rs = vecsorthand_ctor(op,cmpfunc)) >= 0) {
 	    cint	sz = (szof(void **) * (vn + 1)) ;
-	    if (void *vp ; (rs = libmem.malloc(sz,&vp)) >= 0) {
+	    if (void *vp ; (rs = libmem.mall(sz,&vp)) >= 0) {
 	        op->va = voidpp(vp) ;
 	        op->e = vn ;
 	        {
@@ -308,11 +308,11 @@ static int vecsorthand_extend(vecsorthand *op) noex {
 	    if (op->e == 0) {
 	        ne = ndef ;
 	        sz = (ne * szof(void **)) ;
-	        rs = libmem.malloc(sz,&nva) ;
+	        rs = libmem.mall(sz,&nva) ;
 	    } else {
 	        ne = (op->e * 2) ;
 	        sz = (ne * szof(void **)) ;
-	        rs = libmem.ralloc(op->va,sz,&nva) ;
+	        rs = libmem.rall(op->va,sz,&nva) ;
 	    }
 	    if (rs >= 0) {
 	        op->va = nva ;
