@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test text encoding features of C++ */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -43,6 +46,7 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
+#include	<usysrets.h>
 #include	<localmisc.h>
 
 
