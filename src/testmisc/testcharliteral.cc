@@ -74,7 +74,13 @@ using std::cout ;			/* variable */
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
-    	cout << "\e[1mblinking\e[m" << eol ;
+    	int	hpos = 40 ;
+    	cout << "\e7" ;
+    	cout << "\e[10;1H" ;
+    	for (int i = 1 ; i < 10 ; i += 1) {
+    	    cout << "\e[40C\e[" << i << "mblinking\e[m\n" ;
+	}
+    	cout << "\e8" ;
 }
 /* end subroutine (main) */
 
