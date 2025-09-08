@@ -26,10 +26,9 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
-#include	<sys/types.h>
+#include	<cinttypes>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
-#include	<cinttypes>
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -47,6 +46,9 @@
 #include	<iomanip>
 #include	<usystem.h>
 #include	<localmisc.h>
+
+
+/* local defines */
 
 
 /* name-spaces */
@@ -110,8 +112,8 @@ int main(int argc,mainv,mainv) {
 
 	{
 	    auto it = v.begin() ;
-	    auto end = v.end() ;
-	    make_heap(it,end) ;
+	    auto ite = v.end() ;
+	    make_heap(it,ite) ;
 	    cout << "heap raw\n" ;
 	    for (auto val : v) {
 	        cout << " " << val ;
@@ -161,8 +163,8 @@ int main(int argc,mainv,mainv) {
 /* local subroutines */
 
 static int ntha(const vector<int> &s,cint n) {
-	priority_queue<int>		maxheap ;
-	cint	sl = s.size() ;
+	priority_queue<int>	maxheap ;
+	cint		sl = s.size() ;
 	int		ch ;
 	int		maxch ;
 	int		nth = 0 ;
@@ -186,7 +188,7 @@ static int ntha(const vector<int> &s,cint n) {
 
 static int nthb(const vector<int> &s,cint n) {
 	priority_queue<int>		maxheap ;
-	cint	sl = s.size() ;
+	cint		sl = s.size() ;
 	int		ch ;
 	int		nth = 0 ;
 	int		i ;
