@@ -34,6 +34,6 @@ int main(int,mainv,mainv) {
 	    cint	ch = (cha + j) ;
 	    printf("%c\n",char(ch)) ;
 	}
-}
+} /* end subroutine (main) */
 
 
