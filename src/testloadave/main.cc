@@ -1,20 +1,16 @@
 /* main */
 
-/* test out Sun Solaris UNIX 'kstat's */
+/* test out Sun Solaris UNIX® 'kstat's */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
 
-
 /* revision history:
 
 	= 1988-01-10, David A­D­ Morano
-
 	This subroutine was written (originally) as a test of
 	the Sun Solaris UNIX 'kstat' facility.
-
 
 */
 
@@ -24,12 +20,9 @@
 
 	Test the Sun Solaris® UNIX 'kstat' facility.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/mman.h>
@@ -40,10 +33,10 @@
 #include	<fcntl.h>
 #include	<termios.h>
 #include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
 #include	<kstat.h>
-
 #include	<usystem.h>
 #include	<field.h>
 #include	<bfile.h>
@@ -94,14 +87,12 @@ static volatile int	f_alarm ;
 static volatile int	f_signal ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+int main(int argc,mainv argv,mainv)
 	struct sigaction	sigs ;
 	LOADAVE			la ;
 	LOADAVE_VALUES		lav ;
