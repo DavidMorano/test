@@ -1,21 +1,19 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* test out Sun Solaris UNIX 'kstat's */
+/* test out Sun Solaris UNIX® 'kstat's */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
 #define	CF_TESTSYSINFO	0
 
-
 /* revision history:
 
 	= 1988-01-10, David A­D­ Morano
-
 	This subroutine was written (originally) as a test of
-	the Sun Solaris UNIX 'kstat' facility.
-
+	the Sun Solaris® UNIX® 'kstat' facility.
 
 */
 
@@ -25,13 +23,9 @@
 
 	Test the Sun Solaris UNIX® 'kstat' facility.
 
-
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/mman.h>
@@ -42,10 +36,10 @@
 #include	<fcntl.h>
 #include	<termios.h>
 #include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
 #include	<kstat.h>
-
 #include	<field.h>
 #include	<bfile.h>
 #include	<exitcodes.h>
