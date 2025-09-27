@@ -1,6 +1,6 @@
 /* main */
 
-/* test out Sun Solaris UNIX 'kstat's */
+/* test out Sun Solaris UNIX® 'kstat's */
 /* version %I% last-modified %G% */
 
 
@@ -14,7 +14,7 @@
 	= 1988001-10, David A­D­ Morano
 
 	This subroutine was written (originally) as a test of
-	the Sun Solaris UNIX 'kstat' facility.
+	the Sun Solaris UNIX® 'kstat' facility.
 
 
 */
@@ -25,12 +25,9 @@
 
 	Test the Sun Solaris UNIX® 'kstat' facility.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/mman.h>
@@ -41,9 +38,9 @@
 #include	<fcntl.h>
 #include	<termios.h>
 #include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-
 #include	<usystem.h>
 #include	<field.h>
 #include	<bfile.h>
