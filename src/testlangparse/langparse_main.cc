@@ -27,6 +27,7 @@
 #include	<utypealiases.h>
 #include	<usysrets.h>
 #include	<usyscalls.h>
+#include	<ccfile.hh>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| */
 
@@ -87,6 +88,7 @@ local int procfile(cchar *fn) noex {
     	cnullptr	np{} ;
 	cint		llen = LINEBUFLEN ;
     	int		rs = SR_FAULT ;
+	int		rs1 ;
 	if (char *lbuf ; (lbuf = new(nt) char[llen + 1]) != np) {
 	    if (ccfile rf ; (rs = rf.open(fn,"r",0)) >= 0) {
 		while ((rs = rf.readln(lbuf,llen)) > 0) {
@@ -95,7 +97,7 @@ local int procfile(cchar *fn) noex {
 		rs1 = rf.close ;
 		if (rs >= 0) rs = rs1 ;
 	    } /* end if (ccfile) */
-	    delete lbuf ;
+	    delete [] lbuf ;
 	} /* end if (new-char) */
 	return rs ;
 } /* end subroutine (procfile) */
