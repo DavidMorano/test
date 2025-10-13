@@ -31,6 +31,7 @@
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| */
 
+#include	<langparse.h>
 
 /* local defines */
 
@@ -55,7 +56,8 @@ using std::cerr ;			/* variable */
 
 /* forward references */
 
-local int procfile(cchar *) noex ;
+local int procfile(langparse *,cchar *) noex ;
+local int procln(langparse *,cchar *,int) noex ;
 
 
 /* local variables */
@@ -69,12 +71,18 @@ local int procfile(cchar *) noex ;
 int main(int argc,mainv argv,mainv) {
 	int		ex = EX_OK ;
 	int		rs = SR_OK ;
+	int		rs1 ;
 	if (argc > 0) {
-	    for (int ai = 1 ; (rs >= 0) && (ai < argc) && argv[ai] ; ai += 1) {
-		cchar	*fn = argv[ai] ;
-		rs = procfile(fn) ;
-	    } /* end for */
-	}
+	    if (langparse pa ; (rs = pa.start) >= 0) {
+	        for (int ai = 1 ; (ai < argc) && argv[ai] ; ai += 1) {
+		    cchar	*fn = argv[ai] ;
+		    rs = procfile(&pa,fn) ;
+		    if (rs < 0) break ;
+	        } /* end for */
+	        rs1 = pa.finish ;
+		if (rs >= 0) rs = rs1 ;
+	    } /* end if (langparse) */
+	} /* end if (arguments) */
 	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
 	return ex ;
 }
@@ -83,7 +91,7 @@ int main(int argc,mainv argv,mainv) {
 
 /* local subroutines */
 
-local int procfile(cchar *fn) noex {
+local int procfile(langparse *lpp,cchar *fn) noex {
     	cnothrow	nt{} ;
     	cnullptr	np{} ;
 	cint		llen = LINEBUFLEN ;
@@ -92,7 +100,8 @@ local int procfile(cchar *fn) noex {
 	if (char *lbuf ; (lbuf = new(nt) char[llen + 1]) != np) {
 	    if (ccfile rf ; (rs = rf.open(fn,"r",0)) >= 0) {
 		while ((rs = rf.readln(lbuf,llen)) > 0) {
-		    rs = 0 ;
+		    rs = procln(lpp,lbuf,rs) ;
+		    if (rs < 0) break ;
 		} /* end while */
 		rs1 = rf.close ;
 		if (rs >= 0) rs = rs1 ;
@@ -101,5 +110,13 @@ local int procfile(cchar *fn) noex {
 	} /* end if (new-char) */
 	return rs ;
 } /* end subroutine (procfile) */
+
+local int procln(langparse *lpp,cchar *lp,int ll) noex {
+    	int		rs = SR_OK ;
+	(void) lpp ;
+	(void) lp ;
+	(void) ll ;
+	return rs ;
+} /* end subroutine (procln) */
 
 
