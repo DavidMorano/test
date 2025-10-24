@@ -11,6 +11,9 @@
 #include	<usyscalls.h>
 #include	<localmisc.h>
 
+/*
+#include	"langx.h"
+	hello there "" */
 
 int main(int,mainv,mainv) {
     	int	ex = EX_OK ;
