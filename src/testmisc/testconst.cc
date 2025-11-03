@@ -33,6 +33,9 @@
 #include	<usystem.h>
 #include	<localmisc.h>
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |cvtconst(3u)| */
 
 /* local defines */
 
@@ -107,6 +110,11 @@ int main(int,mainv,mainv) {
 	cout << localstr << eol ;
 	cout << val.res << eol ;
 	cout << gi.geter() << eol ;
+	{
+	    int	a = 1 ;
+	    cout << "a=" << ({ const typeof(a) cval = a ; cval ; }) << eol ;
+	    cout << "a=" << cvtconst(a) << eol ;
+	}
 }
 /* end subroutine (main) */
 
