@@ -100,7 +100,7 @@ $(T).x:			$(OBJ)
 	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
 
 $(T).nm:		$(T).o
-	$(NM) $(NMFLAGS) $(T).so > $(T).nm
+	$(NM) $(NMFLAGS) $(T).o > $(T).nm
 
 again:
 	rm -f $(ALL)
@@ -116,16 +116,23 @@ envs:
 
 
 obj0.o:			$(OBJ0)
-	$(LD) $(LDFLAGS) -r -o $@ $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj1.o:			$(OBJ1)
-	$(LD) $(LDFLAGS) -r -o $@ $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj2.o:			$(OBJ2)
-	$(LD) $(LDFLAGS) -r -o $@ $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj3.o:			$(OBJ3)
-	$(LD) $(LDFLAGS) -r -o $@ $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
 langparse_main.o:	langparse_main.cc 		$(INCS)
