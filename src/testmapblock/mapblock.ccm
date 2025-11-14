@@ -196,7 +196,7 @@ export {
 	    count	(this,mapblockmem_count) ;
 	} ; /* end ctor) */
 	destruct mapblock() {
-	    if (mp) {
+	    if (mp) ylikely {
 	        delete mp ;
 		mp = nullptr ;
 	    }
@@ -208,7 +208,7 @@ export {
     template<typename K,typename B> int mapblock<K,B>::istart(int n) noex {
 	typedef decltype(std::nothrow)	nothrow_t ;
 	int		rs = SR_INVALID ;
-	if (n >= 0) {
+	if (n >= 0) ylikely {
 	    rs = SR_NOMEM ;
 	    try {
 		const nothrow_t		nt = std::nothrow ;
@@ -224,7 +224,7 @@ export {
     } /* end method (mapblock::istart) */
     template<typename K,typename B> int mapblock<K,B>::ifinish() noex {
 	int		rs = SR_BUGCHECK ;
-	if (mp) {
+	if (mp) ylikely {
 	    delete mp ;
 	    mp = nullptr ;
 	    rs = SR_OK ;
@@ -235,7 +235,7 @@ export {
     int mapblock<K,B>::ins(K k,const B &v) noex {
 	typedef	typename maptype::iterator	mit_t ;
 	int		rs = SR_BUGCHECK ;
-	if (mp) {
+	if (mp) ylikely {
 	    rs = SR_OK ;
 	    try {
 	        std::pair<mit_t,bool>	r = mp->insert({k,v}) ;
@@ -249,7 +249,7 @@ export {
     template<typename K,typename B> int mapblock<K,B>::rem(K k) noex {
 	typedef typename maptype::size_type	mitsize_t ;
 	int		rs = SR_BUGCHECK ;
-	if (mp) {
+	if (mp) ylikely {
 	    rs = SR_OK ;
 	    try {
 	        mitsize_t	r = mp->erase(k) ;
@@ -263,7 +263,7 @@ export {
     template<typename K,typename B> int mapblock<K,B>::present(K &k) noex {
 	typedef typename maptype::iterator	mit_t ;
 	int		rs = SR_BUGCHECK ;
-	if (mp) {
+	if (mp) ylikely {
 	    const mit_t	itend = mp->end() ;
 	    mit_t	it = mp->find(k) ;
 	    rs = (it != itend) ? SR_OK : SR_NOENT ;
@@ -273,9 +273,9 @@ export {
     template<typename K,typename B> int mapblock<K,B>::get(K k,B *vp) noex {
 	typedef typename maptype::iterator	mit_t ;
 	int		rs = SR_FAULT ;
-	if (vp) {
+	if (vp) ylikely {
 	    rs = SR_BUGCHECK ;
-	    if (mp) {
+	    if (mp) ylikely {
 	        typedef typename maptype::value_type	v_t ;
 	        const mit_t		it_end = mp->end() ;
 	        const mit_t		it = mp->find(k) ;
@@ -291,7 +291,7 @@ export {
     }
     template<typename K,typename B> int mapblock<K,B>::icount() noex {
 	int		rs = SR_BUGCHECK ;
-	if (mp) {
+	if (mp) ylikely {
 	    rs = intconv(mp->size()) ;
 	} /* end if (non-null) */
 	return rs ;
