@@ -1,31 +1,25 @@
 /* main (testopenport) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* program to test binding a socket */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	1		/* switchable at invocation */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
-
 /* revision history:
 
 	= 1989-03-01, David A­D­ Morano
-
 	This subroutine was originally written. 
 
-
 	= 1998-06-01, David A­D­ Morano
-
 	I enhanced the program a little.
 
-
 	= 2013-03-01, David A­D­ Morano
-
 	I added logging of requests to a file.
 	This would seem to be an appropriate security precaution.
-
 
 */
 
@@ -34,30 +28,25 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testopenport 
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/socket.h>
-#include	<climits>
 #include	<stropts.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<ctime>
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
 #include	<pwd.h>
 #include	<grp.h>
 #include	<netdb.h>
-#include	<time.h>
-
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<baops.h>
@@ -87,36 +76,34 @@
 
 /* external subroutines */
 
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	sfshrink(const char *,int,char **) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecti(const char *,int,int *) ;
+extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
+extern int	mkpath2(char *,cchar *,cchar *) ;
+extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
+extern int	sfshrink(cchar *,int,char **) ;
+extern int	matstr(cchar **,cchar *,int) ;
+extern int	matostr(cchar **,int,cchar *,int) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	cfdecti(cchar *,int,int *) ;
 extern int	optbool(cchar *,int) ;
 extern int	optvalue(cchar *,int) ;
-extern int	vecpstr_adduniq(VECPSTR *,const char *,int) ;
-extern int	getportnum(const char *,const char *) ;
-extern int	hasalldig(const char *,int) ;
+extern int	vecpstr_adduniq(VECPSTR *,cchar *,int) ;
+extern int	getportnum(cchar *,cchar *) ;
+extern int	hasalldig(cchar *,int) ;
 
-extern int	proginfo_setpiv(struct proginfo *,const char *,
+extern int	proginfo_setpiv(struct proginfo *,cchar *,
 			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
-extern int	mkuibang(char *,int,USERINFO *) ;
-extern int	mkuiname(char *,int,USERINFO *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 extern int	logfile_userinfo(LOGFILE *,USERINFO *,time_t,
-			const char *,const char *) ;
+			cchar *,cchar *) ;
 
 #if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
 #endif
 
-extern char	*strdcpy1w(char *,int,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
+extern char	*strdcpy1w(char *,int,cchar *,int) ;
+extern char	*strnchr(cchar *,int,int) ;
 
 
 /* external variables */
@@ -125,9 +112,9 @@ extern char	*strnchr(const char *,int,int) ;
 /* local structures */
 
 struct query {
-	const char	*uidp ;
-	const char	*protop ;
-	const char	*portp ;
+	cchar	*uidp ;
+	cchar	*protop ;
+	cchar	*portp ;
 	int		uidlen ;
 	int		protolen ;
 	int		portlen ;
@@ -137,7 +124,7 @@ struct prototupple {
 	int		pf ;
 	int		ptype ;
 	int		proto ;
-	const char	*name ;
+	cchar	*name ;
 } ;
 
 
@@ -145,7 +132,7 @@ struct prototupple {
 
 static int	usage(struct proginfo *) ;
 
-static int	process(struct proginfo *,const char *,const char *,
+static int	process(struct proginfo *,cchar *,cchar *,
 			VECPSTR *,int) ;
 
 
@@ -154,7 +141,7 @@ static int	process(struct proginfo *,const char *,const char *,
 static volatile int	if_exit ;
 static volatile int	if_int ;
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -225,7 +212,7 @@ static const struct prototupple	socknames[] = {
 	{ 0, 0, NULL }
 } ;
 
-static const char	*defprotos[] = {
+static cchar	*defprotos[] = {
 	"tcp",
 	"udp",
 	"ddp",
@@ -238,8 +225,8 @@ static const char	*defprotos[] = {
 
 int main(argc,argv,envv)
 int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
+cchar	*argv[] ;
+cchar	*envv[] ;
 {
 	struct proginfo	pi, *pip = &pi ;
 
@@ -264,21 +251,21 @@ const char	*envv[] ;
 	int	f_inopen = FALSE ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
-	const char	*logdname = LOGDNAME ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = NULL ;
+	cchar	*logdname = LOGDNAME ;
 	char	argpresent[MAXARGGROUPS] ;
 	char	userbuf[USERINFO_LEN + 1] ;
 	char	tmpfname[MAXPATHLEN+ 1] ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*afname = NULL ;
-	const char	*efname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*ifname = NULL ;
-	const char	*logfname = NULL ;
-	const char	*dbfname = NULL ;
-	const char	*cp ;
+	cchar	*pr = NULL ;
+	cchar	*sn = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*efname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*ifname = NULL ;
+	cchar	*logfname = NULL ;
+	cchar	*dbfname = NULL ;
+	cchar	*cp ;
 
 
 	if_int = 0 ;
@@ -976,8 +963,8 @@ struct proginfo	*pip ;
 	int	rs ;
 	int	wlen = 0 ;
 
-	const char	*pn = pip->progname ;
-	const char	*fmt ;
+	cchar	*pn = pip->progname ;
+	cchar	*fmt ;
 
 
 	fmt = "%s: USAGE> %s \n" ;
@@ -995,8 +982,8 @@ struct proginfo	*pip ;
 
 static int process(pip,dbfname,ofname,alp,cfd)
 struct proginfo	*pip ;
-const char	*dbfname ;
-const char	*ofname ;
+cchar	*dbfname ;
+cchar	*ofname ;
 VECPSTR		*alp ;
 int		cfd ;
 {
@@ -1016,7 +1003,7 @@ int		cfd ;
 	    int	fromlen ;
 	int	to_run = pip->intrun ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
 	    pf = PF_INET6 ;
