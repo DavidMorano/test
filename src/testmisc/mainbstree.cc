@@ -22,6 +22,7 @@
 
 /*******************************************************************************
 
+  	Description:
 	This is the test jig for testing the BSTREE object.
 
 *******************************************************************************/
@@ -284,7 +285,6 @@ int main(int argc,mainv,mainv envv) {
 }
 /* end subroutine (main) */
 
-
 /* for memory allocation tracking */
 void *operator new(size_t sz) {
     	void *p ;
@@ -312,10 +312,8 @@ void operator delete(void *p,const std::nothrow_t &nt) noexcept {
 
 /* local subroutines */
 
-
 #if	CF_PRINTLIST
-static int printlist(ourlist &l,cchar *s)
-{
+static int printlist(ourlist &l,cchar *s) {
 	int		c = 0 ;
 	cout << s << ">" ;
 	for (auto v : l) {
@@ -328,10 +326,8 @@ static int printlist(ourlist &l,cchar *s)
 /* end subroutine (printlist) */
 #endif /* CF_PRINTLIST */
 
-
 #if	CF_DEBUGS && CF_DEBUGPL
-static int debugprintlist(ourlist &l,cchar *s)
-{
+static int debugprintlist(ourlist &l,cchar *s) {
 	const int	plen = LINEBUFLEN ;
 	int		rs = SR_OK ;
 	char		*pbuf ;
@@ -354,9 +350,7 @@ static int debugprintlist(ourlist &l,cchar *s)
 }
 #endif /* CF_DEBUGS */
 
-
-static int printwalk(ourlist &l)
-{
+static int printwalk(ourlist &l) {
 	vector<int>		res ;
 	int	c = 0 ;
 	l.storevec(res) ;
@@ -369,9 +363,7 @@ static int printwalk(ourlist &l)
 } 
 /* end suroutine (printwalk) */
 
-
-static int printinter(ourlist &l)
-{
+static int printinter(ourlist &l) {
 	ourlist::iterator	it = l.begin() ;
 	int	c = 0 ;
 	while (it) {
