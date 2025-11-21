@@ -2,6 +2,27 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
+/* test getting some operating system values */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+/*******************************************************************************
+
+  	Description:
+	This is test code (in the present case mostly the |getconf(2)|
+	system call).
+
+*******************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>		/* |getgroups(2)| */
