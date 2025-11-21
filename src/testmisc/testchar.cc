@@ -13,8 +13,14 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
+
+/*******************************************************************************
+
+  	Test the |printf(c)| C-Library subroutine.
+
+*******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<clanguage.h>
