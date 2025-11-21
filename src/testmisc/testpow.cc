@@ -1,16 +1,28 @@
-/* main SUPPORR (testexp) */
+/* testpow SUPPORR (testexp) */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
+
+/* test the |pow(3m)| C-Math-Library call */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
 
-	= 2017-09-07, David A­D­ Morano
+	= 1998-04-13, David A-D- Morano
 	Originally written for Rightcore Network Services.
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
+/*******************************************************************************
+
+  	Description:
+	This is test code (in the present case for the |pow(3m)|
+	library call).
+
+*******************************************************************************/
 
 #include	<envstandards.h>
 #include	<cstring>
