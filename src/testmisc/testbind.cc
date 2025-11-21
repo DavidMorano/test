@@ -1,23 +1,48 @@
-/* testbind SPPORT */
+/* testbind SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-#include <iostream>			/* |cout| */
-#include <cassert>
-#include <functional>
+/* test the |bind(3sock)| socket-library call */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+/*******************************************************************************
+
+  	Description:
+	This is test code (in the present case for the |bin(3sock)|
+	library call).
+
+*******************************************************************************/
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<iostream>		/* |cout| */
+#include	<cassert>
+#include	<functional>
+#include	<usystem.h>
+#include	<localmisc.h>
 
 using std::cout ;			/* variable */
 
-int minus(int a, int b)
-{
-    return a - b;
+int minus(int a, int b) {
+    return a - b ;
 }
 
-struct S
-{
+struct S {
     int val;
     int minus(int arg) const noexcept { return val - arg; }
-};
+} ;
 
 int main() {
     auto fifty_minus = std::bind_front(minus, 50);
