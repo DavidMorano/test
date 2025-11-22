@@ -25,6 +25,7 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/mman.h>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdarg>
@@ -42,6 +43,8 @@ import ulibvals ;			/* |ulibval(3u)| */
 
 /* imported namespaces */
 
+using libu::umem ;			/* variable */
+
 
 /* external subroutines */
 
@@ -50,6 +53,15 @@ import ulibvals ;			/* |ulibval(3u)| */
 
 
 /* local structures */
+
+namespace {
+    struct mgr {
+    	int		ps ;
+	operator int () noex ;
+	int setup() noex ;
+	int check(void *,size_t) noex ;
+    } ; /* end struct (mgr) */
+} /* end namespace */
 
 
 /* forward references */
@@ -64,21 +76,57 @@ import ulibvals ;			/* |ulibval(3u)| */
 /* exported subroutines */
 
 int main(int argc,mainv,mainv) {
-    	cint		ps = ulibval.pagesz ;
-	int		rs = SR_OK ;
-	int		rs1 ;
-
-
-
-	if (rs < 0) {
-	    printf("failure (%d)\n",rs) ;
-	}
-	(void) ps ;
-	(void) rs1 ;
+    	mgr		mo ;
+	int		rs ;
+	rs = mo ;
+	printf("ret (%d)\n",rs) ;
 }
 /* end subroutine (main) */
 
 
 /* local subroutines */
+
+mgr::operator int () noex {
+    	ps = ulibval.pagesz ;
+	return setup() ;
+}
+
+int mgr::setup() noex {
+    	cnullptr	np{} ;
+	csize	ms = size_t(ps * 2) ;
+	cint	mp = (PROT_READ | PROT_WRITE) ;
+	cint	mf = (MAP_PRIVATE | MAP_ANON) ;
+	cint	fd = -1 ;
+	int		rs ;
+	int		rs1 ;
+	void	*md ;
+	if ((rs = u_mmapbegin(np,ms,mp,mf,fd,0z,&md)) >= 0) {
+		{
+		    rs = check(md,ms) ;
+		}
+		rs1 = u_mmapend(md,ms) ;
+		if (rs >= 0) rs = rs1 ;
+	} /* end if (mem-map) */
+	return rs ;
+} /* end method (mgr::setup) */
+
+int mgr::check(void *md,size_t ms) noex {
+    	const caddr_t	ma = caddr_t(md) ;
+    	cint		msi = intconv(ms) ;
+    	int		rs = SR_OK ;
+	int		rs1 ;
+    	(void) md ;
+	{
+    	    cint sz = iceil(msi,ps) ;
+	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
+	        for (caddr_t ai = ma ; ai < (ma + ms) ; ai += ps) {
+		    (void) ai ;
+	        } /* end for */
+	        rs1 = umem.free(va) ;
+	        if (rs >= 0) rs = rs1 ;
+	    } /* end if (m-a-f) */
+	} /* end block */
+	return rs ;
+} /* end method (mgr::check) */
 
 
