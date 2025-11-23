@@ -60,6 +60,13 @@ namespace {
 	operator int () noex ;
 	int setup() noex ;
 	int check(void *,size_t) noex ;
+	int checker(void *,size_t) noex ;
+	static void operator () (int a) noex {
+	    printf("a=%d\n",a) ;
+	} ;
+	static void statcall(int a) noex {
+	    printf("a=%d\n",a) ;
+	} ;
     } ; /* end struct (mgr) */
 } /* end namespace */
 
@@ -78,6 +85,8 @@ namespace {
 int main(int argc,mainv,mainv) {
     	mgr		mo ;
 	int		rs ;
+	mo(3) ;
+	mo.statcall(4) ;
 	rs = mo ;
 	printf("ret (%d)\n",rs) ;
 }
@@ -101,11 +110,13 @@ int mgr::setup() noex {
 	int		rs1 ;
 	void	*md ;
 	if ((rs = u_mmapbegin(np,ms,mp,mf,fd,0z,&md)) >= 0) {
-		{
-		    rs = check(md,ms) ;
+	    {
+		if ((rs = check(md,ms)) >= 0) {
+		    rs = checker(md,ms) ;
 		}
-		rs1 = u_mmapend(md,ms) ;
-		if (rs >= 0) rs = rs1 ;
+	    }
+	    rs1 = u_mmapend(md,ms) ;
+	    if (rs >= 0) rs = rs1 ;
 	} /* end if (mem-map) */
 	return rs ;
 } /* end method (mgr::setup) */
@@ -119,8 +130,13 @@ int mgr::check(void *md,size_t ms) noex {
 	{
     	    cint sz = iceil(msi,ps) ;
 	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
+		csize psize = size_t(ps) ;
+		int i = 0 ;
 	        for (caddr_t ai = ma ; ai < (ma + ms) ; ai += ps) {
 		    (void) ai ;
+		    rs = u_mincore(ai,psize,(va+i)) ;
+		    printf("va[%d]=%02X\n",i,va[i]) ;
+		    i += 1 ;
 	        } /* end for */
 	        rs1 = umem.free(va) ;
 	        if (rs >= 0) rs = rs1 ;
@@ -128,5 +144,12 @@ int mgr::check(void *md,size_t ms) noex {
 	} /* end block */
 	return rs ;
 } /* end method (mgr::check) */
+
+int mgr::checker(void *md,size_t ms) noex {
+    	int		rs = SR_OK ;
+	(void) md ;
+	(void) ms ;
+	return rs ;
+} /* end method (mgr::checker) */
 
 
