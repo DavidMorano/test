@@ -40,6 +40,8 @@ import ulibvals ;			/* |ulibval(3u)| */
 
 /* local defines */
 
+#define	NPAGES		40
+
 
 /* imported namespaces */
 
@@ -82,7 +84,7 @@ namespace {
 
 /* exported subroutines */
 
-int main(int argc,mainv,mainv) {
+int main(int,mainv,mainv) {
     	mgr		mo ;
 	int		rs ;
 	mo(3) ;
@@ -145,10 +147,25 @@ int mgr::check(void *md,size_t ms) noex {
 	return rs ;
 } /* end method (mgr::check) */
 
-int mgr::checker(void *md,size_t ms) noex {
+int mgr::checker(void *md,size_t) noex {
+    	caddr_t		ma = caddr_t(md) ;
+	csize		psize = size_t(ps) ;
+    	cint		n = NPAGES ;
     	int		rs = SR_OK ;
+	int		rs1 ;
 	(void) md ;
-	(void) ms ;
+	{
+	    cint sz = n ;
+	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
+	        for (int i = 0 ; i < n ; i += 1) {
+	            rs1 = u_mincore(ma,psize,va) ;
+		    printf("ma=%p rs=%d va=%02X\n",ma,rs1,va[0])  ;
+	            ma += (i * ps) ;
+	        } /* end for */
+	        rs1 = umem.free(va) ;
+	        if (rs >= 0) rs = rs1 ;
+	    } /* end if (m-a-f) */
+	} /* end block */
 	return rs ;
 } /* end method (mgr::checker) */
 
