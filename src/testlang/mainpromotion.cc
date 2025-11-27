@@ -1,11 +1,14 @@
-/* main SUPPORT (main_promotion) */
+/* testpromotion SUPPORT (main_promotion) */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* |unllptr_t| */
+#include	<cstdlib>
 #include	<cstdio>
-
-#include	"localmisc.h"
+#include	<localmisc.h>
 
 
 
