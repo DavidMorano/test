@@ -55,7 +55,7 @@ struct langparse_flags {
 	uint		quote:1 ;
 	uint		literal:1 ;
 	uint		skip:1 ;
-} ;
+} ; /* end struct (langparse_flags) */
 
 struct langparse_head {
 	void		*outbuf ;	/* output-buffer */
@@ -64,7 +64,7 @@ struct langparse_head {
 	int		rl ;		/* stage length */
 	int		pch ;
 	char		rb[LANGPARSE_NSTAGE + 1] ;	/* stage buffer */
-} ;
+} ; /* end struct (langparse_head) */
 
 typedef	LANGPARSE_FL	langparse_fl ;
 
