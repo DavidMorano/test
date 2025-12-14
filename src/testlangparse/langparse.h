@@ -35,16 +35,18 @@
 
 
 enum langparseos {
-	langparseo_comment = CHAR_BIT,
-	langparseo_quote,
-	langparseo_literal,
+	langparseo_comment = CHAR_BIT,	/* comment */
+	langparseo_strreg ,		/* string - regular */
+	langparseo_strraw,		/* string - C++ raw literal */
+	langparseo_literal,		/* C literal */
 	langparseo_overlast
 } ; /* end enum (langparses) */
 
 #ifdef	__cplusplus
 struct langparsems {
     	static int	comment ;
-    	static int	quote ;
+    	static int	strreg ;
+    	static int	strraw ;
     	static int	literal ;
 } ; /* end struct (langparsems) */
 #endif /* __cplusplus */
@@ -52,7 +54,8 @@ struct langparsems {
 struct langparse_flags {
 	uint		comment:1 ;
 	uint		clear:1 ;
-	uint		quote:1 ;
+	uint		strreg:1 ;
+	uint		strraw:1 ;
 	uint		literal:1 ;
 	uint		skip:1 ;
 } ; /* end struct (langparse_flags) */
@@ -62,7 +65,7 @@ struct langparse_head {
 	LANGPARSE_FL	fl ;
 	uint		magic ;
 	int		rl ;		/* stage length */
-	int		pch ;
+	int		pch ;		/* pevious character */
 	char		rb[LANGPARSE_NSTAGE + 1] ;	/* stage buffer */
 } ; /* end struct (langparse_head) */
 
