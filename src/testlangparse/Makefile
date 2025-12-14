@@ -1,6 +1,6 @@
 # MAKEFILE (testlangparse)
 
-T= langparse
+T= testlangparse
 
 ALL= $(T).x
 
@@ -40,7 +40,7 @@ MODS +=
 LIBS += -luo -lu
 
 
-OBJ0= langparse_main.o
+OBJ0= testlangparse_main.o
 OBJ1= langx.o
 OBJ2= 
 OBJ3= 
@@ -138,7 +138,7 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-langparse_main.o:	langparse_main.cc 		$(INCS)
+testlangparse_main.o:	testlangparse_main.cc 		$(INCS)
 
 langx.o:		langx.dir
 langx.dir:
