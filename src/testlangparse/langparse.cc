@@ -47,7 +47,6 @@
 #include	<six.h>			/* |sichr(2uc)| */
 #include	<shortq.h>
 #include	<strwcpy.h>
-#include	<digval.h>		/* |digvalhex(3uc)| */
 #include	<ascii.h>
 #include	<mkchar.h>
 #include	<char.h>
@@ -117,6 +116,11 @@ local inline int langparse_magic(langparse *op,Args ... args) noex {
 /* end subroutine (langparse_magic) */
 
 local int	langparse_proc(langparse *,int) noex ;
+local int	langparse_clear(langparse *,int) noex ;
+local int	langparse_strreg(langparse *,int) noex ;
+local int	langparse_strraw(langparse *,int) noex ;
+local int	langparse_literal(langparse *,int) noex ;
+local int	langparse_comment(langparse *,int) noex ;
 
 #ifdef	COMMENT
 local int	langparse_add(langparse *,cchar *,int) noex ;
@@ -132,7 +136,8 @@ cint		nstage = LANGPARSE_NSTAGE ;
 /* exported variables */
 
 int langparsems::comment	= (1 << langparseo_comment) ;
-int langparsems::quote		= (1 << langparseo_quote) ;
+int langparsems::strreg		= (1 << langparseo_strreg) ;
+int langparsems::strraw		= (1 << langparseo_strraw) ;
 int langparsems::literal	= (1 << langparseo_literal) ;
 
 const langparsems		langparsem ;
@@ -239,9 +244,27 @@ int langparse_read(langparse *op,short *rbuf,int rlen) noex {
 /* private subroutines */
 
 local int langparse_proc(langparse *op,int ch) noex {
-	int		rs ;
+	int		rs = SR_OK ;
+	if (op->fl.clear) {
+	    if (op->fl.strreg) {
+		rs = langparse_strreg(op,ch) ;
+	    } else if (op->fl.strraw) {
+		rs = langparse_strraw(op,ch) ;
+	    } else if (op->fl.literal) {
+		rs = langparse_literal(op,ch) ;
+	    } else {
+		rs = langparse_clear(op,ch) ;
+	    }
+	} else if (op->fl.comment) {
+	    rs = langparse_comment(op,ch) ;
+	}
+	return rs ;
+} /* end subroutine (langparse_proc) */
+
+#ifdef	COMMENT
+local int langparse_proc(langparse *op,int ch) noex {
+	int		rs = SR_OK ;
 	int		f = false ; /* return-value */
-	if ((rs = langparse_magic(op)) >= 0) ylikely {
 	    f = op->fl.clear ;
 	    if (op->fl.comment) {
 	        if ((op->pch == CH_STAR) && (ch == CH_SLASH)) {
@@ -302,10 +325,34 @@ local int langparse_proc(langparse *op,int ch) noex {
 		}
 	    }
 	    op->pch = ch ;
-	} /* end if (langparse_magic) */
 	return (rs >= 0) ? f : rs ;
-}
-/* end subroutine (langparse_proc) */
+} /* end subroutine (langparse_proc) */
+#endif /* COMMENT */
+
+local int langparse_clear(langparse *,int) noex {
+    	int		rs = SR_OK ;
+	return rs ;
+} /* end subrolutine (langparse_clear) */
+
+local int langparse_strreg(langparse *,int) noex {
+    	int		rs = SR_OK ;
+	return rs ;
+} /* end subrolutine (langparse_strreg) */
+
+local int langparse_strraw(langparse *,int) noex {
+    	int		rs = SR_OK ;
+	return rs ;
+} /* end subrolutine (langparse_strraw) */
+
+local int langparse_literal(langparse *,int) noex {
+    	int		rs = SR_OK ;
+	return rs ;
+} /* end subrolutine (langparse_literal) */
+
+local int langparse_comment(langparse *,int) noex {
+    	int		rs = SR_OK ;
+	return rs ;
+} /* end subrolutine (langparse_comment) */
 
 #ifdef	COMMENT
 local int langparse_add(langparse *op,cchar *vp,int vl = -1) noex {
@@ -328,9 +375,6 @@ local int langparse_add(langparse *op,int v) noex {
 }
 /* end subrolutine (langparse_add) */
 #endif /* COMMENT */
-
-
-/* local subroutines */
 
 int langparse::load(cchar *sp,int sl) noex {
 	return langparse_load(this,sp,sl) ;
