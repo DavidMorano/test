@@ -124,8 +124,9 @@ local int	langparse_comment(langparse *,int) noex ;
 
 #ifdef	COMMENT
 local int	langparse_add(langparse *,cchar *,int) noex ;
-local int	langparse_add(langparse *,int) noex ;
 #endif /* COMMENT */
+
+local int	langparse_store(langparse *,int) noex ;
 
 
 /* local variables */
@@ -153,6 +154,7 @@ int langparse_start(langparse *op) noex {
 	    if (shortq *obp ; (obp = new(nt) shortq) != np) ylikely {
 		if ((rs = obp->start) >= 0) ylikely {
 	            op->outbuf = obp ;
+		    op->fl.clear = true ;	/* initial state */
 	            op->magic = LANGPARSE_MAGIC ;
 		}
 		if (rs < 0) {
@@ -258,6 +260,7 @@ local int langparse_proc(langparse *op,int ch) noex {
 	} else if (op->fl.comment) {
 	    rs = langparse_comment(op,ch) ;
 	}
+	op->pch = ch ;
 	return rs ;
 } /* end subroutine (langparse_proc) */
 
@@ -271,14 +274,14 @@ local int langparse_proc(langparse *op,int ch) noex {
 		    op->fl.comment = false ;
 		    op->fl.clear = true ;
 	        }
-	    } else if (op->fl.quote) {
+	    } else if (op->fl.strreg) {
 	        if (op->fl.skip) {
 		    op->fl.skip = false ;
 	        } else {
 		    if (ch == CH_BSLASH) {
 		        op->fl.skip = true ;
 	            } else if (ch == CH_DQUOTE) {
-		        op->fl.quote = false ;
+		        op->fl.strreg = false ;
 		        op->fl.clear = true ;
 		    }
 	        }
@@ -304,7 +307,7 @@ local int langparse_proc(langparse *op,int ch) noex {
 		    break ;
 	        case CH_DQUOTE:
 		    if ((op->pch != CH_BSLASH) && (op->pch != CH_SQUOTE)) {
-		        op->fl.quote = true ;
+		        op->fl.strreg = true ;
 		        op->fl.clear = false ;
 		        f = false ;
 		    }
@@ -323,14 +326,58 @@ local int langparse_proc(langparse *op,int ch) noex {
 		    cshort code = shortconv(ch) ;
 		    rs = obp->ins(code) ;
 		}
-	    }
+	    } /* end if */
 	    op->pch = ch ;
 	return (rs >= 0) ? f : rs ;
 } /* end subroutine (langparse_proc) */
 #endif /* COMMENT */
 
-local int langparse_clear(langparse *,int) noex {
+local int langparse_clear(langparse *op,int ch) noex {
+	const langparsems	&lm = langparsem ;
     	int		rs = SR_OK ;
+	bool		fstore = true ;
+	switch (ch) {
+	case CH_SLASH:
+	    fstore = false ;
+	    break ;
+        case CH_STAR:
+            if (op->pch == CH_SLASH) {
+		cint chm = (op->pch | lm.comment) ;
+                op->fl.comment = true ;
+                op->fl.clear = false ;
+		rs = langparse_store(op,chm) ;
+		ch |= lm.comment ;
+                fstore = true ;
+            } /* end if (entering comment) */
+            break ;
+        case CH_DQUOTE:
+	    if (op->pch == 'R') {
+		cint chm = (op->pch | lm.strraw) ;
+                op->fl.strraw = true ;
+		rs = langparse_store(op,chm) ;
+		ch |= lm.strraw ;
+	    } else if ((op->pch != CH_BSLASH) && (op->pch != CH_SQUOTE)) {
+                op->fl.strreg = true ;
+		ch |= lm.strreg ;
+            } /* end if (entering a regular quoted string) */
+            break ;
+	case 'R':
+            if (op->pch != CH_BSLASH) {
+	        fstore = false ;
+	    } /* end if (entering a raw string-literal) */
+            break ;
+        case CH_SQUOTE:
+            if (op->pch != CH_BSLASH) {
+                op->fl.literal = true ;
+		ch |= lm.literal ;
+            } /* end if (entering a literal) */
+	    break ;
+	default:
+	    break ;
+	} /* end switch */
+	if ((rs >= 0) && fstore) {
+	    rs = langparse_store(op,ch) ;
+	} /* end if (store character) */
 	return rs ;
 } /* end subrolutine (langparse_clear) */
 
@@ -364,17 +411,16 @@ local int langparse_add(langparse *op,cchar *vp,int vl = -1) noex {
 	}
 	return (rs >= 0) ? c : rs ;
 } /* end subrolutine (langparse_add) */
+#endif /* COMMENT */
 
-local int langparse_add(langparse *op,int v) noex {
+local int langparse_store(langparse *op,int v) noex {
     	int		rs = SR_BUGCHECK ;
 	if (shortq *obp = obufp(op->outbuf) ; obp) ylikely {
 	    cshort code = shortconv(v) ;
 	    rs = obp->ins(code) ;
 	}
 	return (rs >= 0) ? 1 : rs ;
-}
-/* end subrolutine (langparse_add) */
-#endif /* COMMENT */
+} /* end subrolutine (langparse_store) */
 
 int langparse::load(cchar *sp,int sl) noex {
 	return langparse_load(this,sp,sl) ;
