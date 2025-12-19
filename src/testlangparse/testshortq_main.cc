@@ -56,10 +56,12 @@
 #include	<shortq.h>
 
 #pragma		GCC dependency		"mod/libutil.ccm"
-#pragma		GCC dependency	"mod/debug.ccm"
+#pragma		GCC dependency		"mod/debug.ccm"
+#pragma		GCC dependency		"mod/testlangutil.ccm"
 
 import libutil ;			/* |getlenstr(3u)| */
 import debug ;
+import testlangutil ;
 
 /* local defines */
 
@@ -94,32 +96,6 @@ using std::cerr ;			/* variable */
 local int procfile(shortq *,cchar *) noex ;
 local int procln(shortq *,cchar *,int) noex ;
 local int procout(shortq *,int) noex ;
-
-template<typename T> local int rmeol(T *sp,int 탎l) noex {
-    	int		rl = -1 ;
-	if (int sl ; (sl = getlen(sp,탎l)) > 0) {
-	    auto isend = [] (T ch) noex -> bool {
-		return ((ch == CH_NL) || (ch == '_')) ;
-	    } ;
-	    while ((sl > 0) && isend(sp[sl - 1])) {
-		sl -= 1 ;
-	    }
-	    rl = sl ;
-	} /* end if (non-null) */
-    	return rl ;
-} /* end subroutine-template (rmeol) */
-
-template<typename T> local int sichr(T *sp,int 탎l,int chs) noex {
-    	int		rl = -1 ;
-	bool		f = false ;
-	if (int sl ; (sl = getlen(sp,탎l)) >= 0) {
-	    for (rl = 0 ; rl < sl ; rl += 1) {
-		f = (sp[rl] != chs) ;
-		if (! f) break ;
-	    } /* end for */
-	} /* end if (non-null) */
-    	return (f) ? rl : -1 ;
-} /* end subroutine-template (sichr) */
 
 
 /* local variables */
@@ -191,30 +167,13 @@ local int procln(shortq *lpp,cchar *lp,int ll) noex {
 	if ((rs = getlenstr(lp,ll)) > 0) {
 	    cint sl = rs ;
 	    for (int i = 0 ; (rs >= 0) && (i < sl) ; i += 1) {
-		short sw = (lp[i] & UCHAR_MAX) ;
+		short sw = shortconv(lp[i] & UCHAR_MAX) ;
 	        rs = lpp->ins(sw) ;
 	        c += rs ;
 	    } /* end if */
 	} /* end if (getlenstr) */
 	return (rs >= 0) ? c : rs ;
 } /* end subroutine (procln) */
-
-local int pro(short *sbp,int sbl) noex {
-    	int		rs = SR_OK ;
-	int		wlen = 0 ;
-	DEBPRINTF("ent sbl=%d\n",sbl) ;
-	{
-	    cint ll = rmeol(sbp,sbl) ;
-	    for (int i = 0 ; i < ll ; i += 1) {
-		char chc = char(sbp[i]) ;
-		cout << chc ;
-		wlen += 1 ;
-	    } /* end for */
-	    cout << eol ;
-	} /* end block */
-	DEBPRINTF("ret rs=%d wlen=%d\n",rs,wlen) ;
-	return (rs >= 0) ? wlen : rs ;
-} /* end subroutine (pro) */
 
 local int procout(shortq *lpp,int slen) noex {
     	cnullptr	np{} ;
@@ -232,6 +191,7 @@ local int procout(shortq *lpp,int slen) noex {
 		    {
 		        rs = pro(sp,si) ;
 		        wlen += rs ;
+			cout << eol ;
 		    }
 		    sp += (si + 1) ;
 		    sl -= (si + 1) ;
