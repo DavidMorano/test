@@ -338,7 +338,9 @@ local int langparse_clear(langparse *op,int ch) noex {
 	bool		fstore = true ;
 	switch (ch) {
 	case CH_SLASH:
-	    fstore = false ;
+	    if (op->pch != CH_BSLASH) {
+	        fstore = false ;
+	    }
 	    break ;
         case CH_STAR:
             if (op->pch == CH_SLASH) {
@@ -347,7 +349,6 @@ local int langparse_clear(langparse *op,int ch) noex {
                 op->fl.clear = false ;
 		rs = langparse_store(op,chm) ;
 		ch |= lm.comment ;
-                fstore = true ;
             } /* end if (entering comment) */
             break ;
         case CH_DQUOTE:
@@ -373,6 +374,9 @@ local int langparse_clear(langparse *op,int ch) noex {
             } /* end if (entering a literal) */
 	    break ;
 	default:
+	    if (int chx = op->pch ; (chx == CH_SLASH) || (chx == 'R')) {
+		rs = langparse_store(op,chx) ;
+	    }
 	    break ;
 	} /* end switch */
 	if ((rs >= 0) && fstore) {
