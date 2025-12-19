@@ -36,7 +36,7 @@
 
 enum langparseos {
 	langparseo_comment = CHAR_BIT,	/* comment */
-	langparseo_strreg ,		/* string - regular */
+	langparseo_strreg,		/* string - regular */
 	langparseo_strraw,		/* string - C++ raw literal */
 	langparseo_literal,		/* C literal */
 	langparseo_overlast
@@ -57,16 +57,17 @@ struct langparse_flags {
 	uint		strreg:1 ;
 	uint		strraw:1 ;
 	uint		literal:1 ;
+	uint		paren:1 ;	/* parentheses inside raw-strings */
 	uint		skip:1 ;
+	uint		comline:1 ;
 } ; /* end struct (langparse_flags) */
 
 struct langparse_head {
-	void		*outbuf ;	/* output-buffer */
+	void		*outbuf ;	/* output-buffer pointer */
+	void		*rstrp ;	/* raw-string pointer */
 	LANGPARSE_FL	fl ;
 	uint		magic ;
-	int		rl ;		/* stage length */
-	int		pch ;		/* pevious character */
-	char		rb[LANGPARSE_NSTAGE + 1] ;	/* stage buffer */
+	int		pch ;		/* previous character */
 } ; /* end struct (langparse_head) */
 
 typedef	LANGPARSE_FL	langparse_fl ;
@@ -101,7 +102,7 @@ struct langparse : langparse_head {
 	langparse(const langparse &) = delete ;
 	langparse &operator = (const langparse &) = delete ;
 	int load(cchar *,int = -1) noex ;
-	int read(short *,int) noex ;
+	int remread(short *,int) noex ;
 	void dtor() noex ;
 	operator int () noex ;
 	destruct langparse() {
@@ -114,9 +115,9 @@ typedef LANGPARSE	langparse ;
 
 EXTERNC_begin
 
-extern int langparse_start	(langparse *,int) noex ;
+extern int langparse_start	(langparse *) noex ;
 extern int langparse_load	(langparse *,cchar *,int) noex ;
-extern int langparse_read	(langparse *,short *,int) noex ;
+extern int langparse_remread	(langparse *,short *,int) noex ;
 extern int langparse_finish	(langparse *) noex ;
 
 EXTERNC_end
