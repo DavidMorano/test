@@ -18,9 +18,7 @@ int main() {
 
 	schar	sc = 0xff ;
 
-
 	int	si ;
-
 
 	uc = 0xFF ;
 
@@ -30,11 +28,11 @@ int main() {
 	fprintf(stdout,"uc=%02X si=%08x\n",
 		((uint) uc),si) ;
 
-	if (uc == si)
+	if (uc == si) {
 		fprintf(stdout,"equal\n") ;
-
-	else
+	} else {
 		fprintf(stdout,"not_equal\n") ;
+	}
 
 	si = sc ;
 	fprintf(stdout,"sc=%02X si=%08x\n",
