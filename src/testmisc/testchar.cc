@@ -5,6 +5,7 @@
 /* test if |printf(3c)| can print out ISO-Latin1 characters */
 /* version %I% last-modified %G% */
 
+#define	CF_MULTI	0		/* use multi-character literal? */
 
 /* revision history:
 
@@ -18,6 +19,7 @@
 
 /*******************************************************************************
 
+  	Description:
   	Test the |printf(c)| C-Library subroutine.
 
 *******************************************************************************/
@@ -31,15 +33,25 @@
 #include	<iostream>
 #include	<localmisc.h>
 
+#ifndef	CF_MULTI
+#define	CF_MULTI	0
+#endif
+
 using namespace std ;
 
 int main(int,mainv,mainv) {
 	cint	cha = 'À' ;
-	    printf("%c\n",char(cha)) ;
+#if	CF_MULTI
+	cint	multi = 'abcd' ;
+#endif
+	printf("%c\n",char(cha)) ;
 	for (int j = 0 ; j < 10 ; j += 1) {
 	    cint	ch = (cha + j) ;
 	    printf("%c\n",char(ch)) ;
-	}
+	} /* end for */
+#if	CF_MULTI
+	(void) multi ;
+#endif
 } /* end subroutine (main) */
 
 
