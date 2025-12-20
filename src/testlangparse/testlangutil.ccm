@@ -1,0 +1,145 @@
+/* testlangutil MODULE */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
+
+/* test the LANGPARSE object */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+	= 2025-11-03, David A-D- Morano
+	I am updating this to the latest API of the LANGPARSE object.
+
+*/
+
+/* Copyright © 1998,2025 David A­D­ Morano.  All rights reserved. */
+
+/*******************************************************************************
+
+	Description:
+	I test the LANGPARSE object.
+
+*******************************************************************************/
+
+module ;
+
+#include	<envstandards.h>	/* MUST be first to configure */
+#include	<sys/types.h>
+#include	<sys/param.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |atoi(3c)| */
+#include	<cstdarg>
+#include	<cstdio>		/* |printf(3c)| */
+#include	<iostream>
+#include	<string>
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
+#include	<new>			/* placement-new */
+#include	<clanguage.h>
+#include	<utypedefs.h>
+#include	<utypealiases.h>
+#include	<usysrets.h>
+#include	<usyscalls.h>
+#include	<getfdfile.h>		/* |FD_STDERR| */
+#include	<ccfile.hh>
+#include	<strnul.hh>
+#include	<six.h>			/* |sichr(3uc)| */
+#include	<sfx.h>			/* |sfchr(3uc)| */
+#include	<rmx.h>			/* |rmeol(3uc)| */
+#include	<ascii.h>
+#include	<exitcodes.h>
+#include	<localmisc.h>		/* |eol| + |MAXLINELEN| */
+#include	<debprintf.h>		/* |DEBPRINTF| */
+
+#include	<langparse.h>
+
+#pragma		GCC dependency		"mod/libutil.ccm"
+#pragma		GCC dependency		"mod/debug.ccm"
+
+export module testlangutil ;
+
+import libutil ;			/* |getlenstr(3u)| */
+import debug ;
+
+/* local defines */
+
+
+/* imported namespaces */
+
+using std::string ;			/* type */
+using std::min ;			/* subroutine-template */
+using std::max ;			/* subroutine-template */
+using std::cout ;			/* variable */
+using std::cerr ;			/* variable */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* exported variables */
+
+
+/* local structures */
+
+
+/* exported entities */
+
+export {
+    template<typename T> int rmeol(T *sp,int µsl) noex {
+    	int		rl = -1 ;
+	if (int sl ; (sl = getlen(sp,µsl)) > 0) {
+	    cauto isend = [] (T ch) noex -> bool {
+		return ((ch == CH_NL) || (ch == CH_SP)) ;
+	    } ; /* end lambda (isend) */
+	    while ((sl > 0) && isend(sp[sl - 1])) {
+		sl -= 1 ;
+	    }
+	    rl = sl ;
+	} /* end if (non-null) */
+    	return rl ;
+    } /* end subroutine-template (rmeol) */
+} /* end export */
+
+export {
+    template<typename T> int sichr(T *sp,int µsl,int chs) noex {
+    	int		rl = -1 ;
+	bool		f = false ;
+	if (int sl ; (sl = getlen(sp,µsl)) >= 0) {
+	    for (rl = 0 ; rl < sl ; rl += 1) {
+		f = (sp[rl] == chs) ;
+		if (f) break ;
+	    } /* end for */
+	} /* end if (non-null) */
+    	return (f) ? rl : -1 ;
+    } /* end subroutine-template (sichr) */
+} /* end export */
+
+export {
+    int pro(short *sbp,int sbl) noex {
+	cauto		&lm = langparsem ;
+    	int		rs = SR_OK ;
+	int		wlen = 0 ;
+	DEBPRINTF("ent sbl=%d\n",sbl) ;
+	{
+	    cint ll = sbl ;
+	    for (int i = 0 ; i < ll ; i += 1) {
+		short code = sbp[i] ;
+		char chc = char(sbp[i]) ;
+		if (! (code & lm.comment)) {
+		    cout << chc ;
+		}
+		wlen += 1 ;
+	    } /* end for */
+	} /* end block */
+	DEBPRINTF("ret rs=%d wlen=%d\n",rs,wlen) ;
+	return (rs >= 0) ? wlen : rs ;
+    } /* end subroutine (pro) */
+} /* end export */
+
+
