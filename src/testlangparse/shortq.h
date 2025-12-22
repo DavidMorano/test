@@ -36,7 +36,7 @@
 struct shortq_head {
     	void		*qvp ;		/* queue-value-pointer */
 	uint		magic ;
-} ;
+} ; /* end struct (shortq_head) */
 
 #ifdef	__cplusplus
 enum shortqmems {
