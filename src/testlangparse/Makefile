@@ -1,8 +1,10 @@
 # MAKEFILE (testlangparse)
 
-T= testlangparse
+TL= testlangparse
+TS= testshortq
+TI= testsintq
 
-ALL= $(T).x
+ALL= $(TL).x $(TS).x $(TI).x
 
 
 BINDIR		?= $(REPOROOT)/bin
@@ -40,15 +42,21 @@ MODS +=
 LIBS += -luo -lu
 
 
-OBJ0= testlangparse_main.o
+OBJ_TL= testlangparse_main.o
+OBJ_TS= testshortq_main.o
+OBJ_TI= testsintq_main.o
+
+DEP= testlangutil.o
+
+OBJ0= shortq.o sintq.o
 OBJ1= langx.o
-OBJ2= 
-OBJ3= 
+OBJ2= testlangutil.o
+OBJ3=
 
 OBJA= obj0.o obj1.o
-#OBJB= obj2.o obj3.o
+OBJB= obj2.o
 
-OBJ= $(OBJA)
+OBJ= obja.o objb.o
 
 
 INCDIRS=
@@ -70,7 +78,7 @@ LDFLAGS		?= $(MAKELDFLAGS)
 .SUFFIXES:		.hh .ii .iim .ccm
 
 
-default:		$(T).x
+default:		$(TL).x
 
 all:			$(ALL)
 
@@ -99,8 +107,14 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).x:			$(OBJ)
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
+$(TI).x:		$(OBJ_TI) obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TI) obj.o $(LIBINFO)
+
+$(TS).x:		$(OBJ_TS) obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TS) obj.o $(LIBINFO)
+
+$(TL).x:		$(OBJ_TL) obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TL) obj.o $(LIBINFO)
 
 $(T).nm:		$(T).o
 	$(NM) $(NMFLAGS) $(T).o > $(T).nm
@@ -138,10 +152,27 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-testlangparse_main.o:	testlangparse_main.cc 		$(INCS)
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testlangparse_main.o:	testlangparse_main.cc 		$(DEP) $(INCS)
+testshortq_main.o:	testshortq_main.cc 		$(DEP) $(INCS)
+testsintq_main.o:	testsintq_main.cc 		$(DEP) $(INCS)
 
 langx.o:		langx.dir
 langx.dir:
 	makesubdir $@
+
+obuf.o:			obuf.dir
+obuf.dir:
+	makesubdir $@
+
+langparse.o:		langparse.cc	langparse.h	$(INCS)
+shortq.o:		shortq.cc	shortq.h	$(INCS)
+sintq.o:		sintq.cc	sintq.h		$(INCS)
+
+tetlangutil.o:		testlangutil.ccm
+	makemodule libutil
 
 
