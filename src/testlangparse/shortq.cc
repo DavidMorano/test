@@ -261,7 +261,6 @@ int shortq_remread(shortq *op,short *rbuf,int rlen) noex {
 	int		rs ;
 	int		i = 0 ; /* return-value */
 	if ((rs = shortq_magic(op,rbuf)) >= 0) ylikely {
-	    rbuf[0] = '\0' ;
 	    if (rlen > 0) ylikely {
 		int	ml ;
 	        if (bmgr *qvp ; (qvp = resumelife<bmgr>(op->qvp)) != np) {
@@ -275,11 +274,11 @@ int shortq_remread(shortq *op,short *rbuf,int rlen) noex {
 			    break ;
 			}
 	            } /* end for */
-	            rbuf[i] = 0 ;
 	        } else {
 	            rs = SR_BUGCHECK ;
 	        }
 	    } /* end if (positive) */
+	    rbuf[i] = 0 ;
 	} /* end if (magic) */
 	return (rs >= 0) ? i : rs ;
 } /* end subroutine (shortq_remread) */
@@ -454,7 +453,6 @@ int shortq_co::operator () (int a) noex {
 	    } /* end switch */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (shortq_co::operator) */
+} /* end method (shortq_co::operator) */
 
 
