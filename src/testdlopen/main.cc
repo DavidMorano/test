@@ -35,7 +35,7 @@
 #include	<climits>
 #include	<csignal>
 #include	<unistd.h>
-#include	<time.h>
+#include	<ctime>
 #include	<dlfcn.h>
 #include	<cstdlib>
 #include	<cstring>
