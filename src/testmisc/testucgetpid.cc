@@ -45,9 +45,6 @@ extern int	strlinelen(cchar *,int,int) ;
 extern int	nprintf(cchar *,cchar *,...) ;
 #endif
 
-extern cchar 	*getourenv(cchar **,cchar *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
 
 /* forward references */
 
