@@ -38,7 +38,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<cstdlib>
-#include	<time.h>
+#include	<ctime>
 #include	<cstring>
 #include	<ctype.h>
 #include	<libgen.h>
