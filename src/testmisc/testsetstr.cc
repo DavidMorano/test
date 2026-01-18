@@ -35,12 +35,10 @@ extern int	strlinelen(cchar *,int,int) ;
 extern int	debugprinthexblock(cchar *,int,const void *,int) ;
 #endif
 
-extern char	*getourenv(cchar **,cchar *) ;
 
 /* exported subroutines */
 
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,cchar **argv,cchar **envv) {
 	SETSTR		ss ;
 	FILE		*ofp = stdout ;
 
