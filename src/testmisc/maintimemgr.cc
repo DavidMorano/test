@@ -1,4 +1,5 @@
 /* maintimeout SUPPORT (timeout) */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* test the TIMEOUT facility */
@@ -31,8 +32,10 @@
 #include	<dlfcn.h>
 #include	<csignal>
 #include	<climits>
-#include	<cstring>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
+#include	<cstring>
 #include	<new>
 #include	<initializer_list>
 #include	<utility>
@@ -44,6 +47,7 @@
 #include	<iostream>
 #include	<usystem.h>
 #include	<sighand.h>
+#include	<strx.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -70,9 +74,6 @@ extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-extern "C" cchar	*strsigabbr(int) ;
 
 #if	CF_CALLFINI
 extern "C" void		uctimeout_fini() ;
@@ -239,7 +240,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 
 static void main_sighand(int sn,siginfo_t *sip,void *vcp) {
 #if	CF_DEBUGN
-	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strsigabbr(sn)) ;
+	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
 
 	(void) sn ;
@@ -274,7 +275,7 @@ static int main_sigdump(siginfo_t *sip) {
 	const int	si_signo = sip->si_signo ;
 	const int	si_code = sip->si_code ;
 	int		wl ;
-	cchar	*sn = strsigabbr(sip->si_signo) ;
+	cchar	*sn = strabbrsig(sip->si_signo) ;
 	cchar	*as = "*na*" ;
 	cchar	*scs = NULL ;
 	cchar	*fmt ;
