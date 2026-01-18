@@ -30,18 +30,16 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern const char 	*getourenv(const char **,const char *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
 
 /* forward references */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 
 #if	CF_DEBUGS && CF_DEBUGMALL
 	uint	mo_start = 0 ;
