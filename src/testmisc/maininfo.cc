@@ -46,17 +46,6 @@
 
 /* external subroutines */
 
-extern int	snwcpy(char *,int,cchar *,int) ;
-extern int	sncpy2(char *,int,cchar *,cchar *) ;
-extern int	sncpy2w(char *,int,cchar *,cchar *,int) ;
-extern int	sncpylc(char *,int,cchar *) ;
-extern int	sncpyuc(char *,int,cchar *) ;
-extern int	sfbasename(cchar *,int,cchar **) ;
-extern int	bufprintf(char *,int,cchar *,...) ;
-extern int	haslc(cchar *,int) ;
-extern int	hasuc(cchar *,int) ;
-extern int	isNotPresent(int) ;
-
 #if	CF_DEBUGS
 extern int	debugprintf(cchar *,...) ;
 extern int	strlinelen(cchar *,int,int) ;
@@ -65,10 +54,6 @@ extern int	strlinelen(cchar *,int,int) ;
 #if	CF_DEBUGN
 extern int	nprintf(cchar *,cchar *,...) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*strnrchr(cchar *,int,int) ;
 
 
 /* external variables */
