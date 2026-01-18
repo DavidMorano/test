@@ -16,7 +16,6 @@
 
 #define	NDF		"testnprint.deb"
 
-extern cchar 	*getourenv(cchar **,cchar *) noex ;
 
 int main(int argc,mainv argv,mainv envv) {
 	const int	cols = COLUMNS ;
