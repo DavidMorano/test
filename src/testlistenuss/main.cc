@@ -2,9 +2,7 @@
 
 /* test listening on a USS portal */
 
-
 #define	CF_DEBUGS	1		/* compile-time debugging */
-
 
 /* revision history:
 
@@ -17,26 +15,24 @@
 
 /*******************************************************************************
 
-        This subroutine forms a program that sends data to a remote INET host to
-        its 'echo' service.
-
+	This subroutine forms a program that sends data to a remote
+	INET host to its 'echo' service.
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>
-
 #include	<sys/types.h>
 #include	<sys/socket.h>
 #include	<sys/time.h>
 #include	<netinet/in.h>
-#include	<time.h>
-#include	<csignal>
-#include	<cstdlib>
-#include	<cstring>
 #include	<netdb.h>
-
-#include	<usystem.h>
+#include	<ctime>
+#include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
