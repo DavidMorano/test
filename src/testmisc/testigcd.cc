@@ -36,11 +36,8 @@
 
 #define	VARDEBUGFNAME	"TESTISHEX_DEBUGFILE"
 
-extern int	igcd(int,int) ;
 
 /* external subroutines */
-
-extern int	optvalue(cchar *,int) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(const char *) ;
@@ -48,8 +45,6 @@ extern int	debugprintf(const char *,...) ;
 extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
-
-extern cchar 	*getourenv(const char **,const char *) ;
 
 
 /* local variables */
