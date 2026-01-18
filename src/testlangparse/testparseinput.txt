@@ -11,6 +11,8 @@
 #include	<exitcodes.h>		/* |EX_{xxx}| */
 #include	<localmisc.h>
 
+#define	SOMETHING	"there"
+
 /* hello "*/
 /* goodbye \*/
 
