@@ -34,8 +34,6 @@
 #include	<cstdarg>
 #include	<cstdio>		/* |printf(3c)| */
 #include	<iostream>
-#include	<string>
-#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<new>			/* placement-new */
 #include	<clanguage.h>
 #include	<utypedefs.h>
@@ -72,9 +70,6 @@ import testlangutil ;
 
 /* imported namespaces */
 
-using std::string ;			/* type */
-using std::min ;			/* subroutine-template */
-using std::max ;			/* subroutine-template */
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
 
@@ -101,6 +96,7 @@ local int procout(langparse *,int) noex ;
 /* local variables */
 
 cchar		pn[] = "test" ;
+
 cbool		f_debug		= CF_DEBUG ;
 
 
