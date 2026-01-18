@@ -13,7 +13,6 @@
 
 #define	VARDEBUGFNAME	"TESTDEBUGPRINT_DEBUGFILE"
 
-extern cchar 	*getourenv(cchar **,cchar *) noex ;
 
 int main(int argc,mainv argv,mainv envv) {
 	int		rs ;
