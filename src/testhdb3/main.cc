@@ -36,7 +36,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<csignal>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstring>
 
@@ -75,8 +75,6 @@ extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
 
 
 /* external variables */
