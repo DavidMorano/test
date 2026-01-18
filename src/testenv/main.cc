@@ -1,18 +1,19 @@
-/* main (liblkcmd) */
+/* main SUPPORT (liblkcmd) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* generic front-end for SHELL built-ins */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGN	0		/* special debugging */
 #define	CF_UTIL		0		/* run the utility worker */
-
 
 /* revision history:
 
 	= 2001-11-01, David A­D­ Morano
-	This subroutine was written for use as a front-end for Korn Shell (KSH)
-	commands that are compiled as stand-alone programs.
+	This subroutine was written for use as a front-end for Korn
+	Shell (KSH) commands that are compiled as stand-alone
+	programs.
 
 */
 
@@ -20,15 +21,12 @@
 
 /*******************************************************************************
 
-	This is the front-end to make the various SHELL (KSH) built-in commands
-	into stand-alone programs.
-
+	This is the front-end to make the various SHELL (KSH)
+	built-in commands into stand-alone programs.
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<climits>
@@ -36,12 +34,13 @@
 #include	<csignal>
 #include	<ucontext.h>
 #include	<dlfcn.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
 #include	<usystem.h>
 #include	<intceil.h>
 #include	<sighand.h>
+#include	<strx.h>
 #include	<mapex.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
@@ -65,33 +64,13 @@
 
 /* typ-defs */
 
-#ifndef	TYPEDEF_CCHAR
-#define	TYPEDEF_CCHAR	1
-typedef const char	cchar ;
-#endif
-
 
 /* external subroutines */
-
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	sncpy2(char *,int,const char *,const char *) ;
-extern int	sncpy2w(char *,int,const char *,const char *,int) ;
-extern int	sncpylc(char *,int,const char *) ;
-extern int	sncpyuc(char *,int,const char *) ;
-extern int	sfbasename(cchar *,int,cchar **) ;
-extern int	ucontext_rtn(ucontext_t *,long *) ;
-extern int	bufprintf(char *,int,cchar *,...) ;
-extern int	msleep(int) ;
-extern int	haslc(cchar *,int) ;
-extern int	hasuc(cchar *,int) ;
 
 #if	CF_DEBUGN
 extern int	nprintf(cchar *,cchar *,...) ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-extern cchar	*strsigabbr(int) ;
 
 
 /* external variables */
@@ -256,7 +235,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 static void main_sighand(int sn,siginfo_t *sip,void *vcp)
 {
 #if	CF_DEBUGN
-	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strsigabbr(sn)) ;
+	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
 
 	if (vcp != NULL) {
@@ -292,7 +271,7 @@ static int main_sigdump(siginfo_t *sip)
 	const int	si_signo = sip->si_signo ;
 	const int	si_code = sip->si_code ;
 	int		wl ;
-	const char	*sn = strsigabbr(sip->si_signo) ;
+	const char	*sn = strabbrsig(sip->si_signo) ;
 	const char	*as = "*na*" ;
 	const char	*scs = NULL ;
 	const char	*fmt ;
