@@ -65,7 +65,7 @@ struct values {
 		res *= subval(i) ;
 	    }
 	} ;
-} ;
+} ; /* end struct */
 
 
 /* forward references */
@@ -89,11 +89,15 @@ const int	pi = 3 ;
 	    gval = 1 ; 
 	} ;
 	constexpr int geter() const noex ;
-    } ;
+    } ; /* end struct */
 
-extern const ginit	gi ;
+extern const ginit	ginit_data ;
 
-constinit const ginit	gi ;
+constinit const ginit	ginit_data ;
+
+extern const values	values_data ;
+
+const values	values_data ;
 
 
 /* exported variables */
@@ -109,7 +113,7 @@ int main(int,mainv,mainv) {
 	cout << "pi=" << pi << eol ;
 	cout << localstr << eol ;
 	cout << val.res << eol ;
-	cout << gi.geter() << eol ;
+	cout << ginit_data.geter() << eol ;
 	{
 	    int	a = 1 ;
 	    cout << "a=" << ({ const typeof(a) cval = a ; cval ; }) << eol ;
