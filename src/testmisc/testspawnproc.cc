@@ -1,11 +1,11 @@
-/* main (testspawnproc) */
-
+/* main SUPPORT (testspawnproc) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 #define	CF_DEBUG	0		/* run-time debugging */
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #define	CF_DEFENVV	1		/* establish a default environment */
-
 
 /* revision history:
 
@@ -19,20 +19,20 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testspawnproc.x <program> [<arg(s)>]
-
 
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-#include	<cstdlib>
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<envhelp.h>
+#include	<strx.h>
 #include	<localmisc.h>
 
 #include	"defs.h"
@@ -52,32 +52,25 @@
 #define	MKCHAR(ch)	((ch) & UCHAR_MAX)
 #endif
 
-extern int	sfbasename(cchar *,int,cchar **) ;
-extern int	ctdeci(char *,int,int) ;
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 static int	debugexit(int) ;
 #endif /* CF_DEBUGS */
-
-extern cchar	*getourenv(const char **,const char *) ;
-extern cchar	*strsigabbr(int) ;
-
-extern char	*strnwcpy(char *,int,const char *,int) ;
 
 
 /* forward references */
 
-static int proglog(const char *,bfile *,int) ;
+static int proglog(cchar *,bfile *,int) ;
 
 
 /* local variables */
 
-static const char	*envbads[] = {
+static cchar	*envbads[] = {
 	"_",
 	"_A0",
 	"_EF",
@@ -90,7 +83,7 @@ static const char	*envbads[] = {
 	NULL
 } ;
 
-static const char	*envgoods[] = {
+static cchar	*envgoods[] = {
 	"PATH",
 	"UNIQUE",
 	"TERM",
@@ -111,9 +104,9 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	int		rs ;
 	int		rs1 ;
-	const char	*pn ;
-	const char	*efname = NULL ;
-	const char	*cp ;
+	cchar	*pn ;
+	cchar	*efname = NULL ;
+	cchar	*cp ;
 
 #if	CF_DEBUGS || CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -185,7 +178,7 @@ int main(int argc,cchar **argv,cchar **envv)
 /* local subroutines */
 
 
-static int proglog(const char *pn,bfile *efp,int cs)
+static int proglog(cchar *pn,bfile *efp,int cs)
 {
 	int		rs = SR_OK ;
 
@@ -194,9 +187,9 @@ static int proglog(const char *pn,bfile *efp,int cs)
 		bprintf(efp,"%s: program exited normally ex=%u\n",pn,ex) ;
 	    } else if (WIFSIGNALED(cs)) {
 		int	sig = WTERMSIG(cs) ;
-		const char	*ss ;
+		cchar	*ss ;
 		char		sigbuf[20+1] ;
-		if ((ss = strsigabbr(sig)) == NULL) {
+		if ((ss = strabbrsig(sig)) == NULL) {
 		     ctdeci(sigbuf,20,sig) ;
 		     ss = sigbuf ;
 		}
@@ -219,9 +212,9 @@ static int debugexit(int cs)
 		debugprintf("main: program exited normally ex=%u\n",ex) ;
 	    } else if (WIFSIGNALED(cs)) {
 		int	sig = WTERMSIG(cs) ;
-		const char	*ss ;
+		cchar	*ss ;
 		char		sigbuf[20+1] ;
-		if ((ss = strsigabbr(sig)) == NULL) {
+		if ((ss = strabbrsig(sig)) == NULL) {
 		     ctdeci(sigbuf,20,sig) ;
 		     ss = sigbuf ;
 		}
