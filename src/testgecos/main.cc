@@ -47,7 +47,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<netdb.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstring>
 #include	<pwd.h>
@@ -79,16 +79,6 @@
 
 
 /* external subroutines */
-
-extern int	matpstr(const char **,int,const char *,int) ;
-extern int	sfshrink(const char *,int,char **) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	initnow(struct timeb *,char *,int) ;
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
 
 
 /* external variables */
