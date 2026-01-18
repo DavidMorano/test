@@ -36,18 +36,17 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<ctime>
 #include	<csignal>
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-#include	<time.h>
 
 #include	<usystem.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<char.h>
-#include	<tmtime.h>
-#include	<sntmtime.h>
+#include	<tmctime>
+#include	<sntmctime>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -67,12 +66,6 @@
 
 /* external subroutines */
 
-extern int	sfshrink(cchar *,int,cchar **) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matpstr(const char **,int,const char *,int) ;
-extern int	matpcasestr(const char **,int,const char *,int) ;
-extern int	isdigitlatin(int) ;
-
 extern int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
 
 #if	CF_DEBUGS || CF_DEBUG
@@ -81,12 +74,6 @@ extern int	debugprintf(const char *,...) ;
 extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-extern char	*strwcpyuc(char *,const char *,int) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_gmlog(time_t,char *) ;
 
 
 /* external variables */
