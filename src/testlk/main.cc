@@ -47,7 +47,7 @@
 #include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstring>
 
@@ -91,27 +91,8 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecti(const char *,int,int *) ;
-extern int	vstrkeycmp(const char **,const char **) ;
-extern int	getpwd(char *,int) ;
-extern int	getnodedomain(char *,char *) ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
-extern int	getfname(char *,char *,int,char *) ;
-extern int	bopenroot(bfile *,char *,char *,char *,char *,int) ;
-extern int	varsub_load(), varsub_addvec(VARSUB *,VECSTR *) ;
-extern int	varsub_subbuf(), varsub_merge() ;
-extern int	expander() ;
 extern int	procfileenv(const char *,char *,VECSTR *) ;
 extern int	procfilepaths(char *,char *,VECSTR *) ;
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*strbasename(char *), *strshrink(char *) ;
-extern char	*timestr_log(time_t,char *) ;
 
 #if	CF_DEBUG
 extern void	whoopen() ;
