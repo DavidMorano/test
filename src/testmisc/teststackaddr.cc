@@ -26,7 +26,6 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern const char 	*getourenv(const char **,const char *) ;
 
 struct pair {
 	const char	*hp ;
