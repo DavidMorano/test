@@ -28,11 +28,8 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern const char 	*getourenv(const char **,const char *) ;
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 	GRCACHE		g ;
 #if	CF_DEBUGS && CF_DEBUGMALL
 	uint		mo_start = 0 ;
