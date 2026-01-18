@@ -42,7 +42,6 @@
 #define	VARDEBUGFNAME	"TESTUCOPEN_DEBUGFILE"
 
 extern int	fbwrite(FILE *,const void *,int) ;
-extern int	bufprintf(char *,int,const char *,...) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(const char *) ;
@@ -51,9 +50,6 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(const char **,const char *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
 
 /* forward references */
 
@@ -65,10 +61,10 @@ static int filer_oread(FILER *,void *,int,int) ;
 static int filer_refill(FILER *,int) ;
 #endif /* COMMENT */
 
+
 /* exported subroutines */
 
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 
 #if	CF_DEBUGS && CF_DEBUGMALL
 	uint		mo_start = 0 ;
