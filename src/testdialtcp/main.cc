@@ -44,7 +44,7 @@
 #include	<sys/param.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<libgen.h>
 #include	<netdb.h>
 #include	<cstdlib>
@@ -711,7 +711,7 @@ char	*argv[] ;
 			sleep(1) ;
 #endif
 
-	                len = uc_readlinetimed(s,buf,BUFLEN,TO) ;
+	                len = uc_readlnto(s,buf,BUFLEN,TO) ;
 
 #if	CF_DEBUG
 	if (pip->debuglevel > 1)
