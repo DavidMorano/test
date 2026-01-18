@@ -28,7 +28,7 @@
 #include	<fcntl.h>
 #include	<csignal>
 #include	<cstring>
-#include	<time.h>
+#include	<ctime>
 
 #include	<usystem.h>
 #include	<bfile.h>
@@ -55,21 +55,12 @@
 
 /* external subroutines */
 
-extern int	sfshrink(const char *,int,const char **) ;
-extern int	nextfield(const char *,int,const char **) ;
-extern int	mktmpfile(char *,mode_t,const char *) ;
-
 #if	CF_DEBUGS || CF_DEBUG
 extern int	debugopen(const char *) ;
 extern int	debugprintf(const char *,...) ;
 extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
-
-extern const char	*getourenv(const char **,const char *) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
 
 
 /* exported subroutines */
