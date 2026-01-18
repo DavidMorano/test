@@ -27,7 +27,6 @@ extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(cchar **,cchar *) ;
 
 int main(int argc,mmainv argv,mainv envv) {
 	COMPARSE	coms ;
