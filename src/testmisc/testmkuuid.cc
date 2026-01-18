@@ -21,8 +21,6 @@
 
 #define	VARDEBUGFNAME	"TESTMKUUID_DEBUGFILE"
 
-extern int	mkuuid(MKUUID *,int) ;
-extern int	snmkuuid(char *,int,MKUUID *) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(const char *) ;
@@ -32,11 +30,8 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(cchar **,cchar *) ;
 
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 	MKUUID		uuid ;
 	int		rs = SR_OK ;
 
