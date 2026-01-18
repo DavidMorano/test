@@ -21,10 +21,13 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/param.h>
-#include	<time.h>
+#include	<ctime>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdarg>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<ugetpid.h>
 #include	<localmisc.h>
 
@@ -48,9 +51,6 @@ extern int	strlinelen(cchar *,int,int) ;
 extern int	nprintf(cchar *,cchar *,...) ;
 #endif
 
-extern cchar 	*getourenv(cchar **,cchar *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
 
 /* forward references */
 
