@@ -25,7 +25,6 @@
 
 #define	VARDEBUGFNAME	"TESTSTRNCMP_DEBUGFILE"
 
-extern int	sisub(cchar *,int,cchar *) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(const char *) ;
@@ -34,12 +33,8 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(const char **,const char *) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
-
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	int		rs = SR_OK ;
 	int		sl = 0 ;
 	int		f = FALSE ;
