@@ -29,6 +29,8 @@
 
 #include	<int_fastdiv.hh>
 
+#pragma		GCC dependency		"mod/constdiv.ccm"
+
 import constdiv ;
 
 /* forward references */
