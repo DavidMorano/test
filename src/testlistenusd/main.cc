@@ -43,7 +43,7 @@
 #include	<sys/uio.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<libgen.h>
 #include	<netdb.h>
 #include	<cstdlib>
