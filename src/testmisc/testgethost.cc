@@ -23,10 +23,8 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern cchar	*getourenv(const char **,const char *) ;
 
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,const char **argv,const char **envv) {
 	int		rs = SR_OK ;
 	const char	*cp ;
 
