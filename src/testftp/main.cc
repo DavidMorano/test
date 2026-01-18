@@ -1,51 +1,48 @@
-/* main */
+/* main SUPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* program to send echo data to a remote host (and back) */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1
 #define	CF_DEBUG	1
 
-
 /* revision history:
 
 	= 92/03/01, David A­D­ Morano
-
 	This program was originally written.
-
 
 */
 
+/*******************************************************************************
 
-/**********************************************************************
-
+  	Description:
 	This subroutine forms a program that sends data to a remote
 	INET host to its 'echo' service.
 
+*******************************************************************************/
 
-***********************************************************************/
-
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/socket.h>
 #include	<sys/time.h>
 #include	<netinet/in.h>
-#include	<time.h>
-#include	<csignal>
 #include	<netdb.h>
-#include	<cstdlib>
+#include	<ctime>
+#include	<csignal>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
+#include	<uclibmem.h>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<usystem.h>
 #include	<baops.h>
 #include	<bfile.h>
 #include	<sockaddress.h>
 #include	<exitcodes.h>
 #include	<FtpLibrary.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 
