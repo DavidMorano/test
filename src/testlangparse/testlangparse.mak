@@ -42,11 +42,11 @@ MODS +=
 LIBS += -luo -lu
 
 
+DEP= testlangutil.o
+
 OBJ_TL= testlangparse_main.o
 OBJ_TS= testshortq_main.o
 OBJ_TI= testsintq_main.o
-
-DEP= testlangutil.o
 
 OBJ0= shortq.o sintq.o
 OBJ1= langx.o
@@ -107,14 +107,14 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(TI).x:		$(OBJ_TI) obj.o
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TI) obj.o $(LIBINFO)
+$(TL).x:		$(OBJ_TL) obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TL) obj.o $(LIBINFO)
 
 $(TS).x:		$(OBJ_TS) obj.o
 	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TS) obj.o $(LIBINFO)
 
-$(TL).x:		$(OBJ_TL) obj.o
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TL) obj.o $(LIBINFO)
+$(TI).x:		$(OBJ_TI) obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_TI) obj.o $(LIBINFO)
 
 $(T).nm:		$(T).o
 	$(NM) $(NMFLAGS) $(T).o > $(T).nm
@@ -157,7 +157,9 @@ obj.o:			$(OBJ)
 
 
 testlangparse_main.o:	testlangparse_main.cc 		$(DEP) $(INCS)
+
 testshortq_main.o:	testshortq_main.cc 		$(DEP) $(INCS)
+
 testsintq_main.o:	testsintq_main.cc 		$(DEP) $(INCS)
 
 langx.o:		langx.dir
