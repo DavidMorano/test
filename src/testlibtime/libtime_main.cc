@@ -21,7 +21,7 @@
 
 
 #include	<sys/types.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstring>
 #include	<cstdio>
 
