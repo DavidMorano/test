@@ -102,25 +102,9 @@
 
 /* external subroutines */
 
-extern uint	nextpowtwo(uint) ;
-
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matpstr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-
 extern int	printhelp(bfile *,const char *,const char *,const char *) ;
 extern int	proginfo_setpiv(struct proginfo *,const char *,
 			const struct pivars *) ;
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
 
 
 /* external variables */
