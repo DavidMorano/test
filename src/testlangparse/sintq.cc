@@ -32,10 +32,7 @@
 #include	<cstdlib>
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
+#include	<usysbase.h>
 #include	<usyscalls.h>		/* |umem| */
 #include	<localmisc.h>
 #include	<debprintf.h>		/* |DEBPRINTF(3uc)| */
@@ -166,16 +163,16 @@ int sintq_remread(sintq *op,short *rbuf,int rlen) noex {
 	if (op && rbuf) ylikely {
 	    rs = SR_OK ;
 	    if (int ml ; rlen > 0) ylikely {
-	            cint len = op->cnt ;
-	            ml = min(len,rlen) ;
-	            for (i = 0 ; (rs >= 0) && (i < ml) ; i += 1) {
-			if (short v ; (rs = sintq_rem(op,&v)) >= 0) {
-			    rbuf[i] = v ;
-			} else if (rs == SR_EMPTY) {
-			    rs = SR_OK ;
-			    break ;
-			}
-	            } /* end for */
+                cint len = op->cnt ;
+                ml = min(len,rlen) ;
+                for (i = 0 ; (rs >= 0) && (i < ml) ; i += 1) {
+                    if (short v ; (rs = sintq_rem(op,&v)) >= 0) {
+                        rbuf[i] = v ;
+                    } else if (rs == SR_EMPTY) {
+                        rs = SR_OK ;
+                        break ;
+                    }
+                } /* end for */
 	    } /* end if (non-zero positive) */
 	    rbuf[i] = 0 ;
 	} /* end if (magic) */
