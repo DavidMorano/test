@@ -14,13 +14,15 @@
 
 #include	<envstandards.h>
 #include	<sys/types.h>
-#include	<sys/time.h>
-#include	<cstdlib>
-#include	<cstring>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
+#include	<cstring>
+#include	<algorithm>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<vecpstr.h>
 #include	<cthex.h>
-#include	<usystem.h>
 
 #ifndef	DIGBUFLEN
 #define	DIGBUFLEN	40
@@ -28,9 +30,9 @@
 
 #define	VARDEBUGFNAME	"TESTISHEX_DEBUGFILE"
 
+using std::min ;
+using std::max ;
 
-extern int	min(int,int) ;
-extern int	max(int,int) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(cchar *) ;
@@ -39,12 +41,8 @@ extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(cchar **,cchar *) ;
 
-extern char	*strwcpy(char *,cchar *,int) ;
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,cchar **argv,cchar **envv) {
 	const int	n = (100*1024*1024) ;
 	int		rs = SR_OK ;
 	int		rs1 ;
