@@ -27,7 +27,7 @@
 
 #include	<sys/types.h>
 #include	<sys/stat.h>
-#include	<time.h>
+#include	<ctime>
 #include	<pwd.h>
 #include	<ctype.h>
 #include	<cstdio>
