@@ -1,14 +1,14 @@
-/* maintimer (timer) */
+/* maintimer SUPPORT (timer) */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* test the TIMER facility */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* non-switchable debug print-outs */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #define	CF_DEBUGN	1		/* special debugging */
 #define	CF_SIGHAND	1		/* install csignalandlers */
-
 
 /* revision history:
 
@@ -25,14 +25,16 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<csignal>
 #include	<ucontext.h>
 #include	<dlfcn.h>
+#include	<csignal>
 #include	<climits>
-#include	<cstring>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
+#include	<cstring>
 #include	<new>
 #include	<initializer_list>
 #include	<utility>
@@ -48,6 +50,7 @@
 #include	<timespec.h>
 #include	<itimerspec.h>
 #include	<timeout.h>
+#include	<strx.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -74,18 +77,6 @@ using namespace		std ;		/* yes, we want punishment! */
 
 extern "C" int	uc_safesleep(int) ;
 
-extern "C" int	snwcpy(char *,int,const char *,int) ;
-extern "C" int	sncpy2(char *,int,const char *,const char *) ;
-extern "C" int	sncpy2w(char *,int,const char *,const char *,int) ;
-extern "C" int	sncpylc(char *,int,const char *) ;
-extern "C" int	sncpyuc(char *,int,const char *) ;
-extern "C" int	sfbasename(cchar *,int,cchar **) ;
-extern "C" int	ucontext_rtn(ucontext_t *,long *) ;
-extern "C" int	bufprintf(char *,int,cchar *,...) ;
-extern "C" int	msleep(int) ;
-extern "C" int	haslc(cchar *,int) ;
-extern "C" int	hasuc(cchar *,int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
@@ -97,10 +88,6 @@ extern "C" int	strlinelen(cchar *,int,int) ;
 extern "C" int	nprintf(cchar *,cchar *,...) ;
 #endif
 
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-extern "C" cchar	*getourenv(const char **,const char *) ;
-extern "C" cchar	*strsigabbr(int) ;
-
 extern "C" void		uctimeout_fini() ;
 
 
@@ -108,7 +95,7 @@ extern "C" void		uctimeout_fini() ;
 
 struct sigcode {
 	int		code ;
-	const char	*name ;
+	cchar	*name ;
 } ;
 
 
@@ -289,7 +276,7 @@ static int maininfo_time(MAININFO *mip,time_t dt,int tval)
 static void main_sighand(int sn,siginfo_t *sip,void *vcp)
 {
 #if	CF_DEBUGN
-	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strsigabbr(sn)) ;
+	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
 
 	if (vcp != NULL) {
@@ -325,10 +312,10 @@ static int main_sigdump(siginfo_t *sip)
 	const int	si_signo = sip->si_signo ;
 	const int	si_code = sip->si_code ;
 	int		wl ;
-	const char	*sn = strsigabbr(sip->si_signo) ;
-	const char	*as = "*na*" ;
-	const char	*scs = NULL ;
-	const char	*fmt ;
+	cchar	*sn = strabbrsig(sip->si_signo) ;
+	cchar	*as = "*na*" ;
+	cchar	*scs = NULL ;
+	cchar	*fmt ;
 	char		wbuf[LINEBUFLEN+1] ;
 	char		abuf[16+1] ;
 #if	CF_DEBUGN
@@ -369,11 +356,11 @@ static int main_sigdump(siginfo_t *sip)
 /* end subroutine (main_sigdump) */
 
 
-static const char *strsigcode(const struct sigcode *scp,int code)
+static cchar *strsigcode(const struct sigcode *scp,int code)
 {
 	int		i ;
 	int		f = FALSE ;
-	const char	*sn = "UNKNOWN" ;
+	cchar	*sn = "UNKNOWN" ;
 	for (i = 0 ; scp[i].code != 0 ; i += 1) {
 	    f = (scp[i].code == code) ;
 	    if (f) break ;
