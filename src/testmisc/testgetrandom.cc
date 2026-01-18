@@ -37,9 +37,6 @@
 #define	VARDEBUGFNAME	"TESTUCOPEN_DEBUGFILE"
 #define	VARCOLUMNS	"COLUMNS"
 
-extern int	cfdeci(cchar *,int,int *) ;
-extern int	fbwrite(FILE *,cvoid *,int) ;
-extern int	bufprintf(char *,int,cchar *,...) ;
 
 #if	CF_DEBUGS
 extern int	debugopen(cchar *) ;
@@ -49,9 +46,6 @@ extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern cchar 	*getourenv(cchar **,cchar *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
 
 /* forward references */
 
