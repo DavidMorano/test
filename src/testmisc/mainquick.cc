@@ -83,8 +83,6 @@ extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
 
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
 
 /* local structures */
 
