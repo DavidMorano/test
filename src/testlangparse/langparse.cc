@@ -47,7 +47,9 @@
 #include	<string>		/* C++ |string| */
 #include	<new>			/* |nothrow(3c++)| */
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
 #include	<six.h>			/* |sichr(2uc)| */
 #include	<shortq.h>
 #include	<strwcpy.h>
@@ -260,13 +262,19 @@ int langparse_load(langparse *op,cchar *sp,int 탎l) noex {
 	int		c = 0 ;
 	DEBPRINTF("ent 탎l=%d\n",탎l) ;
 	if ((rs = langparse_magic(op,sp)) >= 0) ylikely {
-	    if (int sl ; (sl = getlenstr(sp,탎l)) >= 0) ylikely {
+	    if (int sl ; (sl = getlenstr(sp,탎l)) > 0) ylikely {
+		bool feol = !((sl > 0) && (sp[sl - 1] == CH_NL)) ;
 	        while (sl-- && *sp) {
 		    cint ch = mkchar(*sp++) ;
 		    rs = langparse_proc(op,ch) ;
 		    c += 1 ;
 		    if (rs < 0) break ;
 	        } /* end while */
+		if ((rs >= 0) && feol) {
+		    cint ch = CH_NL ;
+		    rs = langparse_proc(op,ch) ;
+		    c += 1 ;
+		} /* end if (ok) */
 	    } /* end if (getlenstr) */
 	} /* end if (non-null) */
 	DEBPRINTF("ret rs=%d c=%d\n",rs,c) ;
@@ -282,8 +290,9 @@ int langparse_remread(langparse *op,short *rbuf,int rlen) noex {
 	DEBPRINTF("ent\n") ;
 	if ((rs = langparse_magic(op,rbuf)) >= 0) ylikely {
 	    rs = SR_INVALID ;
-	    if (rlen >= 0) ylikely {
+	    if (rlen > 0) ylikely {
 	        int	ml ;
+		rs = SR_BUGCHECK ;
 	        if (shortq *obp ; (obp = obufp(op->outbuf)) != np) ylikely {
 	            cint len = obp->len ;
 		    rs = SR_OK ;
@@ -296,10 +305,8 @@ int langparse_remread(langparse *op,short *rbuf,int rlen) noex {
 			    break ;
 			}
 	            } /* end for */
-	        } else {
-	            rs = SR_BUGCHECK ;
-	        }
-	    } /* end if (positive) */
+	        } /* end if (resume-life) */
+	    } /* end if (non-zero positive) */
 	    rbuf[i] = 0 ;
 	} /* end if (non-null) */
 	DEBPRINTF("ret rs=%d\n",rs) ;
