@@ -20,6 +20,9 @@
 
 /*******************************************************************************
 
+  	Module:
+	testlangutil
+
 	Description:
 	I test the LANGPARSE object.
 
@@ -36,7 +39,6 @@ module ;
 #include	<cstdio>		/* |printf(3c)| */
 #include	<iostream>
 #include	<string>
-#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<new>			/* placement-new */
 #include	<clanguage.h>
 #include	<utypedefs.h>
@@ -70,8 +72,6 @@ import debug ;
 /* imported namespaces */
 
 using std::string ;			/* type */
-using std::min ;			/* subroutine-template */
-using std::max ;			/* subroutine-template */
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
 
