@@ -18,27 +18,25 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<csignal>
-#include	<cstdlib>
-#include	<cstring>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
+#include	<cstring>
 #include	<usystem.h>
+#include	<usupport.h>
 #include	<sigblocker.h>
+#include	<strx.h>
 #include	<localmisc.h>
 
 #define	VARDEBUGFNAME	"TESTSIGPENDING_DEBUGFILE"
 #define	INT_WAIT	10
 
-extern int	msleep(int) ;
-
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern cchar	*strsigabbr(uint) ;
-extern cchar 	*getourenv(cchar **,cchar *) ;
 
 
 /* forward references */
@@ -50,7 +48,7 @@ static int showpending() ;
 
 
 /* ARGSUSED */
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 
 #if	CF_DEBUGS && CF_DEBUGMALL
@@ -131,7 +129,7 @@ static int showpending()
 	    int	i ;
 	    for (i = 0 ; i < SIGRTMIN ; i += 1) {
 	        if ((rs = uc_sigsetismem(&psm,i)) > 0) {
-		    cchar	*cp = strsigabbr(i) ;
+		    cchar	*cp = strabbrsig(i) ;
 	            fprintf(stdout,"main/showpending: sig=%s(%d)\n",cp,i) ;
 		    fflush(stdout) ;
 	        }
