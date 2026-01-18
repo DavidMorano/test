@@ -63,19 +63,12 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sfshrink(cchar *,int,cchar **) ;
-extern "C" int	sisub(cchar *,int,cchar *) ;
-extern "C" int	field_word(FIELD *,const uchar *,cchar **) ;
-extern "C" int	isalphalatin(int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
 
 
 /* external variables */
