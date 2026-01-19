@@ -87,10 +87,6 @@ using namespace	std ;
 
 /* external subroutines */
 
-extern "C" int	snwcpywidehdr(char *,int,const wchar_t *,int) ;
-extern "C" int	isprintlatin(int) ;
-extern "C" int	isprintbad(int) ;
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(const char *) ;
 extern "C" int	debugprintf(const char *,...) ;
@@ -98,8 +94,6 @@ extern "C" int	debugprinthex(const char *,int,const char *,int) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(const char *,int,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
 
 
 /* forward references */
