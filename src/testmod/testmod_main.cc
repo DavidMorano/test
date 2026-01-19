@@ -1,4 +1,4 @@
-/* testmod_main SUPPORT (testmodules) */
+/* testmod_main SUPPORT (Test-Modules) */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -13,14 +13,17 @@
 
 */
 
+/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
+
 /*******************************************************************************
 
   	Name:
 	testmod_main
 
-*******************************************************************************/
+	Description:
+	Test how C++ modules work.
 
-/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
+*******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
@@ -46,6 +49,8 @@
 
 #include	"testmod_sub.hh"
 
+#pragma		GCC dependency		"mod/modhello.ccm"
+
 import modhello ;
 
 
@@ -55,6 +60,7 @@ import modhello ;
 /* name-spaces */
 
 using std::cout ;			/* variable */
+using std::cerr ;			/* variable */
 
 
 /* external subroutines */
