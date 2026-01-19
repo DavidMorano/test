@@ -3,7 +3,7 @@
 
 
 #include	<sys/types.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstdio>
 
