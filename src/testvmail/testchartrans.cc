@@ -47,8 +47,6 @@
 
 /* external subroutines */
 
-extern int	optvalue(cchar *,int) ;
-
 #if	CF_DEBUGS
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
@@ -56,8 +54,6 @@ extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
 
 
 /* forward references */
