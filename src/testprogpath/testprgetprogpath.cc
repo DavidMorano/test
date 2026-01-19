@@ -30,9 +30,6 @@ extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-
 int main(int argc,mainv argv,mainv envv) {
 	int	rs = 0 ;
 
