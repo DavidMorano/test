@@ -62,8 +62,6 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern const char	*getourenv(cchar **,cchar *) ;
-
 
 /* forward references */
 
