@@ -41,7 +41,7 @@
 #include	<cstdlib>
 #include	<cstring>
 #include	<ctype.h>
-#include	<time.h>
+#include	<ctime>
 #include	<pwd.h>
 #include	<netdb.h>
 #include	<cstdio>
