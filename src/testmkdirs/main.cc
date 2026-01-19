@@ -35,7 +35,7 @@
 #include	<fcntl.h>
 #include	<cstdlib>
 #include	<cstring>
-#include	<time.h>
+#include	<ctime>
 
 #include	<usystem.h>
 #include	<baops.h>
@@ -69,22 +69,9 @@
 
 /* external subroutines */
 
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mkpath4(char *,const char *,const char *,const char *,
-			const char *) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfocti(const char *,int,int *) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	mkdirs(const char *,mode_t) ;
-extern int	unlinkd(const char *,int) ;
-
 extern int	proginfo_setpiv(struct proginfo *,const char *,
 			const struct pivars *) ;
 extern int	printhelp(void *,const char *,const char *,const char *) ;
-
-extern cchar	*getourenv(cchar **,cchar *) ;
 
 
 /* external variables */
