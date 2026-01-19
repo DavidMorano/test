@@ -14,7 +14,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<csignal>
-#include	<time.h>
+#include	<ctime>
 #include	<ftw.h>
 #include	<dirent.h>
 #include	<cstring>
