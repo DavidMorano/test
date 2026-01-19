@@ -1,17 +1,15 @@
-/* main */
-
+/* main SUPPOER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGN	1		/* special debugging */
 #define	CF_SIGDUMPER	0		/* test |sigdumper()| */
 
-
 /* revision history:
 
 	= 2000-05-14, David A­D­ Morano
-
 	Originally written for Rightcore Network Services.
-
 
 */
 
@@ -21,20 +19,20 @@
 
 	We test some aspects of signal operation on this OS.
 
-
 *******************************************************************************/
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<ucontext.h>
 #include	<dlfcn.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
-
 #include	<usystem.h>
 #include	<sbuf.h>
 #include	<ascii.h>
+#include	<strx.h>
 #include	<localmisc.h>
 #include	<exitcodes.h>
 
@@ -53,8 +51,6 @@
 /* external variables */
 
 extern int	ucontext_rtn(ucontext_t *,long *) ;
-extern int	bufprintf(char *,int,const char *,...) ;
-extern int	msleep(int) ;
 
 #if	CF_SIGDUMPER
 extern int	sigdumper(const char *,int,const char *) ;
@@ -70,9 +66,6 @@ extern int	strlinelen(const char *,int,int) ;
 #if	CF_DEBUGN
 extern int	nprintf(const char *,const char *,...) ;
 #endif
-
-extern const char	*getourenv(const char **,const char *) ;
-extern const char	*strsigabbr(int) ;
 
 
 /* local structures */
@@ -218,7 +211,7 @@ static void main_sigint(int sn,siginfo_t *sip,void *vcp)
 	cchar		*fmt = "sig=%u\n" ;
 	char		wbuf[LINEBUFLEN+1] ;
 #if	CF_DEBUGN
-	nprintf(NDF,"main_sigint: sn=%d(%s)\n",sn,strsigabbr(sn)) ;
+	nprintf(NDF,"main_sigint: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
 	wl = bufprintf(wbuf,wlen,fmt,sn) ;
 	write(2,wbuf,wl) ;
@@ -248,7 +241,7 @@ static void main_sighand(int sn,siginfo_t *sip,void *vcp)
 	cchar		*fmt = "sig=%u\n" ;
 	char		wbuf[LINEBUFLEN+1] ;
 #if	CF_DEBUGN
-	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strsigabbr(sn)) ;
+	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
 	wl = bufprintf(wbuf,wlen,fmt,sn) ;
 	write(2,wbuf,wl) ;
@@ -287,7 +280,7 @@ static int main_sigdump(siginfo_t *sip)
 	const int	si_signo = sip->si_signo ;
 	const int	si_code = sip->si_code ;
 	int		wl ;
-	const char	*sn = strsigabbr(sip->si_signo) ;
+	const char	*sn = strabbrsig(sip->si_signo) ;
 	const char	*as = "*na*" ;
 	const char	*scs = NULL ;
 	const char	*fmt ;
