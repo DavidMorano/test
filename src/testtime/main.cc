@@ -7,7 +7,7 @@
 #include	<sys/stat.h>
 #include	<sys/timeb.h>
 #include	<climits>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdio>
 
 #include	"config.h"
