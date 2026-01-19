@@ -2,18 +2,14 @@
 
 /* program to send echo data to a remote host (and back) */
 
-
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUG	1		/* run-time debugging */
 #define	CF_REP		1		/* ask for repetition */
 
-
 /* revision history:
 
 	= 1998-03-01, David A­D­ Morano
-
 	This program was originally written.
-
 
 */
 
@@ -21,26 +17,23 @@
 
 /*******************************************************************************
 
-        This subroutine forms a program that sends data to a remote INET host to
-        its 'echo' service.
+	This subroutine forms a program that sends data to a remote
+	INET host to its 'echo' service.
 
 
 *******************************************************************************/
 
 
-#include	<envstandards.h>
-
 #include	<sys/types.h>
 #include	<sys/socket.h>
 #include	<sys/time.h>
 #include	<netinet/in.h>
-#include	<time.h>
+#include	<ctime>
 #include	<csignal>
-#include	<netdb.h>
-#include	<cstdlib>
-#include	<cstring>
-
-#include	<usystem.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<baops.h>
 #include	<bfile.h>
 #include	<sockaddress.h>
@@ -48,7 +41,6 @@
 #include	<localmisc.h>
 
 #include	"sysmisc.h"
-#include	"config.h"
 #include	"defs.h"
 
 
