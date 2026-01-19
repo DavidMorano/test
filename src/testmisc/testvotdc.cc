@@ -48,18 +48,12 @@
 
 /* external subroutines */
 
-#ifdef	COMMENT
-extern "C" int	main(int,const char **,const char **) ;
-#endif
-
 #if	CF_DEBUGS
 extern "C" int	debugopen(const char *) ;
 extern "C" int	debugprintf(const char *,...) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(const char *,int,int) ;
 #endif
-
-extern "C" cchar	*getourenv(const char **,const char *) ;
 
 
 /* local structures */
