@@ -28,10 +28,6 @@ extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
 
-extern "C" {
-    extern cchar 	*getourenv(const char **,const char *) ;
-}
-
 
 int main(int argc,mainv argv,mainv envv) {
 
