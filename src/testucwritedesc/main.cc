@@ -32,7 +32,7 @@
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<cstdlib>
-#include	<time.h>
+#include	<ctime>
 
 #include	<usystem.h>
 #include	<bfile.h>
@@ -60,10 +60,6 @@ extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*strdcpy1(char *,int,cchar *) ;
 
 
 /* external variables */
