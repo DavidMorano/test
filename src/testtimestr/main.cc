@@ -12,7 +12,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<csignal>
-#include	<time.h>
+#include	<ctime>
 #include	<cstring>
 
 #include	<usystem.h>
