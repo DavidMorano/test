@@ -2,17 +2,13 @@
 
 /* program to test input-updating of PINGSTAT */
 
-
 #define	CF_DEBUGS	0		/* compile-time */
 #define	CF_DEBUG	1		/* run-time */
-
 
 /* revision history:
 
 	= 1998-03-01, David A­D­ Morano
-
 	This program was originally written.
-
 
 */
 
@@ -20,27 +16,24 @@
 
 /*******************************************************************************
 
-        This subroutine forms a program that tests the input-update capability
-        (at least a little bit) of the PINGSTAT program.
-
+	This subroutine forms a program that tests the input-update
+	capability (at least a little bit) of the PINGSTAT program.
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>
-
 #include	<sys/types.h>
 #include	<sys/socket.h>
 #include	<sys/time.h>
 #include	<netinet/in.h>
-#include	<time.h>
-#include	<csignal>
 #include	<netdb.h>
-#include	<cstdlib>
+#include	<ctime>
+#include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<baops.h>
 #include	<bfile.h>
 #include	<sockaddress.h>
