@@ -71,21 +71,6 @@ using namespace	std ;
 
 /* external subroutines */
 
-extern "C" int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
-extern "C" int	mkpath2(char *,cchar *,cchar *) ;
-extern "C" int	mkpath3(char *,cchar *,cchar *,cchar *) ;
-extern "C" int	matstr(cchar **,cchar *,int) ;
-extern "C" int	matostr(cchar **,int,cchar *,int) ;
-extern "C" int	cfdeci(cchar *,int,int *) ;
-extern "C" int	cfdecui(cchar *,int,uint *) ;
-extern "C" int	cfdecti(cchar *,int,int *) ;
-extern "C" int	cthexstr(char *,int,cchar *,int) ;
-extern "C" int	optbool(cchar *,int) ;
-extern "C" int	optvalue(cchar *,int) ;
-extern "C" int	isdigitlatin(int) ;
-extern "C" int	isFailOpen(int) ;
-extern "C" int	isNotPresent(int) ;
-
 extern "C" int	printhelp(void *,cchar *,cchar *,cchar *) ;
 extern "C" int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
 
@@ -96,11 +81,6 @@ extern "C" int	debugprinthex(cchar *,int,cchar *,int) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,int,int) ;
 #endif
-
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
-extern "C" char	*strwcpy(char *,cchar *,int) ;
-extern "C" char	*strnrchr(cchar *,int,int) ;
 
 
 /* external variables */
