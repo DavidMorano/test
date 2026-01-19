@@ -65,10 +65,6 @@
 
 /* external subroutines */
 
-extern int	snwcpywidehdr(char *,int,const wchar_t *,int) ;
-extern int	isprintlatin(int) ;
-extern int	isprintbad(int) ;
-
 #if	CF_DEBUGS
 extern int	debugopen(const char *) ;
 extern int	debugprintf(const char *,...) ;
@@ -76,8 +72,6 @@ extern int	debugprinthex(const char *,int,const char *,int) ;
 extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
 
 
 /* forward references */
