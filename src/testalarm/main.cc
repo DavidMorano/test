@@ -41,7 +41,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<cstdlib>
-#include	<time.h>
+#include	<ctime>
 #include	<ctype.h>
 #include	<cstring>
 #include	<libgen.h>
@@ -855,7 +855,7 @@ const int	s ;
 	char	buf[BUFLEN + 1] ;
 
 
-	while ((rs = uc_readlinetimed(s,buf,BUFLEN,TO)) > 0) {
+	while ((rs = uc_readlnto(s,buf,BUFLEN,TO)) > 0) {
 	    rlen = rs ;
 	    rs = bwrite(ofp,buf,rlen) ;
 	    if (rs < 0)
