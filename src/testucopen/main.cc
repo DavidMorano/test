@@ -201,7 +201,7 @@ static int procfile(struct proginfo *pip,bfile *ofp,const char *fname)
 	    char	lbuf[LINEBUFLEN+1] ;
 	    int	fd = rs ;
 
-	    while ((rs = uc_readlinetimed(fd,lbuf,llen,to)) > 0) {
+	    while ((rs = uc_readlnto(fd,lbuf,llen,to)) > 0) {
 		len = rs ;
 
 #if	CF_DEBUGS
