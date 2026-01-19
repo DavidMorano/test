@@ -44,8 +44,6 @@ extern "C" int	debugclose() ;
 extern "C" int	strlinelen(const char *,int,int) ;
 #endif
 
-extern "C" cchar	*getourenv(cchar **,cchar *) ;
-
 
 /* exported subroutines */
 
