@@ -40,7 +40,7 @@
 #include	<cstdlib>
 #include	<cstring>
 #include	<ctype.h>
-#include	<time.h>
+#include	<ctime>
 
 #include	<usystem.h>
 #include	<bfile.h>
