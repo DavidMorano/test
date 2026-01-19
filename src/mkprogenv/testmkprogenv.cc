@@ -37,8 +37,6 @@ extern int	debugclose() ;
 extern int	strlinelen(char *,int,int) ;
 #endif
 
-extern char	*getourenv(char **,char *) ;
-
 
 int main(int argc,mainv argv,mainv envv) {
 	MKPROGENV	m ;
