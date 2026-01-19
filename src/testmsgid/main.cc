@@ -40,7 +40,7 @@
 #include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstring>
 #include	<netdb.h>
@@ -73,20 +73,7 @@
 
 /* external subroutines */
 
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mkfnamesuf1(char *,const char *,const char *) ;
-extern int	sfshrink(const char *,int,char **) ;
-extern int	matstr(const char **,char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-
 extern int	printhelp(bfile *,const char *,const char *,const char *) ;
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
 
 
 /* external variables */
