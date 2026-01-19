@@ -36,7 +36,7 @@
 #include	<fcntl.h>
 #include	<termios.h>
 #include	<csignal>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstring>
 
