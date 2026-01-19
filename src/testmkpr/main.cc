@@ -38,7 +38,7 @@
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<netdb.h>
-#include	<time.h>
+#include	<ctime>
 #include	<cstdlib>
 #include	<cstring>
 
@@ -61,15 +61,6 @@
 
 /* external subroutines */
 
-extern int	sfshrink(const char *,int,char **) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	matpstr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	getrootdname(char *,int,const char *,const char *) ;
-extern int	mkpr(char *,int,const char *,const char *) ;
-extern int	isdigitlatin(int) ;
-
 extern int	printhelp(void *,const char *,const char *,const char *) ;
 extern int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
 
@@ -80,11 +71,6 @@ extern int	debugprinthex(const char *,int,const char *,int) ;
 extern int	debugclose() ;
 extern int	strlinelen(const char *,int,int) ;
 #endif
-
-extern cchar	*getourenv(cchar **,cchar *) ;
-
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
 
 
 /* external variables */
