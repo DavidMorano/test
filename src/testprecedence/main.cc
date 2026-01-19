@@ -42,7 +42,7 @@
 #include	<sys/mkdev.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<time.h>
+#include	<ctime>
 #include	<csignal>
 #include	<netdb.h>
 #include	<cstdlib>
@@ -884,7 +884,7 @@ int	s ;
 	char	buf[BUFLEN + 1] ;
 
 
-	while ((rlen = uc_readlinetimed(s,buf,BUFLEN,TO)) > 0) {
+	while ((rlen = uc_readlnto(s,buf,BUFLEN,TO)) > 0) {
 
 	    bwrite(ofp,buf,rlen) ;
 
