@@ -45,7 +45,7 @@ import ulibvals ;			/* |ulibval(3u)| */
 
 /* imported namespaces */
 
-using libu::umem ;			/* variable */
+using libu::um ;			/* variable */
 
 
 /* external subroutines */
@@ -131,7 +131,7 @@ int mgr::check(void *md,size_t ms) noex {
     	(void) md ;
 	{
     	    cint sz = iceil(msi,ps) ;
-	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
+	    if (char *va ; (rs = um.mall((sz + 1),&va)) >= 0) {
 		csize psize = size_t(ps) ;
 		int i = 0 ;
 	        for (caddr_t ai = ma ; ai < (ma + ms) ; ai += ps) {
@@ -140,7 +140,7 @@ int mgr::check(void *md,size_t ms) noex {
 		    printf("va[%d]=%02X\n",i,va[i]) ;
 		    i += 1 ;
 	        } /* end for */
-	        rs1 = umem.free(va) ;
+	        rs1 = um.free(va) ;
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (m-a-f) */
 	} /* end block */
@@ -156,13 +156,13 @@ int mgr::checker(void *md,size_t) noex {
 	(void) md ;
 	{
 	    cint sz = n ;
-	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
+	    if (char *va ; (rs = um.mall((sz + 1),&va)) >= 0) {
 	        for (int i = 0 ; i < n ; i += 1) {
 	            rs1 = u_mincore(ma,psize,va) ;
 		    printf("ma=%p rs=%d va=%02X\n",ma,rs1,va[0])  ;
 	            ma += (i * ps) ;
 	        } /* end for */
-	        rs1 = umem.free(va) ;
+	        rs1 = um.free(va) ;
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (m-a-f) */
 	} /* end block */
