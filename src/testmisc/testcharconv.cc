@@ -1,4 +1,5 @@
-/* testconstdiv SUPPORT */
+/* testcharconv SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 
@@ -17,11 +18,12 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
 #include	<iostream>
-#include	<usystem.h>
-#include	<valuelims.hh>
-#include	<ucvariables.hh>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<localmisc.h>
 #include	<cfdec.h>
 #include	<cfchars.h>
@@ -42,7 +44,7 @@ using namespace std ;
 
 /* local variables */
 
-static const char	*nums[] = {
+constexpr cpcchar	nums[] = {
 	"2",
 	"11",
 	"10",
@@ -51,31 +53,31 @@ static const char	*nums[] = {
 	"1836482",
 	"1398795416",
 	nullptr
-} ;
+} ; /* end array */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-int main(int,cchar **,cchar **) {
+int main(int,mainv,mainv) {
 	FILE		*ofp = stdout ;
 	cint		linelen = LINEBUFLEN ;
-	int		ex = 0 ;
+	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	int		rs1 [[maybe_unused]] ;
-	const char	*w ;
+	cchar		*w ;
 	char		linebuf[LINEBUFLEN+1] ;
-
 	for (int i = 0 ; (rs >= 0) && ((w = nums[i])) ; i += 1) {
-	    int		v ;
 	    fprintf(ofp,"w=%s\n",w) ;
-	    if ((rs = cfdeci(w,-1,&v)) >= 0) {
+	    if (int v ; (rs = cfdeci(w,-1,&v)) >= 0) {
 		if ((rs = ctdeci(linebuf,linelen,v)) >= 0) {
 		    cout << linebuf ;
 		}
-	    }
+	    } /* end if (cfdec) */
 	} /* end for */
-	if (rs < 0) ex = 1 ;
-
+	if (rs < 0) ex = EXIT_FAILURE ;
 	return ex ;
 }
 /* end subroutine (main) */
