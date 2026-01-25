@@ -43,10 +43,8 @@
 #include	<print>
 #include	<text_encoding>
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<localmisc.h>
+#include	<usysbase.h>
+#include	<localmisc.h>		/* |eol| */
 
 
 /* local defines */
@@ -81,6 +79,8 @@ const cchar	ßgßstr[] = "str4" ;
 const cchar	ßgßstr¹[] = "str¹" ;
 const cchar	ßgßstr²[] = "str²" ;
 const cchar	ßgßstr³[] = "str³" ;
+const cchar	ßg$str[] = "str$" ;
+const cchar	ßgªstr[] = "strª" ;
 
 
 /* exported variables */
@@ -107,6 +107,7 @@ int main(int,mainv,mainv) {
 	    cout << ßgßstr¹ << eol ;
 	    cout << ßgßstr² << eol ;
 	    cout << ßgßstr³ << eol ;
+	    cout << ßg$str << eol ;
 	}
 	encoding() ;
 }
