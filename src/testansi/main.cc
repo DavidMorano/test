@@ -1,7 +1,9 @@
-/* main (testansi) */
+/* main SUPPORT (testansi) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* test something to do with ANSI compliance */
-
+/* version %I% last-modified %G% */
 
 #define	CF_MINUSONE	0		/* minus one */
 #define	CF_ANSI		0		/* ANSI conformance */
@@ -14,11 +16,12 @@
 #define	CF_EXP4		0		/* exp-4 */
 #define	CF_GENERIC	0		/* generic */
 
-
 /* local defines */
 
 #include	<envstandards.h>
 #include	<sys/types.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
 #include	<bfile.h>
 #include	<localmisc.h>
@@ -49,12 +52,12 @@ static int	findl(long) ;
 #define	ourfind(x)	_Generic((x),int:findi,long:findl)(x)
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-/* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv,mainv) {
 	bfile		ofile, *ofp = &ofile ;
 	int		rs ;
 	int		ex = 0 ;
