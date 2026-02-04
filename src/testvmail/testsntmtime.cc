@@ -15,18 +15,16 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-
 #include	<envstandards.h>
-
 #include	<sys/types.h>
 #include	<climits>
 #include	<cstdlib>
 #include	<cstdio>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<linefold.h>
-#include	<tmtime.h>
+#include	<tmtime.hh>
 #include	<localmisc.h>
 
 #include	"sntmtime.h"
