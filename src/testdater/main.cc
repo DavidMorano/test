@@ -1,7 +1,9 @@
-/* main */
+/* testdater SUPP®RT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* test the DATER object */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_TZSET	1		/* play w/ |tzset(3c)| */
@@ -10,7 +12,6 @@
 #define	CF_DUMPZINFO	0		/* dump zone-info */
 #define	CF_NZONES	0		/* 'dater_nzones(3dam)' */
 #define	CF_TESTSNTMTIME	0		/* test |sntmtime(3dam)| */
-
 
 /* revision history:
 
@@ -23,14 +24,15 @@
 
 /******************************************************************************
 
-	This little subroutine tests the DATER object.
+  	Name:
+	test
 
+	Description:
+	This little subroutine tests the DATER object.
 
 ******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -38,10 +40,11 @@
 #include	<fcntl.h>
 #include	<ctime>
 #include	<csignal>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<char.h>
@@ -218,9 +221,9 @@ int main(int argc,cchar **argv,cchar **envv)
 /* get the current time-of-day */
 
 	{
-	    struct timeb	now ;
-	    TMTIME		tmt ;
-	    char		zname[DATER_ZNAMESIZE + 1] ;
+	    TIMEB	now ;
+	    tmtime	tmt ;
+	    char	zname[DATER_ZNAMESIZE + 1] ;
 
 	    uc_ftime(&now) ;
 
@@ -489,7 +492,7 @@ static int procline(PROGINFO *pip,DATER *dp,bfile *ofp,cchar *lbuf,int llen)
 	                bprintf(ofp,"gmttime=%s\n",
 	                    timestr_gmlog(dp->b.time,tbuf)) ;
 
-	                for (i = 0 ; i < DATER_DTSEND ; i += 1) {
+	                for (i = 0 ; i < daterdt_overlast ; i += 1) {
 
 	                    sl = dater_mkdatestr(dp,i,obuf,olen) ;
 
@@ -498,11 +501,13 @@ static int procline(PROGINFO *pip,DATER *dp,bfile *ofp,cchar *lbuf,int llen)
 
 	                } /* end for */
 
-	            } else
+	            } else {
 	                bprintf(ofp,"bad conversion (%d)\n",rs1) ;
+		    }
 
-	        } else
+	        } else {
 	            bprintf(ofp,"no string given to convert\n") ;
+		}
 
 	    } /* end if (field-get) */
 
