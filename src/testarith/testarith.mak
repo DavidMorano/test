@@ -1,4 +1,4 @@
-# MAKEFILES (testarith)
+# MAKEFILE (testarith)
 
 T= testarith
 
