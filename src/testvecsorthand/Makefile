@@ -1,4 +1,4 @@
-# MAKEFILES (testvecsorthand)
+# MAKEFILE (testvecsorthand)
 
 T= testvecsorthand
 
