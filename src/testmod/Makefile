@@ -1,4 +1,4 @@
-# MAKEFILES (testmod)
+# MAKEFILE (testmod)
 
 T= testmod
 
