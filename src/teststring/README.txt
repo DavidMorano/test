@@ -1,4 +1,4 @@
-TESTSTR
+TESTSTRING
 
-This is the test for the 'str' object (development in progress)!
+This is a test for the C++ |std::string(3c++)| type.
 
