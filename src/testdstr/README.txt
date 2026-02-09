@@ -1,4 +1,4 @@
-TESTSTR
+TESTDSTR
 
 This is the test for the 'str' object (development in progress)!
 
