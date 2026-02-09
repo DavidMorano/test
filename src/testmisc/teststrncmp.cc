@@ -1,7 +1,7 @@
-/* teststrncmp */
+/* teststrncmp SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C99 */
 
-#define	CF_DEBUGS	1
 
 /* revision history:
 
@@ -12,52 +12,47 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/time.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
+#include	<cstring>		/* |strncmp(3c)| */
 #include	<cthex.h>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
 
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40
-#endif
+#pragma		GCC dependency		"mod/libutil.ccm"
 
-#define	VARDEBUGFNAME	"TESTSTRNCMP_DEBUGFILE"
+import libutil ;			/* |lenstr(3u)| */
 
-
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
-
-
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,mainv,mainv) {
 	int		rs = SR_OK ;
-	int		sl = 0 ;
-	int		f = FALSE ;
-	cchar		*sp = "goodbye-hello" ;
-	cchar		*cp ;
-	cchar		*s2 = "hellox" ;
-
-#if	CF_DEBUGS
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
-	    rs = debugopen(cp) ;
-	    debugprintf("main: starting DFD=%d\n",rs) ;
+	int		ex = EXIT_SUCCESS ;
+	{
+	    int		rc ;
+	    cchar	*s2 = "goodbye-apple" ;
+	    cchar	*sp = "goodbye-" ;
+	    int		sl = lenstr(sp) ;
+	    {
+	        rc = strncmp(s2,sp,sl) ;
+	        printf("strncmp: rc=%d\n",rc) ;
+	    }
+	    {
+	        rc = strcmp(s2,sp) ;
+	        printf("strcmp: rc=%d rc=\\x%02X\n",rc,rc) ;
+	    }
+	    {
+	        rc = strncmp(s2,sp,20) ;
+	        printf("strncmp: rc=%d\n",rc) ;
+	    }
+	} /* end block */
+	if ((rs < 0) && (ex == EXIT_SUCCESS)) {
+	    ex = EXIT_FAILURE ;
 	}
-#endif /* CF_DEBUGS */
-
-	f = (strncmp(s2,sp,sl) == 0) ;
-
-	printf("strncmp: f=%u\n",f) ;
-
-#if	CF_DEBUGS
-	debugclose() ;
-#endif
-
-	return 0 ;
+	return ex ;
 }
 /* end subroutine (main) */
 
