@@ -1,16 +1,20 @@
-/* main */
+/* teststruct SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
-
+#include	<localmisc.h>
 
 
 /* external subroutines */
 
 extern struct thing	sub() ;
-
 
 
 /* private module data structures */
@@ -20,24 +24,18 @@ struct thing {
 } ;
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-
-int main(argc,argv)
-int	argc ;
-char	*argv[] ;
-{
+int main(int,mainv,mainv) {
 	bfile	outfile, *ofp = &outfile ;
-
-	struct thing	mine = { 0, 0 } ;
-	struct thing	yours = { 0, 0 } ;
-
-	int	rs, i ;
-
+	thing	mine = { 0, 0 } ;
+	thing	yours = { 0, 0 } ;
+	int	rs = SR_OK  ;
 
 	(void) bopen(ofp,BFILE_STDOUT,"dwct",0666) ;
-
 
 	bprintf(ofp,"entered\n") ;
 
@@ -55,6 +53,5 @@ char	*argv[] ;
 	return 0 ;
 }
 /* end subroutine (main) */
-
 
 
