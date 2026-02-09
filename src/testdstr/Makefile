@@ -1,6 +1,6 @@
-# MAKEFILE
+# MAKEFILE (testdstr)
 
-T= teststr
+T= testdstr
 
 ALL = $(T) $(T).$(OFF)
 
