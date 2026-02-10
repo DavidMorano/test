@@ -1,13 +1,13 @@
-/* main */
+/* main SUPPORT (testspin) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* generic (pretty much) front end program subroutine */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
 #define	CF_GETEXECNAME	1		/* use 'getexecname(3c)' */
-
 
 /* revision history:
 
@@ -20,24 +20,20 @@
 
 /*******************************************************************************
 
+  	Description:
 	This subroutine forms the front-end part of a generic PCS
 	type of program.  This front-end is used in a variety of
-	PCS programs.
-
-	This subroutine was originally part of the Personal
-	Communications Services (PCS) package but can also be used
-	independently from it.  Historically, this was developed as
-	part of an effort to maintain high function (and reliable)
-	email communications in the face of increasingly draconian
-	security restrictions imposed on the computers in the DEFINITY
-	development organization.
-
+	PCS programs.  This subroutine was originally part of the
+	Personal Communications Services (PCS) package but can also
+	be used independently from it.  Historically, this was
+	developed as part of an effort to maintain high function
+	(and reliable) email communications in the face of increasingly
+	draconian security restrictions imposed on the computers
+	in the DEFINITY development organization.
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -45,17 +41,18 @@
 #include	<sys/utsname.h>
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
-#include	<climits>
-#include	<netdb.h>
 #include	<unistd.h>
+#include	<netdb.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
 #include	<pwd.h>
 #include	<grp.h>
 #include	<ctime>
-
-#include	<usystem.h>
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<vecstr.h>
@@ -67,6 +64,7 @@
 #include	<getxusername.h>
 #include	<userinfo.h>
 #include	<mallocstuff.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -108,22 +106,13 @@ extern void	whoopen() ;
 
 /* forward references */
 
-static int	procfile(int (*)(char *,char *,VECSTR *),
+local int	procfile(int (*)(char *,char *,VECSTR *),
 			char *,VECSTR *,char *,VECSTR *) ;
-
 
 /* local structures */
 
-static const char *argopts[] = {
-	"VERSION",
-	"VERBOSE",
-	"ROOT",
-	"CONFIG",
-	"TMPDIR",
-	"LOGFILE",
-	"HELP",
-	NULL
-} ;
+
+/* local variables */
 
 enum argopts {
 	argopt_version,
@@ -136,10 +125,19 @@ enum argopts {
 	argopt_overlast
 } ;
 
-/* local variables */
+constexpr cpcchar	argopts[] = {
+	"VERSION",
+	"VERBOSE",
+	"ROOT",
+	"CONFIG",
+	"TMPDIR",
+	"LOGFILE",
+	"HELP",
+	NULL
+} ;
 
 /* 'conf' for most regular programs */
-static const char	*sched1[] = {
+constexpr cpcchar	sched1[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
@@ -148,7 +146,7 @@ static const char	*sched1[] = {
 } ;
 
 /* non-'conf' ETC stuff for all regular programs */
-static const char	*sched2[] = {
+constexpr cpcchar	sched2[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
@@ -158,7 +156,7 @@ static const char	*sched2[] = {
 } ;
 
 /* 'conf' and non-'conf' ETC stuff for local searching */
-static const char	*sched3[] = {
+constexpr cpcchar	sched3[] = {
 	"%e/%n/%n.%f",
 	"%e/%n/%f",
 	"%e/%n.%f",
@@ -169,31 +167,20 @@ static const char	*sched3[] = {
 } ;
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[], *envv[] ;
-{
+int main(int argc,mainv argv,mainv envv) {
 	ustat		sb ;
-
 	struct proginfo		pi, *pip = &pi ;
-
 	struct userinfo		u ;
-
 	struct group		ge ;
-
 	CONFIGFILE		cf ;
-
 	VECSTR		defines, unsets, exports ;
-
 	SCHEDVAR	svars ;
-
 	VARSUB		vsh_e, vsh_d ;
-
 	bfile		errfile, *efp = &errfile ;
 	bfile		outfile, *ofp = &outfile ;
 	bfile		argfile, *afp = &argfile ;
@@ -2021,12 +2008,9 @@ badret:
 /* end subroutine (main) */
 
 
+/* local subroutines */
 
-/* LOCAL SUBROUTINES */
-
-
-
-static int procfile(func,pr,svp,fname,elp)
+local int procfile(func,pr,svp,fname,elp)
 int		(*func)(char *,char *,VECSTR *) ;
 char		pr[] ;
 SCHEDVAR	*svp ;
