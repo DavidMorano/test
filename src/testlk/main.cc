@@ -1,13 +1,13 @@
-/* main */
+/* main SUPPORT (testlk) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* generic (pretty much) front end program subroutine */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
 #define	CF_GETEXECNAME	1		/* use 'getexecname(3c)' */
-
 
 /* revision history:
 
@@ -16,26 +16,24 @@
 
 */
 
-/* Copyright © 1994David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1994 David A­D­ Morano.  All rights reserved. */
 
 /*******************************************************************************
 
-        This subroutine forms the front-end part of a generic PCS type of
-        program. This front-end is used in a variety of PCS programs.
-
-        This subroutine was originally part of the Personal Communications
-        Services (PCS) package but can also be used independently from it.
-        Historically, this was developed as part of an effort to maintain high
-        function (and reliable) email communications in the face of increasingly
-        draconian security restrictions imposed on the computers in the DEFINITY
-        development organization.
-
+  	Description:
+	This subroutine forms the front-end part of a generic PCS
+	type of program. This front-end is used in a variety of PCS
+	programs.  This subroutine was originally part of the
+	Personal Communications Services (PCS) package but can also
+	be used independently from it.  Historically, this was
+	developed as part of an effort to maintain high function
+	(and reliable) email communications in the face of increasingly
+	draconian security restrictions imposed on the computers
+	in the DEFINITY development organization.
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -43,15 +41,16 @@
 #include	<sys/utsname.h>
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
-#include	<climits>
-#include	<netdb.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<netdb.h>
 #include	<ctime>
-#include	<cstdlib>
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<field.h>
 #include	<logfile.h>
@@ -63,6 +62,7 @@
 #include	<getxusername.h>
 #include	<userinfo.h>
 #include	<mallocstuff.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -91,7 +91,7 @@
 
 /* external subroutines */
 
-extern int	procfileenv(const char *,char *,VECSTR *) ;
+extern int	procfileenv(cchar *,char *,VECSTR *) ;
 extern int	procfilepaths(char *,char *,VECSTR *) ;
 
 #if	CF_DEBUG
@@ -107,22 +107,14 @@ extern void	whoopen() ;
 
 /* forward references */
 
-static int	procfile(int (*)(char *,char *,VECSTR *),
+local int	procfile(int (*)(char *,char *,VECSTR *),
 			char *,vecstr *,char *,VECSTR *) ;
 
 
 /* local structures */
 
-static const char *argopts[] = {
-	"VERSION",
-	"VERBOSE",
-	"ROOT",
-	"CONFIG",
-	"TMPDIR",
-	"LOGFILE",
-	"HELP",
-	NULL
-} ;
+
+/* local variables */
 
 enum argopts {
 	argopt_version,
@@ -135,10 +127,19 @@ enum argopts {
 	argopt_overlast
 } ;
 
-/* local variables */
+constexpr cpcchar	argopts[] = {
+	"VERSION",
+	"VERBOSE",
+	"ROOT",
+	"CONFIG",
+	"TMPDIR",
+	"LOGFILE",
+	"HELP",
+	NULL
+} ;
 
 /* 'conf' for most regular programs */
-static const char	*sched1[] = {
+constexpr cpcchar	sched1[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
@@ -147,7 +148,7 @@ static const char	*sched1[] = {
 } ;
 
 /* non-'conf' ETC stuff for all regular programs */
-static const char	*sched2[] = {
+constexpr cpcchar	sched2[] = {
 	"%p/%e/%n/%n.%f",
 	"%p/%e/%n/%f",
 	"%p/%e/%n.%f",
@@ -157,7 +158,7 @@ static const char	*sched2[] = {
 } ;
 
 /* 'conf' and non-'conf' ETC stuff for local searching */
-static const char	*sched3[] = {
+constexpr cpcchar	sched3[] = {
 	"%e/%n/%n.%f",
 	"%e/%n/%f",
 	"%e/%n.%f",
@@ -168,30 +169,20 @@ static const char	*sched3[] = {
 } ;
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[], *envv[] ;
-{
+int main(int argc,mainv argv,mainv envv) {
 	struct proginfo		pi, *pip = &pi ;
-
 	ustat		sb ;
-
 	struct group		ge ;
-
 	USERNAME		u ;
-
 	CONFIGFILE		cf ;
-
 	VECSTR		defines, unsets, exports ;
 	VECSTR		svars ;
-
 	VARSUB		vsh_e, vsh_d ;
-
 	bfile		errfile, *efp = &errfile ;
 	bfile		outfile, *ofp = &outfile ;
 	bfile		argfile, *afp = &argfile ;
@@ -743,7 +734,7 @@ char	*argv[], *envv[] ;
 #if	CF_GETEXECNAME && defined(OSNAME_SunOS) && (OSNAME_SunOS > 0)
 	    if ((pr == NULL) && (pip->pr == NULL)) {
 
-	        const char	*pp ;
+	        cchar	*pp ;
 
 
 	        pp = getexecname() ;
@@ -2009,12 +2000,11 @@ badret:
 /* end subroutine (main) */
 
 
-/* LOCAL SUBROUTINES */
+/* local subroutines */
 
-
-static int procfile(func,pr,svp,fname,elp)
+local int procfile(func,pr,svp,fname,elp)
 int		(*func)(char *,char *,VECSTR *) ;
-const char	pr[] ;
+cchar	pr[] ;
 vecstr		*svp ;
 char		fname[] ;
 VECSTR		*elp ;
