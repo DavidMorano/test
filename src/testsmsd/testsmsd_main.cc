@@ -1,10 +1,9 @@
 /* main SUPPORT */
 /* charset=ISO8859-1 */
-/* lang=C++20 (conformance reviewed) */
+/* lang=C++20 */
 
 /* generic (pretty much) front end program subroutine */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	0		/* run-time debug print-outs */
@@ -25,15 +24,16 @@
 
 /*****************************************************************************
 
-	This subroutine forms the front-end part of a generic PCS type
-	of program.  This front-end is used in a variety of PCS programs.
-
-	This subroutine was originally part of the Personal Communications
-	Services (PCS) package but can also be used independently from it.
-	Historically, this was developed as part of an effort to maintain
-	high function (and reliable) email communications in the face
-	of increasingly draconian security restrictions imposed on the
-	computers in the DEFINITY development organization.
+  	Description:
+	This subroutine forms the front-end part of a generic PCS
+	type of program.  This front-end is used in a variety of
+	PCS programs.  This subroutine was originally part of the
+	Personal Communications Services (PCS) package but can also
+	be used independently from it.  Historically, this was
+	developed as part of an effort to maintain high function
+	(and reliable) email communications in the face of increasingly
+	draconian security restrictions imposed on the computers
+	in the DEFINITY development organization.
 
 *****************************************************************************/
 
@@ -45,18 +45,17 @@
 #include	<sys/mkdev.h>
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
-#include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
-#include	<ctype.h>
-#include	<ctime>
+#include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<netdb.h>
-
-#include	<usystem.h>
+#include	<ctime>
+#include	<climits>
+#include	<cstdlib>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<keyopt.h>
 #include	<field.h>
@@ -72,6 +71,7 @@
 #include	<getax.h>
 #include	<srvtab.h>
 #include	<acctab.h>
+#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<nistinfo.h>
 #include	<localmisc.h>
 
@@ -104,51 +104,13 @@
 
 /* external subroutines */
 
-extern int	snsd(char *,int,const char *,uint) ;
-extern int	snsds(char *,int,const char *,const char *) ;
-extern int	snddd(char *,int,uint,uint) ;
-extern int	snwcpy(char *,int,const char *,int) ;
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	sfshrink(const char *,int,const char **) ;
-extern int	sfbasename(const char *,int,const char **) ;
-extern int	sfdirname(const char *,int,const char **) ;
-extern int	vstrkeycmp(char **,char **) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecti(const char *,int,int *) ;
-extern int	getpwd(char *,int) ;
-extern int	vecstr_envadd(vecstr *,const char *,const char *,int) ;
-extern int	vecstr_envset(vecstr *,const char *,const char *,int) ;
-extern int	perm(const char *,uid_t,gid_t,gid_t *,int) ;
-extern int	permsched(const char **,vecstr *,char *,int,const char *,int) ;
-extern int	getnodedomain(char *,char *) ;
-extern int	getgroupname(char *,int,gid_t) ;
-extern int	listentcp(const char *,const char *,int) ;
-extern int	listenfifo(const char *,int,int) ;
-extern int	getfname(char *,char *,int,char *) ;
-extern int	bopenroot(bfile *,char *,char *,char *,char *,int) ;
-extern int	getserial(const char *) ;
-extern int	mkdirs(const char *,mode_t) ;
-extern int	logfile_userinfo(LOGFILE *,USERINFO *,time_t,
-			const char *,const char *) ;
-
-extern int	proginfo_setpiv(struct proginfo *,const char *,
+extern int	proginfo_setpiv(struct proginfo *,cchar *,
 			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
-extern int	varsub_subbuf(), varsub_merge() ;
-extern int	expander(struct proginfo *,char *,int,char *,int) ;
 extern int	procfileenv(char *,char *,VECSTR *) ;
 extern int	procfilepaths(char *,char *,VECSTR *) ;
 extern int	watch(struct proginfo *, BUILTIN *) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
-extern char	*strbasename(char *) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_logz(time_t,char *) ;
 
 
 /* external variables */
@@ -159,17 +121,17 @@ extern char	*timestr_logz(time_t,char *) ;
 
 /* forward references */
 
-static int	usage(struct proginfo *) ;
-static int	procopts(struct proginfo *,KEYOPT *) ;
-static int	progserial(struct proginfo *) ;
-static int	checkdir(struct proginfo *,const char *,int) ;
-static int	checkfiledir(struct proginfo *,const char *) ;
-static int	getprogopts(struct proginfo *,KEYOPT *,vecstr *) ;
-static int	procfile(struct proginfo *,int (*)(char *,char *,VECSTR *),
+local int	usage(struct proginfo *) ;
+local int	procopts(struct proginfo *,KEYOPT *) ;
+local int	progserial(struct proginfo *) ;
+local int	checkdir(struct proginfo *,cchar *,int) ;
+local int	checkfiledir(struct proginfo *,cchar *) ;
+local int	getprogopts(struct proginfo *,KEYOPT *,vecstr *) ;
+local int	procfile(struct proginfo *,int (*)(char *,char *,VECSTR *),
 			char *,vecstr *,char *,VECSTR *) ;
-static int	caf(struct proginfo *) ;
-static int	svarsinit(struct proginfo *,vecstr *) ;
-static int	svarsfree(struct proginfo *,vecstr *) ;
+local int	caf(struct proginfo *) ;
+local int	svarsinit(struct proginfo *,vecstr *) ;
+local int	svarsfree(struct proginfo *,vecstr *) ;
 
 
 /* local variables */
@@ -187,7 +149,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const char *argopts[] = {
+constexpr cpcchar	argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -200,7 +162,7 @@ static const char *argopts[] = {
 	NULL
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -223,7 +185,7 @@ enum configopts {
 	configopt_overlast
 } ;
 
-static const char *configopts[] = {
+constexpr cpcchar	configopts[] = {
 	"marktime",
 	"defacc",
 	"vardir",
@@ -239,7 +201,7 @@ static const char *configopts[] = {
 } ;
 
 /* 'conf' for most regular programs */
-static const char	*sched1[] = {
+constexpr cpcchar	sched1[] = {
 	    "%p/%e/%n/%n.%f",
 	    "%p/%e/%n/%f",
 	    "%p/%e/%n.%f",
@@ -248,7 +210,7 @@ static const char	*sched1[] = {
 } ;
 
 /* non-'conf' ETC stuff for all regular programs */
-static const char	*sched2[] = {
+constexpr cpcchar	sched2[] = {
 	    "%p/%e/%n/%n.%f",
 	    "%p/%e/%n/%f",
 	    "%p/%e/%n.%f",
@@ -258,7 +220,7 @@ static const char	*sched2[] = {
 } ;
 
 /* 'conf' and non-'conf' ETC stuff for local searching */
-static const char	*sched3[] = {
+constexpr cpcchar	sched3[] = {
 	    "%e/%n/%n.%f",
 	    "%e/%n/%f",
 	    "%e/%n.%f",
@@ -269,7 +231,7 @@ static const char	*sched3[] = {
 } ;
 
 /* option terminators */
-static const unsigned char 	oterms[32] = {
+constexpr char		oterms[] = {
 	0x00, 0x0B, 0x00, 0x00,
 	0x09, 0x10, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00,
@@ -278,7 +240,7 @@ static const unsigned char 	oterms[32] = {
 	0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00
-} ;
+} ; /* end array (oterms) */
 
 
 /* exported variables */
@@ -288,26 +250,16 @@ static const unsigned char 	oterms[32] = {
 
 int main(int argc,mainv argv,mainv envv) {
 	struct proginfo	pi, *pip = &pi ;
-
 	struct servent	*sep ;
-
 	USTAT		sb ;
-
 	USERINFO	u ;
-
 	KEYOPT		akopts ;
-
 	VECSTR		svars ;
-
 	BUILTIN		bis ;
-
 	SRVTAB_ENT	*srvp ;
-
 	bfile		errfile ;
 	bfile		pidfile ;
-
 	vecstr		defines, unsets ;
-
 	varsub		vsdefines, vsexports ;
 
 	int	argr, argl, aol, akl, avl, kwi ;
@@ -1916,7 +1868,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 /* load up the environment variables */
 
-	varsub_addva(&pip->subs,(const char **) pip->envv) ;
+	varsub_addva(&pip->subs,(cchar **) pip->envv) ;
 
 /* we are done initializing */
 
@@ -2169,7 +2121,7 @@ badret:
 
 
 
-static int usage(pip)
+local int usage(pip)
 struct proginfo	*pip ;
 {
 	int	rs = SR_OK ;
@@ -2195,7 +2147,7 @@ struct proginfo	*pip ;
 
 
 /* process the program ako-options */
-static int procopts(pip,kop)
+local int procopts(pip,kop)
 struct proginfo	*pip ;
 KEYOPT		*kop ;
 {
@@ -2335,7 +2287,7 @@ ret0:
 /* end subroutine (procopts) */
 
 
-static int progserial(pip)
+local int progserial(pip)
 struct proginfo	*pip ;
 {
 	int	rs1 ;
@@ -2381,7 +2333,7 @@ struct proginfo	*pip ;
 /* end subroutine (progserial) */
 
 
-static int procfile(pip,func,pr,svp,fname,elp)
+local int procfile(pip,func,pr,svp,fname,elp)
 struct proginfo	*pip ;
 int		(*func)(char *,char *,VECSTR *) ;
 char		pr[] ;
@@ -2438,9 +2390,9 @@ VECSTR		*elp ;
 
 
 /* check if a directory exists */
-static int checkdir(pip,dname,mode)
+local int checkdir(pip,dname,mode)
 struct proginfo	*pip ;
-const char	dname[] ;
+cchar	dname[] ;
 int		mode ;
 {
 	USTAT		sb ;
@@ -2499,9 +2451,9 @@ int		mode ;
 
 
 /* check if the directory of a file is present */
-static int checkfiledir(pip,fname)
+local int checkfiledir(pip,fname)
 struct proginfo	*pip ;
-const char	fname[] ;
+cchar	fname[] ;
 {
 	USTAT		sb ;
 
@@ -2571,7 +2523,7 @@ const char	fname[] ;
 /* end subroutine (checkfiledir) */
 
 
-static int caf(pip)
+local int caf(pip)
 struct proginfo	*pip ;
 {
 	int	rs1 ;
@@ -2600,7 +2552,7 @@ struct proginfo	*pip ;
 /* end subroutine (caf) */
 
 
-static int svarsinit(pip,svp)
+local int svarsinit(pip,svp)
 struct proginfo	*pip ;
 vecstr	*svp ;
 {
@@ -2631,7 +2583,7 @@ ret0:
 /* end subroutine (svarsinit) */
 
 
-static int svarsfree(pip,svp)
+local int svarsfree(pip,svp)
 struct proginfo	*pip ;
 vecstr	*svp ;
 {
