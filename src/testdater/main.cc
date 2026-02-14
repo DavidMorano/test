@@ -179,7 +179,7 @@ int main(int argc,cchar **argv,cchar **envv)
 #if	CF_TESTSNTMTIME
 	if (isatty(fd_stdout)) {
 	    TMTIME	tmt ;
-	    if ((rs = tmtime_localtime(&tmt,pip->daytime)) >= 0) {
+	    if ((rs = tmtime_timelocal(&tmt,pip->daytime)) >= 0) {
 	        char	tbuf[TIMEBUFLEN+1] ;
 	        fmt = "%a %b %d %H%:%M%:%S %Z %Y %O %n" ;
 	        if ((rs = sntmtime(tbuf,TIMEBUFLEN,&tmt,fmt)) >= 0) {
@@ -228,7 +228,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	    uc_ftime(&now) ;
 
 	    rs1 = SR_INVALID ;
-	    if ((rs = tmtime_localtime(&tmt,now.time)) >= 0) {
+	    if ((rs = tmtime_timelocal(&tmt,now.time)) >= 0) {
 	        now.timezone = (tmt.gmtoff / 60) ;
 	        now.dstflag = tmt.isdst ;
 	        strncpy(zname,tmt.zname,DATER_ZNAMESIZE) ;
