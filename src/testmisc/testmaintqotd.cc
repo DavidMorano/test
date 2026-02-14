@@ -347,7 +347,7 @@ static int curdate(DAYSPEC *dsp,int y)
 	TMTIME	ct ;
 	time_t	dt = time(NULL) ;
 	int	rs ;
-	rs = tmtime_localtime(&ct,dt) ;
+	rs = tmtime_timelocal(&ct,dt) ;
 	dsp->y = (y > 0) ? y : (ct.year + TM_YEAR_BASE) ;
 	dsp->m = ct.mon ;
 	dsp->d = ct.mday ;
