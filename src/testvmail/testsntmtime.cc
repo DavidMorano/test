@@ -117,7 +117,7 @@ int main(int argc,cchar **argv,cchar **envv)
 /* go */
 
 	if (rs >= 0) {
-	if ((rs = tmtime_localtime(&tmt,t)) >= 0) {
+	if ((rs = tmtime_timelocal(&tmt,t)) >= 0) {
 	    const int	tlen = TIMEBUFLEN ;
 	    char	tbuf[TIMEBUFLEN+1] ;
 	    const char	*fmt ;
@@ -129,7 +129,7 @@ int main(int argc,cchar **argv,cchar **envv)
 				printf("%s\n",tbuf) ;
 	                    if (rs < 0) break ;
 	                } /* end for */
-	} /* end if (tmtime_localtime) */
+	} /* end if (tmtime_timelocal) */
 	} /* end if (ok) */
 
 #if	CF_DEBUGS && CF_DEBUGMALL
