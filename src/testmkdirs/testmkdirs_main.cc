@@ -1,11 +1,12 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* front-end subroutine for the TESTMKDIRS program */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* non-switchable */
 #define	CF_DEBUG	1		/* switchable */
-
 
 /* revision history:
 
@@ -18,26 +19,25 @@
 
 /*******************************************************************************
 
+  	Description:
+
 	Synopsis:
-
 	$ testmkdirs [<dir(s)>] [-V]
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
 #include	<ctime>
-
-#include	<usystem.h>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<baops.h>
 #include	<bfile.h>
 #include	<keyopt.h>
@@ -69,9 +69,9 @@
 
 /* external subroutines */
 
-extern int	proginfo_setpiv(struct proginfo *,const char *,
+extern int	proginfo_setpiv(struct proginfo *,cchar *,
 			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 
 /* external variables */
@@ -83,17 +83,17 @@ extern int	printhelp(void *,const char *,const char *,const char *) ;
 /* forward references */
 
 static int	usage(struct proginfo *) ;
-static int	procname(struct proginfo *,bfile *,const char *) ;
-static int	ensuremode(const char *,mode_t) ;
+static int	procname(struct proginfo *,bfile *,cchar *) ;
+static int	ensuremode(cchar *,mode_t) ;
 
 #ifdef	COMMENT
-static int	dirok(const char *) ;
+static int	dirok(cchar *) ;
 #endif
 
 
 /* local variables */
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -139,7 +139,7 @@ static const struct mapex	mapexs[] = {
 
 #ifdef	COMMENT
 
-static const char	*jobdirs[] = {
+static cchar	*jobdirs[] = {
 	MKJOB1DNAME,
 	MKJOB2DNAME,
 	MKJOB3DNAME,
@@ -149,23 +149,16 @@ static const char	*jobdirs[] = {
 #endif /* COMMENT */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
-	struct proginfo	pi, *pip = &pi ;
-
+int main(int argc,mainv argv,mainv envv) struct proginfo	pi, *pip = &pi ;
 	bfile	errfile ;
 	bfile	outfile, *ofp = &outfile ;
-
 	USERINFO	u ;
-
 	KEYOPT	akopts ;
-
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	argvalue = -1 ;
@@ -179,12 +172,12 @@ char	*envv[] ;
 	int	f_version = FALSE ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*pr = NULL ;
-	const char	*searchname = NULL ;
-	const char	*afname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*pr = NULL ;
+	cchar	*searchname = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 	char	argpresent[MAXARGGROUPS + 1] ;
 	char	userbuf[USERINFO_LEN + 1] ;
 
@@ -876,7 +869,7 @@ struct proginfo	*pip ;
 static int procname(pip,ofp,name)
 struct proginfo	*pip ;
 bfile		*ofp ;
-const char	name[] ;
+cchar	name[] ;
 {
 	int	rs ;
 	int	wlen = 0 ;
@@ -909,7 +902,7 @@ const char	name[] ;
 #ifdef	COMMENT
 
 static int dirok(dname)
-const char	dname[] ;
+cchar	dname[] ;
 {
 	ustat	sb ;
 
@@ -953,17 +946,11 @@ const char	dname[] ;
 
 #endif /* COMMENT */
 
-
-static int ensuremode(tmpdname,m)
-const char	tmpdname[] ;
-mode_t		m ;
-{
+static int ensuremode(cchar *tmpdname,mode_t m) noex {
 	ustat	sb ;
-
 	int	rs ;
 	int	fd ;
 	int	f = FALSE ;
-
 
 	if (tmpdname == NULL)
 	    return SR_FAULT ;
