@@ -40,6 +40,27 @@ MODS +=
 LIBS += -luo -lu
 
 
+DEPS_MAIN +=
+DEPS_MAIN +=
+DEPS_MAIN +=
+DEPS_MAIN +=
+DEPS_MAIN +=
+
+OBJ0= testfilelinker_main.o
+OBJ1= tardir.o
+OBJ2= filelinker.o
+OBJ3=
+OBJ4=
+OBJ5=
+OBJ6=
+OBJ7=
+
+OBJA= obj0.o obj1.o obj2.o
+OBJB= obj4.o
+
+OBJ= obja.o
+
+
 INCDIRS=
 #INCDIRS= -I$(INCDIR)
 
@@ -54,27 +75,6 @@ CFLAGS		?= $(MAKECFLAGS)
 CXXFLAGS	?= $(MAKECXXFLAGS)
 ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
-
-
-DEPS_MAIN +=
-DEPS_MAIN +=
-DEPS_MAIN +=
-DEPS_MAIN +=
-DEPS_MAIN +=
-
-OBJ0= testfilelinker_main.o
-OBJ1=
-OBJ2=
-OBJ3=
-OBJ4=
-OBJ5=
-OBJ6=
-OBJ7=
-
-OBJA= obj0.o
-OBJB= obj4.o
-
-OBJ_MAIN= obja.o
 
 
 .SUFFIXES:		.hh .ii .iim .ccm
@@ -110,8 +110,8 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).x:			$(OBJ_MAIN)
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_MAIN) $(LIBINFO)
+$(T).x:			$(OBJ)
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -129,21 +129,17 @@ install:		$(T).x
 	makeinstall $(T).x
 
 
-obj_main.o:		$(OBJ_MAIN)
-	$(CXX) -r -o $@ $(LDFLAGS) $^
-
-
 obj0.o:			$(OBJ0)
-	$(CXX) -r -o $@ $(LDFLAGS) $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj1.o:			$(OBJ1)
-	$(CXX) -r -o $@ $(LDFLAGS) $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj2.o:			$(OBJ2)
-	$(CXX) -r -o $@ $(LDFLAGS) $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj3.o:			$(OBJ3)
-	$(CXX) -r -o $@ $(LDFLAGS) $^
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 obj4.o:			$(OBJ4)
 	$(LD) -r $(LDFLAGS) -o $@ $^
@@ -166,5 +162,11 @@ objb.o:			$(OBJB)
 
 
 testfilelinker_main.o:	testfilelinker_main.cc $(DEPS_MAIN)	$(INCS)
+
+filelinker.o:		filelinker.cc		filelinker.hh	$(INCS)
+
+tardir.o:		tardir.dir
+tardir.dir:
+	makesubdir $@
 
 
