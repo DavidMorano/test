@@ -1,69 +1,74 @@
-/* main */
+/* testqsort_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
+/* version %I% last-modified %G% */
+/* test the |qsort(3c)| subroutine */
 
 #define	CF_DEBUGS	1
 #define	CF_VSTRSORT	0	/* use 'vstrsort()' instead of 'qsort(3c)' */
 #define	CF_VSTRCMP	0	/* which sort function */
 
-
 /******************************************************************************
 
+  	Description:
 	This little program shows a bad (core-dump quality) bug in
-	the Solaris 'qsort(3c)' subroutine !
-
+	the Solaris |qsort(3c)| subroutine!
 
 ******************************************************************************/
 
-#include	<envstandards.h>
-#include	<sys/types.h>
-#include	<cstdlib>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
-#include	<vstrcmpx.h>
-#include	<vstrkeycmpx.h>
-
-#include	"config.h"
-#include	"defs.h"
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<cfdec.h>
+#include	<vstrcmp.h>
+#include	<vstrkeycmp.h>
+#include	<localmisc.h>
 
 
 /* external variables */
 
-extern int	cfdeci(const char *,int,int *) ;
-
 
 /* local variables */
 
-static const char	*array[] = {
+constexpr cpcchar	kstrs[] = {
 	"_=/bin/cat",
 	"PATH=/bin",
-	NULL
-} ;
+	nullptr
+} ; /* end array (kstrs) */
+
+cbool		f_vstrsort = false ;
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-int main(int argc,cchar **argv,char **envv) neox {
+int main(int,mainv,mainv) neox {
+    	cnullptr	np{} ;
+	cnithrow	nt{} ;
 	int	rs = SR_OK ;
-	int	i = 0 ;
-	int	fd_debug ;
-	int	(*fn)(const void *,const void *) ;
+	int	fd_debug = -1 ;
+	int	(*fn)(cvoid *,cvoid *) ;
 	char	*cp ;
 
-
 #if	CF_DEBUGS
-	if ((cp = getenv(VARDEBUGFD1)) == NULL) {
+	if ((cp = getenv(VARDEBUGFD1)) == nullptr) {
 	    cp = getenv(VARDEBUGFD2) ;
 	}
-	if ((cp != NULL) &&
-	    (cfdeci(cp,-1,&fd_debug) >= 0))
+	if (cp && (cfdeci(cp,-1,&fd_debug) >= 0)) {
 	    debugsetfd(fd_debug) ;
+	}
 #endif /* CF_DEBUGS */
 
-
 	fprintf(stdout,"unsorted\n") ;
-
-	for (i = 0 ; array[i] != NULL ; i += 1)
-		fprintf(stdout,"a[%d]=>%s<\n",i,array[i]) ;
-
+	for (int i = 0 ; kstrs[i] != nullptr ; i += 1) {
+		fprintf(stdout,"a[%d]=>%s<\n",i,kstrs[i]) ;
+	}
 
 #if	CF_VSTRCMP
 	fn = vstrcmp ;
@@ -71,24 +76,24 @@ int main(int argc,cchar **argv,char **envv) neox {
 	fn = vstrkeycmp ;
 #endif
 
+	cint dlen = lenstrarr(kstrs) ;
+	if (char *datarr ; (datarr = new(nt) char [dlen + 1]) != np) {
+	    for (int i = 0 ; kstrs[i] ; i += 1) {
+		datarr[i] = kstrs[i] ;
+	    }
 #if	CF_VSTRSORT
-	vstrsort(array,2,fn) ;
+	vstrsort(datarr,dlen,fn) ;
 #else
-	qsort(array,2,sizeof(char *),fn) ;
+	qsort(dataerr,dlen,sizeof(char *),fn) ;
 #endif
-
-
 	fprintf(stdout,"sorted\n") ;
+	for (int i = 0 ; array[i] != nullptr ; i += 1) {
+		fprintf(stdout,"a[%d]=>%s<\n",i,kstrs[i]) ;
+	}
 
-	for (i = 0 ; array[i] != NULL ; i += 1)
-		fprintf(stdout,"a[%d]=>%s<\n",i,array[i]) ;
-
-
-	fclose(stdout) ;
-
-	return 0 ;
+	    delete [] datarr ;
+	} /* end if (new-char) */
 }
 /* end subroutine (main) */
-
 
 
