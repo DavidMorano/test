@@ -22,24 +22,34 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usyscalls.h>		/* |u_mkdirs(3u)| */
+#include	<filelinker.hh>
 #include	<localmisc.h>
+#include	<dprintf.h>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
 
+cbool		f_debug = true ;
+
 int main(int argc,mainv argv,mainv) {
 	int		rs = SR_OK ;
+	int		rs1 ;
 	int		ex = EXIT_SUCCESS ;
 	if (argc > 1) {
-	    cmode dm = 0775 ;
-	    for (int ai = 1 ; (ai < argc) && argv[ai] ; ai += 1) {
-		if (cchar *fn = argv[ai] ; fn[0]) {
-		    rs = u_mkdirs(fn,dm) ;
-		}
-		if (rs < 0) break ;
-	    } /* end for */
+	    if (filelinker fo ; (rs = fo.start) >= 0) {
+		if ((rs = fo.load(argv + 1)) >= 0) {
+		    cchar *fn = "testinput.txt" ;
+		    if (ustat sb ; (rs = u_stat(fn,&sb)) >= 0) {
+		        rs = fo.link(&sb,fn) ;
+			DPRINTF("fo.link() rs=%d\n",rs) ;
+		    }
+		} /* end if (load) */
+		rs1 = fo.finish ;
+	        if (rs >= 0) rs = rs1 ;
+	    } /* end if (filelinker) */
 	} /* end block */
+	DPRINTF("done rs=%d\n",rs) ;
 	if ((rs < 0) && (ex == EXIT_SUCCESS)) {
 	    ex = EXIT_FAILURE ;
 	}
