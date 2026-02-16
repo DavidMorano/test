@@ -79,8 +79,7 @@ static int vecsorthand_ctor(vecsorthand *op,Args ... args) noex {
 	    op->e = 0 ;
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_ctor) */
+} /* end subroutine (vecsorthand_ctor) */
 
 static int	vecsorthand_extend(vecsorthand *) noex ;
 static int	topidx(int) noex ;
@@ -336,7 +335,7 @@ void vecsorthand::dtor() noex {
 	if (cint rs = finish ; rs < 0) {
 	    ulogerror("vecsorthand",rs,"fini-finish") ;
 	}
-}
+} /* end method (vecsorthand::dtor) */
 
 vecsorthand::operator int () noex {
 	int		rs = SR_NOTOPEN ;
@@ -344,7 +343,7 @@ vecsorthand::operator int () noex {
 	    rs = c ;
 	}
 	return rs ;
-}
+} /* end method (vecsorthand::operator) */
 
 int vecsorthand_co::operator () (int ai) noex {
 	int		rs = SR_BUGCHECK ;
@@ -362,15 +361,13 @@ int vecsorthand_co::operator () (int ai) noex {
 	    } /* end switch */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end method (vecsorthand_co::operator) */
+} /* end method (vecsorthand_co::operator) */
 
 static int topidx(int i) noex {
     	if (i > 0) {
 	    i -= 1 ;
 	}
 	return i ;
-}
-/* end subroutine (topidx) */
+} /* end subroutine (topidx) */
 
 
