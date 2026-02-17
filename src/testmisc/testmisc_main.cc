@@ -2,6 +2,8 @@
 /* charset=ISO8859-1 */
 /* lang=C++11 */
 
+/* test */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_HELLO	0		/* hello */
@@ -18,7 +20,6 @@
 #define	CF_SET		1		/* set */
 #define	CF_HASDUP	1		/* has duplicate */
 
-
 /* revision history:
 
 	= 2013-07-11, David A­D­ Morano
@@ -30,6 +31,7 @@
 
 /*******************************************************************************
 
+  	Description:
 	General testing.
 
 *******************************************************************************/
@@ -86,7 +88,7 @@ struct testcon {
 	    fprintf(stderr,"main/testcon: destruct\n") ;
 	} ;
 	bool have() ;
-} ;
+} ; /* end struct */
 
 struct thing {
 	int		id ;
@@ -128,17 +130,17 @@ public:
 	thing		&operator += (const thing) ;
 	thing		&operator += (const thing&) ;
 	friend thing	operator + (const thing&,const thing&) ;
-} ;
+} ; /* end struct */
 
 int thing::init(int a) {
 	a1 = a ;
 	a2 = a * 2 ;
 	return 0 ;
-}
+} /* end method */
 
 int thing::get() {
 	return (a1 + a2) ;
-}
+} /* end method */
 
 /* this IS is a MEMBER function */
 thing &thing::operator += (const thing &b) {
@@ -146,14 +148,14 @@ thing &thing::operator += (const thing &b) {
 	this->a1 += b.a1 ;
 	this->a2 += b.a2 ;
 	return *this ;
-}
+} /* end method */
 
 thing &thing::operator += (const thing b) {
 	fprintf(stderr,"main: operator B\n") ;
 	this->a1 += b.a1 ;
 	this->a2 += b.a2 ;
 	return *this ;
-}
+} /* end method */
 
 /* this is a NON-MEMBER function */
 thing operator + (const thing &a,const thing &b) {
@@ -162,7 +164,7 @@ thing operator + (const thing &a,const thing &b) {
 	r.a1 = a.a1 + b.a1 ;
 	r.a2 = a.a1 + b.a2 ;
 	return r ;
-}
+} /* end method */
 
 struct tupler {
 	int	a = 0 ;
@@ -208,7 +210,7 @@ struct tupler {
 	    out << "(" << t.a << "," << t.b << "," << t.c << ")" << endl ;
 	    return out ;
 	} ;
-} ;
+} ; /* end struct */
 
 
 /* forward references */
