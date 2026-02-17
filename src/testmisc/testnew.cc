@@ -1,25 +1,26 @@
-/* testnew */
+/* testnew SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
+/* test */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_COPY		1
 
-
 /* revision history:
 
-	= 2013 -07-11, David A­D­ Morano
+	= 2013-07-11, David A­D­ Morano
 	Originally written for Rightcore Network Services.
 
 */
 
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
-#include	<cstdlib>
 #include	<cinttypes>
 #include	<new>
 #include	<initializer_list>
@@ -31,7 +32,8 @@
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<localmisc.h>
 
 
@@ -166,9 +168,9 @@ thing operator + (const thing &a,const thing &b)
 
 /* forward references */
 
-static int testio() ;
+local int testio() ;
 
-static int readline(ifstream &,char *,int) ;
+local int readline(ifstream &,char *,int) ;
 
 
 /* local variables */
@@ -200,9 +202,7 @@ int main(int argc,const char **argv,const char **envv)
 
 /* local subroutines */
 
-
-static int testio()
-{
+local int testio() {
 	int		rs = SR_OK ;
 	{
 	    cchar	*ofn = "ourout.txt" ;
@@ -236,16 +236,13 @@ static int testio()
 }
 /* end subroutine (testio) */
 
-
 bool testcon::have() {
 	const int	ans = sisub(hello,-1,"hello") ;
 	fprintf(stderr,"ans=%u\n",(ans >= 0)) ;
 	return (ans >= 0) ;
 }
 
-
-int readline(ifstream &is,char *lbuf,int llen)
-{
+int readline(ifstream &is,char *lbuf,int llen) {
 	int		rs = SR_OK ;
 	if (is.getline(lbuf,llen)) {
 	    rs = is.gcount() ;
