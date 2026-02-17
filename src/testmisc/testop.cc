@@ -1,8 +1,9 @@
 /* testop SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* test operations */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_INIT		0
@@ -14,7 +15,6 @@
 #define	CF_INH		0		/* inheritance */
 #define	CF_CALLOBJ	1		/* call-object */
 
-
 /* revision history:
 
 	= 2013-07-11, David A­D­ Morano
@@ -24,10 +24,11 @@
 
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
-
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
 #include	<cinttypes>
 #include	<new>
@@ -41,7 +42,8 @@
 #include	<iostream>
 #include	<ostream>
 #include	<iomanip>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<localmisc.h>
 
 
@@ -229,24 +231,24 @@ struct tupler {
 /* forward references */
 
 #if	CF_TESTLAMBDA
-static int testlambda(void) ;
+local int testlambda(void) ;
 #endif /* CF_TESTLAMBDA */
 
 #if	CF_TESTIO
-static int testio() ;
-static int readline(ifstream &,char *,int) ;
+local int testio() ;
+local int readline(ifstream &,char *,int) ;
 #endif /* CF_TESTIO */
 
 #if	CF_TESTIN
-static int testin() ;
+local int testin() ;
 #endif /* CF_TESTIN */
 
 #if	CF_INH
-static int inh() ;
+local int inh() ;
 #endif /* CF_INH */
 
 #if	CF_CALLOBJ
-static int testcallobj() ;
+local int testcallobj() ;
 #endif
 
 
@@ -351,7 +353,7 @@ int main(int argc,mainv,mainv) {
 
 #if	CF_TESTIO
 
-static int testio() {
+local int testio() {
 	int		rs = SR_OK ;
 	{
 	    cchar	*ofn = "ourout.txt" ;
@@ -397,7 +399,7 @@ int readline(ifstream &is,char *lbuf,int llen) {
 #endif /* CF_TESTIO */
 
 #if	CF_TESTLAMBDA
-static int testlambda(void) {
+local int testlambda(void) {
 	vector<int>	mv = { 1, 2, 3, 4 } ;
 	int		a[3] = { 2, 1, 3 } ;
 	int		sum = 0 ;
@@ -427,7 +429,7 @@ static int testlambda(void) {
 #endif /* CF_TESTLAMBDA */
 
 #if	CF_TESTIN
-static int testin() {
+local int testin() {
 	const int	n = 20 ;
 	int		rs = SR_OK ;
 	int		i ;
@@ -469,7 +471,7 @@ struct B : public A {
 	} ;
 } ;
 
-static int inh() {
+local int inh() {
 	A		a(23) ;
 	B		b(1) ;
 	cout << "n=" << a.n << endl ;
@@ -492,11 +494,11 @@ struct callobj {
 	    return v ;
 	} ;
 } ;
-static int testcallobj_sub(void *objp) {
+local int testcallobj_sub(void *objp) {
 	callobj		*op = (callobj *) objp ;
 	return op->timeout() ;
 }
-static int testcallobj() {
+local int testcallobj() {
 	callobj		obj ;
 	void		*objp ;
 	void		*metp ;
