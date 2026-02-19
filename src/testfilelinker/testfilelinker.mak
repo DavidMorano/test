@@ -33,14 +33,14 @@ LINT		?= lint
 
 DEFS +=
 
-INCS +=
+INCS += filelinker.hh
 
-MODS +=
+MODS += tardir.ccm
 
 LIBS += -luo -lu
 
 
-DEPS_MAIN +=
+DEPS_MAIN += tardir.o
 DEPS_MAIN +=
 DEPS_MAIN +=
 DEPS_MAIN +=
