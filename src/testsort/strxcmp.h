@@ -18,6 +18,7 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
+#include	<strnxcmp.h>		/* |strnndictcmp(3uc)| */
 
 #include	<stremacmp.h>
 #include	<strkeycmp.h>
@@ -25,7 +26,6 @@
 #include	<strxxxxcmp.h>
 #include	<strleadcmp.h>
 #include	<strpcmp.h>
-#include	<strnxcmp.h>		/* |strnndictcmp(3uc)| */
 
 
 EXTERNC_begin
