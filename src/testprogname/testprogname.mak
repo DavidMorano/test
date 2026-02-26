@@ -43,7 +43,7 @@ LIBS += -luo -lu
 DEPS_MAIN +=
 
 OBJ0= testprogname_main.o 
-OBJ1= prognamevar.o
+OBJ1= prognamevar.o shellunder.o
 OBJ2=
 OBJ3=
 
@@ -146,5 +146,6 @@ objb.o:			$(OBJB)
 testprogname_main.o:	testprogname_main.cc	$(DEPS_MAIN)		$(INCS)
 
 prognamevar.o:		prognamevar.cc		prognamevar.hh
+shellunder.o:		shellunder.cc		shellunder.h
 
 
