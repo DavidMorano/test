@@ -37,13 +37,22 @@ INCS +=
 
 MODS +=
 
-LIBS += -lu
+LIBS += -luo -lu
 
 
-INCDIRS +=
+DEPS_MAIN +=
 
-LIBDIRS += -L$(LIBDIR)
+OBJ0= testprogname_main.o 
+OBJ1= prognamevar.o shellunder.o
+OBJ2=
+OBJ3=
 
+OBJ= obj0.o obj1.o
+
+
+INCDIRS=
+
+LIBDIRS= -L$(LIBDIR)
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -54,13 +63,9 @@ CFLAGS		?= $(MAKECFLAGS)
 CXXFLAGS	?= $(MAKECXXFLAGS)
 ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
-INCDIRS=
 
 
-OBJ_MACUSER= testprogname_main.o
-
-
-.SUFFIXES:		.hh .ii .ccm
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
@@ -90,8 +95,8 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).x:			$(OBJ_MACUSER)
-	$(CXX) $(LDFLAGS) -o $@ $(OBJ_MACUSER) $(LIBINFO)
+$(T).x:			$(OBJ)
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -106,6 +111,41 @@ control:
 	(uname -n ; date) > Control
 
 
-testprogname_main.o:	testprogname_main.cc			$(INCS)
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testprogname_main.o:	testprogname_main.cc	$(DEPS_MAIN)		$(INCS)
+
+prognamevar.o:		prognamevar.cc		prognamevar.hh
+shellunder.o:		shellunder.cc		shellunder.h
 
 
