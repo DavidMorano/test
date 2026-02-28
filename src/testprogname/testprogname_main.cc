@@ -2,8 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-
-/* test the |getprogname(3c)| subroutine and the |prognamevar| faciltuy */
+/* test |getprogname(3c)| subroutine and |prognamevar(3dam)| facililty */
 /* version %I% last-modified %G% */
 
 
