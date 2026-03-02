@@ -39,14 +39,13 @@
 
 import libutil ;
 
-using std::nullptr_t ;			/* type */
 using libu::umem ;			/* variable */
 using std::cout ;			/* variable */
 using std::nothrow ;			/* constant */
 
 typedef fsdir_ent	ent ;
 
-static int dirlist(cchar *name) noex {
+local int dirlist(cchar *name) noex {
     	cnullptr	np{} ;
     	int		rs = SR_INVALID ;
 	int		rs1 ;
