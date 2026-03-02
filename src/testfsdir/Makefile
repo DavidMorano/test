@@ -49,25 +49,17 @@ MODS +=
 LIBS += -luo -lu
 
 
-OBJ00= testfsdir_main.o
-OBJ01= fsdir.o
-OBJ02=
-OBJ03=
-OBJ04= 
-OBJ05=
-OBJ06=
-OBJ07=
-OBJ08=
-OBJ09=
-OBJ10=
-OBJ11=
-OBJ12=
-OBJ13=
-OBJ14=
-OBJ15=
+OBJ0= testfsdir_main.o
+OBJ1= fsdir.o
+OBJ2=
+OBJ3=
+OBJ4= 
+OBJ5=
+OBJ6=
+OBJ7=
 
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07) 
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
+OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= $(OBJA) $(OBJB)
 
@@ -75,7 +67,6 @@ OBJ= $(OBJA) $(OBJB)
 INCDIRS=
 
 LIBDIRS= -L$(LIBDIR)
-
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -168,9 +159,39 @@ control:
 	date >> Control
 
 
-fsdir_main.o:		fsdir_main.cc 				$(INCS) 
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-fsdirtree.o:		fsdirtree.cc fsdirtree.h		$(INCS)
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testfsdir_main.o:	testfsdir_main.cc 			$(INCS) 
 
 fsdir.o:		fsdir.dir
 fsdir.dir:
