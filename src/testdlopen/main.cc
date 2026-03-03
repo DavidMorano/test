@@ -1,19 +1,20 @@
-/* main (testdlopen) */
+/* testdlopen_main (testdlopen) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* front-end subroutine for the TESTDLOPEN program */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUG	1		/* run-time debug print-outs */
 #define	CF_FOLLOWFILES	0		/* follow sybolic links of files */
 #define	CF_FTCASE	1		/* try a C-lang 'switch' */
 
-
 /* revision history:
 
 	= 1998-02-01, David A­D­ Morano
-        The program was written from scratch to do what the previous program by
-        the same name did.
+	The program was written from scratch to do what the previous
+	program by the same name did.
 
 */
 
@@ -21,27 +22,27 @@
 
 /*******************************************************************************
 
-	This is a fairly generic front-end subroutine for a program.
+  	Name:
 
+	Description:
+	This is a fairly generic front-end subroutine for a program.
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
+#include	<unistd.h>
+#include	<dlfcn.h>
+#include	<ctime>
 #include	<climits>
 #include	<csignal>
-#include	<unistd.h>
-#include	<ctime>
-#include	<dlfcn.h>
-#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<baops.h>
 #include	<estrings.h>
 #include	<bfile.h>
@@ -49,10 +50,12 @@
 #include	<paramopt.h>
 #include	<hdb.h>
 #include	<fsdirtree.h>
+#include	<fsdirtreestat.h>
 #include	<sigblock.h>
 #include	<bwops.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG */
 
 #include	"config.h"
 #include	"defs.h"
@@ -74,37 +77,9 @@
 
 /* external subroutines */
 
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath1w(char *,const char *,int) ;
-extern int	mkpath2w(char *,const char *,const char *,int) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	matpstr(const char **,int,const char *,int) ;
-extern int	nleadstr(const char *,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecti(const char *,int,int *) ;
-extern int	optbool(cchar *,int) ;
-extern int	optvalue(cchar *,int) ;
-extern int	removes(const char *) ;
-extern int	mkdirs(const char *,mode_t) ;
-extern int	fileobject(const char *) ;
-extern int	strwcmp(const char *,const char *,int) ;
-extern int	isNotPresent(int) ;
-
-extern int	proginfo_setpiv(PROFINFO *,const char *,
-			const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnrchr(const char *,int,int) ;
+extern int	proginfo_setpiv(PROFINFO *,cchar *,
+			const pivars *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 
 /* local structures */
@@ -114,47 +89,47 @@ struct fileinfo_flags {
 } ;
 
 struct fileinfo {
-	struct fileinfo_flags	f ;
+	fileinfo_flags	f ;
 	uint		fts ;
 } ;
 
 struct linkinfo {
 	ino64_t		ino ;
-	const char	*fname ;
+	cchar	*fname ;
 } ;
 
 
 /* forward references */
 
-static uint	linkhash(const void *,int) ;
+static uint	linkhash(cvoid *,int) ;
 
-static int	usage(PROFINFO *) ;
+local int	usage(PROFINFO *) ;
 
-static int	procopts(PROFINFO *) ;
-static int	procfts(PROFINFO *) ;
+local int	procopts(PROFINFO *) ;
+local int	procfts(PROFINFO *) ;
 
-static int	procsufbegin(PROFINFO *) ;
-static int	procsufhave(PROFINFO *,const char *,int) ;
-static int	procsufend(PROFINFO *) ;
+local int	procsufbegin(PROFINFO *) ;
+local int	procsufhave(PROFINFO *,cchar *,int) ;
+local int	procsufend(PROFINFO *) ;
 
-static int	procloadsuf(PROFINFO *,int,const char *,int) ;
+local int	procloadsuf(PROFINFO *,int,cchar *,int) ;
 
-static int	procprintfts(PROFINFO *,const char *) ;
-static int	procprintsufs(PROFINFO *,const char *) ;
+local int	procprintfts(PROFINFO *,cchar *) ;
+local int	procprintsufs(PROFINFO *,cchar *) ;
 
-static int	proclinkbegin(PROFINFO *) ;
-static int	proclinkadd(PROFINFO *,ino64_t,const char *) ;
-static int	proclinkhave(PROFINFO *,ino64_t,LINKINFO **) ;
-static int	proclinkend(PROFINFO *) ;
+local int	proclinkbegin(PROFINFO *) ;
+local int	proclinkadd(PROFINFO *,ino64_t,cchar *) ;
+local int	proclinkhave(PROFINFO *,ino64_t,LINKINFO **) ;
+local int	proclinkend(PROFINFO *) ;
 
-static int	linkinfo_start(LINKINFO *,ino64_t,const char *) ;
-static int	linkinfo_finish(LINKINFO *) ;
+local int	linkinfo_start(LINKINFO *,ino64_t,cchar *) ;
+local int	linkinfo_finish(LINKINFO *) ;
 
-static int	mkpdirs(const char *,mode_t) ;
+local int	mkpdirs(cchar *,mode_t) ;
 
-static int	linkcmp(struct linkinfo *,struct linkinfo *,int) ;
+local int	linkcmp(struct linkinfo *,struct linkinfo *,int) ;
 
-static int	caller(PROFINFO *) ;
+local int	caller(PROFINFO *) ;
 
 
 /* external variables */
@@ -179,29 +154,6 @@ enum fts {
 
 /* local variables */
 
-static const char	*argopts[] = {
-	"ROOT",
-	"VERSION",
-	"VERBOSE",
-	"TMPDIR",
-	"HELP",
-	"sn",
-	"pm",
-	"option",
-	"set",
-	"follow",
-	"af",
-	"of",
-	"ef",
-	"sa",
-	"sr",
-	"yf",
-	"yi",
-	"iacc",
-	"nice",
-	NULL
-} ;
-
 enum argopts {
 	argopt_root,
 	argopt_version,
@@ -225,7 +177,30 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr cpcchar	argopts[] = {
+	"ROOT",
+	"VERSION",
+	"VERBOSE",
+	"TMPDIR",
+	"HELP",
+	"sn",
+	"pm",
+	"option",
+	"set",
+	"follow",
+	"af",
+	"of",
+	"ef",
+	"sa",
+	"sr",
+	"yf",
+	"yi",
+	"iacc",
+	"nice",
+	nullptr
+} ;
+
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -233,7 +208,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex		mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -247,15 +222,6 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const char	*progmodes[] = {
-	"filesize",
-	"filefind",
-	"filelinker",
-	"filesyncer",
-	"filerm",
-	NULL
-} ;
-
 enum progmodes {
 	progmode_filesize,
 	progmode_filefind,
@@ -265,29 +231,13 @@ enum progmodes {
 	progmode_overlast
 } ;
 
-static const char	*progopts[] = {
-	"uniq",
-	"name",
-	"noprog",
-	"nosock",
-	"nopipe",
-	"nofifo",
-	"nodev",
-	"noname",
-	"nolink",
-	"noextra",
-	"cores",
-	"s",
-	"sa",
-	"sr",
-	"nosuf",
-	"follow",
-	"younger",
-	"yi",
-	"iacc",
-	"quiet",
-	"nice",
-	NULL
+constexpr cpcchar	progmodes[] = {
+	"filesize",
+	"filefind",
+	"filelinker",
+	"filesyncer",
+	"filerm",
+	nullptr
 } ;
 
 enum progopts {
@@ -315,20 +265,29 @@ enum progopts {
 	progopt_overlast
 } ;
 
-static const char	*ftstrs[] = {
-	"file",
-	"directory",
-	"block",
-	"character",
-	"pipe",
-	"fifo",
+constexpr cpcchar	progopts[] = {
+	"uniq",
 	"name",
-	"socket",
-	"link",
-	"door",
-	"exists",
-	"regular",
-	NULL
+	"noprog",
+	"nosock",
+	"nopipe",
+	"nofifo",
+	"nodev",
+	"noname",
+	"nolink",
+	"noextra",
+	"cores",
+	"s",
+	"sa",
+	"sr",
+	"nosuf",
+	"follow",
+	"younger",
+	"yi",
+	"iacc",
+	"quiet",
+	"nice",
+	nullptr
 } ;
 
 enum ftstrs {
@@ -347,18 +306,23 @@ enum ftstrs {
 	ftstr_overlast
 } ;
 
-#ifdef	COMMENT
-
-static const char	*whiches[] = {
-	"uniq",
+constexpr cpcchar	ftstrs[] = {
+	"file",
+	"directory",
+	"block",
+	"character",
+	"pipe",
+	"fifo",
 	"name",
-	"noprog",
-	"nosock",
-	"nopipe",
-	"nodev",
-	"nolink",
-	NULL
+	"socket",
+	"link",
+	"door",
+	"exists",
+	"regular",
+	nullptr
 } ;
+
+#ifdef	COMMENT
 
 enum whiches {
 	which_uniq,
@@ -371,19 +335,23 @@ enum whiches {
 	which_overlast
 } ;
 
+constexpr cpcchar	whiches[] = {
+	"uniq",
+	"name",
+	"noprog",
+	"nosock",
+	"nopipe",
+	"nodev",
+	"nolink",
+	nullptr
+} ;
+
 #endif /* COMMENT */
 
-static const char	*po_fts = PO_FTS ;
-static const char	*po_sufreq = PO_SUFREQ ;
-static const char	*po_sufacc = PO_SUFACC ;
-static const char	*po_sufrej = PO_SUFREJ ;
-
-static const char	*sufs[] = {
-	PO_SUFREQ,
-	PO_SUFACC,
-	PO_SUFREJ,
-	NULL
-} ;
+constexpr char	*po_fts = PO_FTS ;
+constexpr char	*po_sufreq = PO_SUFREQ ;
+constexpr char	*po_sufacc = PO_SUFACC ;
+constexpr char	*po_sufrej = PO_SUFREJ ;
 
 enum sufs {
 	suf_req,
@@ -392,7 +360,14 @@ enum sufs {
 	suf_overlast
 } ;
 
-static const int	termrs[] = {
+constexpr cpcchar	sufs[] = {
+	PO_SUFREQ,
+	PO_SUFACC,
+	PO_SUFREJ,
+	nullptr
+} ;
+
+constexpr int		termrs[] = {
 	SR_FAULT,
 	SR_INVALID,
 	SR_NOMEM,
@@ -408,19 +383,15 @@ static const int	termrs[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+int main(int argc,mainv argv,mainv envv) {
 	PROFINFO	pi, *pip = &pi ;
-
-	bfile	errfile ;
-	bfile	outfile, *ofp = &outfile ;
-
+	bfile		errfile ;
+	bfile		outfile, *ofp = &outfile ;
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	pan ;
@@ -434,21 +405,21 @@ const char	*envv[] ;
 	int	f_help = FALSE ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = nullptr ;
 	char	argpresent[MAXARGGROUPS] ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*pmspec = NULL ;
-	const char	*afname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*efname = NULL ;
-	const char	*yfname = NULL ;
-	const char	*cp ;
+	cchar	*pr = nullptr ;
+	cchar	*sn = nullptr ;
+	cchar	*pmspec = nullptr ;
+	cchar	*afname = nullptr ;
+	cchar	*ofname = nullptr ;
+	cchar	*efname = nullptr ;
+	cchar	*yfname = nullptr ;
+	cchar	*cp ;
 
 
 #if	CF_DEBUGS || CF_DEBUG
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+	if ((cp = getourenv(envv,VARDEBUGFNAME)) != nullptr) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
@@ -460,7 +431,7 @@ const char	*envv[] ;
 	    goto badprogstart ;
 	}
 
-	if ((cp = getenv(VARBANNER)) == NULL) cp = BANNER ;
+	if ((cp = getenv(VARBANNER)) == nullptr) cp = BANNER ;
 	proginfo_setbanner(pip,cp) ;
 
 /* early things to initialize */
@@ -491,7 +462,7 @@ const char	*envv[] ;
 	ai_max = 0 ;
 	ai_pos = 0 ;
 	argr = argc ;
-	for (ai = 0 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
+	for (ai = 0 ; (ai < argc) && (argv[ai] != nullptr) ; ai += 1) {
 	    if (rs < 0) break ;
 	    argr -= 1 ;
 	    if (ai == 0) continue ;
@@ -518,14 +489,14 @@ const char	*envv[] ;
 	            akp = aop ;
 	            aol = argl - 1 ;
 	            f_optequal = FALSE ;
-	            if ((avp = strchr(aop,'=')) != NULL) {
+	            if ((avp = strchr(aop,'=')) != nullptr) {
 	                f_optequal = TRUE ;
 	                akl = avp - aop ;
 	                avp += 1 ;
 	                avl = aop + argl - 1 - avp ;
 	                aol = akl ;
 	            } else {
-	                avp = NULL ;
+	                avp = nullptr ;
 	                avl = 0 ;
 	                akl = aol ;
 	            }
@@ -750,7 +721,7 @@ const char	*envv[] ;
 
 /* nice value */
 	                case argopt_nice:
-	                    cp = NULL ;
+	                    cp = nullptr ;
 	                    cl = -1 ;
 	                    pip->final.nice = TRUE ;
 	                    pip->have.nice = TRUE ;
@@ -774,7 +745,7 @@ const char	*envv[] ;
 	                            cl = argl ;
 	                        }
 	                    }
-	                    if (cp != NULL) {
+	                    if (cp != nullptr) {
 	                        rs = cfdeci(cp,cl,&v) ;
 	                        pip->nice = v ;
 	                    }
@@ -852,7 +823,7 @@ const char	*envv[] ;
 	            } else {
 
 	                while (akl--) {
-			    const int	kc = MKCHAR(*akp) ;
+			    cint	kc = MKCHAR(*akp) ;
 
 	                    switch (kc) {
 
@@ -992,7 +963,7 @@ const char	*envv[] ;
 
 /* require a suffix for file names */
 	                    case 's':
-	                        cp = NULL ;
+	                        cp = nullptr ;
 	                        if (f_optequal) {
 	                            f_optequal = FALSE ;
 	                            if (avl) {
@@ -1012,7 +983,7 @@ const char	*envv[] ;
 	                                cl = argl ;
 	                            }
 	                        }
-	                        if (cp != NULL) {
+	                        if (cp != nullptr) {
 	                            pip->final.sufreq = TRUE ;
 	                            rs = procloadsuf(pip,suf_req,
 	                                cp,cl) ;
@@ -1109,8 +1080,8 @@ const char	*envv[] ;
 
 	} /* end while (all command line argument processing) */
 
-	if (efname == NULL) efname = getenv(VARERRORFNAME) ;
-	if (efname == NULL) efname = BFILE_STDERR ;
+	if (efname == nullptr) efname = getenv(VARERRORFNAME) ;
+	if (efname == nullptr) efname = BFILE_STDERR ;
 	if ((rs1 = bopen(&errfile,efname,"wca",0666)) >= 0) {
 	    pip->efp = &errfile ;
 	    pip->open.errfile = TRUE ;
@@ -1167,7 +1138,7 @@ const char	*envv[] ;
 
 /* get our program mode */
 
-	if (pmspec == NULL) pmspec = pip->progname ;
+	if (pmspec == nullptr) pmspec = pip->progname ;
 
 	pip->progmode = matstr(progmodes,pmspec,-1) ;
 
@@ -1194,7 +1165,7 @@ const char	*envv[] ;
 /* help file */
 
 	if (f_help)
-	    printhelp(NULL,pip->pr,pip->searchname,HELPFNAME) ;
+	    printhelp(nullptr,pip->pr,pip->searchname,HELPFNAME) ;
 
 	if (f_version || f_help || f_usage)
 	    goto retearly ;
@@ -1204,14 +1175,14 @@ const char	*envv[] ;
 
 /* initialization */
 
-	pip->daytime = time(NULL) ;
+	pip->daytime = time(nullptr) ;
 	pip->euid = geteuid() ;
 	pip->uid = getuid() ;
 
 /* younger file? */
 
 	if ((rs >= 0) && (pip->younger == 0)) {
-	    if (argval != NULL) {
+	    if (argval != nullptr) {
 	        pip->have.younger = TRUE ;
 	        rs = cfdecti(argval,-1,&v) ;
 	        pip->younger = v ;
@@ -1219,7 +1190,7 @@ const char	*envv[] ;
 	}
 
 	if ((rs >= 0) && (pip->younger == 0)) {
-	    if ((yfname != NULL) && (yfname[0] != '\0')) {
+	    if ((yfname != nullptr) && (yfname[0] != '\0')) {
 	        ustat	sb ;
 	        int rs1 = uc_stat(yfname,&sb) ;
 	        if (rs1 >= 0) {
@@ -1277,7 +1248,7 @@ const char	*envv[] ;
 #endif /* CF_DEBUG */
 
 	if (pip->debuglevel > 0) {
-	    const char	*pn = pip->progname ;
+	    cchar	*pn = pip->progname ;
 	    bprintf(pip->efp,"%s: follow=%u\n",pn,pip->f.follow) ;
 	    bprintf(pip->efp,"%s: continue=%u\n",pn,pip->f.nostop) ;
 	    bprintf(pip->efp,"%s: iacc=%u\n",pn,pip->f.iacc) ;
@@ -1285,8 +1256,8 @@ const char	*envv[] ;
 
 /* check a few more things */
 
-	if (pip->tmpdname == NULL) pip->tmpdname = getenv(VARTMPDNAME) ;
-	if (pip->tmpdname == NULL) pip->tmpdname = TMPDNAME ;
+	if (pip->tmpdname == nullptr) pip->tmpdname = getenv(VARTMPDNAME) ;
+	if (pip->tmpdname == nullptr) pip->tmpdname = TMPDNAME ;
 
 	{
 	    int	f = FALSE ;
@@ -1294,16 +1265,16 @@ const char	*envv[] ;
 	    f = f || (pip->progmode == progmode_filelinker) ;
 	    f = f || (pip->progmode == progmode_filesyncer) ;
 	    if (f) {
-	        const char	*fmt ;
+	        cchar	*fmt ;
 
-	        if (pip->tardname == NULL) {
-	            if ((cp = getenv(VARTARDNAME)) != NULL) {
+	        if (pip->tardname == nullptr) {
+	            if ((cp = getenv(VARTARDNAME)) != nullptr) {
 	                pip->have.tardname = TRUE ;
 	                pip->tardname = cp ;
 	            }
 	        }
 
-	        if ((pip->tardname == NULL) || (pip->tardname[0] == '\0')) {
+	        if ((pip->tardname == nullptr) || (pip->tardname[0] == '\0')) {
 	            fmt ="%s: no target directory specified\n" ;
 	            rs = SR_INVALID ;
 	            bprintf(pip->efp,fmt, pip->progname) ;
@@ -1367,7 +1338,7 @@ const char	*envv[] ;
 
 /* start processing */
 
-	if ((ofname == NULL) || (ofname[0] == '\0') || (ofname[0] == '-'))
+	if ((ofname == nullptr) || (ofname[0] == '\0') || (ofname[0] == '-'))
 	    ofname = BFILE_STDOUT ;
 	rs = bopen(ofp,ofname,"wct",0644) ;
 	if (rs < 0) {
@@ -1438,9 +1409,9 @@ retearly:
 	    debugprintf("main: exiting ex=%u (%d)\n",ex,rs) ;
 #endif
 
-	if (pip->efp != NULL) {
+	if (pip->efp != nullptr) {
 	    bclose(pip->efp) ;
-	    pip->efp = NULL ;
+	    pip->efp = nullptr ;
 	}
 
 	if (pip->open.aparams) {
@@ -1472,7 +1443,7 @@ badprogstart:
 /* local subroutines */
 
 
-static int usage(pip)
+local int usage(pip)
 PROFINFO	*pip ;
 {
 	int	rs ;
@@ -1510,7 +1481,7 @@ PROFINFO	*pip ;
 /* end subroutine (usage) */
 
 
-static int procopts(pip)
+local int procopts(pip)
 PROFINFO	*pip ;
 {
 	KEYOPT		*kop = &pip->akopts ;
@@ -1522,11 +1493,11 @@ PROFINFO	*pip ;
 	int	v ;
 	int	c = 0 ;
 
-	const char	*kp, *vp ;
-	const char	*cp ;
+	cchar	*kp, *vp ;
+	cchar	*cp ;
 
 
-	if ((cp = getenv(VAROPTS)) != NULL)
+	if ((cp = getenv(VAROPTS)) != nullptr)
 	    rs = keyopt_loads(kop,cp,-1) ;
 
 	if (rs < 0)
@@ -1540,7 +1511,7 @@ PROFINFO	*pip ;
 
 /* get the first value for this key */
 
-	        vl = keyopt_fetch(kop,kp,NULL,&vp) ;
+	        vl = keyopt_fetch(kop,kp,nullptr,&vp) ;
 
 /* do we support this option? */
 
@@ -1750,7 +1721,7 @@ ret0:
 /* end subroutine (procopts) */
 
 
-static int procfts(pip)
+local int procfts(pip)
 PROFINFO	*pip ;
 {
 	PARAMOPT	*pop = &pip->aparams ;
@@ -1761,11 +1732,11 @@ PROFINFO	*pip ;
 	int	fti ;
 	int	c = 0 ;
 
-	const char	*varftypes = getenv(VARFTYPES) ;
-	const char	*vp ;
+	cchar	*varftypes = getenv(VARFTYPES) ;
+	cchar	*vp ;
 
 
-	if (varftypes != NULL)
+	if (varftypes != nullptr)
 	    rs = paramopt_loads(pop,po_fts,varftypes,-1) ;
 
 	if (rs < 0) goto ret0 ;
@@ -1853,9 +1824,9 @@ ret0:
 /* end subroutine (procfts) */
 
 
-static int procsufhave(pip,sp,sl)
+local int procsufhave(pip,sp,sl)
 PROFINFO	*pip ;
-const char	*sp ;
+cchar	*sp ;
 int		sl ;
 {
 	PARAMOPT	*pop = &pip->aparams ;
@@ -1866,8 +1837,8 @@ int		sl ;
 	int	m ;
 	int	f = FALSE ;
 
-	const char	*key = po_sufreq ;
-	const char	*vp ;
+	cchar	*key = po_sufreq ;
+	cchar	*vp ;
 
 
 	if (sl < 0) sl = strlen(sp) ;
@@ -1893,7 +1864,7 @@ int		sl ;
 /* end subroutine (procsufhave) */
 
 
-static int procsufbegin(pip)
+local int procsufbegin(pip)
 PROFINFO	*pip ;
 {
 	PARAMOPT	*pop = &pip->aparams ;
@@ -1904,7 +1875,7 @@ PROFINFO	*pip ;
 	int	si ;
 	int	c = 0 ;
 
-	const char	*po = NULL ;
+	cchar	*po = nullptr ;
 
 
 	for (si = 0 ; si < suf_overlast ; si += 1) {
@@ -1968,7 +1939,7 @@ PROFINFO	*pip ;
 	                } /* end switch */
 	                if ((rs = paramopt_curbegin(pop,&cur)) >= 0) {
 	                    int	vl ;
-	                    const char	*vp ;
+	                    cchar	*vp ;
 	                    while (rs >= 0) {
 	                        vl = paramopt_curfetch(pop,po,&cur,&vp) ;
 	                        if (vl == SR_NOTFOUND) break ;
@@ -2019,7 +1990,7 @@ ret0:
 /* end subroutine (procsufbegin) */
 
 
-static int procsufend(pip)
+local int procsufend(pip)
 PROFINFO	*pip ;
 {
 	VECPSTR	*slp ;
@@ -2058,10 +2029,10 @@ PROFINFO	*pip ;
 /* end subroutine (procsufend) */
 
 
-static int procloadsuf(pip,si,ap,al)
+local int procloadsuf(pip,si,ap,al)
 PROFINFO	*pip ;
 int		si ;
-const char	*ap ;
+cchar	*ap ;
 int		al ;
 {
 	PARAMOPT	*pop = &pip->aparams ;
@@ -2069,8 +2040,8 @@ int		al ;
 	int	rs = SR_OK ;
 	int	c = 0 ;
 
-	const char	*po ;
-	const char	*var ;
+	cchar	*po ;
+	cchar	*var ;
 
 
 #if	CF_DEBUGS
@@ -2078,7 +2049,7 @@ int		al ;
 	    debugprintf("main/procloadsuf: suf=%s(%u)\n",sufs[si],si) ;
 #endif
 
-	if (ap == NULL) goto ret0 ;
+	if (ap == nullptr) goto ret0 ;
 
 	switch (si) {
 	case suf_req:
@@ -2105,7 +2076,7 @@ int		al ;
 	        ap = getenv(var) ;
 	        al = -1 ;
 	    }
-	    if (ap != NULL) {
+	    if (ap != nullptr) {
 	        rs = paramopt_loads(pop,po,ap,al) ;
 	        c = rs ;
 
@@ -2140,9 +2111,9 @@ ret0:
 /* end subroutine (procloadsuf) */
 
 
-static int procprintfts(pip,po)
+local int procprintfts(pip,po)
 PROFINFO	*pip ;
-const char	*po ;
+cchar	*po ;
 {
 	PARAMOPT	*pop = &pip->aparams ;
 	PARAMOPT_CUR	cur ;
@@ -2152,7 +2123,7 @@ const char	*po ;
 	int	vl ;
 	int	wlen = 0 ;
 
-	const char	*vp ;
+	cchar	*vp ;
 
 
 	if (pip->debuglevel == 0)
@@ -2176,9 +2147,9 @@ ret0:
 /* end subroutine (procprintfts) */
 
 
-static int procprintsufs(pip,po)
+local int procprintsufs(pip,po)
 PROFINFO	*pip ;
-const char	*po ;
+cchar	*po ;
 {
 	PARAMOPT	*pop = &pip->aparams ;
 	PARAMOPT_CUR	cur ;
@@ -2188,7 +2159,7 @@ const char	*po ;
 	int	vl ;
 	int	wlen = 0 ;
 
-	const char	*vp ;
+	cchar	*vp ;
 
 
 	if (pip->debuglevel == 0)
@@ -2212,12 +2183,12 @@ ret0:
 /* end subroutine (procprintsufs) */
 
 
-static int proclinkbegin(PROFINFO *pip)
+local int proclinkbegin(PROFINFO *pip)
 {
 	HDB		*dbp = &pip->links ;
 
-	const int	n = 50 ;
-	const int	at = 1 ;	/* use 'lookaside(3dam)' */
+	cint	n = 50 ;
+	cint	at = 1 ;	/* use 'lookaside(3dam)' */
 
 	int	rs = SR_OK ;
 
@@ -2230,7 +2201,7 @@ static int proclinkbegin(PROFINFO *pip)
 /* end subroutine (proclinkbegin) */
 
 
-static int proclinkend(PROFINFO *pip)
+local int proclinkend(PROFINFO *pip)
 {
 	HDB		*dbp = &pip->links ;
 	HDB_CUR		cur ;
@@ -2253,7 +2224,7 @@ static int proclinkend(PROFINFO *pip)
 	    while (hdb_enum(dbp,&cur,&key,&val) >= 0) {
 	        lip = (LINKINFO *) val.buf ;
 
-	        if (lip != NULL) {
+	        if (lip != nullptr) {
 	            linkinfo_finish(lip) ;
 	            uc_free(lip) ;
 	        }
@@ -2273,9 +2244,9 @@ ret0:
 /* end subroutine (proclinkend) */
 
 
-static int proclinkadd(pip,ino,fp)
+local int proclinkadd(pip,ino,fp)
 PROFINFO	 *pip ;
-const char	 *fp ;
+cchar	 *fp ;
 ino64_t		ino ;
 {
 	HDB		*dbp = &pip->links ;
@@ -2283,7 +2254,7 @@ ino64_t		ino ;
 
 	LINKINFO	*lip ;
 
-	const int	size = sizeof(LINKINFO) ;
+	cint	size = sizeof(LINKINFO) ;
 
 	int	rs ;
 
@@ -2308,7 +2279,7 @@ ino64_t		ino ;
 /* end subroutine (proclinkadd) */
 
 
-static int proclinkhave(PROFINFO *pip,ino64_t ino,LINKINFO **rpp)
+local int proclinkhave(PROFINFO *pip,ino64_t ino,LINKINFO **rpp)
 {
 	HDB		*dbp = &pip->links ;
 	HDB_DATUM	key, val ;
@@ -2318,9 +2289,9 @@ static int proclinkhave(PROFINFO *pip,ino64_t ino,LINKINFO **rpp)
 
 	key.buf = &ino ;
 	key.len = sizeof(ino64_t) ;
-	rs = hdb_fetch(dbp,key,NULL,&val) ;
+	rs = hdb_fetch(dbp,key,nullptr,&val) ;
 
-	if ((rs >= 0) && (rpp != NULL)) {
+	if ((rs >= 0) && (rpp != nullptr)) {
 	    *rpp = (LINKINFO *) val.buf ;
 	}
 
@@ -2329,11 +2300,11 @@ static int proclinkhave(PROFINFO *pip,ino64_t ino,LINKINFO **rpp)
 /* end subroutine (proclinkhave) */
 
 
-static int linkinfo_start(LINKINFO *lip,ino64_t ino,const char *fp)
+local int linkinfo_start(LINKINFO *lip,ino64_t ino,cchar *fp)
 {
 	int	rs ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
 	lip->ino = ino ;
@@ -2345,13 +2316,13 @@ static int linkinfo_start(LINKINFO *lip,ino64_t ino,const char *fp)
 /* end subroutine (linkinfo_start) */
 
 
-static int linkinfo_finish(LINKINFO *lip)
+local int linkinfo_finish(LINKINFO *lip)
 {
 
 
-	if (lip->fname != NULL) {
+	if (lip->fname != nullptr) {
 	    uc_free(lip->fname) ;
-	    lip->fname = NULL ;
+	    lip->fname = nullptr ;
 	}
 
 	return SR_OK ;
@@ -2360,12 +2331,12 @@ static int linkinfo_finish(LINKINFO *lip)
 
 
 /* make *parent* directories as needed */
-static int mkpdirs(const char *tarfname,mode_t dm)
+local int mkpdirs(cchar *tarfname,mode_t dm)
 {
 	int	rs = SR_OK ;
 	int	dl ;
 
-	const char	*dp ;
+	cchar	*dp ;
 
 	dl = sfdirname(tarfname,-1,&dp) ;
 	if (dl > 0) {
@@ -2383,7 +2354,7 @@ static int mkpdirs(const char *tarfname,mode_t dm)
 /* end subroutine (mkpdirs) */
 
 
-static int linkcmp(struct linkinfo *e1p,struct linkinfo *e2p,int len)
+local int linkcmp(struct linkinfo *e1p,struct linkinfo *e2p,int len)
 {
 	int64_t		d = (e1p->ino - e2p->ino) ;
 	int		rc = 0 ;
@@ -2395,9 +2366,7 @@ static int linkcmp(struct linkinfo *e1p,struct linkinfo *e2p,int len)
 }
 /* end subroutine (linkcmp) */
 
-
-static uint linkhash(const void *vp,int vl)
-{
+static uint linkhash(cvoid *vp,int vl) noex {
 	uint		h = 0 ;
 	ushort		*sa = (ushort *) vp ;
 
@@ -2416,18 +2385,15 @@ static uint linkhash(const void *vp,int vl)
 }
 /* end subroutine (linkhash) */
 
-
-static int caller(pip)
-PROFINFO	*pip ;
-{
+local int caller(PI *pip) noex {
 	void		*sop ;
-	const int	dlmode = RTLD_LAZY ;
+	cint	dlmode = RTLD_LAZY ;
 	int		rs = SR_OK ;
 	int		(*symp)(PROFINFO *) ;
-	const char	*shlibfname = "suber.so" ;
-	const char	*funcname = "suber" ;
+	cchar	*shlibfname = "suber.so" ;
+	cchar	*funcname = "suber" ;
 
-	if ((sop = dlopen(shlibfname,dlmode)) != NULL) {
+	if ((sop = dlopen(shlibfname,dlmode)) != nullptr) {
 	    symp = (int (*)(PROFINFO *)) dlsym(sop,funcname) ;
 
 #if	CF_DEBUG
@@ -2435,14 +2401,16 @@ PROFINFO	*pip ;
 	debugprintf("main/caller: symp=%p\n",symp) ;
 #endif
 
-	    if (symp != NULL) {
+	    if (symp != nullptr) {
 		rs = (*symp)(pip) ;
-	    } else
+	    } else {
 		rs = SR_NOENT ;
+	    }
 
 	    dlclose(sop) ;
-	} else
+	} else {
 	    rs = SR_LIBACC ;
+	}
 
 #if	CF_DEBUG
 	if (DEBUGLEVEL(5))
