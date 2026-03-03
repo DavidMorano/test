@@ -1,4 +1,5 @@
-/* testhasallof */
+/* testhasallof SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C89 */
 
 #define	CF_DEBUGS	1
@@ -12,32 +13,31 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG */
 
 #define	VARDEBUGFNAME	"TESTHASALLOF_DEBUGFILE"
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
 
-
-int main(int argc,const char **argv,const char **envv) {
-	const int	hlen = MAXPATHLEN ;
+int main(int argc,mainv argv,mainv envv) {
+	cint		hlen = MAXPATHLEN ;
 	int		rs ;
 	int		f ;
-	const char	*ans[3] = { "NO", "YES" } ;
-	const char	*sp = "this is ( a comment )" ;
+	cchar		*ans[3] = { "NO", "YES" } ;
+	cchar		*sp = "this is ( a comment )" ;
 
 #if	CF_DEBUGS
 	{
-	    const char	*cp ;
-	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
+	    cchar	*cp ;
+	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != nullptr) {
 	        debugopen(cp) ;
+	    }
 	    debugprintf("main: starting\n") ;
 	}
 #endif /* CF_DEBUGS */
