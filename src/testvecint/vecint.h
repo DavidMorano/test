@@ -24,11 +24,10 @@
 #include	<usysbase.h>
 
 
-/* object defines */
-#define	VECINT_MAGIC		0x73625198
 #define	VECINT			struct vecint_head
 #define	VECINT_FL		struct vecint_flags
 #define	VECINT_CUR		struct vecint_cursor
+#define	VECINT_MAGIC		0x73625198
 #define	VECINT_DEFENTS		2
 #define	VECINT_TYPE		int
 #define	VECINT_MIN		INT_MIN
@@ -97,7 +96,7 @@ struct vecint_flags {
 struct vecint_head {
 	VECINT_TYPE	*va ;
 	VECINT_FL	fl ;
-	uint		magic ;
+	uint		magval ;
 	int		c ;		/* count of items in list */
 	int		i ;		/* highest index */
 	int		n ;		/* extent of array */
@@ -200,7 +199,7 @@ struct vecint : vecint_head {
 	    resize	(this,vecintmem_resize) ;
 	    audit	(this,vecintmem_audit) ;
 	    finish	(this,vecintmem_finish) ;
-	    magic = 0 ;
+	    magval = 0 ;
 	} ; /* end ctor */
 	vecint(const vecint &) = delete ;
 	vecint &operator = (const vecint &) = delete ;
@@ -228,7 +227,7 @@ struct vecint : vecint_head {
 	} ;
 	void dtor() noex ;
 	destruct vecint() {
-	    if (magic) dtor() ;
+	    if (magval) dtor() ;
 	} ;
 } ; /* end struct (vecint) */
 #else	/* __cplusplus */
