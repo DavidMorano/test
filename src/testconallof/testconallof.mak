@@ -138,7 +138,7 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-conallof_main.o:	conallof_main.cc $(DEPS_MAIN)		$(INCS)
+testconallof_main.o:	testconallof_main.cc $(DEPS_MAIN)		$(INCS)
 
 conallof.o:		conallof.cc	conallof.h
 
