@@ -2,10 +2,10 @@ Character Rendition on ANSI terminals
 --------------------------------------------------------------------------------
 
 Here is a list of the ANSI standard text attribute escape sequences
-for ANSI compliant terminals. These sequences, also known as **Select
+for ANSI compliant terminals.  These sequences, also known as **Select
 Graphic Rendition (SGR)** parameters, are a fundamental part of the
-**ANSI escape code standard** (ISO/IEC 6429). They control the
-formatting of text on a terminal, such as color and style. The
+**ANSI escape code standard** (ISO/IEC 6429).  They control the
+formatting of text on a terminal, such as color and style.  The
 general format for an SGR escape sequence is `\x1b[...m`, where
 `\x1b` is the ASCII escape character, `[` is the control sequence
 introducer (CSI), `...` represents one or more SGR parameters, and
@@ -17,9 +17,9 @@ introducer (CSI), `...` represents one or more SGR parameters, and
 
 ## Text Attributes
 
-These escape sequences apply a specific text style. Multiple
+These escape sequences apply a specific text style.  Multiple
 attributes can be combined by separating the parameters with a
-semicolon, e.g., `\x1b[1;31m` for bold red text. The **reset**
+semicolon, e.g., `\x1b[1;31m` for bold red text.  The **reset**
 sequence `\x1b[0m` should be used to clear all attributes at the
 end of a formatted string.
 
