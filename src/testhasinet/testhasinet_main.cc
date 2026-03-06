@@ -30,7 +30,22 @@
 /* local defines */
 
 
+/* imported namespaces */
+
+
+/* local typedefs */
+
+extern "C" {
+    typedef bool (*hasinetx_f)(cchar *,int) noex ;
+}
+
+
 /* local structures */
+
+enum result : bool {
+    	resbad,
+    	resgood
+} ;
 
 struct inetent {
     	cchar	*addr ;
@@ -40,29 +55,52 @@ struct inetent {
 
 /* forward references */
 
-local void testsuite(const inetent *) noex ;
+local void testsuite(cc *,hasinetx_f,const inetent *) noex ;
 
 
 /* local variables */
 
 constexpr inetent	inet4s[] = {
-    	{ "127", 		true },
-    	{ "129.0.00.216", 	true },
-    	{ "0.0.00.216", 	true },
-    	{ ".0.00.216", 		false },
-    	{ "0.00.216", 		true },
-    	{ "0.0w.00.216", 	false },
-    	{ "0.0.00.", 		false },
-    	{ nullptr,		false }
+    	{ "127", 		resgood	},
+    	{ ":127", 		resbad	},
+    	{ "129.0.00.216", 	resgood },
+    	{ "0.0.00.216", 	resgood },
+    	{ ".0.00.216", 		resbad	},
+    	{ "0.00.216", 		resgood },
+    	{ "0.0w.00.216", 	resbad	},
+    	{ "0.0.00.", 		resbad	},
+    	{ nullptr,		resbad	}
 } ; /* end array (inet4s) */
 
 constexpr inetent	inet6s[] = {
-    	{ "129.0.00.216", 	true },
-    	{ "0.0.00.216", 	true },
-    	{ ".0.00.216", 		false },
-    	{ "0.00.216", 		true },
-    	{ "0.0w.00.216", 	false },
-    	{ nullptr,		false }
+    	{ "0:1:a:b:c:d:e:f",	resgood },
+    	{ "1:a::b:c::d:f",	resbad	},
+    	{ "1:a::b:c:d:f:7",	resbad	},
+    	{ ":1:a:b:c:d:e:f",	resbad	},
+    	{ "1:a:b:c:d:e:f:",	resbad	},
+    	{ "1:a:b:c",		resbad	},
+    	{ "1:a:b:c:",		resbad	},
+    	{ ":1:a:b:c",		resbad	},
+    	{ ":1:a:b:c:",		resbad	},
+    	{ "1:a:b::c:d:e:f",	resbad	},
+    	{ "a:b::c:d:e:f",	resgood	},
+    	{ "::1",		resgood },
+    	{ "1::",		resgood },
+    	{ "0::1",		resgood },
+    	{ ":",			resbad },
+    	{ "::",			resgood },
+    	{ "::128:127",		resgood },
+    	{ "0:1::",		resgood },
+    	{ "127", 		resbad },
+    	{ ":127", 		resbad },
+#ifdef	COMMENT
+    	{ "129.0.00.216", 	resbad },
+    	{ "0.0.00.216", 	resbad },
+    	{ ".0.00.216", 		resbad },
+    	{ "0.00.216", 		resbad },
+    	{ "0.0w.00.216", 	resbad },
+#endif /* COMMENT */
+    	{ nullptr,		resbad }
 } ; /* end array (inet6s) */
 
 constexpr cpcchar	res[] = {
@@ -78,20 +116,21 @@ constexpr cpcchar	res[] = {
 /* exported subroutines */
 
 int main(int,mainv,mainv) {
-    	testsuite(inet4s) ;
-    	testsuite(inet6s) ;
+    	testsuite("v4",hasinet4addrstr,inet4s) ;
+    	testsuite("v6",hasinet6addrstr,inet6s) ;
 }
 /* end subroutine (main) */
 
 
 /* local subroutines */
 
-local void testsuite(const inetent *suite) noex {
+local void testsuite(cc *af,hasinetx_f hasx,const inetent *suite) noex {
+    	cchar		*fmt = "%s %s %c %s\n" ;
 	bool		fpass{} ;
 	for (const inetent *ep = suite ; ep->addr ; ep += 1) {
-	    cbool f = hasinet4addrstr(ep->addr,-1) ;
+	    cbool f = hasx(ep->addr,-1) ;
 	    fpass = (f == ep->fr) ;
-	    printf("%s %c %s\n",res[fpass],((f) ? 't' : 'f'),ep->addr) ;
+	    printf(fmt,res[fpass],af,((f) ? 't' : 'f'),ep->addr) ;
 	} /* end for */
 } /* end subroutine (testsuite) */
 
