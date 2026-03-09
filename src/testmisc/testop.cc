@@ -69,7 +69,7 @@ struct staticobj {
     ~staticobj() {
         cout << "staticobj:dtor\n" ;
     } ;
-} ;
+} ; /* end struct (staticobj) */
 
 struct thing ;
 
@@ -136,7 +136,7 @@ struct thing {
 	    }
 	    return *this ;
 	} ;
-	~thing() {
+	destruct thing() {
 	    cchar	*fmt = "main: thing:destruct(%u)\n" ;
 	    fprintf(stderr,fmt,id) ;
 	    id = 0 ;
@@ -219,13 +219,13 @@ struct tupler {
 		    c = e ;
 		    break ;
 		} /* end switch */
-	    }
-	} ;
+	    } /* end for */
+	} ; /* end ctor */
 	friend ostream &operator << (ostream &out,const tupler &t) {
 	    cout << "(" << t.a << "," << t.b << "m" << t.c << endl ;
 	    return out ;
 	} ;
-} ;
+} ; /* end struct (tupler) */
 
 
 /* forward references */
