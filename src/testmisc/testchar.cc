@@ -27,6 +27,7 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
+#include	<cstdio>
 #include	<iostream>
 #include	<clanguage.h>
 #include	<usysbase.h>
@@ -43,6 +44,7 @@ int main(int,mainv,mainv) {
 #if	CF_MULTI
 	cint	multi = 'abcd' ;
 #endif
+	printf("%d\n",cha) ;
 	printf("%c\n",char(cha)) ;
 	for (int j = 0 ; j < 10 ; j += 1) {
 	    cint	ch = (cha + j) ;
