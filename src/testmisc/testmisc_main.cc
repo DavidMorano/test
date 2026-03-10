@@ -1,4 +1,4 @@
-/* main SUPPORT (testmisc) */
+/* testmisc_main SUPPORT (testmisc) */
 /* charset=ISO8859-1 */
 /* lang=C++11 */
 
@@ -56,7 +56,8 @@
 #include	<ostream>
 #include	<iostream>
 #include	<iomanip>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<hasduplicate.hh>
 #include	<localmisc.h>
 
@@ -84,7 +85,7 @@ struct testcon {
 	testcon() : a(0) {
 	    fprintf(stderr,"main/testcon: construct a=%d\n",a) ;
 	} ;
-	~testcon() {
+	destruct testcon() {
 	    fprintf(stderr,"main/testcon: destruct\n") ;
 	} ;
 	bool have() ;
@@ -120,7 +121,7 @@ public:
 	    return id ;
 	} ;
 #endif /* CF_OP */
-	~thing() {
+	destruct thing() {
 	    fprintf(stderr,"main/thing: thing:destruct(%u) a1=%d a2=%d\n",
 		id,a1,a2) ;
 	    id = 0 ;
