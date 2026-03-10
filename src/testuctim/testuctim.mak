@@ -164,8 +164,9 @@ isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
 
-dupstr.o:		dupstr.cc	dupstr.h		$(INCS)
 
 uctim.o:		uctim.cc	uctim.h			$(INCS)
+
+progsig.o:		progsig.cc	progsig.h
 
 
