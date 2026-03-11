@@ -1,8 +1,8 @@
-/* testhasprint_main SUPPORT */
+/* testuctim_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the |hasprint{x}(3uc)| subroutines */
+/* test the |uctim(3uc)| subroutines */
 /* version %I% last-modified %G% */
 
 
