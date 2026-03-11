@@ -34,10 +34,7 @@ OBJ2=
 OBJ= $(OBJ0) $(OBJ1) $(OBJ2)
 
 
-
-
-.SUFFIXES:	.t
-
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
