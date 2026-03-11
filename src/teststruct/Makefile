@@ -26,9 +26,10 @@ LIBS= -Bstatic -ldam -lb -luc -lu -Bdynamic
 CRT0=
 
 
-
 OBJ= main.o sub.o
 
+
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 all:		$(ALL)
