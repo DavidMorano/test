@@ -1,4 +1,4 @@
 TESTUCTIME
 
-Test the |uctim(3cu)| related LIBUC subroutines.
+Test the |uctim(3uc)| related LIBUC subroutines.
 
