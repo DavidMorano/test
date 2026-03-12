@@ -1,0 +1,13 @@
+#!/usr/local/bin/ksh
+# SUBBITS
+
+integer i=0 ol=0
+integer n=0
+integer bits=0
+for n in 1 2 3 4 5 6 7 ; do
+  (( i += 7 ))
+  (( ol += 8 ))
+  (( bits = 64 - ol ))
+  print -- n=${n} i=${i} ol=${ol} bits=${bits}
+done
+
