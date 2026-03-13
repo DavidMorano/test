@@ -44,10 +44,10 @@ DEPS_MAIN += base128.o
 
 OBJ0= testbase64_main.o
 OBJ1= base64.o
-OBJ2= 
+OBJ2= obuf.o
 OBJ3= 
 
-OBJ= obj0.o obj1.o
+OBJ= obj0.o obj1.o obj2.o
 
 
 INCDIRS=
@@ -60,7 +60,7 @@ LIBINFO= $(LIBDIRS) $(LIBS)
 # flag setting
 CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
 CFLAGS		?= $(MAKECFLAGS)
-CXXFLAGS	?= $(MAKECXXFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS) -g
 ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
@@ -167,6 +167,10 @@ isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
 
+# OBUF
+obuf.o:			obuf.dir
+obuf.dir:
+	makesubdir $@
 
 base64.o:		base64.cc	base64.h		$(INCS)
 base128.o:		base128.cc	base128.h		$(INCS)
