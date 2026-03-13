@@ -5,6 +5,8 @@
 /* test the |base64(3uc)| subroutines */
 /* version %I% last-modified %G% */
 
+#define	CF_DEBUG	1		/* debugging */
+#define	CF_TEXT		1		/* text */
 
 /* revision history:
 
@@ -24,41 +26,60 @@
 #include	<usysbase.h>
 #include	<usyscalls.h>
 #include	<ulogerror.h>
-#include	<uclibmem.h>
-#include	<ucmem.h>
+#include	<usupport.h>
+#include	<umem.hh>
 #include	<getfdfile.h>		/* |FD_STDIN| */
+#include	<libf.h>		/* |fwrite(3f)| */
 #include	<ascii.h>
 #include	<base64.h>
 #include	<ccfile.hh>
 #include	<obuf.hh>
-#include	<libf.h>		/* |fwrite(3f)| */
+#include	<rmx.h>			/* |rmeol(3uc)| */
+#include	<strnul.hh>
 #include	<mkchar.h>
 #include	<localmisc.h>
 #include	<libdebug.h>		/* LIBDEBUG */
+#include	<dprintf.h>
 
-#include	"hasprint.h"
+#pragma		GCC dependency		"mod/libutil.ccm"
 
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
 #define	MI		maininfo
 
-#define	BASE64LINELEN	76
-#define	BASE64BUFLEN	((BASE64LINELEN / 4) * 3)
+#define	OUTLEN		4
+
+#define	BASE64_LINELEN	76
+#define	BASE64_BUFLEN	((BASE64_LINELEN / 4) * 3)
 
 #undef	BUFLEN
-#define	BUFLEN		(100 * BASE64BUFLEN)
+#define	BUFLEN		(100 * BASE64_BUFLEN)
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* debugging */
+#endif
+#ifndef	CF_TEXT
+#define	CF_TEXT		1		/* text */
+#endif
 
 
 /* imported namespaces */
 
 using std::min ;			/* subroutine-template */
 using std::max ;			/* subroutine-template */
-using libuc::mem ;			/* variable */
+using libu::umem ;			/* variable */
 using std::nothrow ;			/* constant */
 
 
 /* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
 
 
 /* local structures */
@@ -67,21 +88,37 @@ struct maininfo_fl {
     	uint		dummy:1 ;
     	uint		text:1 ;
     	uint		test:1 ;
-} ;
+} ; /* end struct (maininfo_fl) */
 
 struct maininfo {
     	maininfo_fl	fl{} ;
+	char		*inbuf{} ;
 	char		*fbuf{} ;
+	char		*stagebuf{} ;
+	int		inlen ;
 	int		flen ;
+	int		stagelen = 0 ;
+	int		stagel = 0 ;
 	int start() noex ;
 	int finish() noex ;
-	int encode(cchar *) noex ;
+	int enc(cchar *) noex ;
+	int enc_choose(cchar *) noex ;
+	int enc_flush() noex ;
+	int enc_text(cchar *) noex ;
+	int enc_textload(obuf *,cchar *) noex ;
+	int enc_textflush(obuf *) noex ;
+	int enc_binary(cchar *) noex ;
 	int procln(obuf *,cchar *,int) noex ;
+	int procdata(obuf *,cchar *,int) noex ;
+	int procstage(obuf *,cchar *,int) noex ;
+	int procgroup(obuf *,cchar *,int) noex ;
+	int procout(obuf *) noex ;
+	int procouter(obuf *) noex ;
 	int putout(obuf *bp,int ch) noex ;
 	int putflush(obuf *bp) noex ;
 	void dtor() noex ;
 	destruct maininfo() noex {
-	    if (fbuf) dtor() ;
+	    if (stagebuf || fbuf || inbuf) dtor() ;
 	} /* end dtor */
 } ; /* end struct (maininfo) */
 
@@ -92,6 +129,9 @@ local int outbase64(MI *,cchar *,int) noex ;
 
 
 /* local variables */
+
+cbool		f_debug = CF_DEBUG ;
+cbool		f_text	= CF_TEXT ;
 
 
 /* exported variables */
@@ -107,7 +147,8 @@ int main(int argc,mainv argv,mainv) {
 	    if (maininfo mi ; (rs = mi.start()) >= 0) {
 	        for (int ai = 1 ; ai < argc ; ai += 1) {
 		    if (cchar *arg = argv[ai] ; arg && arg[0]) {
-		        rs = mi.encode(arg) ;
+			DPRINTF("arg=%s\n",arg) ;
+		        rs = mi.enc(arg) ;
 		    } /* end if (argument) */
 		    if (rs < 0) break ;
 	        } /* end for */
@@ -128,10 +169,19 @@ int main(int argc,mainv argv,mainv) {
 int maininfo::start() noex {
     	cnullptr	np{} ;
     	int		rs = SR_NOMEM ;
-	flen = BUFLEN ;
-	if ((fbuf = new(nothrow) char [flen + 1]) != np) {
-	    rs = SR_OK ;
-	}
+	fl.text = f_text ;
+	stagelen = BASE64_STAGELEN ;
+	if ((stagebuf = new(nothrow) char [stagelen + 1]) != np) {
+	    flen = BUFLEN ;
+	    if ((fbuf = new(nothrow) char [flen + 1]) != np) {
+	        rs = SR_OK ;
+	    } /* end if (new-char) */
+	    if (rs < 0) {
+		delete [] stagebuf ;
+		stagebuf = nullptr ;
+		stagelen = 0 ;
+	    }
+	} /* end if (new-char) */
 	return rs ;
 } /* end method (maininfo::start) */
 
@@ -142,6 +192,11 @@ int maininfo::finish() noex {
 	    fbuf = nullptr ;
 	    flen = 0 ;
 	}
+	if (stagebuf) {
+	    delete stagebuf ;
+	    stagebuf = nullptr ;
+	    stagelen = 0 ;
+	}
 	return rs ;
 } /* end method (maininfo::finish) */
 
@@ -151,81 +206,272 @@ void maininfo::dtor() noex {
 	}
 } /* end method (maininfo::dtor) */
 
-int maininfo::encode(cchar *fn) noex {
-        cint		inlen = (BUFLEN + 4) ;
-	int		rs = SR_FAULT ;
+int maininfo::enc(cchar *fn) noex {
+	int		rs ;
 	int		rs1 ;
 	int		olen = 0 ; /* return-value */
-	if (char *inbuf ; (rs = mem.vall((inlen + 1),&inbuf)) >= 0) {
-            if (fl.text) {
-		obuf ob ;
-                if (ccfile in ; (rs = in.open(fn,"r")) >= 0) {
-		    while ((rs = in.readln(inbuf,inlen)) > 0) {
-			rs = procln(&ob,inbuf,rs) ;
-                        olen += rs ;
-			if (rs < 0) break ;
-		    } /* end while */
-                    rs1 = in.close ;
-                    if (rs >= 0) rs = rs1 ;
-                } /* end if (opnened input file) */
-            } else {
-                int         ifd = FD_STDIN ;
-                if (fn[0] != '-') {
-                    rs = u_open(fn,O_RDONLY,0666) ;
-                    ifd = rs ;
-                }
-                if (rs >= 0) {
-                    while ((rs = u_read(ifd,inbuf,inlen)) > 0) {
-                        rs = outbase64(this,inbuf,rs) ;
-                        olen += rs ;
-                        if (rs < 0) break ;
-                    } /* end while */
-                    rs1 = u_close(ifd) ;
-                    if (rs >= 0) rs = rs1 ;
-                } /* end if (ok) */
-            } /* end if (straight or text-mode) */
-            rs1 = mem.free(inbuf) ;
+        inlen = (BUFLEN + 4) ;
+	if ((rs = umem.vall((inlen + 1),&inbuf)) >= 0) {
+	    if ((rs = enc_choose(fn)) >= 0) {
+		olen += rs ;
+	    } /* end if */
+            rs1 = umem.free(inbuf) ;
             if (rs >= 0) rs = rs1 ;
+	    inbuf = nullptr ;
+	    inlen = 0 ;
         } /* end if (m-a-f) */
 	return (rs >= 0) ? olen : rs ;
-}
-/* end method (maininfo::encode) */
+} /* end method (maininfo::enc) */
 
-int maininfo::procln(obuf *bp,cchar *lp,int ll) noex {
+int maininfo::enc_choose(cchar *fn) noex {
     	int		rs = SR_OK ;
+	int		olen = 0 ;
+            if (fl.text) {
+		rs = enc_text(fn) ;
+		olen = rs ;
+            } else {
+		rs = enc_binary(fn) ;
+		olen = rs ;
+	    } /* end if (text or binary) */
+	return (rs >= 0) ? olen : rs ;
+} /* end method (maininfo::enc_choose) */
+
+int maininfo::enc_text(cchar *fn) noex {
+    	int		rs ;
+	int		rs1 ;
 	int		olen = 0 ; /* return-value */
-	for (int ch, i = 0 ; (i < ll) && ((ch = mkchar(lp[i])) > 0) ; i += 1) {
-	    if (ch == CH_NL) {
-		if ((rs = putout(bp,CH_CR)) >= 0) {
-		    olen += rs ;
-		    rs = putout(bp,ch) ;
+	if (obuf ob ; (rs = ob.start) >= 0) {
+	    if ((rs = enc_textload(&ob,fn)) >= 0) {
+		olen += rs ;
+		rs = enc_textflush(&ob) ;
+		olen += rs ;
+	    }
+	    rs1 = ob.finish ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (obuf) */
+	return (rs >= 0) ? olen : rs ;
+} /* end method (maininfo::enc_text) */
+
+int maininfo::enc_textload(obuf *obp,cchar *fn) noex {
+    	int		rs = SR_OK ;
+	int		rs1 ;
+	int		olen = 0 ;
+	DPRINTF("ent\n") ;
+        if (ccfile in ; (rs = in.open(fn,"r")) >= 0) {
+	    while ((rs = in.readln(inbuf,inlen)) > 0) {
+		if_constexpr (f_debug) {
+		    cint rl = rmeol(inbuf,rs) ;
+		    {
+		    strnul ps(inbuf,rl) ;
+	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
+		    }
+		}
+		if ((rs = procln(obp,inbuf,rs)) >= 0) {
+		    rs = procout(obp) ;
                     olen += rs ;
 		}
-            } else {
-		rs = putout(bp,ch) ;
-                olen += rs ;
-	    } /* end if */
-            if (rs < 0) break ;
-	} /* end for */
+		if (rs < 0) break ;
+	    } /* end while */
+            rs1 = in.close ;
+            if (rs >= 0) rs = rs1 ;
+        } /* end if (opnened input file) */
+	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
 	return (rs >= 0) ? olen : rs ;
+} /* end method (maininfo::enc_textload) */
+
+int maininfo::enc_textflush(obuf *obp) noex {
+    	int		rs = SR_NOMEM ;
+	int		olen = 0 ;
+	DPRINTF("ent\n") ;
+	if (obp) {
+	    if ((rs = procout(obp)) >= 0) {
+	        olen = rs ;
+	        rs = procouter(obp) ;
+	        olen = rs ;
+	    }
+	}
+	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
+	return (rs >= 0) ? olen : rs ;
+} /* end method (maininfo::enc_textflush) */
+
+int maininfo::enc_binary(cchar *fn) noex {
+    	int		rs = SR_OK ;
+	int		rs1 ;
+	int		olen = 0 ; /* return-value */
+	int         ifd = FD_STDIN ;
+	DPRINTF("ent ifd=%d fn=%s\n",ifd,fn) ;
+	if (fn[0] != '-') {
+	    rs = u_open(fn,O_RDONLY,0666) ;
+	    ifd = rs ;
+	} /* end if (std-input) */
+	if (rs >= 0) {
+	    while ((rs = u_read(ifd,inbuf,inlen)) > 0) {
+		if_constexpr (f_debug) {
+		    cint rl = rmeol(inbuf,rs) ;
+		    {
+		    strnul ps(inbuf,rl) ;
+	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
+		    }
+		}
+		rs = outbase64(this,inbuf,rs) ;
+		olen += rs ;
+		if (rs < 0) break ;
+	    } /* end while */
+            rs1 = u_close(ifd) ;
+            if (rs >= 0) rs = rs1 ;
+	} /* end if (ok) */
+	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
+	return (rs >= 0) ? olen : rs ;
+} /* end method (maininfo::enc_binary) */
+
+local bool hasneedcr(cchar *lp,int ll) noex {
+    	bool	f = false ;
+	if (ll > 0) {
+	    if ((f = (lp[ll - 1] == CH_NL))) {
+		if ((ll > 1) && (lp[ll - 2] == CH_CR)) {
+		    f = false ;
+		}
+	    }
+	}
+	return f ;
+} /* end subroutine (hasneedcr) */
+
+int maininfo::procln(obuf *obp,cchar *lp,int ll) noex {
+    	int		rs = SR_OK ;
+	int		c = 0 ; /* return-value */
+	DPRINTF("ent ll=%d\n",ll) ;
+	if (ll > 0) {
+	    if (hasneedcr(lp,ll)) {
+		if ((rs = procdata(obp,lp,(ll - 1))) >= 0) {
+		    char buf[2] = { char(CH_CR) } ;
+		    c += rs ;
+		    rs = procdata(obp,buf,1) ;
+		    c += rs ;
+		}
+	    } else {
+		rs = procdata(obp,lp,ll) ;
+		c += rs ;
+	    }
+	} /* end if (non-zero positive) */
+	DPRINTF("ret rs=%d c=%d\n",rs,c) ;
+	return (rs >= 0) ? c : rs ;
 } /* end method (maininfo::procln) */
+
+int maininfo::procdata(obuf *obp,cchar *lp,int ll) noex {
+    	int		rs = SR_OK ;
+	int		c = 0 ; /* return-value */
+	if ((stagel > 0) && (stagel < stagelen)) {
+	    if ((rs = procstage(obp,lp,ll)) > 0) {
+		lp += rs ;
+		ll -= rs ;
+		c += rs ;
+	    }
+	} /* end if (partial stage fill) */
+	if ((rs >= 0) && (ll > 0)) {
+	    while (ll >= stagelen) {
+		rs = procgroup(obp,lp,ll) ;
+		lp += stagelen ;
+		ll -= stagelen ;
+		c += stagelen ;
+		if (rs < 0) break ;
+	    } /* end while */
+	    if ((rs >= 0) && (ll > 0)) {
+		if ((rs = procstage(obp,lp,ll)) > 0) {
+		    lp += rs ;
+		    ll -= rs ;
+		    c += rs ;
+		}
+	    } /* end if (remainder) */
+	} /* end if (popping line data) */
+	return (rs >= 0) ? c : rs ;
+} /* end method (maininfo::procdata) */
+
+int maininfo::procstage(obuf *obp,cchar *lp,int ll) noex {
+    	int		rs = SR_OK ;
+	int		ml = 0 ;
+	if (stagel < stagelen) {
+	    if ((ml = min((stagelen - stagel),ll)) > 0) {
+	        memcopy((stagebuf + stagel),lp,ml) ;
+		stagel += ml ;
+		if (stagel == stagelen) {
+		    rs = procgroup(obp,stagebuf,stagel) ;
+		    stagel = 0 ;
+		}
+	    }
+	} /* end if (sgage open for storage) */
+	return (rs >= 0) ? ml : rs ;
+} /* end method (maininfo::procstage) */
+
+int maininfo::procgroup(obuf *obp,cchar *sp,int sl) noex {
+    	int		rs = SR_BUGCHECK ;
+	if (sl >= stagelen) {
+	    char	outbuf[OUTLEN+1] ;
+	    rs = SR_OK ;
+	    if (cint len = base64_e(sp,stagelen,outbuf) ; len > 0) {
+	        rs = obp->add(outbuf,len) ;
+	    }
+	} /* end if (ok) */
+	return rs ;
+} /* end method (maininfo::procgroup) */
+
+int maininfo::procout(obuf *obp) noex {
+    	cint		linelen = BASE64_LINELEN ;
+    	int		rs ;
+	int		olen = 0 ;
+	DPRINTF("ent\n") ;
+	while ((rs = obp->len) >= linelen) {
+	    DPRINTF("len=%d\n",rs) ;
+	    rs = procouter(obp) ;
+	    olen += rs ;
+	    if (rs < 0) break ;
+	} /* end while (sufficient data to write out) */
+	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
+	return (rs >= 0) ? olen : rs ;
+
+} /* end method (maininfo::procout) */
+
+int maininfo::procouter(obuf *obp) noex {
+    	cint		linelen = BASE64_LINELEN ;
+    	int		rs ;
+	int		olen = 0 ;
+	DPRINTF("ent\n") ;
+	if ((rs = obp->len) > 0) {
+	    cint readlen = min(flen,linelen) ;
+	    DPRINTF("len=%d readlen=%d\n",rs,readlen) ;
+	    if ((rs = obp->read(fbuf,readlen)) > 0) {
+	        DPRINTF("read rs=%d\n",rs) ;
+	        cint len = rs ;
+	        if ((rs = obp->adv(rs)) >= 0) {
+		    if ((rs = fwriter(stdout,fbuf,len)) >= 0) {
+		        olen += rs ;
+		        rs = fputch(stdout,CH_NL) ;
+		        olen += rs ;
+		    }
+	        } /* end if (adv) */
+	    } /* end if */
+	} /* end if (sufficient data to write out) */
+	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
+	return (rs >= 0) ? olen : rs ;
+
+} /* end method (maininfo::procouter) */
 
 int maininfo::putflush(obuf *bp) noex {
     	int		rs = SR_NOMEM ;
 	int		olen = 0 ; /* return-value */
+	DPRINTF("ent\n") ;
 	if (fbuf) {
 	    int	 c = 0 ;
-	    cint mlen = min(BASE64LINELEN,flen) ;
+	    cint mlen = min(BASE64_LINELEN,flen) ;
 	    while ((rs = bp->read(fbuf,mlen)) > 0) {
-		c += rs ;
-	        rs = outbase64(this,fbuf,rs) ;
-		olen += rs ;
+		if ((rs = bp->adv(rs)) >= 0) {
+		    c += rs ;
+	            rs = outbase64(this,fbuf,rs) ;
+		    olen += rs ;
+		}
 		if (rs < 0) break ;
 	    } /* end while */
-	    if ((rs >= 0) && (c > 0)) {
-		rs = bp->adv(c) ;
-	    }
 	} /* end if (non-null) */
+	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
 	return (rs >= 0) ? olen : rs ;
 } /* end method (maininfo::putflush) */
 
@@ -244,12 +490,12 @@ int maininfo::putout(obuf *bp,int ch) noex {
 
 /* write out in BASE64! */
 local int outbase64(MI *pip,cchar *sbuf,int slen) noex {
-    	FILE		*fp = stderr ;
+    	FILE		*fp = stdout ;
 	int		rs = SR_OK ;
 	int		wlen = 0 ; /* return-value */
-	char		linebuf[BASE64LINELEN + 4] ;
+	char		linebuf[BASE64_LINELEN + 4] ;
 	for (int rlen = slen, i = 0 ; (rs >= 0) && (rlen > 0) ; ) {
-	    cint	mlen = MIN(BASE64BUFLEN,rlen) ;
+	    cint	mlen = MIN(BASE64_BUFLEN,rlen) ;
 	    if (cint len = base64_e(sbuf + i,mlen,linebuf) ; len > 0) {
 	        if (pip->fl.test) {
 	            rs = 0 ;
@@ -258,7 +504,7 @@ local int outbase64(MI *pip,cchar *sbuf,int slen) noex {
 	                int	ol = 0 ;
 	                for (int m, j = 0 ; (rs >= 0) && (j < len) ; ) {
 	                    m = MIN(c,(len - j)) ;
-	                    rs = fwrite(fp,(linebuf + j),m) ;
+	                    rs = fwriter(fp,(linebuf + j),m) ;
 	                    ol += rs ;
 	                    j += m ;
 	                    c += 1 ;
@@ -269,7 +515,7 @@ local int outbase64(MI *pip,cchar *sbuf,int slen) noex {
 	            } /* end if */
 	            wlen += rs ;
 	        } else {
-	            rs = fwrite(fp,linebuf,len) ;
+	            rs = fwriter(fp,linebuf,len) ;
 	            wlen += rs ;
 	        }
 	        if (rs >= 0) {
@@ -280,7 +526,7 @@ local int outbase64(MI *pip,cchar *sbuf,int slen) noex {
 	    rlen -= mlen ;
 	    i += mlen ;
 	    if (rs < 0) break ;
-	} /* end while */
+	} /* end for */
 	return (rs >= 0) ? wlen : rs ;
 }
 /* end subroutine (outbase64) */
