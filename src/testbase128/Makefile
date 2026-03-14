@@ -37,17 +37,17 @@ INCS +=
 
 MODS +=
 
-LIBS += -luo -lu
+LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += base128.o
+DEPS_MAIN += base128.o bufos.o
 
 OBJ0= testbase128_main.o
 OBJ1= base128.o
-OBJ2= 
+OBJ2= bufos.o
 OBJ3= 
 
-OBJ= obj0.o obj1.o
+OBJ= obj0.o obj1.o obj2.o
 
 
 INCDIRS=
@@ -167,10 +167,15 @@ isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
 
+# BUFOS
+bufos.o:		bufos.dir
+bufos.dir:
+	makesubdir $@
+
 
 base64.o:		base64.cc	base64.h		$(INCS)
 base128.o:		base128.cc	base128.h		$(INCS)
 
-nzeros.o:		nzeros.ccm	nzeros.h
+nzeros.o:		nzeros.ccm
 
 
