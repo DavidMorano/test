@@ -166,8 +166,8 @@ langx.o:		langx.dir
 langx.dir:
 	makesubdir $@
 
-obuf.o:			obuf.dir
-obuf.dir:
+bufos.o:		bufos.dir
+bufos.dir:
 	makesubdir $@
 
 langparse.o:		langparse.cc	langparse.h	$(INCS)
