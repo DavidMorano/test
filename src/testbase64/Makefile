@@ -44,7 +44,7 @@ DEPS_MAIN += base128.o
 
 OBJ0= testbase64_main.o
 OBJ1= base64.o
-OBJ2= obuf.o
+OBJ2= bufos.o
 OBJ3= 
 
 OBJ= obj0.o obj1.o obj2.o
@@ -168,13 +168,13 @@ isx.dir:
 	makesubdir $@
 
 # OBUF
-obuf.o:			obuf.dir
-obuf.dir:
+bufos.o:		bufos.dir
+bufos.dir:
 	makesubdir $@
 
 base64.o:		base64.cc	base64.h		$(INCS)
 base128.o:		base128.cc	base128.h		$(INCS)
 
-nzeros.o:		nzeros.ccm	nzeros.h
+nzeros.o:		nzeros.ccm
 
 
