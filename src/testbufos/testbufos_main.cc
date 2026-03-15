@@ -94,6 +94,7 @@ struct maininfo {
 	int		flen ;
 	int		stagelen = 0 ;
 	int		stagel = 0 ;
+	int		mql = 0 ;
     	maininfo_fl	fl{} ;
 	int start() noex ;
 	int finish() noex ;
@@ -245,7 +246,7 @@ int maininfo::enc_text(cchar *fn) noex {
 	    rs1 = ob.finish ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (bufos) */
-	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
+	DPRINTF("ret rs=%d olen=%d mql=%d\n",rs,olen,mql) ;
 	return (rs >= 0) ? olen : rs ;
 } /* end method (maininfo::enc_text) */
 
@@ -255,14 +256,16 @@ int maininfo::enc_textload(bufos *obp,cchar *fn) noex {
 	int		olen = 0 ;
 	DPRINTF("ent\n") ;
         if (ccfile in ; (rs = in.open(fn,"r")) >= 0) {
+	    DPRINTF("ccfile_open rs=%d\n"¸rs) ;
 	    while ((rs = in.readln(inbuf,inlen)) > 0) {
 		cint len = rs ;
-	        DPRINTF("read rs=%d\n",rs) ;
+	        DPRINTF("ccfile_read rs=%d\n",rs) ;
 		if_constexpr (f_debug) {
 		    cint rl = rmeol(inbuf,rs) ;
 		    {
-		    strnul ps(inbuf,rl) ;
-	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
+			cint sll = strlinelen(inbuf,rl) ;
+		        strnul ps(inbuf,ssl) ;
+	                DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
 		    }
 		}
 		if ((rs = procln(obp,inbuf,len)) >= 0) {
@@ -272,6 +275,7 @@ int maininfo::enc_textload(bufos *obp,cchar *fn) noex {
 		(void) len ;
 		if (rs < 0) break ;
 	    } /* end while */
+	    DPRINTF("while rs=%d\n",rs) ;
             rs1 = in.close ;
             if (rs >= 0) rs = rs1 ;
         } /* end if (opnened input file) */
@@ -389,25 +393,24 @@ int maininfo::procouter(bufos *obp) noex {
     	int		rs ;
 	int		olen = 0 ;
 	DPRINTF("ent\n") ;
-	if ((rs = obp->len) > 0) {
-	    cint readlen = min(flen,linelen) ;
-	    DPRINTF("len=%d readlen=%d\n",rs,readlen) ;
-	    if ((rs = obp->read(fbuf,readlen)) > 0) {
-	        DPRINTF("read rs=%d\n",rs) ;
-	        cint len = rs ;
-	        if ((rs = obp->adv(rs)) >= 0) {
-	            DPRINTF("adv rs=%d\n",rs) ;
-		    if ((rs = fwriter(ofp,fbuf,len)) >= 0) {
-	                DPRINTF("fwriter rs=%d\n",rs) ;
-		        olen += rs ;
-#ifdef	COMMENT
-		        rs = fputch(ofp,CH_NL) ;
-		        olen += rs ;
-#endif
-		    }
-	        } /* end if (adv) */
-	    } /* end if */
-	} /* end if (sufficient data to write out) */
+	if ((rs = obp->extent) >= 0) {
+	    mql = max(mql,rs) ;
+	    if ((rs = obp->len) > 0) {
+	        cint readlen = min(flen,linelen) ;
+	        DPRINTF("len=%d readlen=%d\n",rs,readlen) ;
+	        if ((rs = obp->read(fbuf,readlen)) > 0) {
+	            DPRINTF("read rs=%d\n",rs) ;
+	            cint len = rs ;
+	            if ((rs = obp->adv(rs)) >= 0) {
+	                DPRINTF("adv rs=%d\n",rs) ;
+		        if ((rs = fwriter(ofp,fbuf,len)) >= 0) {
+	                    DPRINTF("fwriter rs=%d\n",rs) ;
+		            olen += rs ;
+		        }
+	            } /* end if (adv) */
+	        } /* end if */
+	    } /* end if (sufficient data to write out) */
+	} /* end if (extent) */
 	DPRINTF("ret rs=%d olen=%d\n",rs,olen) ;
 	return (rs >= 0) ? olen : rs ;
 
