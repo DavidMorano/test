@@ -365,12 +365,20 @@ int maininfo::procgroup(shortq *obp,cchar *sp,int sl) noex {
     	int		rs = SR_OK ;
 	int		c = 0 ;
 	if (sl > 0 ) {
+	    {
+		cint el = rmeol(sp,sl) ;
+		{
+		strnul ps(sp,el) ;
+	        DPRINTF("ent sl=%d s=>%s<\n",sl,ccp(ps)) ;
+		}
+	    }
 	    for (int i = 0 ; (rs >= 0) && (i < sl) ; i += 1) {
-		short wch = shortconv(sp[i] & UCHAR_MAX) ;
-	        rs = obp->ins(wch) ;
+		short sch = shortconv(sp[i] & UCHAR_MAX) ;
+	        rs = obp->ins(sch) ;
 		c += 1 ;
 	    } /* end for */
 	} /* end if (ok) */
+	DPRINTF("ret rs=%d c=%d\n",rs,c) ;
 	return (rs >= 0) ? c : rs ;
 } /* end method (maininfo::procgroup) */
 
@@ -396,10 +404,11 @@ int maininfo::procouter(shortq *obp) noex {
 	int		olen = 0 ;
 	DPRINTF("ent\n") ;
 	if ((rs = obp->len) > 0) {
+	    DPRINTF("len rs=%d\n",rs) ;
 	    rs = SR_NOMEM ;
 	    if (short *sbuf = new(nt) short [flen + 1] ; sbuf) {
 	        cint readlen = min(flen,linelen) ;
-	        DPRINTF("len=%d readlen=%d\n",rs,readlen) ;
+	        DPRINTF("readlen=%d\n",readlen) ;
 	        if ((rs = obp->read(sbuf,readlen)) > 0) {
 	            DPRINTF("read rs=%d\n",rs) ;
 	            cint len = rs ;
