@@ -167,7 +167,7 @@ isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
 
-# OBUF
+# BUFOS
 bufos.o:		bufos.dir
 bufos.dir:
 	makesubdir $@
