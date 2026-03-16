@@ -44,10 +44,10 @@ DEPS_MAIN += bufos.o
 
 OBJ0= testbufos_main.o
 OBJ1= bufos.o
-OBJ2= 
+OBJ2= strx.o ccfile.o
 OBJ3= 
 
-OBJ= obj0.o obj1.o
+OBJ= obj0.o obj1.o obj2.o
 
 
 INCDIRS=
@@ -167,14 +167,20 @@ isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
 
-# OBUF
+# BUFOS
 bufos.o:		bufos.dir
 bufos.dir:
+	makesubdir $@
+
+# STRX
+strx.o:			strx.dir
+strx.dir:
 	makesubdir $@
 
 base64.o:		base64.cc	base64.h		$(INCS)
 base128.o:		base128.cc	base128.h		$(INCS)
 
 nzeros.o:		nzeros.ccm	nzeros.h
+ccfile.o:		ccfile.cc	ccfile.hh
 
 
