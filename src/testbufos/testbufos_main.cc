@@ -256,7 +256,7 @@ int maininfo::enc_textload(bufos *obp,cchar *fn) noex {
 	int		olen = 0 ;
 	DPRINTF("ent\n") ;
         if (ccfile in ; (rs = in.open(fn,"r")) >= 0) {
-	    DPRINTF("ccfile_open rs=%d\n"¸rs) ;
+	    DPRINTF("ccfile_open rs=%d\n",rs) ;
 	    while ((rs = in.readln(inbuf,inlen)) > 0) {
 		cint len = rs ;
 	        DPRINTF("ccfile_read rs=%d\n",rs) ;
@@ -264,7 +264,7 @@ int maininfo::enc_textload(bufos *obp,cchar *fn) noex {
 		    cint rl = rmeol(inbuf,rs) ;
 		    {
 			cint sll = strlinelen(inbuf,rl) ;
-		        strnul ps(inbuf,ssl) ;
+		        strnul ps(inbuf,sll) ;
 	                DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
 		    }
 		}
