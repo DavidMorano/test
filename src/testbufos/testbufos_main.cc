@@ -310,6 +310,7 @@ int maininfo::enc_binary(cchar *fn) noex {
 	} /* end if (std-input) */
 	if (rs >= 0) {
 	    while ((rs = u_read(ifd,inbuf,inlen)) > 0) {
+		cint len = rs ;
 		if_constexpr (f_debug) {
 		    cint rl = rmeol(inbuf,rs) ;
 		    {
@@ -317,7 +318,7 @@ int maininfo::enc_binary(cchar *fn) noex {
 	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
 		    }
 		}
-		rs = fwriter(ofp,inbuf,rs) ;
+		rs = fwriter(ofp,inbuf,len) ;
 		olen += rs ;
 		if (rs < 0) break ;
 	    } /* end while */
