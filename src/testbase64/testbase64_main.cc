@@ -5,8 +5,7 @@
 /* test the |base64(3uc)| subroutines */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUG	1		/* debugging */
-#define	CF_TEXT		1		/* text */
+#define	CF_DEBUG	0		/* debugging */
 
 /* revision history:
 
@@ -30,6 +29,7 @@
 #include	<cstddef>
 #include	<cstdlib>
 #include	<cstdio>
+#include	<cstring>		/* |strcmp(3c)| */
 #include	<new>			/* |nothrow(3c++)| */
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>
@@ -69,9 +69,6 @@ import libutil ;			/* |lenstr(3u)| */
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	1		/* debugging */
-#endif
-#ifndef	CF_TEXT
-#define	CF_TEXT		1		/* text */
 #endif
 
 
@@ -144,7 +141,6 @@ local int outbase64(MI *,cchar *,int) noex ;
 /* local variables */
 
 cbool		f_debug = CF_DEBUG ;
-cbool		f_text	= CF_TEXT ;
 
 
 /* exported variables */
@@ -160,8 +156,12 @@ int main(int argc,mainv argv,mainv) {
 	    if (maininfo mi ; (rs = mi.start()) >= 0) {
 	        for (int ai = 1 ; ai < argc ; ai += 1) {
 		    if (cchar *arg = argv[ai] ; arg && arg[0]) {
-			DPRINTF("arg=%s\n",arg) ;
-		        rs = mi.enc(arg) ;
+			if (strcmp(arg,"text") == 0) {
+			    mi.fl.text = true ;
+			} else {
+			    DPRINTF("arg=%s\n",arg) ;
+		            rs = mi.enc(arg) ;
+			}
 		    } /* end if (argument) */
 		    if (rs < 0) break ;
 	        } /* end for */
@@ -182,7 +182,6 @@ int main(int argc,mainv argv,mainv) {
 int maininfo::start() noex {
     	cnullptr	np{} ;
     	int		rs = SR_NOMEM ;
-	fl.text = f_text ;
 	stagelen = BASE64_STAGELEN ;
 	if ((stagebuf = new(nothrow) char [stagelen + 1]) != np) {
 	    flen = BUFLEN ;
@@ -272,6 +271,7 @@ int maininfo::enc_textload(bufos *obp,cchar *fn) noex {
 	DPRINTF("ent\n") ;
         if (ccfile in ; (rs = in.open(fn,"r")) >= 0) {
 	    while ((rs = in.readln(inbuf,inlen)) > 0) {
+		cint len = rs ;
 		if_constexpr (f_debug) {
 		    cint rl = rmeol(inbuf,rs) ;
 		    {
@@ -279,7 +279,7 @@ int maininfo::enc_textload(bufos *obp,cchar *fn) noex {
 	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
 		    }
 		}
-		if ((rs = procln(obp,inbuf,rs)) >= 0) {
+		if ((rs = procln(obp,inbuf,len)) >= 0) {
 		    rs = procout(obp) ;
                     olen += rs ;
 		}
@@ -321,6 +321,7 @@ int maininfo::enc_binary(cchar *fn) noex {
 	} /* end if (std-input) */
 	if (rs >= 0) {
 	    while ((rs = u_read(ifd,inbuf,inlen)) > 0) {
+		cint len = rs ;
 		if_constexpr (f_debug) {
 		    cint rl = rmeol(inbuf,rs) ;
 		    {
@@ -328,7 +329,7 @@ int maininfo::enc_binary(cchar *fn) noex {
 	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
 		    }
 		}
-		rs = outbase64(this,inbuf,rs) ;
+		rs = outbase64(this,inbuf,len) ;
 		olen += rs ;
 		if (rs < 0) break ;
 	    } /* end while */
