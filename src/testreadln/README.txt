@@ -1,4 +1,4 @@
 TESTREADLN
 
-Test the |readln(3uc)| subroutine.
+This program tests the |readln(3uc)| subroutine.
 
