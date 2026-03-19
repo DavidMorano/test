@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the language itself */
+/* test the |readln(3uc) subroutine */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
@@ -16,9 +16,17 @@
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
+/*******************************************************************************
+
+	Name:
+	readreadln
+
+	Description:
+	Test the |readln(3uc)| subroutine.
+
+*******************************************************************************/
+
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |atoi(3c)| */
 #include	<cstdio>
@@ -26,16 +34,14 @@
 #include	<string_view>
 #include	<iostream>
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysrets.h>
+#include	<usysbase.h>
 #include	<usyscalls.h>
 #include	<getfdfile.h>		/* |FD_STDERR| */
 #include	<readln.hh>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| */
 
-#pragma		GCC dependency	"mod/debug.ccm"
+#pragma		GCC dependency		"mod/debug.ccm"
 
 import debug ;
 
@@ -107,7 +113,9 @@ int main(int argc,mainv,mainv) {
 		delete [] lbuf ;
 	    } /* end if (m-a-f) */
 	} /* end if */
-	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
+	if ((ex == EX_OK) && (rs < 0)) {
+	    ex = EX_DATAERR ;
+	}
 	return ex ;
 }
 /* end subroutine (main) */
