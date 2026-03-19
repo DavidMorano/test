@@ -15,7 +15,6 @@ CRTDIR		?= $(CGS_CRTDIR)
 VALDIR		?= $(CGS_VALDIR)
 RUNDIR		?= $(CGS_RUNDIR)
 
-
 CPP		?= cpp
 CC		?= gcc
 CXX		?= gpp
@@ -34,7 +33,7 @@ LINT		?= lint
 
 DEFS +=
 
-INCS +=
+INCS += readln.hh
 
 MODS +=
 
@@ -42,11 +41,11 @@ LIBS += -luo -lu
 
 
 OBJ0= testreadln_main.o
-OBJ1= 
+OBJ1= readln.o
 OBJ2= 
 OBJ3= 
 
-OBJA= obj0.o 
+OBJA= obj0.o obj1.o
 
 OBJ= $(OBJA)
 
@@ -54,7 +53,6 @@ OBJ= $(OBJA)
 INCDIRS=
 
 LIBDIRS= -L$(LIBDIR)
-
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -129,6 +127,10 @@ obj3.o:			$(OBJ3)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-testreadln_main.o:		testreadln_main.cc 		$(INCS)
+testreadln_main.o:	testreadln_main.cc 		$(INCS)
+
+readln.o:		readln.cc	readln.hh
+v0readln.o:		v0readln.cc	v0readln.hh
+v1readln.o:		v1readln.cc	v1readln.hh
 
 
