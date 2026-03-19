@@ -1,0 +1,449 @@
+/* u_reade SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
+
+/* interface component for UNIX® library-3c */
+/* extended read */
+
+#define	CF_DEBUG	0		/* debugging */
+#define	CF_NONBLOCK	1		/* use nonblocking mode */
+
+/* revision history:
+
+	= 1998-03-26, David A­D­ Morano
+	This was first written to give a little bit to UNIX® what
+	we have in our own circuit pack OSes!
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+
+/*******************************************************************************
+
+	Names:
+	u_reade
+
+	Description:
+	Get some amount of data and time it also so that we can
+	abort if it times out.
+
+	Synopsis:
+	int u_reade(int fd,void *rbuf,int rlen,int to,int opts) noex
+
+	Arguments:
+	fd		file descriptor
+	rbuf		user buffer to receive daa
+	rlen		maximum amount of data the user wants
+	to		time in seconds to wait
+	opts		user options for time-out handling
+
+	Returns:
+	>=0		amount of data returned
+	<0		error code (system-return)
+
+	= The question:
+
+	What do we want to return on a timeout?  This is the big
+	unanswered question of the ages?  Do we want to treat the
+	input FD like a STREAM or a SOCKET (returning SR_AGAIN) or
+	do we want to treat it like a FIFO or TERMINAL (returning
+	SR_OK == 0)?  We will let this be determined by the caller
+	by setting (or not setting) 'FM_AGAIN' in the options!
+
+	If the caller sets 'FM_AGAIN' in the options, we return
+	SR_AGAIN if there is no data (it timed out).  If the caller
+	sets 'FM_TIMED', then we return SR_TIMEDOUT if it times
+	out.  Finally, if the caller does not set that, we will
+	return the amount of data received at the time of the timeout
+	(which can inlucde the value ZERO).
+
+	An explicit read of 0 bytes (EOF) always return 0 (EOF).
+	If FM_EXACT was specified and the requested number of bytes
+	has not yet arrived an EOF will be ignored and an attempt
+	will be made to read more data in.  Also if FM_EXACT is
+	specified and the required number of bytes has not arrived
+	(but some have), we continue reading until the required
+	number of bytes arrives of if a time-out occurs.
+
+	Read sematics are as follow:
+
+	1. The default semantic (neither "FM_AGAIN" nor "FM_TIMED"):
+
+	+ If a non-negative timeout value is given and the timeout
+	occurs when no data has arrived, then we return ZERO.
+
+	+ If a non-negative timeout value is given and the timeout
+	occurs when some data has arrived, then we return the amount
+	of data received.
+
+	2. The "FM_AGAIN" semantic:
+
+	+ If a non-negative timeout value is given and the timeout
+	occurs when no data has arrived, then we return SR_AGAIN.
+
+	+ If a non-negative timeout value is given and the timeout
+	occurs when some data has arrived, then we return the amount
+	of data received.
+
+	3. The "FM_TIMED" semantic:
+
+	+ If a non-negative timeout value is given and the timeout
+	occurs when no data has arrived, then we return SR_TIMEDOUT.
+
+	+ If a non-negative timeout value is given and the timeout
+	occurs when some data has arrived, then we return the amount
+	of data received.
+
+	= Some notes:
+
+	Watch out for receiving hang-ups!  This can happen when the
+	file-descriptor used for these reads is also used for some
+	writes elsewhere.  How should we handle a hang-up? That is
+	a good question.  Since input is not supposed to be affected
+	by a hang-up, we just continue on a hang-up unless there
+	was data read.  If we get a hang-up and no data was read,
+	then it is an EOF condition and we will return as if we
+	received an EOF (like we assume that we must have).
+
+	= The observation:
+
+	Is it poossible to receive an EOF condition on the input
+	*without* receiving a POLLIN?  Amazingly, the answer is
+	YES!  If a hang-up is present on the input, then a hang-up
+	condition will be received (POLLHUP) *rather* than a usual
+	EOF condition.  Amazing as it is, this is possible. In my
+	opinion, this should not be possible (an EOF should always
+	create a POLLIN) but believe it or not that is not what
+	happens in real life.
+
+*******************************************************************************/
+
+#include	<envstandards.h>	/* MUST be first to configure */
+#include	<climits>		/* |INT_MAX| */
+#include	<cstddef>
+#include	<cstdlib>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
+#include	<ucfuncodes.h>
+#include	<localmisc.h>
+
+#include	"ureade.h"
+
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |memclear(3u)| */
+
+/* local defines */
+
+#ifndef	POLL_INTMULT
+#define	POLL_INTMULT	1000		/* poll-time multiplier */
+#endif
+
+#ifndef	POLLTIMEINT
+#define	POLLTIMEINT	10		/* seconds */
+#endif
+
+#define	EBUFLEN		100
+
+#define	MAXEOF		3
+
+#define	POLLEVENTS	(POLLIN | POLLPRI)
+
+#define	SI		subinfo
+
+
+/* imported namespaces */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+extern "C" {
+    extern int u_nonblock(int,int) noex ;
+}
+
+
+/* external variables */
+
+
+/* local structures */
+
+namespace {
+   struct subinfo_fl {
+	uint		again:1 ;
+	uint		timed:1 ;
+	uint		exact:1 ;
+	uint		timeint:1 ;
+	uint		nonblock:1 ;
+	uint		isfifo:1 ;
+	uint		ischar:1 ;
+	uint		isdir:1 ;
+	uint		isblock:1 ;
+	uint		isreg:1 ;
+	uint		issocket:1 ;
+	uint		isother:1 ;
+	uint		isnonblock:1 ; /* was non-blocking */
+    } ; /* end struct (subinfo_flags) */
+    struct subinfo {
+	char		*ubuf ;
+	char		*bp ;
+	subinfo_fl	fl ;
+	int		fd ;
+	int		ulen ;
+	int		uto ;
+	int		tlen ;
+	int		to ;		/* down-counter */
+	int		opts ;
+	int		neof ;
+	int		maxeof ;
+	subinfo() noex {
+	    fl = {} ;
+	    ubuf = nullptr ;
+	    bp = nullptr ;
+	    ulen = 0 ;
+	} ;
+	int start	(int,char *,int,int,int) noex ;
+	int finish	() noex ;
+	int choose	() noex ;
+	int setmode	(mode_t) noex ;
+	int readreg	() noex ;
+	int readslow	() noex ;
+	int readpoll	() noex ;
+    } ; /* end struct (subinfo) */
+} /* end nameapace */
+
+
+/* forward references */
+
+#if	CF_DEBUGS
+static char	*d_reventstr() noex ;
+#endif
+
+
+/* local variables */
+
+cbool		f_debug		= CF_DEBUG ;
+cbool		f_nonblock	= CF_NONBLOCK ;
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int u_reade(int fd,void *vbuf,int ulen,int to,int opts) noex {
+	int		rs = SR_FAULT ;
+	int		tlen = 0 ; /* return-value */
+	if (to < 0) to = INT_MAX ;
+	if (vbuf) ylikely {
+	    rs = SR_BADF ;
+	    if (fd >= 0) ylikely {
+	        char	*ubuf = charp(vbuf) ;
+	        if (SI si ; (rs = si.start(fd,ubuf,ulen,to,opts)) >= 0) {
+		    {
+		        rs = si.choose() ;
+		    }
+	            tlen = si.finish() ;
+	            if (rs >= 0) rs = tlen ;
+	        } /* end if (subinfo) */
+	    } /* end if (valid) */
+	} /* end if (non-null) */
+	return (rs >= 0) ? tlen : rs ;
+}
+/* end subroutine (u_reade) */
+
+
+/* local subroutines */
+
+int subinfo::start(int ªfd,char *ªubuf,int ªulen,int ªto,int ªro) noex {
+	int		rs ;
+	int		rs1 ;
+	{
+	    fd		= ªfd ;
+	    ubuf	= ªubuf ;
+	    bp		= ªubuf ;
+	    ulen	= ªulen ;
+	    uto		= ªto ;
+	    to		= ªto ;
+	    opts	= ªro ;
+	}
+	{
+	    fl.again	= !!(ªro & FM_AGAIN) ;
+	    fl.timed	= !!(ªro & FM_TIMED) ;
+	    fl.timeint	= !!(ªro & FM_TIMEINT) ;
+	    fl.exact	= !!(ªro & FM_EXACT) ;
+	}
+	if (ustat sb ; (rs = u_fstat(fd,&sb)) >= 0) ylikely {
+	    if ((rs = setmode(sb.st_mode)) >= 0) {
+		if (fl.isother) {
+		    /* yes! some files do *not* support non-blocking mode */
+		    if_constexpr (f_nonblock) {
+	                if (! fl.isreg) {
+	                    fl.nonblock = true ;
+	                    rs1 = u_nonblock(fd,true) ;
+	                    fl.isnonblock = (rs1 > 0) ;
+	                    if (rs1 == SR_NOSYS) {
+	                        fl.isnonblock = true ;
+	                    } else {
+	                        rs = rs1 ;
+	                    }
+			} /* end if (isreg) */
+	    	    } /* end if_constexpr (f_nonblock) */
+	       } /* end if (other file type) */
+	   } /* end if (subinfo_setmode) */
+	} /* end if (stat) */
+	return rs ;
+} /* end subroutine (subinfo::start) */
+
+int subinfo::finish() noex {
+	int		rs = SR_OK ;
+	if_constexpr (f_nonblock) {
+	    if (fl.nonblock) {
+	        rs = u_nonblock(fd,false) ;
+	    }
+	} /* end if_constexpr (f_debug) */
+	if ((rs >= 0) && (tlen == 0) && (to == 0) && (ulen > 0)) {
+	    bool f = false ;
+	    if (fl.issocket) {
+	        f = (neof < maxeof) ;
+	    } else {
+	        f = (neof == 0) ;
+	    }
+	    if (f) {
+	        if (opts & FM_AGAIN) {
+	            rs = SR_AGAIN ;
+	        } else if (opts & FM_TIMED) {
+	            rs = SR_TIMEDOUT ;
+	        }
+	    }
+	} /* end if (had a timeout) */
+	return (rs >= 0) ? tlen : rs ;
+} /* end subroutine (subinfo::finish) */
+
+int subinfo::choose() noex {
+    	int		rs = SR_OK ;
+	            bool f = false ;
+	            f = f || fl.isdir || fl.isblock ;
+	            f = f || fl.isreg || fl.isnonblock ;
+	            if (f) {
+	                rs = readreg() ;
+	            } else {
+	                rs = readslow() ;
+	            } /* end if */
+	return rs ;
+} /* end method (subinfo::choose) */
+
+int subinfo::setmode(mode_t fm) noex {
+	if (S_ISFIFO(fm)) {
+	    fl.isfifo = true ;
+	} else if (S_ISCHR(fm)) {
+	    fl.ischar = true ;
+	} else if (S_ISDIR(fm)) {
+	    fl.isdir = true ;
+	} else if (S_ISBLK(fm)) {
+	    fl.isblock = true ;
+	} else if (S_ISREG(fm)) {
+	    fl.isreg = true ;
+	} else if (S_ISSOCK(fm)) {
+	    fl.issocket = true ;
+	} else {
+	    fl.isother = true ;
+	}
+	return SR_OK ;
+} /* end subroutine (subinfo::setmode) */
+
+int subinfo::readreg() noex {
+	int		rs ;
+	int		wlen = 0 ; /* return-value */
+	maxeof = 0 ;
+	if ((rs = u_read(fd,ubuf,ulen)) >= 0) ylikely {
+	    wlen = rs ;
+	    if (tlen > 0) {
+	        tlen += wlen ;
+	        neof = 0 ;
+	    } else {
+	        neof += 1 ;
+	    }
+	} /* end if (u_read) */
+	return (rs >= 0) ? wlen : rs ;
+} /* end subroutine (subinfo::readreg) */
+
+int subinfo::readslow() noex {
+	int		rs = SR_OK ;
+	int		events = POLLEVENTS ;
+	maxeof = MAXEOF ;
+#if	defined(POLLRDNORM)
+	events |= POLLRDNORM ;
+#endif
+#if	defined(POLLRDBAND)
+	events |= POLLRDBAND ;
+#endif
+	/* initialization for 'u_poll(2u)' */
+	POLLFD		fds[2]  = {} ; {
+	    fds[0].fd = fd ;
+	    fds[0].events = short(events) ;
+	    fds[1].fd = -1 ;
+	}
+	/* go */
+	while ((rs >= 0) && ((ulen - tlen) > 0)) {
+	    int	f_break = false ;
+	    if ((rs = u_poll(fds,1,POLL_INTMULT)) > 0) {
+	        cint	re = fds[0].revents ;
+	        if ((re & POLLIN) || (re & POLLPRI)) {
+	            rs = readpoll() ;
+	            f_break = (rs > 0) ;
+	        } else if (re & POLLNVAL) {
+	            rs = SR_NOTOPEN ;
+	        } else if (re & POLLERR) {
+	            rs = SR_POLLERR ;
+	        } else if (re & POLLHUP) {
+	            if (tlen == 0) break ;
+	            msleep(1) ;
+	        }
+	    } else if (rs == SR_INTR) {
+	        rs = SR_OK ;
+	    } else if (rs == 0) { /* u_poll() returned w/ nothing */
+	        if (to > 0) {
+	            to -= 1 ;
+	        } else {
+	            f_break = true ;
+	        }
+	    } /* end if (otherwise it must be an error) */
+	    if (fl.isnonblock) break ;
+	    if (f_break) break ;
+	} /* end while (looping on poll) */
+	return rs ;
+} /* end subroutine (subinfo::readslow) */
+
+int subinfo::readpoll() noex {
+	int		rs ;
+	int		rlen = (ulen - tlen) ;
+	int		f_break = false ;
+	if ((rs = u_read(fd,bp,rlen)) >= 0) {
+	    cint len = rs ;
+	    if (len == 0) {
+	        neof += 1 ;
+	        if ((! fl.issocket) || (neof >= maxeof)) {
+	            f_break = true ;
+	        }
+	    } else {
+	        neof = 0 ;		/* reset */
+	    }
+	    tlen += len ;
+	    bp += len ;
+	    if ((! f_break) && (len > 0) && (! fl.exact)) {
+	        f_break = true ;
+	    }
+	    if ((! f_break) && (len > 0) && fl.timeint) {
+	        to = uto ;	/* reset */
+	    }
+	} else if (rs == SR_AGAIN) {
+	    if (! fl.isnonblock) rs = SR_OK ;
+	}
+	return (rs >= 0) ? f_break : rs ;
+} /* end subroutine (subinfo::readpoll) */
+
+
