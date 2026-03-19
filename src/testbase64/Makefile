@@ -43,11 +43,14 @@ LIBS += -lf -luo -lu
 DEPS_MAIN += base64.o
 
 OBJ0= testbase64_main.o
-OBJ1= base64.o
+OBJ1= base64.o ccfile.o readln.o
 OBJ2= bufos.o
 OBJ3= strlinelen.o
 
-OBJ= obj0.o obj1.o obj2.o
+OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJB= 
+
+OBJ= obja.o
 
 
 INCDIRS=
@@ -175,6 +178,8 @@ bufos.dir:
 base64.o:		base64.cc	base64.h		$(INCS)
 base128.o:		base128.cc	base128.h		$(INCS)
 
+ccfile.o:		ccfile.cc	ccfile.hh
+readln.o:		readln.cc	readln.hh
 nzeros.o:		nzeros.ccm
 strlinelen.o:		strlinelen.cc	strlinelen.h
 
