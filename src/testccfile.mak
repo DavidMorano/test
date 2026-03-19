@@ -37,17 +37,24 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -lf -lu
 
 
 DEPS_MAIN += bufos.o
 
 OBJ0= testccfile_main.o
-OBJ1= ccfile.o readln.o
-OBJ2= ustream.o
-OBJ3= 
+OBJ1= rmx.o isx.o char.o
+OBJ2= strn.o sfx.o six.o
+OBJ3= inetconv.o
+OBJ4= strx.o strw.o matxstr.o
+OBJ5= nleadx.o
+OBJ6= strnxcmp.o strxcmp.o dictdiff.o
+OBJ7= ucinetconv.o ccfile.o readln.o
 
-OBJ= obj0.o obj1.o obj2.o
+OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJB= obj4.o obj5.o obj6.o obj7.o
+
+OBJ= obja.o objb.o
 
 
 INCDIRS=
@@ -157,9 +164,24 @@ ustream.o:		ustream.dir
 ustream.dir:
 	makesubdir $@
 
+# STRN
+strn.o:			strn.dir
+strn.dir:
+	makesubdir $@
+
+# SFX
+sfx.o:			sfx.dir
+sfx.dir:
+	makesubdir $@
+
 # SIX
 six.o:			six.dir
 six.dir:
+	makesubdir $@
+
+# RMX
+rmx.o:			rmx.dir
+rmx.dir:
 	makesubdir $@
 
 # HASX
@@ -182,11 +204,41 @@ strx.o:			strx.dir
 strx.dir:
 	makesubdir $@
 
-base64.o:		base64.cc	base64.h		$(INCS)
-base128.o:		base128.cc	base128.h		$(INCS)
+# STRW
+strw.o:			strw.dir
+strw.dir:
+	makesubdir $@
+
+# NLEADX
+nleadx.o:		nleadx.dir
+nleadx.dir:
+	makesubdir $@
+
+# MATXSTR
+matxstr.o:		matxstr.dir
+matxstr.dir:
+	makesubdir $@
+
+# STRNXCMP
+strnxcmp.o:		strnxcmp.dir
+strnxcmp.dir:
+	makesubdir $@
+
+# STRXCMP
+strxcmp.o:		strxcmp.dir
+strxcmp.dir:
+	makesubdir $@
+
+char.o:			char.cc		char.h
+inetconv.o:		inetconv.cc	inetconv.h
+base64.o:		base64.cc	base64.h
+base128.o:		base128.cc	base128.h
+dictdiff.o:		dictdiff.cc	dictdiff.h
 
 nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
+
+ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
 
