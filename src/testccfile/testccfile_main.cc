@@ -47,7 +47,7 @@
 #include	<mkchar.h>
 #include	<localmisc.h>
 #include	<libf.h>		/* LIBF */
-#include	<dprintf.h>
+#include	<dprintf.h>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
@@ -88,6 +88,7 @@ struct maininfo_fl {
     	uint		test:1 ;
     	uint		text:1 ;
     	uint		stream:1 ;
+	uint		ccfile:1 ;
 } ; /* end struct (maininfo_fl) */
 
 struct maininfo {
@@ -105,6 +106,7 @@ struct maininfo {
 	int proc_textcc(cchar *) noex ;
 	int proc_bin(cchar *) noex ;
 	int proc_binstream(cchar *) noex ;
+	int proc_bincc(cchar *) noex ;
 	int proc_binraw(cchar *) noex ;
 	void dtor() noex ;
 	destruct maininfo() noex {
@@ -114,6 +116,8 @@ struct maininfo {
 
 
 /* forward references */
+
+local int	dprintline(cchar *,int) noex ;
 
 
 /* local variables */
@@ -139,6 +143,8 @@ int main(int argc,mainv argv,mainv) {
 			    mi.fl.text = true ;
 			} else if (strcmp(arg,"stream") == 0) {
 			    mi.fl.stream = true ;
+			} else if (strcmp(arg,"ccfile") == 0) {
+			    mi.fl.ccfile = true ;
 			} else {
 		            rs = mi.proc(arg) ;
 			}
@@ -235,18 +241,14 @@ int maininfo::proc_textcc(cchar *fn) noex {
 	int		rs1 ;
 	int		idx = 0 ;
 	int		wlen = 0 ; /* return-value */
-	DPRINTF("ent\n") ;
+	DPRINTF("ent fn=%s\n",fn) ;
 	    if (ccfile inf ; (rs = inf.open(fn,"r")) >= 0) {
 	        DPRINTF("open rs=%d\n",rs) ;
 	        while ((rs = inf.readln(inbuf,inlen)) > 0) {
 		    cint len = rs ;
-		if_constexpr (f_debug) {
-		    cint rl = rmeol(inbuf,len) ;
-		    {
-		    strnul ps(inbuf,rl) ;
-	            DPRINTF("readln rs=%d inbuf=>%s<\n",len,ccp(ps)) ;
+		    if_constexpr (f_debug) {
+		        dprintline(inbuf,len) ;
 		    }
-		}
 		    rs = fwriter(ofp,inbuf,len) ;
 		    wlen += rs ;
 	            DPRINTF("fwriter rs=%d\n",rs) ;
@@ -268,6 +270,9 @@ int maininfo::proc_bin(cchar *fn) noex {
 	if (fl.stream) {
 	    rs = proc_binstream(fn) ;
 	    wlen += rs ;
+	} else if (fl.ccfile) {
+	    rs = proc_bincc(fn) ;
+	    wlen += rs ;
 	} else {
 	    rs = proc_binraw(fn) ;
 	    wlen += rs ;
@@ -282,6 +287,24 @@ int maininfo::proc_binstream(cchar *fn) noex {
 	return (rs >= 0) ? wlen : rs ;
 } /* end method (maininfo::proc_bintream) */
 
+int maininfo::proc_bincc(cchar *fn) noex {
+    	int		rs = SR_OK ;
+	int		rs1 ;
+	int		wlen = 0 ;
+	DPRINTF("ent fn=%s\n",fn) ;
+	if (ccfile inf ; (rs = inf.open(fn,"r")) >= 0) {
+	    while ((rs = inf.readln(inbuf,inlen)) > 0) {
+		rs = fwriter(ofp,inbuf,rs) ;
+		wlen += rs ;
+		if (rs < 0) break ;
+	    } /* end while (reading) */
+	    rs1 = inf.close ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (ccfile) */
+	DPRINTF("ret rs=%d olen=%d\n",rs,wlen) ;
+	return (rs >= 0) ? wlen : rs ;
+} /* end method (maininfo::proc_bincc) */
+
 int maininfo::proc_binraw(cchar *fn) noex {
     	int		rs = SR_OK ;
 	int		rs1 ;
@@ -295,13 +318,11 @@ int maininfo::proc_binraw(cchar *fn) noex {
 	if (rs >= 0) {
 	    while ((rs = u_read(ifd,inbuf,inlen)) > 0) {
 		cint len = rs ;
+	DPRINTF("u_read rs=%d\n",rs) ;
 		if_constexpr (f_debug) {
-		    cint rl = rmeol(inbuf,len) ;
-		    {
-		    strnul ps(inbuf,rl) ;
-	            DPRINTF("inbuf=>%s<\n",ccp(ps)) ;
-		    }
+		    dprintline(inbuf,len) ;
 		}
+	DPRINTF("-> fwriter len=%d\n",len) ;
 		rs = fwriter(ofp,inbuf,len) ;
 		wlen += rs ;
 		if (rs < 0) break ;
@@ -313,4 +334,17 @@ int maininfo::proc_binraw(cchar *fn) noex {
 	return (rs >= 0) ? wlen : rs ;
 } /* end method (maininfo::proc_binraw) */
 
+local int dprintline(cc *inbuf,int len) noex {
+	cint rl = rmeol(inbuf,len) ;
+	int	retlen = 0 ;
+	{
+	    cint pl = strlinelen(inbuf,rl) ;
+	    {
+		strnul ps(inbuf,pl) ;
+		retlen = pl ;
+		DPRINTF("line len=%d inbuf=>%s<\n",len,ccp(ps)) ;
+	    }
+	}
+	return retlen ;
+} /* end subroutine (dprintline) */
 
