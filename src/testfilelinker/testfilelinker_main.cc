@@ -24,7 +24,7 @@
 #include	<usyscalls.h>		/* |u_mkdirs(3u)| */
 #include	<filelinker.hh>
 #include	<localmisc.h>
-#include	<dprintf.h>		/* debugging */
+#include	<dprintf.hh>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
