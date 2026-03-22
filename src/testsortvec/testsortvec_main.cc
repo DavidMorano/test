@@ -1,10 +1,9 @@
-/* main SUPPORT (testsort) */
+/* testsort_vec_main SUPPORT (testsort) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
 /* sorted list testing */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	1
 
@@ -19,13 +18,6 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<dirent.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<ctime>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
@@ -55,7 +47,7 @@ extern char	*malloc_str(char *) ;
 
 /* forward references */
 
-static int	slcmp() ;
+local int	slcmp(cchar **,cchar **) noex ;
 
 
 /* exported variables */
@@ -247,15 +239,8 @@ badopen:
 }
 /* end subroutine (main) */
 
-
-
-static int slcmp(app,bpp)
-char	**app, **bpp ;
-{
-
-
+local int slcmp(cchar **app,cchar **bpp) noex {
 	return strcmp(*app,*bpp) ;
 }
-
 
 
