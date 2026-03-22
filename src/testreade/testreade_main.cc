@@ -57,7 +57,7 @@
 
 #define	READ_CNT	10
 
-#define	TO_READ		5
+#define	TO_READ		10
 
 
 /* local namespaces */
@@ -82,6 +82,8 @@
 
 static FILE	*ofp = stdout ;
 
+cint		linebuflen = LINEBUFLEN ;
+
 cbool		f_debug = CF_DEBUG ;
 
 
@@ -92,13 +94,13 @@ cbool		f_debug = CF_DEBUG ;
 
 int main(int,mainv,mainv) {
 	cint		fd_in = FD_STDIN ;
-    	cint		llen = LINEBUFLEN ;
+    	cint		llen = linebuflen ;
 	cint		to = TO_READ ;
 	cint		opts = FM_TIMED ;
 	cint		mcnt = READ_CNT ;
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
-	char		lbuf[LINEBUFLEN + 1] = {} ;
+	char		lbuf[linebuflen + 1] = {} ;
 	DPRINTF("ent\n") ;
 	for (int cnt = 0 ; (rs >= 0) && (cnt < mcnt) ; cnt += 1) {
 	    lbuf[0] = '\0' ;
