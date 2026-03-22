@@ -62,7 +62,6 @@ constexpr cpcchar	kstrs[] = {
 	"_=/bin/cat",
 	"PATH=/bin",
 	"CDPATH=/home/dam/src",
-	"LIBDIR=/home/dam/lib",
 	"BINDIR=/home/dam/bin",
 	nullptr
 } ; /* end array (kstrs) */
@@ -121,10 +120,16 @@ int main(int,mainv,mainv) {
 	        printout("vstrsort() rev",datarr) ;
 	    }
 	    {
-		qsort_f fn = qsort_f(vstrkeycmp) ;
+		qsort_f fn = qsort_f(vstrkeycmpo) ;
 	        strload(datarr,kstrs) ;
 		qsort(datarr,dlen,sizeof(char *),fn) ;
 	        printout("qsort() obv",datarr) ;
+	    }
+	    {
+		qsort_f fn = qsort_f(vstrkeycmpr) ;
+	        strload(datarr,kstrs) ;
+		qsort(datarr,dlen,sizeof(char *),fn) ;
+	        printout("qsort() rev",datarr) ;
 	    }
 	    {
 	        strload(datarr,kstrs) ;
