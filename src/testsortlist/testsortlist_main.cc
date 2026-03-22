@@ -1,4 +1,4 @@
-/* main SUPPORT (testsortlist) */
+/* testsortlist_main SUPPORT (testsortlist) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -17,13 +17,6 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<dirent.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<ctime>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>
@@ -56,7 +49,7 @@ extern char	*malloc_str(char *) ;
 
 /* forward references */
 
-static int	slcmp() ;
+local int	slcmp(cchar **,cchar **) noex ;
 
 
 /* exported variables */
@@ -132,65 +125,36 @@ int main(int argc,mainv argv,mainv) {
 	    vechand_add(&list2,ep) ;
 
 	} /* end while (reading lines) */
-
 	vechand_sort(&list2,slcmp) ;
-
 
 #if	CF_DEBUGS
 	debugprintf("main: compare phase\n") ;
 #endif
-
 	bprintf(ofp,"comparing phase\n\n") ;
-
-
 	for (i = 0 ; sortlist_get(&list1,i,&lp) >= 0 ; i += 1) {
-
 	    if (lp == NULL) continue ;
-
 	    write(3,lp,strlen(lp)) ;
-
 	    write(3,"\n",1) ;
-
 	}
-
-
 	for (i = 0 ; vechand_get(&list2,i,&lp) >= 0 ; i += 1) {
-
 	    if (lp == NULL) continue ;
-
 	    write(4,lp,strlen(lp)) ;
-
 	    write(4,"\n",1) ;
-
 	}
-
-
-
-
 	for (i = 0 ; vechand_get(&list2,i,&lp) >= 0 ; i += 1) {
-
 	    if (lp == NULL) continue ;
-
 #if	CF_DEBUGS
 	    debugprintf("main: i=%d ep2=%s\n",i,lp) ;
 #endif
-
 	    if (sortlist_get(&list1,i,&ep) < 0) goto badcheck ;
-
 	    if (ep == NULL) goto badcheck2 ;
-
 #if	CF_DEBUGS
 	    debugprintf("main: ep1=%s\n",ep) ;
 #endif
-
 	    if (strcmp(lp,ep) != 0) goto badcheck3 ;
-
 	} /* end for */
-
 	bprintf(ofp,"\n") ;
-
 	rs = 0 ;
-
 
 done:
 	sortlist_free(&list1) ;
@@ -227,13 +191,7 @@ badopen:
 }
 /* end subroutine (main) */
 
-
-
-static int slcmp(app,bpp)
-char	**app, **bpp ;
-{
-
-
+local int slcmp(cchar **app,cchar **bpp) noex {
 	return strcmp(*app,*bpp) ;
 }
 
