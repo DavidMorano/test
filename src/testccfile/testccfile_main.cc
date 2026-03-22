@@ -38,16 +38,18 @@
 #include	<ulogerror.h>
 #include	<usupport.h>
 #include	<umem.hh>
+#include	<ustream.hh>
 #include	<getfdfile.h>		/* |FD_STDIN| */
 #include	<ascii.h>
 #include	<ccfile.hh>
 #include	<bufos.hh>
 #include	<rmx.h>			/* |rmeol(3uc)| */
 #include	<strnul.hh>
+#include	<strlinelen.h>
 #include	<mkchar.h>
 #include	<localmisc.h>
 #include	<libf.h>		/* LIBF */
-#include	<dprintf.h>		/* debugging */
+#include	<dprintf.hh>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
@@ -231,8 +233,20 @@ int maininfo::proc_text(cchar *fn) noex {
 
 int maininfo::proc_textstream(cchar *fn) noex {
 	int		rs = SR_OK ;
+	int		rs1 ;
 	int		wlen = 0 ; /* return-value */
-	(void) fn ;
+	if (ustream sf ; (rs = sf.open(fn)) >= 0) {
+	    while ((rs = sf.readln(inbuf,inlen)) > 0) {
+		cint len = rs ;
+		{
+		    rs = fwriter(ofp,inbuf,len) ;
+		    wlen += rs ;
+		}
+		if (rs < 0) break ;
+	    } /* end while */
+	    rs1 = sf.close ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (ustream) */
 	return (rs >= 0) ? wlen : rs ;
 } /* end method (maininfo::proc_textistream) */
 
@@ -282,8 +296,20 @@ int maininfo::proc_bin(cchar *fn) noex {
 
 int maininfo::proc_binstream(cchar *fn) noex {
     	int		rs = SR_OK ;
+	int		rs1 ;
 	int		wlen = 0 ;
-	(void) fn ;
+	if (ustream sf ; (rs = sf.open(fn)) >= 0) {
+	    while ((rs = sf.read(inbuf,inlen)) > 0) {
+		cint len = rs ;
+		{
+		    rs = fwriter(ofp,inbuf,len) ;
+		    wlen += rs ;
+		}
+		if (rs < 0) break ;
+	    } /* end while */
+	    rs1 = sf.close ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (ustream) */
 	return (rs >= 0) ? wlen : rs ;
 } /* end method (maininfo::proc_bintream) */
 
@@ -292,7 +318,7 @@ int maininfo::proc_bincc(cchar *fn) noex {
 	int		rs1 ;
 	int		wlen = 0 ;
 	DPRINTF("ent fn=%s\n",fn) ;
-	if (ccfile inf ; (rs = inf.open(fn,"r")) >= 0) {
+	if (ccfile inf ; (rs = inf.open(fn,"rb")) >= 0) {
 	    while ((rs = inf.readln(inbuf,inlen)) > 0) {
 		rs = fwriter(ofp,inbuf,rs) ;
 		wlen += rs ;
