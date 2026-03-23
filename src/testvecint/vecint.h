@@ -57,13 +57,13 @@ enum vecintos {
 #ifdef	__cplusplus	/* C++ only! */
 
 struct vecintms {
-    constexpr static int	reuse		= (1 << vecinto_reuse) ;
-    constexpr static int	compact		= (1 << vecinto_compact) ;
-    constexpr static int	swap		= (1 << vecinto_swap) ;
-    constexpr static int	stationary	= (1 << vecinto_stationary) ;
-    constexpr static int	conserve	= (1 << vecinto_conserve) ;
-    constexpr static int	sorted		= (1 << vecinto_sorted) ;
-    constexpr static int	ordered		= (1 << vecinto_ordered) ;
+    inline static cint	reuse		= (1 << vecinto_reuse) ;
+    inline static cint	compact		= (1 << vecinto_compact) ;
+    inline static cint	swap		= (1 << vecinto_swap) ;
+    inline static cint	stationary	= (1 << vecinto_stationary) ;
+    inline static cint	conserve	= (1 << vecinto_conserve) ;
+    inline static cint	sorted		= (1 << vecinto_sorted) ;
+    inline static cint	ordered		= (1 << vecinto_ordered) ;
 } ; /* end struct (vecintms) */
 
 #endif /* __cplusplus */
