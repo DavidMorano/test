@@ -44,8 +44,8 @@ DEPS_MAIN += ureade.o
 
 OBJ0= testreade_main.o
 OBJ1= ureade.o
-OBJ2= dictdiff.o
-OBJ3= strx.o strn.o strw.o char.o
+OBJ2= dictdiff.o strwcpy.o
+OBJ3= strcpyx.o strx.o strn.o strw.o char.o
 OBJ4= sfx.o rmx.o isx.o nleadx.o
 OBJ5= matxstr.o inetconv.o six.o
 OBJ6= ucinetconv.o timeval.o
@@ -199,9 +199,19 @@ bufos.o:		bufos.dir
 bufos.dir:
 	makesubdir $@
 
+# STRCPTX
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
+
 # STRX
 strx.o:			strx.dir
 strx.dir:
+	makesubdir $@
+
+# STRWCPY
+strwcpy.o:		strwcpy.dir
+strwcpy.dir:
 	makesubdir $@
 
 # STRW
