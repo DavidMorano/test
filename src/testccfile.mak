@@ -42,17 +42,25 @@ LIBS += -lf -lu
 
 DEPS_MAIN += bufos.o
 
-OBJ0= testccfile_main.o
-OBJ1= rmx.o isx.o char.o
-OBJ2= strn.o sfx.o six.o
-OBJ3= inetconv.o
-OBJ4= strx.o strw.o matxstr.o
-OBJ5= nleadx.o
-OBJ6= strnxcmp.o strxcmp.o dictdiff.o
-OBJ7= ucinetconv.o ccfile.o readln.o
+OBJ00= testccfile_main.o
+OBJ01= rmx.o isx.o char.o
+OBJ02= strn.o sfx.o six.o
+OBJ03= inetconv.o ustream.o
+OBJ04= strx.o strw.o matxstr.o
+OBJ05= nleadx.o
+OBJ06= strnxcmp.o strxcmp.o dictdiff.o
+OBJ07= ucinetconv.o ccfile.o readln.o
 
-OBJA= obj0.o obj1.o obj2.o obj3.o
-OBJB= obj4.o obj5.o obj6.o obj7.o
+OBJ08= fmtstr.o fmtflag.o 
+OBJ09=
+OBJ10=
+OBJ11=
+
+
+OBJA= obj00.o obj01.o obj02.o obj03.o
+OBJB= obj04.o obj05.o obj06.o obj07.o
+#OBJC= obj08.o obj09.o obj10.o obj11.o
+OBJC= obj08.o 
 
 OBJ= obja.o objb.o
 
@@ -121,28 +129,41 @@ control:
 	(uname -n ; date) > Control
 
 
-obj0.o:			$(OBJ0)
+obj00.o:		$(OBJ00)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj1.o:			$(OBJ1)
+obj01.o:		$(OBJ01)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj2.o:			$(OBJ2)
+obj02.o:		$(OBJ02)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj3.o:			$(OBJ3)
+obj03.o:		$(OBJ03)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj4.o:			$(OBJ4)
+obj04.o:		$(OBJ04)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj5.o:			$(OBJ5)
+obj05.o:		$(OBJ05)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj6.o:			$(OBJ6)
+obj06.o:		$(OBJ06)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
-obj7.o:			$(OBJ7)
+obj07.o:		$(OBJ07)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obj08.o:		$(OBJ08)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj09.o:		$(OBJ09)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj10.o:		$(OBJ10)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj11.o:		$(OBJ11)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
@@ -150,6 +171,9 @@ obja.o:			$(OBJA)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objc.o:			$(OBJC)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
@@ -227,6 +251,16 @@ strnxcmp.dir:
 # STRXCMP
 strxcmp.o:		strxcmp.dir
 strxcmp.dir:
+	makesubdir $@
+
+# FMTSTR
+fmtstr.o:		fmtstr.dir
+fmtstr.dir:
+	makesubdir $@
+
+# FMTFLAG
+fmtflag.o:		fmtflag.dir
+fmtflag.dir:
 	makesubdir $@
 
 char.o:			char.cc		char.h
