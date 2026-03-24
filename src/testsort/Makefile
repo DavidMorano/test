@@ -145,8 +145,10 @@ obja.o:			$(OBJA)
 objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
+
 obj.o:			$(OBJ)
 	$(LD) -r $(LDFLAGS) -o $@ $^
+
 
 testsort_main.o:	testsort_main.cc $(DEPS_MAIN)		$(INCS)
 
