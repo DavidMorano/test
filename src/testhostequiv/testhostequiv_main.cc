@@ -71,7 +71,7 @@ local void test(const record *) noex ;
 
 /* local variables */
 
-const record		tests[] = {
+constexpr record		tests[] = {
     { "rca.local",	"rca",		"local",	1 },
     { "rca.local",	"rcb",		"local",	0 },
     { "rca.local",	"rca.local",	"local",	1 },
