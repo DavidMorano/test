@@ -55,9 +55,9 @@
 #define	LINEBUFLEN	2048
 #endif
 
-#define	READ_CNT	10
+#define	READ_CNT	1
 
-#define	TO_READ		10
+#define	TO_READ		5
 
 
 /* local namespaces */
@@ -96,7 +96,7 @@ int main(int,mainv,mainv) {
 	cint		fd_in = FD_STDIN ;
     	cint		llen = linebuflen ;
 	cint		to = TO_READ ;
-	cint		opts = FM_TIMED ;
+	cint		uo = FM_TIMED ;
 	cint		mcnt = READ_CNT ;
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
@@ -104,7 +104,7 @@ int main(int,mainv,mainv) {
 	DPRINTF("ent\n") ;
 	for (int cnt = 0 ; (rs >= 0) && (cnt < mcnt) ; cnt += 1) {
 	    lbuf[0] = '\0' ;
-	    rs = u_reade(fd_in,lbuf,llen,to,opts) ;
+	    rs = u_reade(fd_in,lbuf,llen,to,uo) ;
 	    cint len = rs ;
 	    DPRINTF("reade() rs=%d\n",rs) ;
 	    if (rs > COLUMNS) break ;
