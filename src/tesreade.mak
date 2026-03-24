@@ -252,6 +252,6 @@ readln.o:		readln.cc	readln.hh
 ureade.o:		ureade.cc	ureade.h
 ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
-timeval.o:		timeval.cc	timeval.h
+timeval.o:		timeval.cc	timeval.hh
 
 
