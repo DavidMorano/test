@@ -1,0 +1,72 @@
+/* uintx MODUEL (primary-module-interface) */
+/* charset=ISO8859-1 */
+/* lang=C20 */
+
+/* integer-extended */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-11-01, David A­D­ Morano
+	This subroutine was written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+
+/*******************************************************************************
+
+	Object:
+	uintx
+
+	Description:
+	We manage (a little bit) the INTX object.
+
+*******************************************************************************/
+
+module ;
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
+#include	<compare>
+#include	<clanguage.h>
+#include	<usysbase.h>
+
+export module uintx ;
+
+import varithmetic ;
+
+/* local defines */
+
+#define	ndig(bits,Digit)	((bits / szof(Digit)) / CHAR_BIT)
+
+export {
+    template<int Nbits,typename Digit = ulonglong> struct uintx {
+	Digit		v[ndig(Nbits,Digit)] ;
+	uintx() = default ;
+	uintx(int a) noex {
+	    v = {} ;
+	    v[0] = a ;
+	} ;
+	uintx(uint a) noex {
+	    v = {} ;
+	    v[0] = intconv(a) ;
+	} ;
+	uintx(const uintx &o) noex {
+	    constexpr int n = ndig(Nbits,Digit) ;
+	    vcopy(n,v,o.v) ;
+	} ;
+	uintx &operator = (const uintx &o) noex {
+	    constexpr int n = ndig(Nbits,Digit) ;
+	    vcopy(n,v,o.v) ;
+	} ;
+	uintx &operator *= (int v) noex ;
+	uintx &operator += (const uintx &) noex ;
+	uintx &operator -= (const uintx &) noex ;
+	std::ordering_strong operator <=> (const uintx &) const ;
+    } ; /* end struct-template (uintx) */
+} /* end export */
+
+
