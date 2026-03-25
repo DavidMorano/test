@@ -1,4 +1,4 @@
-# MAKEFILE (testinx)
+# MAKEFILE (testintx)
 
 T= testintx
 
@@ -37,21 +37,21 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -lu
+LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += varithmetic.o
+DEPS_MAIN += varithmetic.o uintx.o
 
 OBJ0= testintx_main.o
-OBJ1= varithmetic.o
-OBJ2=
+OBJ1= uintx.o
+OBJ2= varithmetic.o builtin.o
 OBJ3=
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o
+OBJA= obj0.o obj1.o obj2.o
 OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= obja.o
@@ -157,7 +157,7 @@ obj.o:			$(OBJ)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-testreade_main.o:	testreade_main.cc $(DEPS_MAIN)	$(INCS)
+testintx_main.o:	testintx_main.cc $(DEPS_MAIN)	$(INCS)
 
 # USTREAM
 ustream.o:		ustream.dir
@@ -254,12 +254,16 @@ ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
 timeval.o:		timeval.cc	timeval.hh
 
-# VARITHMETIC
-varithmetic.o:		varithmetic.ccm
+# INTX
+uintx.o:		uintx.ccm varithmetic.o
 	makemodule $@
 
-# INTX
-intx.o:			intx.ccm varithmetic.o
+# VARITHMETIC
+varithmetic.o:		varithmetic.ccm builtin.o
+	makemodule $@
+
+# BUUILTIN
+builtin.o:		builtin.ccm
 	makemodule $@
 
 
