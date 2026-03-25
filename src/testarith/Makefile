@@ -2,7 +2,7 @@
 
 T= testarith
 
-ALL= $(T).o
+ALL= $(T).x
 
 
 BINDIR		?= $(REPOROOT)/bin
@@ -37,15 +37,17 @@ INCS +=
 
 MODS +=
 
-LIBS +=
+LIBS += -luo -lu
 
 
-OBJ0= main.o
+OBJ0= testarith_main.o
 OBJ1= 
 OBJ2=
 OBJ3=
 OBJ4=
 OBJ5=
+OBJ6=
+OBJ7=
 
 OBJA= obj0.o
 OBJB=
@@ -71,7 +73,7 @@ LDFLAGS		?= $(MAKELDFLAGS)
 .SUFFIXES:		.hh .ii .iim .ccm
 
 
-default:		$(T).o
+default:		$(T).x
 
 all:			$(ALL)
 
@@ -101,8 +103,8 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).o:			$(OBJ)
-	$(LD) -r $(LDFLAGS) -o $@ $(OBJ)
+$(T).x:			$(OBJ)
+	$(LD) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ) $(LIBINFO)
 
 $(T).nm:		$(T).o
 	$(NM) $(NMFLAGS) $(T).o > $(T).nm
@@ -143,7 +145,11 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-arith_main.o:		arith_main.cc				$(INCS)
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testarith_main.o:	testarith_main.cc			$(INCS)
 
 varigthmetic.o:		varithmetic.ccm
 
