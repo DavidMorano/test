@@ -1,55 +1,269 @@
-# MAKEFILE
+# MAKEFILE (teststruct)
 
 T= teststruct
 
-ALL=	$(T)
-
-#SRCROOT= $(LOCAL)
+ALL= $(T).x
 
 
-LIBDIR= $(SRCROOT)/lib
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
+
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
-CC= gcc
-CCOPTS=
-INCDIRS= -I$(INCDIR)
-CFLAGS= $(CCOPTS) $(INCDIRS)
+DEFS +=
 
-LD= cc
-LDFLAGS=
+INCS +=
+
+MODS +=
+
+LIBS += -lf -luo -lu
+
+
+DEPS_MAIN +=
+
+OBJ0= teststruct_main.o
+OBJ1= uintx.o
+OBJ2= varithmetic.o builtin.o
+OBJ3=
+OBJ4=
+OBJ5=
+OBJ6=
+OBJ7=
+
+OBJA= obj0.o
+OBJB= obj4.o obj5.o obj6.o obj7.o
+
+OBJ= obja.o
+
+
+INCDIRS=
+
 LIBDIRS= -L$(LIBDIR)
-LIBS= -Bstatic -ldam -lb -luc -lu -Bdynamic
 
-#CRT0= /lib/crt0.o
-CRT0=
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
 
-
-OBJ= main.o sub.o
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS) -g
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
 
 
 .SUFFIXES:		.hh .ii .iim .ccm
 
 
-all:		$(ALL)
+default:		$(T).x
+
+all:			$(ALL)
+
+
+.c.i:
+	$(CPP) $(CPPFLAGS) $< > $(*).i
+
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
 
 .c.o:
-	$(CC) -c $(CFLAGS) $<
+	$(COMPILE.c) $<
+
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	makemodule $(*)
 
 
-$(T):		$(OBJ) Makefile
-	$(LD) -o $@ $(LDFLAGS) $(CRT0) $(OBJ) $(LIBDIRS) $(LIBS)
+$(T).x:			obj.o Makefile
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
 
-strip:		$(T)
-	strip $(T)
+$(T).nm:		$(T).x
+	$(NM) $(NMFLAGS) $(T).x > $(T).nm
 
-install:	$(T)
-	strip $(T)
-	cp $(T) $(BINDIR)
+again:
+	rm -f $(T).x
 
 clean:
-	rm -f *.o
+	makeclean $(ALL)
 
+control:
+	(uname -n ; date) > Control
+
+
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+teststruct_main.o:	teststruct_main.cc $(DEPS_MAIN)	$(INCS)
+
+# USTREAM
+ustream.o:		ustream.dir
+ustream.dir:
+	makesubdir $@
+
+# STRN
+strn.o:			strn.dir
+strn.dir:
+	makesubdir $@
+
+# SFX
+sfx.o:			sfx.dir
+sfx.dir:
+	makesubdir $@
+
+# SIX
+six.o:			six.dir
+six.dir:
+	makesubdir $@
+
+# RMX
+rmx.o:			rmx.dir
+rmx.dir:
+	makesubdir $@
+
+# HASX
+hasx.o:			hasx.dir
+hasx.dir:
+	makesubdir $@
+
+# ISX
+isx.o:			isx.dir
+isx.dir:
+	makesubdir $@
+
+# BUFOS
+bufos.o:		bufos.dir
+bufos.dir:
+	makesubdir $@
+
+# STRCPTX
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
+
+# STRX
+strx.o:			strx.dir
+strx.dir:
+	makesubdir $@
+
+# STRWCPY
+strwcpy.o:		strwcpy.dir
+strwcpy.dir:
+	makesubdir $@
+
+# STRW
+strw.o:			strw.dir
+strw.dir:
+	makesubdir $@
+
+# NLEADX
+nleadx.o:		nleadx.dir
+nleadx.dir:
+	makesubdir $@
+
+# MATXSTR
+matxstr.o:		matxstr.dir
+matxstr.dir:
+	makesubdir $@
+
+# STRNXCMP
+strnxcmp.o:		strnxcmp.dir
+strnxcmp.dir:
+	makesubdir $@
+
+# STRXCMP
+strxcmp.o:		strxcmp.dir
+strxcmp.dir:
+	makesubdir $@
+
+char.o:			char.cc		char.h
+inetconv.o:		inetconv.cc	inetconv.h
+base64.o:		base64.cc	base64.h
+base128.o:		base128.cc	base128.h
+dictdiff.o:		dictdiff.cc	dictdiff.h
+
+nzeros.o:		nzeros.ccm	nzeros.h
+ccfile.o:		ccfile.cc	ccfile.hh
+readln.o:		readln.cc	readln.hh
+
+ureade.o:		ureade.cc	ureade.h
+ucinetconv.o:		ucinetconv.cc	ucinetconv.h
+
+timeval.o:		timeval.cc	timeval.hh
+
+# INTX
+uintx.o:		uintx.ccm varithmetic.o
+	makemodule $@
+
+# VARITHMETIC
+varithmetic.o:		varithmetic.ccm builtin.o
+	makemodule $@
+
+# BUUILTIN
+builtin.o:		builtin.ccm
+	makemodule $@
 
 
