@@ -5,6 +5,7 @@
 /* Vector-Arithmetic */
 /* version %I% last-modified %G% */
 
+#define	CF_DEBUG	0		/* debugging */
 
 /* revision history:
 
@@ -33,16 +34,41 @@ module ;
 #include	<climits>		/* |CHAR_BIT| */
 #include	<cstddef>
 #include	<cstdlib>
+#include	<cstdio>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
 #include	<stdintx.h>
 #include	<localmisc.h>
+#include	<dprintf.hh>		/* |DPRINTF| */
 
 export module varithmetic ;
 
 import builtin ;
+
+/* local defines */
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* debugging */
+#endif
+
+constexpr bool		f_debug		= CF_DEBUG ;
+
+template<typename Digit> void prdig(cc *s,const Digit v) noex {
+    	if_constexpr (f_debug) {
+    	    constexpr int sz_ulong = szof(ulong) ;
+    	    constexpr int sz = szof(Digit) ;
+	    if_constexpr (sz > sz_ulong) {
+	        const ulong lo = ulongconv(v >> 00) ;
+	        const ulong hi = ulongconv(v >> 64) ;
+	        DPRINTF("%s %016lX-%016lX\n",s,hi,lo) ;
+	    } else {
+	        const ulong ulw = ulong(v) ;
+	        DPRINTF("%s %016lX\n",s,ulw) ;
+	    }
+	} /* end if_constexpr (f_debug) */
+} /* end subroutine (prdig) */
 
 template<typename T>
 constexpr inline bool bit(T v,int n) noex {
@@ -164,12 +190,41 @@ export {
 
 export {
     template<typename Digit>
+    constexpr void vmuler(int n,Digit *r,const Digit *v0,const Digit *v1) noex {
+	(void) n ;
+	(void) r ;
+	(void) v0 ;
+	(void) v1 ;
+    } /* end subroutine (vmuler) */
+    template<typename Digit>
     constexpr void vmul(int n,Digit *r,const Digit *v0,const Digit *v1) noex {
-    	int		co = 0 ;
-	for (int i = 0 ; i < n ; i += 1) {
-	    co = addc(r[i],v0[i],v1[i],co) ;
+	if (n == 1) {
+	    *r = *v0 * *v1 ;
+	} else {
+	    vmuller(n,r,v0,v1) ;
 	}
-    } /* end subroutine */
+    } /* end subroutine (vmul) */
+} /* end export */
+
+export {
+    template<typename Digit>
+    constexpr void vand(int n,Digit *r,const Digit *v1,Digit *v2) noex {
+	for (int i = 0 ; i < n ; i += 1) {
+	    r[i] = v1[i] & v2[i] ;
+	}
+    } /* end subroutine (vand) */
+    template<typename Digit>
+    constexpr void vor(int n,Digit *r,const Digit *v1,Digit *v2) noex {
+	for (int i = 0 ; i < n ; i += 1) {
+	    r[i] = v1[i] | v2[i] ;
+	}
+    } /* end subroutine (vor) */
+    template<typename Digit>
+    constexpr void vxor(int n,Digit *r,const Digit *v1,Digit *v2) noex {
+	for (int i = 0 ; i < n ; i += 1) {
+	    r[i] = v1[i] ^ v2[i] ;
+	}
+    } /* end subroutine (vxor) */
 } /* end export */
 
 export {
@@ -181,7 +236,7 @@ export {
 	    cint nb_hi = (nb / nbits) ;
 	    cint nb_lo = (nb % nbits) ;
 	    if (nb) {
-		Digit lomask = (Digit(nb_lo) - 1) ;
+		Digit lomask = ((Digit(1) << nb_lo) - 1) ;
 		Digit vlo ;
 		Digit vhi ;
 	        for (int i = 0 ; i < n ; i += 1) {
@@ -191,6 +246,8 @@ export {
 		    Digit vhi =  (v[ihi] << (nbits - nb_lo)) ;
 	            r[i] = vhi | vlo ;
 	        } /* end for */
+	    } else {
+		vcopy(n,r,v) ;
 	    }
 	} else {
 	    vclear(n,r) ;
@@ -203,6 +260,8 @@ export {
 	if ((nb >= 0) && (nb < nbitstotal)) {
 	    if (nb) {
 	        vrotr(n,r,v,(nbitstotal - nb)) ;
+	    } else {
+		vcopy(n,r,v) ;
 	    }
 	} else {
 	    vclear(n,r) ;
@@ -218,18 +277,23 @@ export {
     } /* end subroutine (vrotx) */
     template<typename Digit>
     constexpr void vlshr(int n,Digit *r,const Digit *v,int nb) noex {
+	constexpr Digit ones = (compl Digit(0)) ;
 	cint nbits	= (szof(Digit) * CHAR_BIT) ;
 	cint nbitstotal = (szof(Digit) * CHAR_BIT * n) ;
 	if ((nb >= 0) && (nb < nbitstotal)) {
 	    cint nb_hi = (nb / nbits) ;
 	    cint nb_lo = (nb % nbits) ;
+	    DPRINTF("nbits=%d nb=%d nb_lo=%d nb_hi=%d\n",nbits,nb,nb_lo,nb_hi) ;
 	    if (nb) {
-		Digit lomask = (Digit(nb_lo) - 1) ;
+		Digit lomask = (compl (ones << (nbits - nb_lo))) ;
 		Digit vlo ;
 		Digit vhi ;
+		prdig("lomask",lomask) ;
 	        for (int i = 0 ; i < n ; i += 1) {
 		    cint ilo = (i + nb_hi) ;
 		    cint ihi = (i + nb_hi + 1) ;
+		    DPRINTF("i=%d ilo=%d ihi=%d\n",i,ilo,ihi) ;
+		prdig("v ",v[i]) ;
 		    if (ilo < n) {
 		        vlo = ((v[ilo] >> nb_lo) & lomask) ;
 		    } else {
@@ -240,8 +304,12 @@ export {
 		    } else {
 		        vhi = 0 ;
 		    }
+		prdig("vlo ",vlo) ;
+		prdig("vhi ",vhi) ;
 	            r[i] = vhi | vlo ;
 	        } /* end for */
+	    } else {
+		vcopy(n,r,v) ;
 	    }
 	} else {
 	    vclear(n,r) ;
@@ -254,13 +322,17 @@ export {
 	if ((nb >= 0) && (nb < nbitstotal)) {
 	    cint nb_hi = (nb / nbits) ;
 	    cint nb_lo = (nb % nbits) ;
+	    DPRINTF("nbits=%d nb=%d nb_lo=%d nb_hi=%d\n",nbits,nb,nb_lo,nb_hi) ;
 	    if (nb) {
-		Digit lomask = (Digit(nb_lo) - 1) ;
+		Digit lomask = ((Digit(1) << nb_lo) - 1) ;
 		Digit vlo ;
 		Digit vhi ;
+		prdig("lomask",lomask) ;
 	        for (int i = 0 ; i < n ; i += 1) {
 		    cint ilo = (i - nb_hi - 1) ;
 		    cint ihi = (i - nb_hi - 0) ;
+		    DPRINTF("i=%d ilo=%d ihi=%d\n",i,ilo,ihi) ;
+		prdig("v ",v[i]) ;
 		    if (ihi >= 0) {
 		        vhi = (v[ihi] << nb_lo) ;
 		    } else {
@@ -271,13 +343,17 @@ export {
 		    } else {
 		        vlo = 0 ;
 		    }
+		prdig("vlo ",vlo) ;
+		prdig("vhi ",vhi) ;
 	            r[i] = vhi | vlo ;
 	        } /* end for */
+	    } else {
+		vcopy(n,r,v) ;
 	    }
 	} else {
 	    vclear(n,r) ;
 	}
-    } /* end subroutine */
+    } /* end subroutine (vlshl) */
     template<typename Digit>
     constexpr void vlshx(int n,Digit *r,const Digit *v,int nb) noex {
 	if (nb >= 0) {
@@ -294,18 +370,24 @@ export {
 	if ((nb >= 0) && (nb < nbitstotal)) {
 	    cint nb_hi = (nb / nbits) ;
 	    cint nb_lo = (nb % nbits) ;
+	    DPRINTF("nbits=%d nb=%d nb_lo=%d nb_hi=%d\n",nbits,nb,nb_lo,nb_hi) ;
 	    if (nb) {
 		Digit fill = 0 ;
+		Digit lomask = ((Digit(1) << (nbits - nb_lo)) - 1) ;
 		Digit himask = (ones << (nbits - nb_lo)) ;
-		Digit lomask = (Digit(nb_lo) - 1) ;
 		Digit vlo ;
 		Digit vhi ;
+		prdig("lomask",lomask) ;
+		prdig("himask",himask) ;
 		if (bit(v[n-1],(nbits-1))) {
 		   fill = ones ;
 		}
+		prdig("fill",fill) ;
 	        for (int i = 0 ; i < n ; i += 1) {
 		    cint ilo = (i + nb_hi) ;
 		    cint ihi = (i + nb_hi + 1) ;
+		    DPRINTF("i=%d ilo=%d ihi=%d\n",i,ilo,ihi) ;
+		prdig("v ",v[i]) ;
 		    if (ilo < n) {
 		        vlo = ((v[ilo] >> nb_lo) & lomask) ;
 		    } else {
@@ -316,8 +398,12 @@ export {
 		    } else {
 		        vhi = fill & himask ;
 		    }
+		prdig("vlo ",vlo) ;
+		prdig("vhi ",vhi) ;
 	            r[i] = vhi | vlo ;
 	        } /* end for */
+	    } else {
+		vcopy(n,r,v) ;
 	    }
 	} else {
 	    vclear(n,r) ;
