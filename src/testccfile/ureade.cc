@@ -246,6 +246,7 @@ namespace {
 	int readafter	() noex ;
 	int attrbegin	() noex ;
 	int attrend	() noex ;
+	int mkret	() noex ;
     } ; /* end struct (subinfo) */
 } /* end nameapace */
 
@@ -272,14 +273,16 @@ cbool		f_nonblock	= CF_NONBLOCK ;
 namespace libu {
     int ureade(int fd,void *vbuf,int ulen,int to,int opts) noex {
 	int		rs = SR_OK ;
+	int		rs1 ;
 	int		tlen = 0 ; /* return-value */
 	char		*ubuf = charp(vbuf) ;
 	if (SI si ; (rs = si.start(fd,ubuf,ulen,to,opts)) >= 0) {
 	    {
 		rs = si.choose() ;
+		tlen = rs ;
 	    }
-	    tlen = si.finish() ;
-	    if (rs >= 0) rs = tlen ;
+	    rs1 = si.finish() ;
+	    if (rs >= 0) rs = rs1 ;
 	} /* end if (subinfo) */
 	return (rs >= 0) ? tlen : rs ;
     } /* end subroutine (ureade) */
@@ -350,22 +353,7 @@ int subinfo::finish() noex {
 	        rs = u_nonblock(fd,false) ;
 	    }
 	} /* end if_constexpr (f_debug) */
-	if ((rs >= 0) && (tlen == 0) && (toc == 0) && (ulen > 0)) {
-	    bool f = false ;
-	    if (ft.socket) {
-	        f = (neof < maxeof) ;
-	    } else {
-	        f = (neof == 0) ;
-	    }
-	    if (f) {
-	        if (opts & FM_AGAIN) {
-	            rs = SR_AGAIN ;
-	        } else if (opts & FM_TIMED) {
-	            rs = SR_TIMEDOUT ;
-	        }
-	    }
-	} /* end if (had a timeout) */
-	return (rs >= 0) ? tlen : rs ;
+	return rs ;
 } /* end subroutine (subinfo::finish) */
 
 int subinfo::choose() noex {
@@ -386,9 +374,22 @@ int subinfo::choose() noex {
 	        rs = readslow() ;
 	    }
 	} /* end if */
+	if (rs >= 0) {
+	    rs = mkret() ;
+	}
 	DPRINTF("ret rs=%d tlen=%d\n",rs,tlen) ;
-	return rs ;
+	return (rs >= 0) ? tlen : rs ;
 } /* end method (subinfo::choose) */
+
+int subinfo::mkret() noex {
+    	int		rs = SR_OK ;
+	if (tlen == 0) {
+	    if (fl.timed) {
+		rs = SR_TIMEDOUT ;
+	    }
+	}
+	return rs ;
+} /* end method (subinfo::mkret) */
 
 int subinfo::setmode(mode_t fm) noex {
     	if_constexpr (f_debug) {
@@ -453,9 +454,6 @@ int subinfo::readterm() noex {
 	    rs1 = attrend() ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (terminal-attributes) */
-	if ((rs >= 0) && (tlen == 0) && fl.timed) {
-	    rs = SR_TIMEDOUT ;
-	}
 	DPRINTF("ret rs=%d tlen=%d\n",rs,tlen) ;
 	return rs ;
 } /* end subroutine (subinfo::readterm) */
@@ -475,9 +473,6 @@ int subinfo::readchr() noex {
 		} /* end if (readwait) */
 		if (fl.done) break ;
 	    } /* end while */
-	if ((rs >= 0) && (tlen == 0) && fl.timed) {
-	    rs = SR_TIMEDOUT ;
-	}
 	DPRINTF("ret rs=%d tlen=%d\n",rs,tlen) ;
 	return rs ;
 } /* end subroutine (subinfo::readchr) */
