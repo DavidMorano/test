@@ -8,6 +8,9 @@
 #define	CF_DEBUG	1		/* debugging */
 #define	CF_SZOF		0		/* size-of */
 #define	CF_CARRY	0		/* carry-out */
+#define	CF_PRVAR	0		/* prvar */
+#define	CF_CAST		0		/* cast */
+#define	CF_VALUES	1		/* values */
 
 /* revision history:
 
@@ -38,7 +41,6 @@
 #include	<dprintf.hh>
 
 #pragma		GCC dependency		"mod/libutil.ccm"
-#pragma		GCC dependency		"mod/uintx.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
 import uintx ;
@@ -53,6 +55,15 @@ import uintx ;
 #endif
 #ifndef	CF_CARRY
 #define	CF_CARRY	0
+#endif
+#ifndef	CF_CAST
+#define	CF_CAST		0		/* cast */
+#endif
+#ifndef	CF_PRVAR
+#define	CF_PRVAR	0		/* prvar */
+#endif
+#ifndef	CF_VALUES
+#define	CF_VALUES	0		/* values */
 #endif
 
 
@@ -83,7 +94,7 @@ struct looksz {
 /* forward references */
 
 local int	test_carry() noex ;
-local int	test1() noex ;
+local int	test_prvar() noex ;
 local int	test_cast() noex ;
 local int	test_values() noex ;
 
@@ -94,6 +105,9 @@ cint		fd_err		= FD_STDERR ;
 cbool		f_debug		= CF_DEBUG ;
 cbool		f_szof		= CF_SZOF ;
 cbool		f_carry		= CF_CARRY ;
+cbool		f_prvar		= CF_PRVAR ;
+cbool		f_cast		= CF_CAST ;
+cbool		f_values	= CF_VALUES ;
 
 
 /* exported variables */
@@ -101,22 +115,25 @@ cbool		f_carry		= CF_CARRY ;
 
 /* exported subroutines */
 
-template <typename T> int printvar(T vv) noex {
+template <typename T> local int printvar(T vv) noex {
     	cint olen = LINEBUFLEN ;
     	cint usz = szof(ulong) ;
     	cint nb = (szof(ulong) * CHAR_BIT) ;
 	cint sz = szof(T) ;
 	int		rs = SR_NOMEM ;
 	DPRINTF("ent\n") ;
+	(void) vv ;
+	(void) olen ;
+	(void) usz ;
+	(void) sz ;
+	(void) nb ;
 	if (char *obuf = new(nothrow) char [olen + 1] ; obuf) {
-	    int ol{} ;
 	    for (int i = 0 ; i < (sz / usz) ; i += 1) {
 	        ulong b = ulongconv(vv) ;
-	DPRINTF("loop-top\n") ;
-		ol = snprintf(obuf,olen,"%02d %016lX",i,b) ;
-	        rs = u_write(fd_err,obuf,ol) ;
-	        vv <<= nb ;
-	DPRINTF("loop-bot\n") ;
+		if ((rs = snprintf(obuf,olen,"%02d %016lX",i,b)) >= 0) {
+	            rs = printf("prvar: %s\n",obuf) ;
+		}
+	        vv >>= nb ;
 		if (rs < 0) break ;
 	    } /* end for */
 	    delete [] obuf ;
@@ -127,9 +144,14 @@ template <typename T> int printvar(T vv) noex {
 } /* end subroutine (printvar) */
 
 int main(int,mainv,mainv) {
+    	static cchar *	varhome = getenv("HOME") ;
     	looksz		thing{} ;
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
+	DPRINTF("ent\n") ;
+	if (varhome) {
+	    	printf("HOME=%s\n",varhome) ;
+	}
 	if_constexpr (f_szof) {
 	    	printf("szof(thing)=%d\n",szof(thing)) ;
 	    	printf("thing.a=%d\n",thing.a) ;
@@ -140,17 +162,26 @@ int main(int,mainv,mainv) {
 
 	} /* end if */
 	if (rs >= 0) {
-	    rs = test1() ;
+	    if_constexpr (f_prvar) {
+	        rs = test_prvar() ;
+	    }
 	}
 	if (rs >= 0) {
-	    rs = test_cast() ;
+	    if_constexpr (f_cast) {
+	        rs = test_cast() ;
+	    }
 	}
 	if (rs >= 0) {
-	    rs = test_values() ;
+	    if_constexpr (f_values) {
+		DPRINTF("values ->\n") ;
+	        rs = test_values() ;
+		DPRINTF("values rs=%d\n",rs) ;
+	    }
 	}
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	}
+	DPRINTF("ent ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 }
 /* end subroutine (main) */
@@ -176,39 +207,46 @@ local int test_carry() noex {
 	return rs ;
 } /* end subroutine (test_carry) */
 
-local int test1() noex {
+local int test_prvar() noex {
     	uint256_t	a = 0x21 ;
 	int		rs = SR_OK ;
+	DPRINTF("ent\n") ;
 	{
 	    rs = printvar(a) ;
 	}
+	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
-} /* end subroutine (test1) */
+} /* end subroutine (test_prvar) */
 
 local int test_cast() noex {
     	uint256_t	a = 0x21 ;
 	int		rs = SR_OK ;
+	DPRINTF("ent\n") ;
 	{
 	    cint vv = int(a) ;
 	    printf("cast=%d\n",vv) ;
 	}
+	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
 } /* end subroutine (test_cast) */
 
 constexpr int		values[] = {
-    -1, -2, 3, 4
+    -2, 3
 } ; /* end array */
 
 local int test_values() noex {
 	int		rs = SR_OK ;
 	DPRINTF("ent\n") ;
 	for (cauto &e : values) {
-	    uint256_t vx = e ;
+	    DPRINTF("for-top\n") ;
+	    uint256_t	vx = e ;
 	    {
 	        cint vv = int(vx) ;
 	        printf("cast=%d\n",vv) ;
 	        rs = printvar(vx) ;
 	    }
+	    DPRINTF("for-bot\n") ;
+	    if (rs < 0) break ;
 	} /* end for */
 	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
