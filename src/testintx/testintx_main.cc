@@ -38,12 +38,12 @@
 #include	<getfdfile.h>
 #include	<localmisc.h>
 #include	<libf.h>		/* LIBF */
-#include	<dprintf.hh>
+#include	<dprintf.hh>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
-import uintx ;
+import intext ;				/* |uint256_t| */
 
 /* local defines */
 
@@ -97,6 +97,7 @@ local int	test_carry() noex ;
 local int	test_prvar() noex ;
 local int	test_cast() noex ;
 local int	test_values() noex ;
+local int	test_shift() noex ;
 
 
 /* local variables */
@@ -121,25 +122,28 @@ template <typename T> local int printvar(T vv) noex {
     	cint nb = (szof(ulong) * CHAR_BIT) ;
 	cint sz = szof(T) ;
 	int		rs = SR_NOMEM ;
-	DPRINTF("ent\n") ;
 	(void) vv ;
 	(void) olen ;
 	(void) usz ;
 	(void) sz ;
 	(void) nb ;
 	if (char *obuf = new(nothrow) char [olen + 1] ; obuf) {
-	    for (int i = 0 ; i < (sz / usz) ; i += 1) {
-	        ulong b = ulongconv(vv) ;
-		if ((rs = snprintf(obuf,olen,"%02d %016lX",i,b)) >= 0) {
+	    cchar *fmt = "%02d %016lX-%016lX" ;
+	    ulong lo ;
+	    ulong hi ;
+	    for (int i = 0 ; i < (sz / usz / 2) ; i += 1) {
+	        lo = ulongconv(vv) ;
+	        vv >>= nb ;
+	        hi = ulongconv(vv) ;
+	        vv >>= nb ;
+		if ((rs = snprintf(obuf,olen,fmt,i,hi,lo)) >= 0) {
 	            rs = printf("prvar: %s\n",obuf) ;
 		}
-	        vv >>= nb ;
 		if (rs < 0) break ;
 	    } /* end for */
 	    delete [] obuf ;
 	    obuf = nullptr ;
 	} /* end if (m-a-f) */
-	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
 } /* end subroutine (printvar) */
 
@@ -173,10 +177,11 @@ int main(int,mainv,mainv) {
 	}
 	if (rs >= 0) {
 	    if_constexpr (f_values) {
-		DPRINTF("values ->\n") ;
 	        rs = test_values() ;
-		DPRINTF("values rs=%d\n",rs) ;
 	    }
+	}
+	if (rs >= 0) {
+	    rs = test_shift() ;
 	}
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
@@ -238,18 +243,32 @@ local int test_values() noex {
 	int		rs = SR_OK ;
 	DPRINTF("ent\n") ;
 	for (cauto &e : values) {
-	    DPRINTF("for-top\n") ;
 	    uint256_t	vx = e ;
 	    {
 	        cint vv = int(vx) ;
 	        printf("cast=%d\n",vv) ;
 	        rs = printvar(vx) ;
 	    }
-	    DPRINTF("for-bot\n") ;
 	    if (rs < 0) break ;
 	} /* end for */
 	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
-} /* end subroutine (test_cast) */
+} /* end subroutine (test_values) */
+
+local int test_shift() noex {
+	int		rs = SR_OK ;
+	uint256_t	v = 3 ;
+	DPRINTF("ent\n") ;
+	v <<= (128 + 20) ;
+	for (int i = 0 ; i < 8 ; i += 1) {
+	    {
+	        rs = printvar(v) ;
+		v = v.ashr(20) | uint256_t(0) ;
+	    }
+	    if (rs < 0) break ;
+	} /* end for */
+	DPRINTF("ret rs=%d\n",rs) ;
+	return rs ;
+} /* end subroutine (test_shift) */
 
 
