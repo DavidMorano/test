@@ -40,10 +40,10 @@ MODS +=
 LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += varithmetic.o uintx.o
+DEPS_MAIN += varithmetic.o intext.o
 
 OBJ0= testintx_main.o
-OBJ1= uintx.o
+OBJ1= intext.o
 OBJ2= varithmetic.o builtin.o
 OBJ3=
 OBJ4=
@@ -255,7 +255,7 @@ ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 timeval.o:		timeval.cc	timeval.hh
 
 # INTX
-uintx.o:		uintx.ccm varithmetic.o
+intext.o:		intext.ccm varithmetic.o
 	makemodule $@
 
 # VARITHMETIC
