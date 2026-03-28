@@ -254,16 +254,22 @@ ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
 timeval.o:		timeval.cc	timeval.hh
 
+testint.o:		testint.ccm	varithmetic.o
+
 # INTX
-intext.o:		intext.ccm varithmetic.o
+intext.o:		intext.ccm	varithmetic.o
 	makemodule $@
 
 # VARITHMETIC
-varithmetic.o:		varithmetic.ccm builtin.o
+varithmetic.o:		varithmetic.ccm	builtin.o muldigs.o
 	makemodule $@
 
 # BUUILTIN
 builtin.o:		builtin.ccm
+	makemodule $@
+
+# MULDIGS
+muldigs.o:		muldigs.ccm
 	makemodule $@
 
 
