@@ -44,6 +44,7 @@
 
 import libutil ;			/* |lenstr(3u)| */
 import intext ;				/* |uint256_t| */
+import testint ;				/* |uint256_t| */
 
 /* local defines */
 
@@ -98,6 +99,8 @@ local int	test_prvar() noex ;
 local int	test_cast() noex ;
 local int	test_values() noex ;
 local int	test_shift() noex ;
+local int	test_multiply() noex ;
+local int	test_multiplier() noex ;
 
 
 /* local variables */
@@ -147,7 +150,7 @@ template <typename T> local int printvar(T vv) noex {
 	return rs ;
 } /* end subroutine (printvar) */
 
-int main(int,mainv,mainv) {
+int mainsub(int,mainv,mainv) noex {
     	static cchar *	varhome = getenv("HOME") ;
     	looksz		thing{} ;
     	int		ex = EXIT_SUCCESS ;
@@ -183,13 +186,46 @@ int main(int,mainv,mainv) {
 	if (rs >= 0) {
 	    rs = test_shift() ;
 	}
+	if (rs >= 0) {
+	    rs = test_multiply() ;
+	}
+	if (rs >= 0) {
+	    rs = test_multiplier() ;
+	}
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	}
 	DPRINTF("ent ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (mainsub) */
+
+int main(int argc,mainv argv,mainv envv) {
+    	cnothrow	nt{} ;
+    	cint		sl = MINSIGSTKSZ +  SIGSTKSZ ;
+    	int		ex = EXIT_FAILURE ;
+	int		rs ;
+	int		rs1 ;
+	if (char *sp = new(nt) char [sl] ; sp) {
+	    stack_t stk{} ;
+	    stk.ss_sp = sp ;
+	    stk.ss_size = sl ;
+            stk.ss_flags = 0 ;
+	    if ((rs = u_sigaltstack(&stk,nullptr)) >= 0) {
+	        {
+                    ex = mainsub(argc,argv,envv) ;
+	        }
+                stk.ss_flags = SS_DISABLE ;
+	        rs1 = u_sigaltstack(&stk,nullptr) ;
+		if (rs >= 0) rs = rs1 ;
+	    } /* end if u_sigaltstack) */
+	    delete [] sp ;
+	    sp = nullptr ;
+	} /* end if (m-a-f) */
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	}
+	return ex ;
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -270,5 +306,38 @@ local int test_shift() noex {
 	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
 } /* end subroutine (test_shift) */
+
+local int test_multiply() noex {
+	int		rs = SR_OK ;
+	uint256_t	m = (ULONG_MAX / 2) ;
+	uint256_t	v = 3 ;
+	DPRINTF("ent\n") ;
+	for (int i = 0 ; i < 8 ; i += 1) {
+	    {
+	        rs = printvar(v) ;
+		v = v * m ;
+	    }
+	    if (rs < 0) break ;
+	} /* end for */
+	DPRINTF("ret rs=%d\n",rs) ;
+	return rs ;
+} /* end subroutine (test_multiply) */
+
+local int test_multiplier() noex {
+    	int		rs = SR_OK ;
+	utest64_t	m = (ULONG_MAX / 2) ;
+	utest64_t	v = 3 ;
+	DPRINTF("ent\n") ;
+	for (int i = 0 ; i < 8 ; i += 1) {
+	    {
+	        rs = printvar(v) ;
+		v = v * m ;
+	    }
+	    if (rs < 0) break ;
+	} /* end for */
+	DPRINTF("ret rs=%d\n",rs) ;
+
+	return rs ;
+} /* end subroutine (test_multiplier) */
 
 
