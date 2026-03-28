@@ -18,6 +18,9 @@
 
 /*******************************************************************************
 
+  	Name:
+	testpromo
+
   	Description:
   	Test the integer promotion.
 
@@ -33,21 +36,31 @@
 #include	<usysbase.h>
 #include	<localmisc.h>
 
-using std::popcount ;
-
-local int sub(uint uv) noex {
-    	return popcount(uv) ;
-}
-
-constexpr int	vals[] = {
-    	1, 3, 4, 9, -3
-} ;
-
 int main(int,mainv,mainv) {
-    	for (cauto &v : vals) {
-    	    cint n = sub(v) ;
-	    printf("v=%d\tn=%d\n",v,n) ;
-	} /* end for */
+    	uint	uv ;
+	{
+	    schar a = -3 ;
+	    uv = a ;
+	    printf("uv=%08X\n",uv) ;
+	}
+	{
+	    short a = -3 ;
+	    uv = a ;
+	    printf("uv=%08X\n",uv) ;
+	}
+	{
+	    int a = -3 ;
+	    {
+		ulong uv = a ;
+	        printf("uv=%016lX\n",uv) ;
+	    }
+	}
+	{
+	    cbool f1 = bool(4) ;
+	    cbool f2 = bool(-5) ;
+	    printf("f1=%u\n",uint(f1)) ;
+	    printf("f2=%u\n",uint(f2)) ;
+	}
 } /* end subroutine (main) */
 
 
