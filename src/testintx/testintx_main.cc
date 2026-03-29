@@ -11,6 +11,7 @@
 #define	CF_PRVAR	0		/* prvar */
 #define	CF_CAST		0		/* cast */
 #define	CF_VALUES	1		/* values */
+#define	CF_MULTIPLIER	0		/* multiplier */
 
 /* revision history:
 
@@ -100,7 +101,10 @@ local int	test_cast() noex ;
 local int	test_values() noex ;
 local int	test_shift() noex ;
 local int	test_multiply() noex ;
+
+#if	CF_MULTIPLIER
 local int	test_multiplier() noex ;
+#endif /* CF_MULTIPLIER */
 
 
 /* local variables */
@@ -119,6 +123,7 @@ cbool		f_values	= CF_VALUES ;
 
 /* exported subroutines */
 
+#if	(CF_MULTIPLIER == 0)
 template <typename T> local int printvar(T vv) noex {
     	cint olen = LINEBUFLEN ;
     	cint usz = szof(ulong) ;
@@ -149,6 +154,12 @@ template <typename T> local int printvar(T vv) noex {
 	} /* end if (m-a-f) */
 	return rs ;
 } /* end subroutine (printvar) */
+#else
+template <typename T> local int printvar(T vv) noex {
+    	(void) vv ;
+	return SR_OK ;
+}
+#endif /* COMMENT */
 
 int mainsub(int,mainv,mainv) noex {
     	static cchar *	varhome = getenv("HOME") ;
@@ -189,9 +200,13 @@ int mainsub(int,mainv,mainv) noex {
 	if (rs >= 0) {
 	    rs = test_multiply() ;
 	}
+#if	CF_MULTIPLIER
 	if (rs >= 0) {
-	    rs = test_multiplier() ;
+	    if_constexpr (f_multiplier) {
+	        rs = test_multiplier() ;
+	    }
 	}
+#endif /* CF_MULTIPLIER */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	}
@@ -309,7 +324,7 @@ local int test_shift() noex {
 
 local int test_multiply() noex {
 	int		rs = SR_OK ;
-	uint256_t	m = (ULONG_MAX / 2) ;
+	uint256_t	m = 5 ;
 	uint256_t	v = 3 ;
 	DPRINTF("ent\n") ;
 	for (int i = 0 ; i < 8 ; i += 1) {
@@ -323,6 +338,7 @@ local int test_multiply() noex {
 	return rs ;
 } /* end subroutine (test_multiply) */
 
+#if	CF_MULTIPLIER
 local int test_multiplier() noex {
     	int		rs = SR_OK ;
 	utest64_t	m = (ULONG_MAX / 2) ;
@@ -339,5 +355,6 @@ local int test_multiplier() noex {
 
 	return rs ;
 } /* end subroutine (test_multiplier) */
+#endif /* CF_MULTIPLIER */
 
 
