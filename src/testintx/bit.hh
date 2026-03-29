@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-/* memory allocation facility (for library use) */
+/* bitmanip MODULE (primary-module-interface)*/
 /* version %I% last-modified %G% */
 
 
