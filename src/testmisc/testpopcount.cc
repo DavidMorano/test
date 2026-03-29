@@ -51,6 +51,13 @@ int main(int,mainv,mainv) {
     	    cint n = sub(v) ;
 	    printf("v=%d\tn=%d\n",v,n) ;
 	} /* end for */
+	{
+	    uint	a = -1 ;
+	    for (int i = 0 ; i < 4 ; i += 1) {
+		printf("a=%08X\n",a) ;
+		a >>= 2 ;
+	    }
+	}
 } /* end subroutine (main) */
 
 
