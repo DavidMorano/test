@@ -5,7 +5,6 @@
 /* Muliply-Digs */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUG	0		/* debugging */
 
 /* revision history:
 
@@ -34,14 +33,13 @@ module ;
 #include	<climits>		/* |CHAR_BIT| */
 #include	<cstddef>
 #include	<cstdlib>
-#include	<cstdio>
+#include	<concepts>
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
 #include	<stdintx.h>
 #include	<localmisc.h>
-#include	<dprintf.hh>		/* |DPRINTF| */
 
 export module muldigs ;
 
@@ -49,30 +47,33 @@ import builtin ;
 
 /* local defines */
 
-#ifndef	CF_DEBUG
-#define	CF_DEBUG	1		/* debugging */
-#endif
+
+/* imported namespaces */
+
+using std::integral_unsigned ;		/* concept */
+
 
 /* local typedefs */
 
 typedef ulonglong	ull ;
+typedef uchar		int1 ;
+typedef ushort		int2 ;
+typedef uint		int4 ;
+typedef ulong		int8 ;
 
 
 /* local variables */
 
-constexpr bool		f_debug		= CF_DEBUG ;
-
 
 /* module subroutines */
 
-    template<typename Dig>
-    constexpr int addc(Dig *r,const Dig v0,const Dig v1,
-	    int ci = 0) noex {
+template<typename Dig>
+constexpr int addc(Dig *r,const Dig v0,const Dig v1,int ci = 0) noex {
 	Dig		co{} ;
 	Dig		dci = cast_static<Dig>(ci) ;
 	*r = mach_addc(v0,v1,dci,&co) ;
 	return int(co) ;
-    } /*& end subroutine (addc) */
+} /* end subroutine (addc) */
 
     template<typename Dig>
     constexpr void vclear(int n,Dig *v) noex {
@@ -104,66 +105,41 @@ constexpr void vmuler(int n,ulong *r,const ulong *v0,const ulong *v1) noex {
 	} /* end for */
 } /* end subroutine (vmuler) */
 
-export {
-    constexpr void muldig(uchar *r,const uchar v0,const uchar v1) noex {
-	cint		nb = (szof(uchar) & CHAR_BIT) ;
-	const uint vi0 = v0 ;
-	const uint vi1 = v1 ;
+template<integral_unsigned T2,integral_unsigned T1>
+    constexpr inline void muldigx(T1 *r,const T1 v0,const T1 v1) noex {
+	cint nb = (szof(T1) * CHAR_BIT) ;
+	const T2 vi0 = v0 ;
+	const T2 vi1 = v1 ;
 	{
-	    const uint res = vi0 * vi1 ;
-	    r[0] = ucharconv(res >> 00) ;
-	    r[1] = ucharconv(res >> nb) ;
+	    const T2 res = vi0 * vi1 ;
+	    r[0] = T1(res >> 00) ;
+	    r[1] = T1(res >> nb) ;
 	}
-    } /* end subroutine (muldig) */
-} /* end export */
+    } /* end subroutine (muldigx) */
 
 export {
-    constexpr void muldig(ushort *r,const uchar v0,const uchar v1) noex {
-	cint		nb = (szof(ushort) & CHAR_BIT) ;
-	const uint vi0 = v0 ;
-	const uint vi1 = v1 ;
-	{
-	    const uint res = vi0 * vi1 ;
-	    r[0] = ushortconv(res >> 00) ;
-	    r[1] = ushortconv(res >> nb) ;
-	}
+    constexpr void muldig(int1 *r,const int1 v0,const int1 v1) noex {
+	return muldigx<uint>(r,v0,v1) ;
     } /* end subroutine (muldig) */
-} /* end export */
-
-export {
-    constexpr void muldig(uint *r,const uint v0,const uint v1) noex {
-	cint		nb = (szof(uint) & CHAR_BIT) ;
-	const ulong vi0 = v0 ;
-	const ulong vi1 = v1 ;
-	{
-	    const ulong res = vi0 * vi1 ;
-	    r[0] = uintconv(res >> 00) ;
-	    r[1] = uintconv(res >> nb) ;
-	}
+    constexpr void muldig(int2 *r,const int2 v0,const int2 v1) noex {
+	return muldigx<uint>(r,v0,v1) ;
     } /* end subroutine (muldig) */
-} /* end export */
-
-export {
-    constexpr void muldig(ulong *r,const ulong v0,const ulong v1) noex {
-	cint		nb = (szof(ulong) & CHAR_BIT) ;
-	const ulonglong vi0 = v0 ;
-	const ulonglong vi1 = v1 ;
-	{
-	    const ulong res = vi0 * vi1 ;
-	    r[0] = ulongconv(res >> 00) ;
-	    r[1] = ulongconv(res >> nb) ;
-	}
+    constexpr void muldig(int4 *r,const int4 v0,const int4 v1) noex {
+	return muldigx<ulong>(r,v0,v1) ;
+    } /* end subroutine (muldig) */
+    constexpr void muldig(int8 *r,const int8 v0,const int8 v1) noex {
+	return muldigx<ulonglong>(r,v0,v1) ;
     } /* end subroutine (muldig) */
 } /* end export */
 
 constexpr inline void split(ulong *va,const ulonglong v) noex {
-	cint nb = (szof(ulong) & CHAR_BIT) ;
+	cint nb = (szof(ulong) * CHAR_BIT) ;
     	va[0] = ulong(v >> 00) ;
     	va[1] = ulong(v >> nb) ;
 } /* end subroutine */
 
 constexpr inline ulonglong join(ulong *va) noex {
-	cint nb = (szof(ulong) & CHAR_BIT) ;
+	cint nb = (szof(ulong) * CHAR_BIT) ;
     	ulonglong lo = va[0] ;
     	ulonglong hi = va[1] ;
 	return (hi << nb) | lo ;
