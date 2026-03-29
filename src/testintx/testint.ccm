@@ -45,6 +45,7 @@ export module testint ;
 
 import varithmetic ;
 import intext ;
+import loadval ;
 
 /* local defines */
 
@@ -80,7 +81,7 @@ export {
 	utest64_t() = default ;
 	void load(int a) noex {
 	    for (int i = 0 ; i < n ; i += 1) {
-		v[i] = ucharconv(a >> (i * CHAR_BIT)) 
+		v[i] = ucharconv(a >> (i * CHAR_BIT)) ;
 	    }
 	} ;
 	utest64_t(int a)	noex : uintx(a) { } ;
