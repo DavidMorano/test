@@ -40,7 +40,7 @@ MODS +=
 LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += varithmetic.o intext.o
+DEPS_MAIN += testint.o intext.o varithmetic.o
 
 OBJ0= testintx_main.o
 OBJ1= intext.o
@@ -254,22 +254,23 @@ ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
 timeval.o:		timeval.cc	timeval.hh
 
-testint.o:		testint.ccm	varithmetic.o
+# TESTINT
+testint.o:		testint.ccm	intext.o varithmetic.o loadval.o
 
 # INTX
-intext.o:		intext.ccm	varithmetic.o
+intext.o:		intext.ccm	varithmetic.o loadval.o
 	makemodule $@
 
 # VARITHMETIC
 varithmetic.o:		varithmetic.ccm	builtin.o muldigs.o
 	makemodule $@
 
-# BUUILTIN
-builtin.o:		builtin.ccm
-	makemodule $@
+loadval.o:		loadval.ccm	bitmanip.o
 
-# MULDIGS
-muldigs.o:		muldigs.ccm
-	makemodule $@
+muldigs.o:		muldigs.ccm	builtin.o
+
+bitmanip.o:		bitmanip.ccm
+
+builtin.o:		builtin.ccm
 
 
