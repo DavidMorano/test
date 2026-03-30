@@ -67,7 +67,7 @@ using std::max ;			/* subroutine-template */
 template<integral_unsigned UT>
 constexpr void vload(int n,UT *v,UT a) noex {
 	for (int i = 0 ; i < n ; i += 1) {
-	    v[i++] = a ;
+	    v[i] = a ;
 	}
 } /* end subroutine (vload) */
 
