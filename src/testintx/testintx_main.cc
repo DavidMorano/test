@@ -10,8 +10,10 @@
 #define	CF_CARRY	0		/* carry-out */
 #define	CF_PRVAR	0		/* prvar */
 #define	CF_CAST		0		/* cast */
-#define	CF_VALUES	1		/* values */
-#define	CF_MULTIPLIER	0		/* multiplier */
+#define	CF_VALUES	0		/* values */
+#define	CF_SHIFT	0		/* shift */
+#define	CF_MULTIPLY	1		/* multiply */
+#define	CF_MULTIPLIER	1		/* multiplier */
 
 /* revision history:
 
@@ -64,8 +66,14 @@ import testint ;				/* |uint256_t| */
 #ifndef	CF_PRVAR
 #define	CF_PRVAR	0		/* prvar */
 #endif
+#ifndef	CF_SHIFT
+#define	CF_SHIFT	0		/* shift */
+#endif
 #ifndef	CF_VALUES
 #define	CF_VALUES	0		/* values */
+#endif
+#ifndef	CF_MULTIPLIER
+#define	CF_MULTIPLIER	1		/* multiplier */
 #endif
 
 
@@ -116,6 +124,9 @@ cbool		f_carry		= CF_CARRY ;
 cbool		f_prvar		= CF_PRVAR ;
 cbool		f_cast		= CF_CAST ;
 cbool		f_values	= CF_VALUES ;
+cbool		f_shift		= CF_SHIFT ;
+cbool		f_multiply	= CF_MULTIPLY ;
+cbool		f_multiplier	= CF_MULTIPLIER ;
 
 
 /* exported variables */
@@ -123,7 +134,6 @@ cbool		f_values	= CF_VALUES ;
 
 /* exported subroutines */
 
-#if	(CF_MULTIPLIER == 0)
 template <typename T> local int printvar(T vv) noex {
     	cint olen = LINEBUFLEN ;
     	cint usz = szof(ulong) ;
@@ -154,12 +164,6 @@ template <typename T> local int printvar(T vv) noex {
 	} /* end if (m-a-f) */
 	return rs ;
 } /* end subroutine (printvar) */
-#else
-template <typename T> local int printvar(T vv) noex {
-    	(void) vv ;
-	return SR_OK ;
-}
-#endif /* COMMENT */
 
 int mainsub(int,mainv,mainv) noex {
     	static cchar *	varhome = getenv("HOME") ;
@@ -195,10 +199,14 @@ int mainsub(int,mainv,mainv) noex {
 	    }
 	}
 	if (rs >= 0) {
-	    rs = test_shift() ;
+	    if_constexpr (f_shift) {
+	        rs = test_shift() ;
+	    }
 	}
 	if (rs >= 0) {
-	    rs = test_multiply() ;
+	    if_constexpr (f_multiply) {
+	        rs = test_multiply() ;
+	    }
 	}
 #if	CF_MULTIPLIER
 	if (rs >= 0) {
@@ -324,7 +332,7 @@ local int test_shift() noex {
 
 local int test_multiply() noex {
 	int		rs = SR_OK ;
-	uint256_t	m = 5 ;
+	uint256_t	m = (16 * 5) ;
 	uint256_t	v = 3 ;
 	DPRINTF("ent\n") ;
 	for (int i = 0 ; i < 8 ; i += 1) {
@@ -341,18 +349,21 @@ local int test_multiply() noex {
 #if	CF_MULTIPLIER
 local int test_multiplier() noex {
     	int		rs = SR_OK ;
-	utest64_t	m = (ULONG_MAX / 2) ;
+	utest64_t	m = (16 * 5) ;
 	utest64_t	v = 3 ;
+	ulong		vcheck = 3 ;
 	DPRINTF("ent\n") ;
 	for (int i = 0 ; i < 8 ; i += 1) {
 	    {
-	        rs = printvar(v) ;
+		culong pv = v ;
+	        printf("a=%018lx\n",pv) ;
+		rs = (pv != vcheck) ? SR_BADFMT : 0 ;
 		v = v * m ;
+		vcheck *= (16 * 5)  ;
 	    }
 	    if (rs < 0) break ;
 	} /* end for */
 	DPRINTF("ret rs=%d\n",rs) ;
-
 	return rs ;
 } /* end subroutine (test_multiplier) */
 #endif /* CF_MULTIPLIER */
