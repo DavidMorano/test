@@ -79,10 +79,8 @@ export {
     struct utest64_t : uintx<NBITS,UTYPE> {
 	inline static cint	n = (NBITS / (szof(UTYPE) * CHAR_BIT)) ;
 	utest64_t() = default ;
-	void load(int a) noex {
-	    for (int i = 0 ; i < n ; i += 1) {
-		v[i] = ucharconv(a >> (i * CHAR_BIT)) ;
-	    }
+	template<typename T>void load(T a) noex {
+	    loadval(n,v,a) ;
 	} ;
 	utest64_t(int a)	noex : uintx(a) { } ;
 	utest64_t(long a)	noex : uintx(a) { } ;
@@ -98,7 +96,7 @@ export {
 	utest64_t &operator = (const uintx<NBITS,UTYPE> &a) noex {
 	    vcopy(n,v,a.v) ;
 	    return *this ;
-	} ;
+	} ; /* end method (assignment) */
 	utest64_t &operator = (int a)		noex {
 	    load(a) ;
 	    return *this ;
@@ -115,6 +113,15 @@ export {
 	    load(a) ;
 	    return *this ;
 	} ; /* end method (assignment) */
+        operator ulong () noex {
+	    cint nb = (szof(UTYPE) * CHAR_BIT) ;
+	    ulong res = 0 ;
+	    for (int i = 0 ; i < n ; ++i) {
+	        ulong tv = v[i] ;
+	        res |= (tv << (i * nb)) ;
+	    }
+	    return res ;
+        } ; /* end method */
     } ; /* end struct (utest64_t) */
 } /* end export */
 
