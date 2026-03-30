@@ -45,13 +45,13 @@ DEPS_MAIN += testint.o intext.o varithmetic.o
 OBJ0= testintx_main.o
 OBJ1= intext.o
 OBJ2= varithmetic.o builtin.o
-OBJ3=
+OBJ3= testint.o
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o obj2.o
+OBJA= obj0.o obj1.o obj2.o obj3.o
 OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= obja.o
