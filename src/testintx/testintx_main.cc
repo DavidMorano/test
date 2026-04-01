@@ -6,6 +6,8 @@
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
+#define	CF_DIVS		1		/* divisions of */
+#define	CF_DIVSHORT	1		/* short-division */
 #define	CF_SZOF		0		/* size-of */
 #define	CF_CARRY	0		/* carry-out */
 #define	CF_PRVAR	0		/* prvar */
@@ -30,6 +32,7 @@
 #include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
 #include	<cstdio>
 #include	<new>			/* |nothrow| */
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<iostream>
 #include	<iomanip>
 #include	<syncstream>		/* |osyncstream(3c++)| */
@@ -47,12 +50,18 @@
 
 import libutil ;			/* |lenstr(3u)| */
 import intext ;				/* |uint256_t| */
-import testint ;				/* |uint256_t| */
+import testint ;			/* |uint256_t| */
+import loadvals ;			/* |loadval()| */
+import arithsteps ;
+
 
 /* local defines */
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	1		/* debugging */
+#endif
+#ifndef	CF_DIVS
+#define	CF_DIVS		0
 #endif
 #ifndef	CF_SZOF
 #define	CF_SZOF		0
@@ -103,6 +112,8 @@ struct looksz {
 
 /* forward references */
 
+local int	test_divs() noex ;
+local int	test_divshort() noex ;
 local int	test_carry() noex ;
 local int	test_prvar() noex ;
 local int	test_cast() noex ;
@@ -119,6 +130,8 @@ local int	test_multiplier() noex ;
 
 cint		fd_err		= FD_STDERR ;
 cbool		f_debug		= CF_DEBUG ;
+cbool		f_divs		= CF_DIVS ;
+cbool		f_divshort	= CF_DIVSHORT ;
 cbool		f_szof		= CF_SZOF ;
 cbool		f_carry		= CF_CARRY ;
 cbool		f_prvar		= CF_PRVAR ;
@@ -181,7 +194,12 @@ int mainsub(int,mainv,mainv) noex {
 	}
 	if_constexpr (f_carry) if (rs >= 0) {
 	    rs = test_carry() ;
-
+	} /* end if */
+	if_constexpr (f_divs) if (rs >= 0) {
+	    rs = test_divs() ;
+	} /* end if */
+	if_constexpr (f_divshort) if (rs >= 0) {
+	    rs = test_divshort() ;
 	} /* end if */
 	if (rs >= 0) {
 	    if_constexpr (f_prvar) {
@@ -252,6 +270,74 @@ int main(int argc,mainv argv,mainv envv) {
 
 
 /* local subroutines */
+
+constexpr int	dds[] = { 0xFF, 0x01, 0x10 } ;
+
+struct divs_stat {
+    int		rem ;
+    int		quo ;
+    int		div ;
+} ;
+
+local int test_divs() noex {
+    	divs_stat	stat = {} ;
+    	int		rs = SR_OK ;
+	int		remax{} ;
+	int		quo{} ;
+	int		rem{} ;
+	for (cauto &e : dds) {
+	    for (int d = 1 ; d < (UCHAR_MAX + 1) ; ++d) {
+		quo = e / d ;
+		rem = e % d ;
+		if (rem > remax) {
+		    remax = rem ;
+		    stat.rem = rem ;
+		    stat.quo = quo ;
+		    stat.div = d ;
+		}
+	    } /* end for */
+	} /* end for */
+	printf("remax=%d\n",remax) ;
+	printf("stat quo=%d rem=%d div=%d\n",stat.quo,stat.rem,stat.div) ;
+	{
+	    divs_stat ds{} ;
+	    for (int d = 1 ; d < (UCHAR_MAX + 1) ; ++d) {
+		int end = ((232 * 256) + 255) ;
+	        div_t	res = div(end,d) ;
+		if (res.rem > ds.rem) {
+		    ds.rem = res.rem ;
+		    ds.quo = res.quot ;
+		    ds.div = d ;
+		}
+	    } /* end for */
+	    printf("ds quo=%d rem=%d div=%d\n",ds.quo,ds.rem,ds.div) ;
+	} /* end block */
+	return rs ;
+} /* end subroutine (test_divs) */
+
+local int test_divshort() noex {
+    	cint		n = 4 ;
+	const uint	dividend = 13991273 ;
+    	uchar		dd[4] ;
+    	uchar		q[4] = {} ;
+    	int		rs = SR_OK ;
+	uint		quo0{}, quo1{} ;
+	uchar		rem0{}, rem1{} ;
+	for (uchar d = 1 ; d < 10 ; ++d) {
+	    loadval(n,dd,dividend) ;
+    	    rem0 = vdivshort(n,q,dd,d) ;
+	    mkv(&quo0,q) ;
+	    printf("%u quo=%d rem=%d\n",d,quo0,rem0) ;
+	    quo1 = dividend / d ;
+	    rem1 = uchar(dividend % d) ;
+	    printf("%u quo=%d rem=%d\n",d,quo1,rem1) ;
+	    if ((quo0 != quo1) || (rem0 != rem1)) {
+		rs = SR_BADFMT ;
+	    }
+	    if (rs < 0) break ;
+	} /* end for */
+	return rs ;
+} /* end subroutine (test_divshort) */
 
 local int test_carry() noex {
     	int		rs = SR_OK ;
