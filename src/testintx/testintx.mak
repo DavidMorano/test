@@ -40,19 +40,21 @@ MODS +=
 LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += testint.o intext.o varithmetic.o
+DEPS_MAIN += testint.o intext.o
+DEPS_MAIN += varithmetic.o arithsteps.o
+DEPS_MAIN += loadvals.o
 
 OBJ0= testintx_main.o
 OBJ1= intext.o
-OBJ2= varithmetic.o builtin.o
+OBJ2= varithmetic.o arithsteps.o
 OBJ3= testint.o
-OBJ4=
+OBJ4= builtin.o
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o obj2.o obj3.o
-OBJB= obj4.o obj5.o obj6.o obj7.o
+OBJA= obj0.o obj1.o obj2.o obj3.o obj4.o
+OBJB= obj5.o obj6.o obj7.o
 
 OBJ= obja.o
 
@@ -255,17 +257,19 @@ ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 timeval.o:		timeval.cc	timeval.hh
 
 # TESTINT
-testint.o:		testint.ccm	intext.o varithmetic.o loadval.o
+testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
-intext.o:		intext.ccm	varithmetic.o loadval.o
+intext.o:		intext.ccm	varithmetic.o loadvals.o
 	makemodule $@
 
 # VARITHMETIC
 varithmetic.o:		varithmetic.ccm	builtin.o muldigs.o
 	makemodule $@
 
-loadval.o:		loadval.ccm	bitmanip.o
+arithsteps.o:		arithsteps.ccm	bitmanip.o
+
+loadvals.o:		loadvals.ccm	bitmanip.o
 
 muldigs.o:		muldigs.ccm	builtin.o
 
