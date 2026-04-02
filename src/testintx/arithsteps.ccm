@@ -40,6 +40,7 @@ module ;
 #include	<usysdefs.h>
 #include	<stdintx.h>
 #include	<localmisc.h>
+#include	<dprintf.hh>		/* debugging */
 
 export module arithsteps ;
 
@@ -64,6 +65,8 @@ typedef ulonglong	ull ;
 
 
 /* local variables */
+
+cbool		f_debug 	= true ;
 
 
 /* module subroutines */
@@ -90,6 +93,17 @@ template<typename Dig> constexpr void vcopy(int n,Dig *r,const Dig *v) noex {
 	}
 } /* end subroutine (vcopy) */
 
+template<typename TA> constexpr int ndivdig(int n,TA *d) noex {
+    	int c = 0 ;
+    	for (int i = (n - 1) ; i >= 0 ; --i) {
+	    if (d[i]) {
+		c = (i + 1) ;
+		break ;
+	    }
+	} /* end for */
+    	return c ;
+} /* end subroutine-template (ndivdig) */
+
 #ifdef	COMMENT
 constexpr void vmuler(int n,ulong *r,const ulong *v0,const ulong *v1) noex {
 	cint nb = (szof(ulong) * CHAR_BIT) ;
@@ -113,40 +127,6 @@ constexpr void vmuler(int n,ulong *r,const ulong *v0,const ulong *v1) noex {
 	    } /* end for */
 	} /* end for */
 } /* end subroutine (vmuler) */
-#endif /* COMMENT */
-
-#ifdef	COMMENT
-template<integral_unsigned T2,integral_unsigned T1>
-    constexpr inline void divdigx(T1 *qr,const T1 *dd,const T1 d) noex {
-	cint nb = nbits<T1> ;
-	const T2 dd0 = dd[0] ;
-	const T2 dd1 = dd[1] ;
-	{
-	    const T2 dividend =  (dd1 << nb) | dd0 ;
-	    {
-	        const T2 quo = dividend / d ;
-	        const T2 rem = dividend % d ;
-	        qr[0] = T1(rem >> 00) ;
-	        qr[1] = T1(quo >> 00) ;
-	        qr[2] = T1(quo >> nb) ;
-	    }
-	}
-    } /* end subroutine (divdigx) */
-
-export {
-    constexpr void divdig(int1 *qr,const int1 *dd,const int1 d) noex {
-	return divdigx<uint>(qr,dd,d) ;
-    } /* end subroutine (divdig) */
-    constexpr void divdig(int2 *qr,const int2 *dd,const int2 d) noex {
-	return divdigx<uint>(qr,dd,d) ;
-    } /* end subroutine (divdig) */
-    constexpr void divdig(int4 *qr,const int4 *dd,const int4 d) noex {
-	return divdigx<ulong>(qr,dd,d) ;
-    } /* end subroutine (divdig) */
-    constexpr void divdig(int8 *qr,const int8 *dd,const int8 d) noex {
-	return divdigx<ulonglong>(qr,dd,d) ;
-    } /* end subroutine (divdig) */
-} /* end export */
 #endif /* COMMENT */
 
 template<integral_unsigned T2,integral_unsigned T1>
@@ -183,31 +163,55 @@ export {
     } /* end subroutine (divdig) */
 } /* end export */
 
+#ifdef	COMMENT
+export {
+    template<typename TA> 
+    constexpr void vdiv(int n,TA *q,TA *r,const TA *dd,TA *d) noex {
+	cint nd = ndivdig(n,d) ;
+	int di ;
+	TA tmp[n+1] ;
+	TA div ;
+	TA tq[2] ;
+	vcopy(n,tmp,dd) ;
+	tmp[n] = 0 ;
+	di = (nd - 1) ;
+	div = d[di] ;
+	for (int i = (n - 1) ; i >= 0 ; --i) {
+    	    rem = divdig(tq,(tmp + i),div) ;
+	    q[i] = tq[0] ;
+
+	} /* end for */
+    } /* end subroutine-template (vdiv) */
+} /* end export */
+#endif /* COMMENT */
+
 export {
     template<integral_unsigned T1>
     constexpr inline T1 vdivshort(int n,T1 *q,const T1 *dd,const T1 d) noex {
-	T1	tmp[n+1] ;
-	T1 res{} ;
+	T1 tmp[n+1] ;
+	T1 rem{} ;
 	T1 quo[2] ;
 	vcopy(n,tmp,dd) ;
 	tmp[n] = 0 ;
 	for (int i = (n - 1) ; i >= 0 ; --i) {
-	    res = divdig(quo,(tmp + i),d) ;
+	    rem = divdig(quo,(tmp + i),d) ;
 	    q[i] = quo[0] ;
-	    tmp[i] = res ;
+	    tmp[i] = rem ;
 	} /* end for */
-	return res ;
+	return rem ;
     } /* end subroutine (vdivshort) */
 } /* end export */
 
 export {
-    template<typename T,typename TA> constexpr void mkv(T *rp,TA *a) noex {
+    template<typename T,typename TA> 
+    constexpr void mkv(T *rp,const TA *a) noex {
+	cint nb = nbits<TA> ;
     	cint sz_ta = szof(TA) ;
-    	cint n = szof(T) / szof(TA) ;
+    	cint n = szof(T) / sz_ta ;
     	T res{} ;
 	for (int i = 0 ; i < n ; i += 1) {
 	    T tmp = T(a[i]) ;
-	    tmp <<= (i * (sz_ta * CHAR_BIT)) ;
+	    tmp <<= (i * nb) ;
 	    res |= tmp ;
 	} /* end for */
         *rp = res ;
