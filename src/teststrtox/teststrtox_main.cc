@@ -5,7 +5,6 @@
 /* test the |hostequiv(3dam)| subroutine */
 /* version %I% last-modified %G% */
 
-#define	CF_FUNKYTEST	1		/* try using the funky tests */
 
 /* revision history:
 
@@ -41,7 +40,7 @@ type subroutine.
 
 	Description:
 	This test program tests the |strtoxl(3u)| subroutine.  I
-	took (borrowed?) the tests from the GNU GLIBimplementation
+	took (borrowed?) the tests from the GNU GLIBC implementation
 	of their |stro{x}(3c)| subroutines and included it (pretty
 	much untouched) below.  I had to make a few clean-ups for
 	it (the data) to compile properly under C++ rules.
@@ -58,7 +57,7 @@ type subroutine.
 	function: either |strtoxl(3)| or |strtoxul(3u)|.  For
 	control, I also ran the tests against the macOS (Apple
 	Datwin) version of the standard C-language subroutines.
-	All of these test case pass on all subroutines.
+	All of these test cases pass on all subroutines.
 
 *******************************************************************************/
 
@@ -78,10 +77,6 @@ type subroutine.
 
 
 /* local defines */
-
-#ifndef	CF_FUNKYTEST
-#define	CF_FUNKYTEST	1		/* try using the funky tests */
-#endif
 
 
 /* local namespaces */
@@ -321,10 +316,8 @@ constexpr ltest		tests_signed[] = { /* <- taken from GNU GLIBC */
 constexpr ltest		tests_unsigned[] = { /* <- taken from GNU GLIBC */
   /* Then unsigned.  */
   {"  0", 0, 0, 0, 0},
-#if	CF_FUNKTESTS /* I fail on this, but I have no idea what it is */
   {"0xffffffffg", 0xffffffff, 0, 'g', 0},
   {"0xffffffffffffffffg", 0xffffffffffffffff, 0, 'g', 0},
-#endif /* CF_FUNKYTEST */
   {"-0xfedcba987654321", 0xf0123456789abcdf, 0, 0, 0},
   {"0xf1f2f3f4f5f6f7f8f9", 0xffffffffffffffff, 0, 0, ERANGE},
   {"-0x123456789abcdef01", 0xffffffffffffffff, 0, 0, ERANGE},
