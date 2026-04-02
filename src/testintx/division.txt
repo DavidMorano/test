@@ -39,6 +39,90 @@ Division
 
 = Estimated division
 
+Performing long division using the **leading digit** of the divisor
+to estimate is a classic technique known as the **First-Digit
+Guessing** or **Estimation Method**. It simplifies the math by
+turning complex multi-digit division into basic single-digit
+arithmetic.
+
+Here is a step-by-step breakdown using the example of $4,832 \div
+23$.
+
+---
+
+## 1. Set Up and Identify the Leading Digit The "Leading Digit" is
+the leftmost digit of your divisor. For our divisor, **23**, the
+leading digit is **2**. We will use the **2** to guess how many
+times the divisor fits into the dividend.
+
+---
+
+## 2. Step-by-Step Execution
+
+### Round 1: Dealing with the first two digits 
+
+1.  **Estimate:**
+Look at the first two digits of the dividend (**48**). Ask: "How
+many times does our leading digit **2** go into **4**?"
+    * **Estimate = 2**.
+
+2.  **Multiply:** 
+Multiply the *entire* divisor by your estimate:
+$23 \times 2 = 46$.  3.  **Subtract:** $48 - 46 = 2$.  4.  **Bring
+Down:** Bring down the next digit (**3**), making the new number
+**23**.
+
+### Round 2: The next digit
+
+1.  **Estimate:** 
+
+How many times does our leading digit **2** go into the first digit
+of our new number (**2**)?
+    * **Estimate = 1**.
+
+2.  **Multiply:** $23 \times 1 = 23$.
+3.  **Subtract:** $23 - 23 = 0$.
+4.  **Bring Down:** Bring down the final digit (**2**).
+
+### Round 3: The final remainder
+
+1.  **Estimate:** How many times does **2** go into **0**?
+    * **Estimate = 0**.
+2.  **Multiply:** $23 \times 0 = 0$.
+3.  **Subtract:** $2 - 0 = 2$.
+
+---
+
+## 3. The "Course Correction" Rule
+
+Because we only use the first digit to estimate, our guess might
+sometimes be too high. This is where the **convergence** happens.
+
+**If your multiplication result is larger than the dividend segment:**
+Your estimate was too high. Reduce your estimate by 1 and try again.
+
+**If your subtraction result is larger than the divisor:** Your
+estimate was too low. Increase your estimate by 1 and try again.
+
+[Image showing subtraction step in long division with a remainder]
+
+---
+
+## Final Result
+
+For $4,832 \div 23$:
+* **Quotient:** $210$
+* **Remainder:** $2$
+
+In mathematical terms:
+$$4832 = (23 \times 210) + 2$$
+
+### Summary Table of the Process
+| Step | Segment | Lead Digit Guess | Actual Product | Subtraction/Remainder |
+| :--- | :--- | :--- | :--- | :--- |
+| 1 | 48 | $4 \div 2 = \mathbf{2}$ | $23 \times 2 = 46$ | $48 - 46 = 2$ |
+| 2 | 23 | $2 \div 2 = \mathbf{1}$ | $23 \times 1 = 23$ | $23 - 23 = 0$ |
+| 3 | 02 | $0 \div 2 = \mathbf{0}$ | $23 \times 0 = 0$ | $2 - 0 = 2$ |
 
 
 
