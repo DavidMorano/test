@@ -317,25 +317,29 @@ local int test_divs() noex {
 
 local int test_divshort() noex {
     	cint		n = 4 ;
-	const uint	dividend = 13991273 ;
+	const uint	dividend = 713991273 ;
     	uchar		dd[4] ;
     	uchar		q[4] = {} ;
     	int		rs = SR_OK ;
 	uint		quo0{}, quo1{} ;
 	uchar		rem0{}, rem1{} ;
-	for (uchar d = 1 ; d < 10 ; ++d) {
+	DPRINTF("ent\n") ;
+	for (int i = 1 ; i < (UCHAR_MAX + 1) ; ++i) {
+	    uchar d = uchar(i) ;
 	    loadval(n,dd,dividend) ;
     	    rem0 = vdivshort(n,q,dd,d) ;
 	    mkv(&quo0,q) ;
-	    printf("%u quo=%d rem=%d\n",d,quo0,rem0) ;
 	    quo1 = dividend / d ;
 	    rem1 = uchar(dividend % d) ;
-	    printf("%u quo=%d rem=%d\n",d,quo1,rem1) ;
 	    if ((quo0 != quo1) || (rem0 != rem1)) {
+	        printf("mismatch\n") ;
+	        printf("%u quo=%d rem=%d\n",d,quo0,rem0) ;
+	        printf("%u quo=%d rem=%d\n",d,quo1,rem1) ;
 		rs = SR_BADFMT ;
 	    }
 	    if (rs < 0) break ;
 	} /* end for */
+	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
 } /* end subroutine (test_divshort) */
 
