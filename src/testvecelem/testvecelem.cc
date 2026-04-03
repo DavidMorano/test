@@ -5,7 +5,7 @@
 /* test the VECINT Object */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUG	1		/* debuging switch */
+#define	CF_DEBUG	1		/* debugging switch */
 
 /* revision history:
 
