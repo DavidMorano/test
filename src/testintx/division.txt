@@ -126,3 +126,292 @@ $$4832 = (23 \times 210) + 2$$
 
 
 
+
+
+I have a computer machine that has a divide instruction that can
+only divide a 16-bit quantity by an 8-bit quantity (all unsigned).
+I am also working with the C++ programming language, and the divide
+instruction of the underlying machine is embodied in the slash (
+'/' ) operator in the language. A division yielding a reminder is
+also available and is embodied by the '%' character operator in the
+language. A 16-bit dividend yielding an 8-bit remainder (and using
+an 8-bit divisor) is what is also available. But I need to perform
+multi-digit division of an array of 8 8-bit quantities (in an array
+of 'unsigned char' in the language) by a divisor held in an array
+of 4 8-bit quantities (also held in an array of 4 'unsigned char'
+variables). Write for me a function that takes a dividend consisting
+of an array of 8 unsigned chars and also a divisor consisting of
+an array of 4 unsigned chars, and yields as a result both the
+quotient (an  array buffer consisting of 8 unsigned chars) and a
+remainder which is also an array consisting of 4 unsigned chars (to
+match the divisor array). So the function signature will look
+something like:  void div(uchar *quotient,uchar *remiander,const
+uchar *dividend,const uchar *divisor) - where the 'uchar' type is
+a typedef for 'unsigned char'.
+
+
+= code (bug-endian)
+
+#include <cstring>
+
+typedef unsigned char  uchar;
+typedef unsigned short ushort;
+
+/*
+ * Compare n-byte unsigned values
+ * returns:
+ *   -1 if a < b
+ *    0 if a == b
+ *    1 if a > b
+ */
+static int cmp(const uchar *a,const uchar *b,int n)
+{
+    for(int i=0;i<n;i++)
+    {
+        if(a[i] < b[i]) return -1;
+        if(a[i] > b[i]) return 1;
+    }
+    return 0;
+}
+
+/*
+ * Subtract b from a over n bytes:
+ * a := a - b
+ * assumes a >= b
+ */
+static void sub(uchar *a,const uchar *b,int n)
+{
+    int borrow = 0;
+
+    for(int i=n-1;i>=0;i--)
+    {
+        int t = (int)a[i] - (int)b[i] - borrow;
+
+        if(t < 0)
+        {
+            t += 256;
+            borrow = 1;
+        }
+        else
+            borrow = 0;
+
+        a[i] = (uchar)t;
+    }
+}
+
+/*
+ * Multiply divisor by single byte q and store in temp
+ * divisor is 4 bytes, result is 5 bytes
+ */
+static void mul_byte(uchar *temp,const uchar *divisor,uchar q)
+{
+    int carry = 0;
+
+    for(int i=3;i>=0;i--)
+    {
+        int t = divisor[i] * q + carry;
+        temp[i+1] = (uchar)(t & 0xFF);
+        carry = t >> 8;
+    }
+
+    temp[0] = (uchar)carry;
+}
+
+/*
+ * Shift left one byte:
+ * 5-byte window
+ */
+static void shift_left(uchar *x,int n)
+{
+    for(int i=0;i<n-1;i++)
+        x[i] = x[i+1];
+}
+
+/*
+ * Divide 8-byte dividend by 4-byte divisor
+ */
+void div(uchar *quotient,uchar *remainder,
+         const uchar *dividend,const uchar *divisor)
+{
+    uchar rem[5];
+    uchar prod[5];
+
+    std::memset(quotient,0,8);
+    std::memset(rem,0,5);
+
+    for(int i=0;i<8;i++)
+    {
+        /* Shift remainder left by one byte */
+        shift_left(rem,5);
+        rem[4] = dividend[i];
+
+        /*
+         * Estimate quotient digit:
+         * use top 16 bits / top divisor byte
+         */
+        ushort top =
+            ((ushort)rem[0] << 8) | rem[1];
+
+        uchar q = (uchar)(top / divisor[0]);
+
+        /*
+         * Correct if too large
+         */
+        while(1)
+        {
+            mul_byte(prod,divisor,q);
+
+            if(cmp(rem,prod,5) >= 0)
+                break;
+
+            q--;
+        }
+
+        quotient[i] = q;
+
+        mul_byte(prod,divisor,q);
+        sub(rem,prod,5);
+    }
+
+    /* final 4-byte remainder */
+    for(int i=0;i<4;i++)
+        remainder[i] = rem[i+1];
+}
+
+
+= code (little-endian)
+
+#include <cstring>
+
+typedef unsigned char  uchar;
+typedef unsigned short ushort;
+
+/*
+ * Compare n-byte unsigned values
+ * arrays are little-endian externally,
+ * but comparison here is done high-byte first.
+ */
+static int cmp(const uchar *a,const uchar *b,int n)
+{
+    for(int i=n-1;i>=0;i--)
+    {
+        if(a[i] < b[i]) return -1;
+        if(a[i] > b[i]) return 1;
+    }
+    return 0;
+}
+
+/*
+ * a := a - b   over n bytes
+ * little-endian
+ */
+static void sub(uchar *a,const uchar *b,int n)
+{
+    int borrow = 0;
+
+    for(int i=0;i<n;i++)
+    {
+        int t = (int)a[i] - (int)b[i] - borrow;
+
+        if(t < 0)
+        {
+            t += 256;
+            borrow = 1;
+        }
+        else
+            borrow = 0;
+
+        a[i] = (uchar)t;
+    }
+}
+
+/*
+ * Multiply 4-byte divisor by one byte q
+ * result = 5-byte product
+ * little-endian
+ */
+static void mul_byte(uchar *temp,const uchar *divisor,uchar q)
+{
+    int carry = 0;
+
+    for(int i=0;i<4;i++)
+    {
+        int t = divisor[i] * q + carry;
+        temp[i] = (uchar)(t & 0xFF);
+        carry = t >> 8;
+    }
+
+    temp[4] = (uchar)carry;
+}
+
+/*
+ * Shift left by one byte:
+ * multiply by 256
+ * little-endian means move upward
+ */
+static void shift_left(uchar *x,int n)
+{
+    for(int i=n-1;i>0;i--)
+        x[i] = x[i-1];
+
+    x[0] = 0;
+}
+
+/*
+ * Divide 8-byte dividend by 4-byte divisor
+ * all arrays little-endian
+ */
+void div(uchar *quotient,uchar *remainder,
+         const uchar *dividend,const uchar *divisor)
+{
+    uchar rem[5];
+    uchar prod[5];
+
+    std::memset(quotient,0,8);
+    std::memset(rem,0,5);
+
+    /*
+     * Process from most-significant dividend byte downward
+     */
+    for(int i=7;i>=0;i--)
+    {
+        shift_left(rem,5);
+        rem[0] = dividend[i];
+
+        /*
+         * Estimate quotient digit from top two bytes
+         */
+        ushort top =
+            ((ushort)rem[4] << 8) | rem[3];
+
+        uchar q = (uchar)(top / divisor[3]);
+
+        /*
+         * Correct estimate downward if needed
+         */
+        while(1)
+        {
+            mul_byte(prod,divisor,q);
+
+            if(cmp(rem,prod,5) >= 0)
+                break;
+
+            q--;
+        }
+
+        quotient[i] = q;
+
+        mul_byte(prod,divisor,q);
+        sub(rem,prod,5);
+    }
+
+    /*
+     * final remainder: low 4 bytes
+     */
+    for(int i=0;i<4;i++)
+        remainder[i] = rem[i];
+}
+
+
+
+
