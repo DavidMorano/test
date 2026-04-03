@@ -423,7 +423,7 @@ local int test_shift() noex {
 local int test_multiply() noex {
 	int		rs = SR_OK ;
 	uint256_t	m = (16 * 5) ;
-	uint256_t	v = 3 ;
+	uint256_t	v = 0x0303 ;
 	DPRINTF("ent\n") ;
 	for (int i = 0 ; i < 8 ; i += 1) {
 	    {
@@ -440,8 +440,8 @@ local int test_multiply() noex {
 local int test_multiplier() noex {
     	int		rs = SR_OK ;
 	utest64_t	m = (16 * 5) ;
-	utest64_t	v = 3 ;
-	ulong		vcheck = 3 ;
+	utest64_t	v = 0x0303 ;
+	ulong		vcheck = 0x0303 ;
 	DPRINTF("ent\n") ;
 	for (int i = 0 ; i < 8 ; i += 1) {
 	    {
