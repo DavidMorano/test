@@ -49,6 +49,13 @@ int main(int,cchar **,cchar **) {
 
 	    fprintf(ofp,"ent\n") ;
 	    fflush(ofp) ;
+
+	{
+	    uint end = 0xffffffff ;
+	    uint res ;
+	    res = (end / 1) ;
+	    printf("res=%08X\n",res) ;
+	}
 	{
 	    int_fastdiv	fd(10) ;
 	    bool	f_bad = false ;
