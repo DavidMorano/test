@@ -29,13 +29,13 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<climits>
 #include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<localmisc.h>
-
 #include	<bfile.h>
 #include	<baops.h>
 #include	<field.h>
