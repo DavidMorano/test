@@ -46,7 +46,6 @@ export module arithsteps ;
 
 import builtin ;
 import bitmanip ;
-import varithmetic ;
 
 /* local defines */
 
@@ -82,7 +81,6 @@ constexpr int addc(Dig *r,const Dig v0,const Dig v1,int ci = 0) noex {
 } /* end subroutine (addc) */
 #endif /* COMMENT */
 
-#ifdef	COMMENT
 template<typename Dig> constexpr void vclear(int n,Dig *v) noex {
 	for (int i = 0 ; i < n ; i += 1) {
 	    v[i] = 0 ;
@@ -94,7 +92,6 @@ template<typename Dig> constexpr void vcopy(int n,Dig *r,const Dig *v) noex {
 	    r[i] = v[i] ;
 	}
 } /* end subroutine (vcopy) */
-#endif /* COMMENT */
 
 /* how many digits are in a divisor-array, on the low end */
 template<typename TA> constexpr int ndivdig(int n,TA *d) noex {
