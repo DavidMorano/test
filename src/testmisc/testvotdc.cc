@@ -1,13 +1,13 @@
-/* testvotdc */
+/* testvotdc SUPPOR */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* test the VOTDC facility */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #define	CF_PHASE1	1		/* phase-1 */
-
 
 /* revision history:
 
@@ -22,12 +22,19 @@
 #include	<sys/types.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstring>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibsubs.h>
 #include	<randomvar.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG */
+
 #include	"testvotdc.h"
 #include	"requests.h"
 #include	"votdc.h"
@@ -48,12 +55,8 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
-extern "C" int	debugopen(const char *) ;
-extern "C" int	debugprintf(const char *,...) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(const char *,int,int) ;
-#endif
+
+/* external variables */
 
 
 /* local structures */
