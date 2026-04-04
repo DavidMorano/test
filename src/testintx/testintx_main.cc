@@ -6,6 +6,7 @@
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
+#define	CF_DIVSHOW	0		/* divisions of */
 #define	CF_DIVS		1		/* divisions of */
 #define	CF_DIVSHORT	1		/* short-division */
 #define	CF_SZOF		0		/* size-of */
@@ -14,8 +15,8 @@
 #define	CF_CAST		0		/* cast */
 #define	CF_VALUES	0		/* values */
 #define	CF_SHIFT	0		/* shift */
-#define	CF_MULTIPLY	1		/* multiply */
-#define	CF_MULTIPLIER	1		/* multiplier */
+#define	CF_MULTIPLY	0		/* multiply */
+#define	CF_MULTIPLIER	0		/* multiplier */
 
 /* revision history:
 
@@ -54,7 +55,6 @@ import testint ;			/* |uint256_t| */
 import loadvals ;			/* |loadval()| */
 import arithsteps ;
 
-
 /* local defines */
 
 #ifndef	CF_DEBUG
@@ -88,6 +88,8 @@ import arithsteps ;
 
 /* local namespaces */
 
+using std::min ;			/* subroutine-template */
+using std::max ;			/* subroutine-template */
 using libu::snprintf ;			/* subroutine */
 using std::cout ;			/* variable */
 using std::nothrow ;			/* constant */
@@ -112,6 +114,9 @@ struct looksz {
 
 /* forward references */
 
+local int	test_divshow() noex ;
+local int	test_divshow1() noex ;
+local int	test_divshow2() noex ;
 local int	test_divs() noex ;
 local int	test_divshort() noex ;
 local int	test_carry() noex ;
@@ -130,6 +135,7 @@ local int	test_multiplier() noex ;
 
 cint		fd_err		= FD_STDERR ;
 cbool		f_debug		= CF_DEBUG ;
+cbool		f_divshow	= CF_DIVSHOW ;
 cbool		f_divs		= CF_DIVS ;
 cbool		f_divshort	= CF_DIVSHORT ;
 cbool		f_szof		= CF_SZOF ;
@@ -195,6 +201,9 @@ int mainsub(int,mainv,mainv) noex {
 	if_constexpr (f_carry) if (rs >= 0) {
 	    rs = test_carry() ;
 	} /* end if */
+	if_constexpr (f_divshow) if (rs >= 0) {
+	    rs = test_divshow() ;
+	} /* end if */
 	if_constexpr (f_divs) if (rs >= 0) {
 	    rs = test_divs() ;
 	} /* end if */
@@ -236,7 +245,7 @@ int mainsub(int,mainv,mainv) noex {
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	}
-	DPRINTF("ent ex=%d rs=%d\n",ex,rs) ;
+	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (mainsub) */
 
@@ -270,6 +279,108 @@ int main(int argc,mainv argv,mainv envv) {
 
 
 /* local subroutines */
+
+local int test_divshow() noex {
+    int		rs = SR_OK ;
+    if (rs >= 0) rs = test_divshow1() ;
+    if (rs >= 0) rs = test_divshow2() ;
+    return rs ;
+}
+
+local int test_divshow1() noex {
+    int		rs = SR_OK ;
+    for (int i = 0 ; i < 4 ; i += 1) {
+	uint u = i ;
+        for (int j = 1 ; j < 4 ; j += 1) {
+	    uint v = j ;
+	    uint res ;
+	    uint rem ;
+	    res = u / v ;
+	    rem = u % v ;
+	    printf("%02X %02X %02X %02X\n",u,v,res,rem) ;
+	} /* end for */
+    } /* end for */
+    return rs ;
+} /* end subroutine (test_divshow1) */
+
+local void vclear(int n,uchar *v) noex {
+    for (int i = 0 ; i < n ; i += 1) {
+	v[i] = 0 ;
+    } /* end for */
+} /* end subroutine (vclear) */
+
+    template<typename Dig>
+    constexpr void vcopy(int n,Dig *r,const Dig *o = nullptr) noex {
+	if (o) {
+	    for (int i = 0 ; i < n ; i += 1) {
+	        r[i] = o[i] ;
+	    }
+	} else {
+	    vclear(n,r) ;
+	}
+    } /* end subroutine (vcopy) */
+
+local void vload(int n,uchar *v,uint val) noex {
+    cint nd = szof(val) ;
+    for (int i = 0 ; i < min(n,nd) ; i += 1) {
+	uint	vv = (val >> (i * CHAR_BIT)) ;
+	v[i] = uchar(vv & UCHAR_MAX) ;
+    } /* end for */
+    if (nd < n) {
+    	int nr = (n - nd) ;
+        vclear(nr,(v + nd)) ;
+    }
+} /* end subroutine (vload) */
+
+local uint vjoin(int n,uchar *q) noex {
+    uint	res = 0 ;
+    for (int i = (n - 1) ; i >= 0 ; --i) {
+	uint v = q[i] ;
+	res <<= CHAR_BIT ;
+	res |= v ;
+    } /* end for */
+    return res ;
+} /* end subroutine (vjoin) */
+
+local void vdivfull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
+    udiv<uint>	res ;
+    uint 	num ;
+    uint 	den ;
+    uchar	tmp[n+3] ;
+    vclear((n+2),tmp) ;
+    vcopy(4,tmp+2,u) ;
+    (void) n ;
+    (void) q ;
+    (void) r ;
+    (void) u ;
+    (void) v ;
+    for (int i = (n-1) ; i >= 0 ; --i) {
+	    num = vjoin(2,(tmp+i+2-1)) ;
+	    den = vjoin(1,(v+i)) ;
+	    res(num,den) ;
+    } /* end for */
+} /* end subroutine (vdivfull) */
+
+local int test_divshow2() noex {
+    int		rs = SR_OK ;
+    uchar	u[7] = {} ;
+    uchar	q[6] = {} ;
+    uchar	r[2] = {} ;
+    uchar	v[2] = {} ;
+    vload(2,v,0x0303) ;
+    for (int i = 0 ; i < 8 ; i += 1) {
+    	vload(4,u,i) ;
+	vdivfull(4,q,r,u,v) ;
+	{
+	    const uint qq = vjoin(4,q) ;
+	    const uint uu = vjoin(4,u) ;
+	    const uint vv = vjoin(2,v) ;
+	    const uint rr = vjoin(2,r) ;
+	    printf("%02X %02X %02X %02X\n",uu,vv,qq,rr) ;
+	}
+    } /* end for */
+    return rs ;
+} /* end subroutine (test_divshow2) */
 
 constexpr int	dds[] = { 0xFF, 0x01, 0x10 } ;
 
