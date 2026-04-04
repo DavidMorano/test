@@ -1,11 +1,13 @@
-/* testshmalloc */
+/* testshmalloc SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
+/* test the |malloc| facility */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #define	CF_PHASE1	1		/* phase-1 */
-
 
 /* revision history:
 
@@ -20,15 +22,23 @@
 #include	<sys/types.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstring>
+#include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibsubs.h>
 #include	<randomvar.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG */
+
 #include	"testshmalloc.h"
 #include	"shmalloc.h"
 #include	"requests.h"
+
 
 /* local defines */
 
@@ -44,12 +54,8 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
-extern "C" int	debugopen(cchar *) ;
-extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(cchar *,int,int) ;
-#endif
+
+/* external variables */
 
 
 /* local structures */
