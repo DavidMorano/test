@@ -356,30 +356,30 @@ local bool divest(udiv<uint> *rp,uchar *u,uchar *v) noex {
 	udiv<uint>	res{} ;
 	uint		num = vjoin(4,u) ;
 	uint		den = vjoin(2,v) ;
-	uint		dest ;
+	uint		tden ;
 	uint		pro ;
 	bool		fz = true ;
     DPRINTF("ent\n") ;
     DPRINTF("u=%02X:%02X:%02X:%02X\n",u[3],u[2],u[1],u[0]) ;
     DPRINTF("v=%02X:%02X\n",v[1],v[0]) ;
     DPRINTF("num=%08X den=%04X\n",num,den) ;
-    DPRINTF("dest=%02X\n",dest) ;
 	if (v[1] == 0) {
-	    dest = v[0] ;
-	    res(num,dest) ;
+	    tden = v[0] ;
+	    res(num,tden) ;
 	    fz = false ;
 	} else if (v[0]) {
 	    fz = false ;
-	    dest = v[1] ;
-	    while (dest > 0) {
-	        cint nest = u[3] ;
-	        res(num,dest) ;
+	    tden = v[1] ;
+    	    DPRINTF("tden=%02X\n",tden) ;
+	    while (tden > 0) {
+	        cint tnum = u[3] ;
+	        res(tnum,tden) ;
 	        pro = res.quo * den ;
 	        if (pro <= num) break ;
-	        dest -= 1 ;
+	        tden -= 1 ;
 	    } /* end while */
 	} /* end if (zero-divsor detect) */
-	if (dest == 0) {
+	if (tden == 0) {
 	    res = {} ;
 	}
 	*rp = res ;
