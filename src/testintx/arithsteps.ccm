@@ -94,7 +94,8 @@ template<typename Dig> constexpr void vcopy(int n,Dig *r,const Dig *v) noex {
 } /* end subroutine (vcopy) */
 
 /* how many digits are in a divisor-array, on the low end */
-template<typename TA> constexpr int ndivdig(int n,TA *d) noex {
+export {
+    template<typename TA> constexpr int nsigdig(int n,TA *d) noex {
     	int c = 0 ;
     	for (int i = (n - 1) ; i >= 0 ; --i) {
 	    if (d[i]) {
@@ -103,7 +104,8 @@ template<typename TA> constexpr int ndivdig(int n,TA *d) noex {
 	    }
 	} /* end for */
     	return c ;
-} /* end subroutine-template (ndivdig) */
+    } /* end subroutine-template (nsigdig) */
+} /* end export */
 
 #ifdef	COMMENT
 constexpr void vmuler(int n,ulong *r,const ulong *v0,const ulong *v1) noex {
@@ -167,7 +169,7 @@ export {
 #ifdef	COMMENT
 export {
     constexpr void vdiv(int n,uchar *q,uchar *r,const uchar *dd,uchar *d) noex {
-	cint nd = ndivdig(n,d) ;
+	cint nd = nsigdig(n,d) ;
 	int di ;
 	uchar tmp[n+1] ;
 	uchar div ;
@@ -187,7 +189,7 @@ export {
 export {
     template<typename TA> 
     constexpr void vdiv(int n,TA *q,TA *r,const TA *dd,TA *d) noex {
-	cint nd = ndivdig(n,d) ;
+	cint nd = nsigdig(n,d) ;
 	int di ;
 	TA tmp[n+1] ;
 	TA div ;
