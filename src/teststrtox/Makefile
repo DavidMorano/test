@@ -276,6 +276,6 @@ bitmanip.o:		bitmanip.ccm
 builtin.o:		builtin.ccm
 
 prognamevar.o:		prognamevar.cc	prognamevar.hh
-shellunder.o:		shellunder.cc	shellunder.h
+shellunder.o:		shellunder.cc	shellunder.h prognamevar.hh
 
 
