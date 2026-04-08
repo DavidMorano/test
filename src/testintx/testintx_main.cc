@@ -55,6 +55,7 @@ import intext ;				/* |uint256_t| */
 import testint ;			/* |uint256_t| */
 import loadvals ;			/* |loadval()| */
 import arithsteps ;
+import varithmetic ;
 
 /* local defines */
 
@@ -313,6 +314,7 @@ local int test_divshow1() noex {
     return rs ;
 } /* end subroutine (test_divshow1) */
 
+#ifdef	COMMENT
 local void vclear(int n,uchar *v) noex {
     for (int i = 0 ; i < n ; i += 1) {
 	v[i] = 0 ;
@@ -329,8 +331,9 @@ local void vclear(int n,uchar *v) noex {
 	    vclear(n,r) ;
 	}
     } /* end subroutine (vcopy) */
+#endif /* COMMENT */
 
-local void vload(int n,uchar *v,uint val) noex {
+local void vload(int n,uchar *v,const uint val) noex {
     cint nd = szof(val) ;
     for (int i = 0 ; i < min(n,nd) ; i += 1) {
 	uint	vv = (val >> (i * CHAR_BIT)) ;
@@ -342,7 +345,7 @@ local void vload(int n,uchar *v,uint val) noex {
     }
 } /* end subroutine (vload) */
 
-local uint vjoin(int n,uchar *q) noex {
+local uint vjoin(int n,const uchar *q) noex {
     uint	res = 0 ;
     for (int i = (n - 1) ; i >= 0 ; --i) {
 	uint v = q[i] ;
@@ -352,43 +355,86 @@ local uint vjoin(int n,uchar *q) noex {
     return res ;
 } /* end subroutine (vjoin) */
 
-local bool divest(udiv<uint> *rp,uchar *u,uchar *v) noex {
+local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	udiv<uint>	res{} ;
+	cint		n = 4 ;
+    	cint		ndiv = nsigdig(2,v) ;
 	uint		num = vjoin(4,u) ;
 	uint		den = vjoin(2,v) ;
-	uint		tden ;
-	uint		pro ;
-	bool		fz = true ;
+	uint		tden = 0 ;
+	bool		fz = true ;	/* divide-by-zero */
     DPRINTF("ent\n") ;
     DPRINTF("u=%02X:%02X:%02X:%02X\n",u[3],u[2],u[1],u[0]) ;
     DPRINTF("v=%02X:%02X\n",v[1],v[0]) ;
     DPRINTF("num=%08X den=%04X\n",num,den) ;
-	if (v[1] == 0) {
+	if (ndiv == 1) {
 	    tden = v[0] ;
 	    res(num,tden) ;
 	    fz = false ;
-	} else if (v[0]) {
+	    vload(4,q,res.quo) ;
+	    vload(2,r,res.rem) ;
+	} else if (ndiv > 1) {
+	    cint	nu = nsigdig(n,u) ;
+	    uint	estden = v[1] ;
+	    uchar	uu[n] ;
+	    DPRINTF("for-before\n") ;
 	    fz = false ;
-	    tden = v[1] ;
-    	    DPRINTF("tden=%02X\n",tden) ;
-	    while (tden > 0) {
-	        cint tnum = u[3] ;
-	        res(tnum,tden) ;
-	        pro = res.quo * den ;
-	        if (pro <= num) break ;
-	        tden -= 1 ;
-	    } /* end while */
-	} /* end if (zero-divsor detect) */
-	if (tden == 0) {
-	    res = {} ;
-	}
-	*rp = res ;
-    DPRINTF("ret quo=%04X rem=%04X\n",res.quo,res.rem) ;
+	    vcopy(n,uu,u) ;
+	    vclear(n,q) ;
+	    vclear(2,r) ;
+	    for (int i = (nu - 1 - 1) ; i >= 0 ; --i) {
+		uint	estnum ;
+		uint	estrem ;
+		uint	estpro{} ;
+	        uint	estend = uu[i+1] ;
+	        estden = v[1] ;
+    	        DPRINTF("estden=%02X\n",estden) ;
+	        DPRINTF("while-before\n") ;
+		while (estden > 0) {
+    	    	    DPRINTF("estend=%04X\n",estend) ;
+		    estnum = vjoin(2,(uu + i)) ;
+    	    	    DPRINTF("estnum=%04X\n",estnum) ;
+	            res(estend,estden) ;
+	            estpro = res.quo * den ;
+		    DPRINTF("estpro=%04X\n",estpro) ;
+	            if (estpro <= estnum) break ;
+	            DPRINTF("dec\n") ;
+	            estend -= 1 ;
+		} /* end while */
+	        DPRINTF("while-end\n") ;
+	        DPRINTF("estnum=%08X estpro=%08X\n",estnum,estpro) ;
+	        DPRINTF("estrem=%08X\n",(estnum-estpro)) ;
+		estrem = (estnum - estpro) ;
+	        DPRINTF("quo=%08X rem=%04X\n",res.quo,estrem) ;
+#ifdef	COMMENT
+		if (tden == 0) {
+		    res = {} ;
+		}
+#endif /* COMMENT */
+/****
+      4
+    ______
+1F | 40 00
+     1F
+     --
+     21
+
+****/
+		q[i + 1] = uchar(res.quo >> CHAR_BIT) ;
+		q[i + 0] = uchar(res.quo >> 0) ;
+		uu[i + 1] = uchar(estrem >> CHAR_BIT) ; /* always zero */
+		uu[i + 0] = uchar(estrem >> 0) ;
+	    } /* end for */
+	    DPRINTF("for-after\n") ;
+	    r[1] = uu[1] ;
+	    r[0] = uu[0] ;
+	} /* end if (zero-divisor detect) */
+	DPRINTF("ret fz=%u\n",uint(fz)) ;
     	return fz ;
 } /* end subroutine (divest) */
 
 local void vdivfull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
-    udiv<uint>	res ;
+    udiv<uint>	res{} ;
     uchar	tmp[n+4] ;
     uchar	*t ;
     DPRINTF("ent\n") ;
@@ -414,7 +460,7 @@ local void vdivfull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	    cint ti = (i - 2) ;
             DPRINTF(fmt,i,t[ti+3],t[ti+2],t[ti+1],t[ti+0]) ;
 	}
-	divest(&res,(t+i-2),v) ;
+	/* divest(&res,(t+i-2),v) ; */
         DPRINTF("q=%08X r=%04X\n",res.quo,res.rem) ;
 	q[i+1] = uchar(res.quo) ;
 	t[i] = uchar(res.rem) ;
@@ -450,21 +496,25 @@ local int test_divshow2() noex {
 
 local int test_divest() noex {
     udiv<uint>	res = {} ;
+    cint	n = 4 ;
     uchar	u[4] ;
     uchar	v[2] ;
     uchar	q[6] = {} ;
     uchar	r[4] = {} ;
     int		rs = SR_OK ;
+    bool	fz = false ;
     DPRINTF("ent\n") ;
-    vload(4,u,0x03040506) ;
-    vload(2,v,0x0102) ;
+    vload(n,u,0x03040506) ;
+    vload((2),v,0x0102) ;
     (void) q ;
     (void) r ;
     {
-	divest(&res,u,v) ;
+	fz = divest(q,r,u,v) ;
+	res.quo = vjoin(4,q) ;
+	res.rem = vjoin(2,r) ;
         DPRINTF("q=%08X r=%04X\n",res.quo,res.rem) ;
     }
-    DPRINTF("ret rs=%d\n",rs) ;
+    DPRINTF("ret rs=%d fz=%u\n",rs,uint(fz)) ;
     return rs ;
 } /* end subroutine (test_divest) */
 
