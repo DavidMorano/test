@@ -11,8 +11,6 @@ general format for an SGR escape sequence is `\x1b[...m`, where
 introducer (CSI), `...` represents one or more SGR parameters, and
 `m` is the SGR command.
 
-\<br\>
-
 -----
 
 ## Text Attributes
@@ -34,8 +32,6 @@ end of a formatted string.
   * **`\x1b[7m`**: Invert/Reverse (swaps foreground and background colors)
   * **`\x1b[8m`**: Conceal/Hidden (makes text invisible)
   * **`\x1b[9m`**: Strikethrough (often not supported)
-
-\<br\>
 
 -----
 
@@ -66,8 +62,6 @@ to the parameter (e.g., `\x1b[91m` for bright red) or by using the
   * **`\x1b[96m`**: Bright Cyan
   * **`\x1b[97m`**: Bright White
 
-\<br\>
-
 -----
 
 ## Background Colors (3/4-bit)
@@ -96,6 +90,5 @@ of these background colors by adding a `10` to the parameter (e.g.,
   * **`\x1b[105m`**: Bright Magenta
   * **`\x1b[106m`**: Bright Cyan
   * **`\x1b[107m`**: Bright White
-
 
 
