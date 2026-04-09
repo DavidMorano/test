@@ -31,10 +31,9 @@
 module ;
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<climits>
+#include	<climits>		/* |CHAR_BIT| */
 #include	<cstddef>
 #include	<cstdlib>
-#include	<cstdio>
 #include	<concepts>
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>
@@ -43,7 +42,6 @@ module ;
 #include	<usysdefs.h>
 #include	<stdintx.h>
 #include	<localmisc.h>
-#include	<dprintf.hh>		/* debugging */
 
 export module loadvals ;
 
