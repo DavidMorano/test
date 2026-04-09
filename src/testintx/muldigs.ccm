@@ -82,6 +82,7 @@ constexpr inline int addc(Dig *r,const Dig v0,const Dig v1,int ci = 0) noex {
 	}
     } /* end subroutine (vclear) */
 
+/* n= number-product-result digits */
 constexpr void vmuler(int n,ulong *r,const ulong *v0,const ulong *v1) noex {
 	cint nb = (szof(ulong) * CHAR_BIT) ;
 	cint nh = (n / 2) ;
