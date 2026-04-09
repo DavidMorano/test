@@ -9,7 +9,7 @@
 #define	CF_DIVSHOW	0		/* divisions of */
 #define	CF_DIVEST	1		/* divisions of */
 #define	CF_DIVS		0		/* divisions of */
-#define	CF_DIVSHORT	0		/* short-division */
+#define	CF_DIVSHORT	1		/* short-division */
 #define	CF_SZOF		0		/* size-of */
 #define	CF_CARRY	0		/* carry-out */
 #define	CF_PRVAR	0		/* prvar */
@@ -41,7 +41,7 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usyscalls.h>
-#include	<usupport.h>
+#include	<usupport.h>		/* |getustime(3u)| */
 #include	<usysutility.hh>	/* |snprintf(3u)| */
 #include	<getfdfile.h>
 #include	<localmisc.h>
@@ -136,6 +136,7 @@ local int	test_multiplier() noex ;
 
 /* local variables */
 
+static time_t	now		= time(nullptr) ;
 cint		fd_err		= FD_STDERR ;
 cbool		f_debug		= CF_DEBUG ;
 cbool		f_divshow	= CF_DIVSHOW ;
@@ -189,14 +190,10 @@ template <typename T> local int printvar(T vv) noex {
 } /* end subroutine (printvar) */
 
 int mainsub(int,mainv,mainv) noex {
-    	static cchar *	varhome = getenv("HOME") ;
     	looksz		thing{} ;
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	DPRINTF("ent\n") ;
-	if (varhome) {
-	    	printf("HOME=%s\n",varhome) ;
-	}
 	if_constexpr (f_szof) {
 	    	printf("szof(thing)=%d\n",szof(thing)) ;
 	    	printf("thing.a=%d\n",thing.a) ;
@@ -363,10 +360,16 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	uint		den = vjoin(2,v) ;
 	uint		tden = 0 ;
 	bool		fz = true ;	/* divide-by-zero */
+	if_constexpr (false) {
     DPRINTF("ent\n") ;
     DPRINTF("u=%02X:%02X:%02X:%02X\n",u[3],u[2],u[1],u[0]) ;
     DPRINTF("v=%02X:%02X\n",v[1],v[0]) ;
     DPRINTF("num=%08X den=%04X\n",num,den) ;
+	}
+    	res(num,den) ;
+	if_constexpr (false) {
+    DPRINTF("answer quo=%08X rem=%04X\n",res.quo,res.rem) ;
+	}
 	if (ndiv == 1) {
 	    tden = v[0] ;
 	    res(num,tden) ;
@@ -376,60 +379,75 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	} else if (ndiv > 1) {
 	    cint	nu = nsigdig(n,u) ;
 	    uint	estden = v[1] ;
-	    uchar	uu[n] ;
+	    uchar	uu[n+2] ;
+	if_constexpr (false) {
 	    DPRINTF("for-before\n") ;
+	}
 	    fz = false ;
 	    vcopy(n,uu,u) ;
+	    uu[n+0] = 0 ;
+	    uu[n+1] = 0 ;
 	    vclear(n,q) ;
 	    vclear(2,r) ;
 	    for (int i = (nu - 1 - 1) ; i >= 0 ; --i) {
 		uint	estnum ;
 		uint	estrem ;
 		uint	estpro{} ;
-	        uint	estend = uu[i+1] ;
+	        uint	estend = vjoin(2,(uu + i + 1)) ;
 	        estden = v[1] ;
-    	        DPRINTF("estden=%02X\n",estden) ;
+	if_constexpr (false) {
+    	        DPRINTF("i=%d estden=%02X\n",i,estden) ;
+    	    	    DPRINTF("estend=%08X\n",estend) ;
+	}
+		    estnum = vjoin(4,(uu + i)) ;
+	if_constexpr (false) {
+    	    	    DPRINTF("estnum=%08X\n",estnum) ;
 	        DPRINTF("while-before\n") ;
+	}
 		while (estden > 0) {
-    	    	    DPRINTF("estend=%04X\n",estend) ;
-		    estnum = vjoin(2,(uu + i)) ;
-    	    	    DPRINTF("estnum=%04X\n",estnum) ;
 	            res(estend,estden) ;
 	            estpro = res.quo * den ;
-		    DPRINTF("estpro=%04X\n",estpro) ;
+	if_constexpr (false) {
+		    DPRINTF("estpro=%08X\n",estpro) ;
+	}
 	            if (estpro <= estnum) break ;
+	if_constexpr (false) {
 	            DPRINTF("dec\n") ;
+	}
 	            estend -= 1 ;
 		} /* end while */
+	if_constexpr (false) {
 	        DPRINTF("while-end\n") ;
 	        DPRINTF("estnum=%08X estpro=%08X\n",estnum,estpro) ;
 	        DPRINTF("estrem=%08X\n",(estnum-estpro)) ;
+	}
 		estrem = (estnum - estpro) ;
+	if_constexpr (false) {
 	        DPRINTF("quo=%08X rem=%04X\n",res.quo,estrem) ;
-#ifdef	COMMENT
-		if (tden == 0) {
-		    res = {} ;
-		}
-#endif /* COMMENT */
-/****
-      4
-    ______
-1F | 40 00
-     1F
-     --
-     21
-
-****/
-		q[i + 1] = uchar(res.quo >> CHAR_BIT) ;
+	}
 		q[i + 0] = uchar(res.quo >> 0) ;
+		if_constexpr (false) {
+		    const uint xq = vjoin(8,q) ;
+		    DPRINTF("xq=%08X\n",xq) ;
+		}
+		uu[i + 3] = 0 ;
+		uu[i + 2] = 0 ;
 		uu[i + 1] = uchar(estrem >> CHAR_BIT) ; /* always zero */
 		uu[i + 0] = uchar(estrem >> 0) ;
+		if_constexpr (false) {
+		    const uint nuu = vjoin(4,uu) ;
+		    DPRINTF("nuu=%08X\n",nuu) ;
+		}
 	    } /* end for */
+	if_constexpr (false) {
 	    DPRINTF("for-after\n") ;
+	}
 	    r[1] = uu[1] ;
 	    r[0] = uu[0] ;
 	} /* end if (zero-divisor detect) */
+	if_constexpr (false) {
 	DPRINTF("ret fz=%u\n",uint(fz)) ;
+	}
     	return fz ;
 } /* end subroutine (divest) */
 
@@ -463,7 +481,7 @@ local void vdivfull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	/* divest(&res,(t+i-2),v) ; */
         DPRINTF("q=%08X r=%04X\n",res.quo,res.rem) ;
 	q[i+1] = uchar(res.quo) ;
-	t[i] = uchar(res.rem) ;
+	t[i+0] = uchar(res.rem) ;
     } /* end for */
     DPRINTF("ret\n") ;
 } /* end subroutine (vdivfull) */
@@ -496,6 +514,7 @@ local int test_divshow2() noex {
 
 local int test_divest() noex {
     udiv<uint>	res = {} ;
+    uint	seed = uint(now) ;
     cint	n = 4 ;
     uchar	u[4] ;
     uchar	v[2] ;
@@ -504,16 +523,34 @@ local int test_divest() noex {
     int		rs = SR_OK ;
     bool	fz = false ;
     DPRINTF("ent\n") ;
-    vload(n,u,0x03040506) ;
-    vload((2),v,0x0102) ;
-    (void) q ;
-    (void) r ;
-    {
-	fz = divest(q,r,u,v) ;
-	res.quo = vjoin(4,q) ;
-	res.rem = vjoin(2,r) ;
-        DPRINTF("q=%08X r=%04X\n",res.quo,res.rem) ;
-    }
+    for (int i = 0 ; i < 1000 ; ++i) {
+        uint dividend = rand_r(&seed) ;
+	for (int j = 1 ; j < USHORT_MAX ; ++j) {
+	    ushort divisor = ushort(j) ;
+            vload(n,u,dividend) ;
+            vload(2,v,divisor) ;
+            (void) q ;
+            (void) r ;
+            {
+	        fz = divest(q,r,u,v) ;
+	        res.quo = vjoin(4,q) ;
+	        res.rem = vjoin(2,r) ;
+	        {
+	            udiv<uint> check ;
+	            uint num = vjoin(n,u) ;
+	            uint den = vjoin(2,v) ;
+    	            check(num,den) ;
+	            if ((res.quo != check.quo) || (res.rem != check.rem)) {
+			const cchar *fmt0 = "test q=%08X r=%04X\n" ;
+			const cchar *fmt1 = "answ q=%08X r=%04X\n" ;
+                        DPRINTF(fmt0,res.quo,res.rem) ;
+                        DPRINTF(fmt1,check.quo,res.rem) ;
+	                rs = SR_BADFMT ;
+	            } /* end if */
+	        } /* end block */
+            } /* end block */
+	} /* end for */
+    } /* end for */
     DPRINTF("ret rs=%d fz=%u\n",rs,uint(fz)) ;
     return rs ;
 } /* end subroutine (test_divest) */
@@ -564,26 +601,30 @@ local int test_divs() noex {
 
 local int test_divshort() noex {
     	cint		n = 4 ;
-	const uint	dividend = 713991273 ;
+	uint		seed = uint(now) ;
     	uchar		dd[4] ;
     	uchar		q[4] = {} ;
     	int		rs = SR_OK ;
 	uint		quo0{}, quo1{} ;
 	uchar		rem0{}, rem1{} ;
 	DPRINTF("ent\n") ;
-	for (int i = 1 ; i < (UCHAR_MAX + 1) ; ++i) {
-	    uchar d = uchar(i) ;
-	    loadval(n,dd,dividend) ;
-    	    rem0 = vdivshort(n,q,dd,d) ;
-	    mkv(&quo0,q) ;
-	    quo1 = dividend / d ;
-	    rem1 = uchar(dividend % d) ;
-	    if ((quo0 != quo1) || (rem0 != rem1)) {
-	        printf("mismatch\n") ;
-	        printf("%u quo=%d rem=%d\n",d,quo0,rem0) ;
-	        printf("%u quo=%d rem=%d\n",d,quo1,rem1) ;
-		rs = SR_BADFMT ;
-	    }
+	for (int i = 0 ; i < 100000 ; ++i) {
+	    const uint	dividend = rand_r(&seed) ;
+	    for (int j = 1 ; j < (UCHAR_MAX + 1) ; ++j) {
+	        uchar d = uchar(j) ;
+	        loadval(n,dd,dividend) ;
+    	        rem0 = vdivshort(n,q,dd,d) ;
+	        mkv(&quo0,q) ;
+	        quo1 = dividend / d ;
+	        rem1 = uchar(dividend % d) ;
+	        if ((quo0 != quo1) || (rem0 != rem1)) {
+	            printf("mismatch\n") ;
+	            printf("%u quo=%d rem=%d\n",d,quo0,rem0) ;
+	            printf("%u quo=%d rem=%d\n",d,quo1,rem1) ;
+		    rs = SR_BADFMT ;
+	        }
+	        if (rs < 0) break ;
+	    } /* end for */
 	    if (rs < 0) break ;
 	} /* end for */
 	DPRINTF("ret rs=%d\n",rs) ;
