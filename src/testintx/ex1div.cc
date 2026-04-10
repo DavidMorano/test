@@ -8,7 +8,7 @@ typedef unsigned char  uchar;
 typedef unsigned short ushort;
 
 /* * Shift left N bits (little-endian) */
-local uchar shln(uchar *x,int n) {
+local uchar shln(mut uchar *x,int n) {
     uchar carry = 0;
     for (int i = 0 ; i < n ; ++i) {
         uchar newcarry = (x[i] >> 7) & 1 ;
@@ -19,7 +19,7 @@ local uchar shln(uchar *x,int n) {
 } /* end subroutine */
 
 /* * Shift right N bits (little-endian) */
-local void shr1(uchar *x,int n) {
+local void shr1(mut uchar *x,int n) {
     uchar carry = 0;
     for (int i = (n-1) ; i >= 0 ; --i) {
         uchar newcarry = x[i] & 1;
@@ -29,7 +29,7 @@ local void shr1(uchar *x,int n) {
 } /* end subroutine */
 
 /* * a += b over n bytes */
-local void add(uchar *a,const uchar *b,int n) {
+local void add(mut uchar *a,con uchar *b,int n) {
     int carry = 0;
     for (int i = 0 ; i < n ; ++i) {
         int t = a[i] + b[i] + carry ;
@@ -43,7 +43,7 @@ local void add(uchar *a,const uchar *b,int n) {
  * + u is 5-byte window
  * + returns borrow
  */
-local int mulsub(uchar *u,const uchar *v,uchar q) {
+local int mulsub(mut uchar *u,con uchar *v,uchar q) {
     int carry = 0;
     int borrow = 0;
 
@@ -78,10 +78,8 @@ local int mulsub(uchar *u,const uchar *v,uchar q) {
  * 8-byte dividend / 4-byte divisor
  * little-endian
  */
-void div(uchar *quotient,
-         uchar *remainder,
-         const uchar *dividend,
-         const uchar *divisor) {
+void div(uchar *quotient,mut uchar *remainder,con uchar *dividend,
+         con uchar *divisor) {
     uchar u[9];
     uchar v[4];
 
