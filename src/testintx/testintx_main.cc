@@ -7,15 +7,18 @@
 
 #define	CF_DEBUG	1		/* debugging */
 #define	CF_DIVSHOW	0		/* divisions of */
-#define	CF_DIVEST	1		/* divisions of */
+#define	CF_DIVESTONE	0		/* divisions of */
+#define	CF_DIVEST	0		/* divisions of */
 #define	CF_DIVS		0		/* divisions of */
-#define	CF_DIVSHORT	1		/* short-division */
+#define	CF_DIVSHORT	0		/* short-division */
+#define	CF_DIVHONE	0		/* half-division */
 #define	CF_SZOF		0		/* size-of */
 #define	CF_CARRY	0		/* carry-out */
 #define	CF_PRVAR	0		/* prvar */
 #define	CF_CAST		0		/* cast */
 #define	CF_VALUES	0		/* values */
 #define	CF_SHIFT	0		/* shift */
+#define	CF_VMULONE	1		/* multiply */
 #define	CF_MULTIPLY	0		/* multiply */
 #define	CF_MULTIPLIER	0		/* multiplier */
 
@@ -44,6 +47,7 @@
 #include	<usupport.h>		/* |getustime(3u)| */
 #include	<usysutility.hh>	/* |snprintf(3u)| */
 #include	<getfdfile.h>
+#include	<strx.h>		/* |stræbbrerr(3uc)| */
 #include	<localmisc.h>
 #include	<libf.h>		/* LIBF */
 #include	<dprintf.hh>		/* debugging */
@@ -54,16 +58,31 @@ import libutil ;			/* |lenstr(3u)| */
 import intext ;				/* |uint256_t| */
 import testint ;			/* |uint256_t| */
 import loadvals ;			/* |loadval()| */
-import arithsteps ;
 import varithmetic ;
+import arithsteps ;
 
 /* local defines */
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	1		/* debugging */
 #endif
+#ifndef	CF_DIVSHOW
+#define	CF_DIVSHOW	0
+#endif
+#ifndef	CF_DIVESTONE
+#define	CF_DIVESTONE	0
+#endif
+#ifndef	CF_DIVEST
+#define	CF_DIVEST	0
+#endif
 #ifndef	CF_DIVS
 #define	CF_DIVS		0
+#endif
+#ifndef	CF_DIVSHORT
+#define	CF_DIVSHORT	0
+#endif
+#ifndef	CF_DIVHONE
+#define	CF_DIVHONE	1		/* half-division */
 #endif
 #ifndef	CF_SZOF
 #define	CF_SZOF		0
@@ -82,6 +101,12 @@ import varithmetic ;
 #endif
 #ifndef	CF_VALUES
 #define	CF_VALUES	0		/* values */
+#endif
+#ifndef	CF_VMULONE
+#define	CF_VMULONE	0		/* multiply */
+#endif
+#ifndef	CF_MULTIPLY
+#define	CF_MULTIPLY	0		/* multiply */
 #endif
 #ifndef	CF_MULTIPLIER
 #define	CF_MULTIPLIER	1		/* multiplier */
@@ -119,14 +144,17 @@ struct looksz {
 local int	test_divshow() noex ;
 local int	test_divshow1() noex ;
 local int	test_divshow2() noex ;
+local int	test_divestone() noex ;
 local int	test_divest() noex ;
 local int	test_divs() noex ;
 local int	test_divshort() noex ;
+local int	test_divhone() noex ;
 local int	test_carry() noex ;
 local int	test_prvar() noex ;
 local int	test_cast() noex ;
 local int	test_values() noex ;
 local int	test_shift() noex ;
+local int	test_vmulone() noex ;
 local int	test_multiply() noex ;
 
 #if	CF_MULTIPLIER
@@ -140,15 +168,19 @@ static time_t	now		= time(nullptr) ;
 cint		fd_err		= FD_STDERR ;
 cbool		f_debug		= CF_DEBUG ;
 cbool		f_divshow	= CF_DIVSHOW ;
+cbool		f_divestone	= CF_DIVESTONE ;
 cbool		f_divest	= CF_DIVEST ;
+cbool		f_divestprt	= true ;
 cbool		f_divs		= CF_DIVS ;
 cbool		f_divshort	= CF_DIVSHORT ;
+cbool		f_divhone	= CF_DIVHONE ;
 cbool		f_szof		= CF_SZOF ;
 cbool		f_carry		= CF_CARRY ;
 cbool		f_prvar		= CF_PRVAR ;
 cbool		f_cast		= CF_CAST ;
 cbool		f_values	= CF_VALUES ;
 cbool		f_shift		= CF_SHIFT ;
+cbool		f_vmulone	= CF_VMULONE ;
 cbool		f_multiply	= CF_MULTIPLY ;
 cbool		f_multiplier	= CF_MULTIPLIER ;
 
@@ -205,6 +237,9 @@ int mainsub(int,mainv,mainv) noex {
 	if_constexpr (f_divshow) if (rs >= 0) {
 	    rs = test_divshow() ;
 	} /* end if */
+	if_constexpr (f_divestone) if (rs >= 0) {
+	    rs = test_divestone() ;
+	} /* end if */
 	if_constexpr (f_divest) if (rs >= 0) {
 	    rs = test_divest() ;
 	} /* end if */
@@ -213,6 +248,9 @@ int mainsub(int,mainv,mainv) noex {
 	} /* end if */
 	if_constexpr (f_divshort) if (rs >= 0) {
 	    rs = test_divshort() ;
+	} /* end if */
+	if_constexpr (f_divhone) if (rs >= 0) {
+	    rs = test_divhone() ;
 	} /* end if */
 	if (rs >= 0) {
 	    if_constexpr (f_prvar) {
@@ -232,6 +270,11 @@ int mainsub(int,mainv,mainv) noex {
 	if (rs >= 0) {
 	    if_constexpr (f_shift) {
 	        rs = test_shift() ;
+	    }
+	}
+	if (rs >= 0) {
+	    if_constexpr (f_vmulone) {
+	        rs = test_vmulone() ;
 	    }
 	}
 	if (rs >= 0) {
@@ -360,14 +403,14 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	uint		den = vjoin(2,v) ;
 	uint		tden = 0 ;
 	bool		fz = true ;	/* divide-by-zero */
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
     DPRINTF("ent\n") ;
     DPRINTF("u=%02X:%02X:%02X:%02X\n",u[3],u[2],u[1],u[0]) ;
     DPRINTF("v=%02X:%02X\n",v[1],v[0]) ;
     DPRINTF("num=%08X den=%04X\n",num,den) ;
 	}
     	res(num,den) ;
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
     DPRINTF("answer quo=%08X rem=%04X\n",res.quo,res.rem) ;
 	}
 	if (ndiv == 1) {
@@ -380,7 +423,7 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	    cint	nu = nsigdig(n,u) ;
 	    uint	estden = v[1] ;
 	    uchar	uu[n+2] ;
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
 	    DPRINTF("for-before\n") ;
 	}
 	    fz = false ;
@@ -395,28 +438,28 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 		uint	estpro{} ;
 	        uint	estend = vjoin(2,(uu + i + 1)) ;
 	        estden = v[1] ;
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
     	        DPRINTF("i=%d estden=%02X\n",i,estden) ;
     	    	    DPRINTF("estend=%08X\n",estend) ;
 	}
 		    estnum = vjoin(4,(uu + i)) ;
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
     	    	    DPRINTF("estnum=%08X\n",estnum) ;
-	        DPRINTF("while-before\n") ;
+	            DPRINTF("while-before\n") ;
 	}
 		while (estden > 0) {
 	            res(estend,estden) ;
 	            estpro = res.quo * den ;
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
 		    DPRINTF("estpro=%08X\n",estpro) ;
 	}
 	            if (estpro <= estnum) break ;
-	if_constexpr (false) {
-	            DPRINTF("dec\n") ;
-	}
 	            estend -= 1 ;
+	if_constexpr (f_divestprt) {
+	            DPRINTF("dec estend=%02X\n",estend) ;
+	}
 		} /* end while */
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
 	        DPRINTF("while-end\n") ;
 	        DPRINTF("estnum=%08X estpro=%08X\n",estnum,estpro) ;
 	        DPRINTF("estrem=%08X\n",(estnum-estpro)) ;
@@ -426,7 +469,7 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	        DPRINTF("quo=%08X rem=%04X\n",res.quo,estrem) ;
 	}
 		q[i + 0] = uchar(res.quo >> 0) ;
-		if_constexpr (false) {
+		if_constexpr (f_divestprt) {
 		    const uint xq = vjoin(8,q) ;
 		    DPRINTF("xq=%08X\n",xq) ;
 		}
@@ -434,18 +477,18 @@ local bool divest(uchar *q,uchar *r,uchar *u,uchar *v) noex {
 		uu[i + 2] = 0 ;
 		uu[i + 1] = uchar(estrem >> CHAR_BIT) ; /* always zero */
 		uu[i + 0] = uchar(estrem >> 0) ;
-		if_constexpr (false) {
+		if_constexpr (f_divestprt) {
 		    const uint nuu = vjoin(4,uu) ;
 		    DPRINTF("nuu=%08X\n",nuu) ;
 		}
 	    } /* end for */
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
 	    DPRINTF("for-after\n") ;
 	}
 	    r[1] = uu[1] ;
 	    r[0] = uu[0] ;
 	} /* end if (zero-divisor detect) */
-	if_constexpr (false) {
+	if_constexpr (f_divestprt) {
 	DPRINTF("ret fz=%u\n",uint(fz)) ;
 	}
     	return fz ;
@@ -495,7 +538,7 @@ local int test_divshow2() noex {
     DPRINTF("ent\n") ;
     vload(4,u,0x03040506) ;
     for (int i = 1 ; i < 2 ; i += 1) {
-	uint den = (i * 0x0102) ;
+	uint den = (i * 0x01020304) ;
         DPRINTF("i=%d\n",i) ;
     	vload(2,v,den) ;
         DPRINTF("den=%02X:%02X\n",v[1],v[0]) ;
@@ -511,6 +554,48 @@ local int test_divshow2() noex {
     DPRINTF("ret rs=%d\n",rs) ;
     return rs ;
 } /* end subroutine (test_divshow2) */
+
+local int test_divestone() noex {
+    udiv<uint>	res = {} ;
+    cint	n = 4 ; /* quotient digits */
+    uchar	u[4] ;
+    uchar	v[2] ;
+    uchar	q[6] = {} ;
+    uchar	r[4] = {} ;
+    int		rs = SR_OK ;
+    bool	fz = false ;
+    DPRINTF("ent\n") ;
+    {
+        uint dividend = 0x03040506 ;
+	{
+	    ushort divisor = 0x0102 ;
+            vload(n,u,dividend) ;
+            vload(2,v,divisor) ;
+            (void) q ;
+            (void) r ;
+            {
+	        fz = divest(q,r,u,v) ;
+	        res.quo = vjoin(n,q) ;
+	        res.rem = vjoin(2,r) ;
+	        {
+	            udiv<uint> check ;
+	            uint num = vjoin(n,u) ;
+	            uint den = vjoin(2,v) ;
+    	            check(num,den) ;
+	            if ((res.quo != check.quo) || (res.rem != check.rem)) {
+			const cchar *fmt0 = "test q=%08X r=%04X\n" ;
+			const cchar *fmt1 = "answ q=%08X r=%04X\n" ;
+                        DPRINTF(fmt0,res.quo,res.rem) ;
+                        DPRINTF(fmt1,check.quo,check.rem) ;
+	                rs = SR_BADFMT ;
+	            } /* end if */
+	        } /* end block */
+            } /* end block */
+	}
+    }
+    DPRINTF("ret rs=%d fz=%u\n",rs,uint(fz)) ;
+    return rs ;
+} /* end subroutine (test_divestone) */
 
 local int test_divest() noex {
     udiv<uint>	res = {} ;
@@ -544,7 +629,7 @@ local int test_divest() noex {
 			const cchar *fmt0 = "test q=%08X r=%04X\n" ;
 			const cchar *fmt1 = "answ q=%08X r=%04X\n" ;
                         DPRINTF(fmt0,res.quo,res.rem) ;
-                        DPRINTF(fmt1,check.quo,res.rem) ;
+                        DPRINTF(fmt1,check.quo,check.rem) ;
 	                rs = SR_BADFMT ;
 	            } /* end if */
 	        } /* end block */
@@ -631,6 +716,50 @@ local int test_divshort() noex {
 	return rs ;
 } /* end subroutine (test_divshort) */
 
+local int test_divhone() noex {
+    udiv<uint>	res = {} ;
+    cint	n = 8 ; /* quotient digits */
+    uchar	u[8] ;
+    uchar	v[4] ;
+    uchar	q[8] = {} ;
+    uchar	r[4] = {} ;
+    int		rs = SR_OK ;
+    bool	fz = false ;
+    DPRINTF("ent\n") ;
+    {
+	cint nh = (n/2) ;
+        uint dividend = 0x03040506 ;
+	{
+	    ushort divisor = 0x0102 ;
+            vload(n,u,dividend) ;
+            vload(2,v,divisor) ;
+            (void) q ;
+            (void) r ;
+            if ((fz = vdivh(n,q,r,u,v)) == false) {
+                res.quo = vjoin(nh,q) ;
+                res.rem = vjoin(nh,r) ;
+                {
+                    udiv<uint> check ;
+                    uint num = vjoin(nh,u) ;
+                    uint den = vjoin(nh,v) ;
+                    check(num,den) ;
+                    if ((res.quo != check.quo) || (res.rem != check.rem)) {
+                        const cchar *fmt0 = "test q=%08X r=%04X\n" ;
+                        const cchar *fmt1 = "answ q=%08X r=%04X\n" ;
+                        DPRINTF(fmt0,res.quo,res.rem) ;
+                        DPRINTF(fmt1,check.quo,check.rem) ;
+                        rs = SR_BADFMT ;
+                    } /* end if */
+                } /* end block */
+            } else {
+                rs = SR_DOM ;       /* divide-by-zero error */
+            } /* end if (non-zero divisor) */
+	} /* end block */
+    }
+    DPRINTF("ret rs=%d (%s) fz=%u\n",rs,strabbrerr(rs),uint(fz)) ;
+    return rs ;
+} /* end subroutine (test_divhone) */
+
 local int test_carry() noex {
     	int		rs = SR_OK ;
 	    uint	r, co ;
@@ -707,6 +836,29 @@ local int test_shift() noex {
 	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
 } /* end subroutine (test_shift) */
+
+local int test_vmulone() noex {
+	int		rs = SR_OK ;
+	uchar		u[4] ;
+	uchar		v[4] ;
+	uchar		r[8] ;
+	DPRINTF("ent\n") ;
+	    vload(4,u,0x01020304) ;
+	    vload(4,v,(16 * 5)) ;
+    DPRINTF("u=%02X:%02X:%02X:%02X\n",u[3],u[2],u[1],u[0]) ;
+    DPRINTF("v=%02X:%02X:%02X:%02X\n",v[3],v[2],v[1],v[0]) ;
+	{
+	    vmul(8,r,u,v) ;
+    DPRINTF("r=%02X:%02X:%02X:%02X\n",r[3],r[2],r[1],r[0]) ;
+	} /* end block */
+	{
+	    uchar v0 = 0x50 ;
+	    vmulone(8,r,u,v0) ;
+    DPRINTF("r=%02X:%02X:%02X:%02X\n",r[3],r[2],r[1],r[0]) ;
+	}
+	DPRINTF("ret rs=%d\n",rs) ;
+	return rs ;
+} /* end subroutine (test_vmulone) */
 
 local int test_multiply() noex {
 	int		rs = SR_OK ;
