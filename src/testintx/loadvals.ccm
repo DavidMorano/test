@@ -67,15 +67,15 @@ using std::max ;			/* subroutine-template */
 /* exported stuff */
 
 template<integral_unsigned UT>
-constexpr void vload(int n,UT *v,UT a) noex {
+constexpr void vfill(int n,mut UT *v,UT a) noex {
 	for (int i = 0 ; i < n ; i += 1) {
 	    v[i] = a ;
 	}
-} /* end subroutine (vload) */
+} /* end subroutine (vfill) */
 
 export {
     template<integral_unsigned TV,integral_signed TA>
-    constexpr void loadval(int n,TV *v,TA a) noex {
+    constexpr void loadval(int n,mut TV *v,TA a) noex {
 	cint sz_tv = szof(TV) ;
 	cint sz_ta = szof(TA) ;
 	const TV fv = bitsign(a) ? TA(-1) : TA(0) ;
@@ -89,13 +89,13 @@ export {
 	} else {
 	    v[j++] = a ;
 	}
-	vload((n - j),(v + j),fv) ;
+	vfill((n - j),(v + j),fv) ;
     } /* end subroutine (loadval) */
 } /* end export */
 
 export {
     template<integral_unsigned TV,integral_unsigned TA>
-    constexpr void loadval(int n,TV *v,TA a) noex {
+    constexpr void loadval(int n,mut TV *v,TA a) noex {
 	cint sz_tv = szof(TV) ;
 	cint sz_ta = szof(TA) ;
 	const TV fv = TV(0) ;
@@ -109,7 +109,7 @@ export {
 	} else {
 	    v[j++] = a ;
 	}
-	vload((n - j),(v + j),fv) ;
+	vfill((n - j),(v + j),fv) ;
     } /* end subroutine (loadval) */
 } /* end export */
 
