@@ -49,14 +49,15 @@ OBJ1= intext.o
 OBJ2= varithmetic.o arithsteps.o
 OBJ3= testint.o
 OBJ4= builtin.o
-OBJ5=
+OBJ5= strx.o
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o obj2.o obj3.o obj4.o
-OBJB= obj5.o obj6.o obj7.o
+OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJB= obj4.o obj5.o 
+#OBJB= obj4.o obj5.o obj6.o obj7.o
 
-OBJ= obja.o
+OBJ= obja.o objb.o
 
 
 INCDIRS=
@@ -207,11 +208,6 @@ strcpyx.o:		strcpyx.dir
 strcpyx.dir:
 	makesubdir $@
 
-# STRX
-strx.o:			strx.dir
-strx.dir:
-	makesubdir $@
-
 # STRWCPY
 strwcpy.o:		strwcpy.dir
 strwcpy.dir:
@@ -220,6 +216,11 @@ strwcpy.dir:
 # STRW
 strw.o:			strw.dir
 strw.dir:
+	makesubdir $@
+
+# STRX
+strx.o:			strx.dir
+strx.dir:
 	makesubdir $@
 
 # NLEADX
@@ -261,7 +262,7 @@ timeval.o:		timeval.cc	timeval.hh
 testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
-intext.o:		intext.ccm	varithmetic.o loadvals.o
+intext.o:		intext.ccm	varithmetic.o loadvals.o builtin.o
 	makemodule $@
 
 # VARITHMETIC
