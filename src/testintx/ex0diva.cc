@@ -73,39 +73,29 @@ void div(uchar *quotient,uchar *remainder,
          const uchar *dividend,const uchar *divisor) {
     uchar rem[5];
     uchar prod[5];
-
     std::memset(quotient,0,8);
     std::memset(rem,0,5);
-
     /* * Process from most-significant dividend byte downward */
     for (int i=7;i>=0;i--) {
         shift_left(rem,5);
         rem[0] = dividend[i];
-
         /* * Estimate quotient digit from top two bytes */
-        ushort top =
-            ((ushort)rem[4] << 8) | rem[3];
-
+        ushort top = ((ushort)rem[4] << 8) | rem[3];
         uchar q = (uchar)(top / divisor[3]);
-
         /* * Correct estimate downward if needed */
         forever {
             mul_byte(prod,divisor,q);
             if(cmp(rem,prod,5) >= 0) break;
             q--;
         } /* end forever */
-
         quotient[i] = q;
-
         mul_byte(prod,divisor,q);
         sub(rem,prod,5);
     } /* end for */
-
     /* * final remainder: low 4 bytes */
     for (int i=0;i<4;i++) {
         remainder[i] = rem[i];
     }
-
 } /* end subroutine (div) */
 
 
