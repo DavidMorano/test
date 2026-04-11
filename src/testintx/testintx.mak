@@ -266,10 +266,10 @@ intext.o:		intext.ccm	varithmetic.o loadvals.o builtin.o
 	makemodule $@
 
 # VARITHMETIC
-varithmetic.o:		varithmetic.ccm	builtin.o muldigs.o bitmanip.o
+varithmetic.o:		varithmetic.ccm	builtin.o bitmanip.o muldigs.o 
 	makemodule $@
 
-arithsteps.o:		arithsteps.ccm	bitmanip.o
+arithsteps.o:		arithsteps.ccm	builtin.o bitmanip.o muldigs.o
 
 loadvals.o:		loadvals.ccm	bitmanip.o
 
