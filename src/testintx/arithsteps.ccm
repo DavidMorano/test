@@ -6,6 +6,7 @@
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
+#define	CF_DEBUGVDIVH	0		/* debugging */
 
 /* revision history:
 
@@ -35,6 +36,7 @@ module ;
 #include	<cstddef>
 #include	<cstdlib>
 #include	<concepts>
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>
 #include	<utypedefs.h>
 #include	<utypealiases.h>
@@ -59,6 +61,7 @@ import muldigs ;
 /* imported namespaces */
 
 using std::integral_unsigned ;		/* concept */
+using std::min ;			/* subroutine */
 
 
 /* local typedefs */
@@ -73,6 +76,7 @@ typedef ulonglong	ull ;
 /* local variables */
 
 cbool		f_debug 	= CF_DEBUG ;
+cbool		f_debvdh 	= CF_DEBUGVDIVH ;
 
 
 /* module subroutines */
@@ -104,7 +108,7 @@ constexpr void vcopy(int n,mut Dig *r,con Dig *v) noex {
 } /* end subroutine (vcopy) */
 
 template<typename Dig>
-constexpr int vcmp(int n,const Dig *v1,const Dig *v2) noex {
+constexpr int vcmp(int n,con Dig *v1,con Dig *v2) noex {
 	int		rc = 0 ;
 	for (int i = (n - 1) ; i >= 0 ; i -= 1) {
 	    if ((rc = (v1[i] != v2[i]))) {
@@ -116,16 +120,14 @@ constexpr int vcmp(int n,const Dig *v1,const Dig *v2) noex {
 } /* end subroutine (vcmp) */
 
     template<typename Dig>
-    constexpr int addc(Dig *r,const Dig v0,const Dig v1,
-	    int ci = 0) noex {
+    constexpr int addc(Dig *r,con Dig v0,con Dig v1,int ci = 0) noex {
 	Dig		co{} ;
 	Dig		dci = cast_static<Dig>(ci) ;
 	*r = mach_addc(v0,v1,dci,&co) ;
 	return int(co) ;
     }
     template<typename Dig>
-    constexpr int subc(Dig *r,const Dig v0,const  Dig v1,
-	    int ci = 0) noex {
+    constexpr int subc(Dig *r,con Dig v0,con Dig v1,int ci = 0) noex {
 	Dig		co{} ;
 	Dig		dci = cast_static<Dig>(ci) ;
 	*r = mach_subc(v0,v1,dci,&co) ;
@@ -133,17 +135,16 @@ constexpr int vcmp(int n,const Dig *v1,const Dig *v2) noex {
     }
 
     template<typename Dig>
-    constexpr int vadd(int n,Dig *r,const Dig *v0,const Dig *v1,
-	    int ci = 0) noex {
+    constexpr int vadd(int n,Dig *r,con Dig *v0,con Dig *v1,int ci = 0) noex {
     	int		co = ci ;
 	for (int i = 0 ; i < n ; i += 1) {
 	    co = addc((r+i),v0[i],v1[i],co) ;
 	}
 	return co ;
     } /* end subroutine (vadd) */
+
     template<typename Dig>
-    constexpr int vsub(int n,Dig *r,const Dig *v0,const Dig *v1,
-		int ci = 0) noex {
+    constexpr int vsub(int n,Dig *r,con Dig *v0,con Dig *v1,int ci = 0) noex {
     	int		co = ci ;
 	for (int i = 0 ; i < n ; i += 1) {
 	    co = subc((r+i),v0[i],v1[i],co) ;
@@ -367,66 +368,90 @@ export {
 	cint	nh = (n/2) ;
 	int	vi ;
 	bool	fz = true ;
+	if_constexpr (f_debug && f_debvdh) {
 	DPRINTF("ent szof(Dig)=%d n=%d ndiv=%d\n",szof(TA),n,ndiv) ;
+	}
 	if ((n > 0) && ndiv) {
 	    cint nu = nsigdig(n,u) ;
-	    TA uu[n+2] ;
+	    TA uu[n+nh] ;	vcopy(n,uu,u) ; vclear(nh,(uu+n)) ;
 	    TA prod[n] ;
-	    TA tq[ndiv] ;
-	    TA trem[ndiv+1] ;
+	    TA tq[n] ;		vclear(n,tq) ;
+	    TA trem[nh+1] ;	vclear((nh+1),trem) ;
 	    TA tqq ;
+	    TA rem ;
 	    vclear(n,q) ;
-	    vcopy(n,uu,u) ;
-	    uu[n+0] = 0 ;
-	    uu[n+1] = 0 ;
 	    fz = false ;
-	    vclear(ndiv,tq) ;
-	    vclear((ndiv+1),trem) ;
 	    vi = (ndiv - 1) ;
 	    dv = v[vi] ;
+	if_constexpr (f_debug && f_debvdh) {
 	    DPRINTF("uu=%02X:%02X:%02X:%02X\n",uu[3],uu[2],uu[1],uu[0]) ;
 	    DPRINTF("v=%02X:%02X:%02X:%02X\n",v[3],v[2],v[1],v[0]) ;
 	    DPRINTF("nu=%d\n",nu) ;
+	}
 	    for (int i = (nu - 1 - vi) ; i >= 0 ; --i) {
-		DPRINTF("i=%d uuest=%02X:%02X dv=%02X\n",i,uu[i+2],uu[i+1],dv) ;
-	        TA rem = divdig(tq,(uu + i + 1),dv) ;
+		{
+		    int pi ;
+	if_constexpr (f_debug && f_debvdh) {
+	    DPRINTF("uu+i=%02X:%02X:%02X:%02X\n",
+		    uu[i+3],uu[i+2],uu[i+1],uu[i+0]) ;
+	}
+		    cint nuu = nsigdig((nu - i),(uu + i)) ;
+	    	    pi = (nuu <= 2) ? i : (i + (nuu - 2)) ;
+	if_constexpr (f_debug && f_debvdh) {
+		cchar *fmt = "i=%d nuu=%d uuest=%02X:%02X dv=%02X\n" ;
+		DPRINTF(fmt,i,nuu,uu[pi+1],uu[pi+0],dv) ;
+	}
+	            rem = divdig(tq,(uu + pi),dv) ;
+		    (void) rem ;
+		} /* end block */
+	if_constexpr (f_debug && f_debvdh) {
 		DPRINTF("div tq=%02X:%02X rem=%04X \n",tq[1],tq[0],rem) ;
-		/* if (tq[1]) tq[0] = (compl TA(0)) ; */
+	}
 		tqq = (tq[1]) ? (compl TA(0)) : tq[0] ;
 		forever {
+	if_constexpr (f_debug && f_debvdh) {
 		    DPRINTF("est tqq=%02X\n",tqq) ;
 		    DPRINTF("v=%02X:%02X:%02X:%02X\n",
 			    v[3],v[2],v[1],v[0]) ;
-		    /* DPRINTF("est tq=%02X:%02X\n",tq[1],tq[0]) ; */
-	            /* vmulone(n,prod,v,tq[0]) ; */
+	}
 		    vmulone(n,prod,v,tqq) ;
-		    {
-		    cchar *fmt0 = "est uu=%02X:%02X:%02X:%02X:%02X\n" ;
-		    cchar *fmt1 = "est pr=%02X:%02X:%02X:%02X:%02X\n" ;
+		    if_constexpr (f_debug && f_debvdh) {
+		    cchar *fmt0 = "est   uu=%02X:%02X:%02X:%02X:%02X\n" ;
+		    cchar *fmt1 = "est   pr=%02X:%02X:%02X:%02X:%02X\n" ;
 		    DPRINTF(fmt0, uu[i+4],
 			uu[i+3],uu[i+2],uu[i+1],uu[i+0]) ;
 		    DPRINTF(fmt1,prod[4],prod[3],prod[2],prod[1],prod[0]) ;
 		    }
 		    if (vcmp((nh+1),(uu + i),prod) >= 0) break ;
 		    tqq -= 1 ;
+	if_constexpr (f_debug && f_debvdh) {
 		    DPRINTF("dec tqq=%02X\n",tqq) ;
+	}
 		} /* end forever */
-		vsub(ndiv,trem,(uu + i),prod,0) ;
-		{
+		vsub((nh+1),trem,(uu + i),prod,0) ;
+		if_constexpr (f_debug && f_debvdh) {
 		    cchar *fmt = "sub trem=%02X:%02X:%02X:%02X:%02X\n" ;
 		    DPRINTF(fmt,trem[4],trem[3],trem[2],trem[1],trem[0]) ;
 		}
-		vcopy(ndiv,(uu+i),trem) ;
+		vcopy((nh+1),(uu+i),trem) ;
 	        q[i] = tqq ;
 	    } /* end for */
 	    vcopy(nh,r,uu) ;
 	} else if (n > 0) {
 	    vclear(n,q) ;
 	    vclear(nh,r) ;
+	    if_constexpr (f_debug && f_debvdh) {
+	        if (ndiv == 0) {
+		    cchar *fmt = "v=%02X:%02X:%02X:%02X\n" ;
+		    DPRINTF(fmt,v[3],v[2],v[1],v[0]) ;
+	        }
+	    } /* end if_constexpr (f_debug && f_debvdh) */
 	} /* end if (non-zero divisor) */
+	if_constexpr (f_debug && f_debvdh) {
 	DPRINTF("ret fz=%u\n",uint(fz)) ;
+	}
 	return fz ;
-    } /* end subroutine-template (vdiv) */
+    } /* end subroutine-template (vdivh) */
 } /* end export */
 
 
