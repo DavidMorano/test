@@ -41,23 +41,23 @@ LIBS += -lf -luo -lu
 
 
 DEPS_MAIN += testint.o intext.o
-DEPS_MAIN += varithmetic.o arithsteps.o
+DEPS_MAIN +=
 DEPS_MAIN += loadvals.o
 
 OBJ0= testintx_main.o
 OBJ1= intext.o
-OBJ2= varithmetic.o arithsteps.o
+OBJ2= strx.o
 OBJ3= testint.o
-OBJ4= builtin.o
-OBJ5= strx.o
+OBJ4=
+OBJ5=
 OBJ6=
 OBJ7=
 
 OBJA= obj0.o obj1.o obj2.o obj3.o
-OBJB= obj4.o obj5.o 
+OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
-OBJ= obja.o objb.o
+OBJ= obja.o
 
 
 INCDIRS=
@@ -243,6 +243,11 @@ strxcmp.o:		strxcmp.dir
 strxcmp.dir:
 	makesubdir $@
 
+# VARITHMETIC
+varithmetic.o:		varithmetic.dir
+varithmetic.dir:
+	makesubdir $@
+
 char.o:			char.cc		char.h
 inetconv.o:		inetconv.cc	inetconv.h
 base64.o:		base64.cc	base64.h
@@ -262,21 +267,11 @@ timeval.o:		timeval.cc	timeval.hh
 testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
-intext.o:		intext.ccm	varithmetic.o loadvals.o builtin.o
+intext.o:		intext.ccm	loadvals.o
 	makemodule $@
 
-# VARITHMETIC
-varithmetic.o:		varithmetic.ccm	builtin.o bitmanip.o muldigs.o 
-	makemodule $@
+arithsteps.o:		arithsteps.ccm
 
-arithsteps.o:		arithsteps.ccm	builtin.o bitmanip.o muldigs.o
-
-loadvals.o:		loadvals.ccm	bitmanip.o
-
-muldigs.o:		muldigs.ccm	builtin.o
-
-bitmanip.o:		bitmanip.ccm
-
-builtin.o:		builtin.ccm
+loadvals.o:		loadvals.ccm
 
 
