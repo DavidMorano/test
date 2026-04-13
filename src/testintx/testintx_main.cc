@@ -60,7 +60,6 @@ import intext ;				/* |uint256_t| */
 import testint ;			/* |uint256_t| */
 import loadvals ;			/* |loadval()| */
 import varithmetic ;
-import arithsteps ;
 
 /* local defines */
 
