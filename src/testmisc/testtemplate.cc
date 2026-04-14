@@ -1,13 +1,35 @@
-/* main SUPPORT */
+/* testtemplate SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test some template behavior */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/*******************************************************************************
+
+	Name:
+	main
+
+	Description:
+	I test some behavior of a template.
+
+*******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cmath>
 #include	<iostream>
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
+#include	<usysbase.h>
 #include	<usyscalls.h>
 #include	<localmisc.h>
 
@@ -19,6 +41,8 @@ template<typename T> void fun(T v) noex {
     cout << "tsz=" << szof(T) << eol ;
     cout << "v=" << v << eol ;
 }
+
+template<typename T> local void delayed(T v) noex ;
 
 int main(int,mainv,mainv) {
     const int	vint = 1 ;
@@ -38,6 +62,13 @@ int main(int,mainv,mainv) {
 	res = cbrt(vf2) ;
 	cout << "res=" << res << eol ;
     }
+    delayed(2) ;
 }
 /* end subroutine (main) */
+
+template<typename T> local void delayed(T v) noex {
+    cout << "tsz=" << szof(T) << eol ;
+    cout << "v=" << v << eol ;
+} /* end subroutine (delayed) */
+
 
