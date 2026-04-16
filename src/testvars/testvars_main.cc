@@ -1016,60 +1016,38 @@ int main(int argc,mainv argv,mainv) {
 	} /* end for */
 
 	if ((rs >= 0) && (afname != nullptr) && (afname[0] != '\0')) {
-
 	    bfile	argfile, *afp = &argfile ;
-
-
-	    if (strcmp(afname,"-") == 0)
+	    if (strcmp(afname,"-") == 0) {
 	        afname = STDFNIN ;
-
-	    if (strcmp(afname,STDFNIN) == 0)
+	    }
+	    if (strcmp(afname,STDFNIN) == 0) {
 	        rs = bopen(afp,BFILE_STDIN,"dr",0666) ;
-	    else
+	    } else {
 	        rs = bopen(afp,afname,"r",0666) ;
-
+	    }
 	    if (rs >= 0) {
-
 	        int	len ;
-
 	        char	linebuf[LINEBUFLEN + 1] ;
-
-
 	        while ((rs = breadln(afp,linebuf,LINEBUFLEN)) > 0) {
-
 	            len = rs ;
-	            if (linebuf[len - 1] == '\n')
-	                len -= 1 ;
-
+	            if (linebuf[len - 1] == '\n') len -= 1 ;
 	            linebuf[len] = '\0' ;
 	            cp = linebuf ;
-	            if ((cp[0] == '\0') || (cp[0] == '#'))
-	                continue ;
-
+	            if ((cp[0] == '\0') || (cp[0] == '#')) continue ;
 	            pan += 1 ;
 	            rs = procname(pip,cp) ;
-	            if (rs < 0)
-	                break ;
-
+	            if (rs < 0) break ;
 	        } /* end while (reading lines) */
-
 	        bclose(afp) ;
-
 	    } else {
-
 	        if (! pip->f.quiet) {
-
 	            bprintf(pip->efp,
 	                "%s: could not open the argument list file\n",
 	                pip->progname) ;
-
 	            bprintf(pip->efp,"%s: \trs=%d argfile=%s\n",
 	                pip->progname,rs,afname) ;
-
 	        }
-
 	    }
-
 	} /* end if (processing file argument file list) */
 
 	if (rs < 0)
