@@ -1,4 +1,4 @@
-/* testdater_main SUPP®RT (testdater) */
+/* testdater_main SUPPORT (testdater) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
