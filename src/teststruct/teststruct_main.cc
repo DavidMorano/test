@@ -23,6 +23,8 @@
 #include	<usysbase.h>
 #include	<localmisc.h>
 
+#include	"teststruct_sub.hh"
+
 
 /* local defines */
 
@@ -34,6 +36,9 @@
 
 
 /* external subroutines */
+
+extern void	sub1() noex ;
+extern void	sub2() noex ;
 
 
 /* external variables */
@@ -60,8 +65,26 @@ namespace {
     } ; /* end struct (thing) */
 } /* end namespace */
 
+namespace {
+    struct testcon {
+	static int	a ;
+	int		b ;
+	consteval testcon() noex {
+	    b = 2 ;
+	} ;
+    } ; /* end struct */
+} /* end namespace */
+
+
+/* forward references */
+
 
 /* local variables */
+
+constexpr testcon	tst ;
+constexpr substruct	ss ;
+
+int testcon::a = 1 ;
 
 
 /* exported variables */
@@ -69,13 +92,29 @@ namespace {
 
 /* exported subroutines */
 
+consteval int getval() noex {
+    return ss.a ;
+}
+
+constexpr int	c = getval() ;
+
 int main(int,mainv,mainv) {
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
+	printf("c=%d\n",c) ;
 	{
 	    thing some(1) ;
 	    int v = some.member ;
 	    printf("ome=%d\n",v) ;
+	}
+	{
+	    printf("tst.a=%d\n",tst.a) ;
+	    printf("tst.b=%d\n",tst.b) ;
+	}
+	{
+	    printf("ss.a=%d\n",ss.a) ;
+	    sub1() ;
+	    sub2() ;
 	}
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
@@ -85,7 +124,7 @@ int main(int,mainv,mainv) {
 /* end subroutine (main) */
 
 thing::thing_co::operator int () noex {
-		return op->a ;
+	return op->a ;
 }
 
 
