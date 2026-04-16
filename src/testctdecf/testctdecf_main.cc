@@ -1,4 +1,4 @@
-/* testctdecf_main SUPPOERT (testctdecf) */
+/* testctdecf_main SUPPORT (testctdecf) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -126,11 +126,20 @@ int main(int,mainv,mainv) {
 	    printf("ctdec rs=%d dbuf=>%s<\n",rs,dbuf) ;
 	} /* end if */
 	if_constexpr (f_xxtostr) if (rs >= 0) {
-	    const uint v = 1234567 ;
+	    const uint uv = 1234567 ;
 	    int dlen = decbuflen ;
 	    char dbuf[decbuflen+1] ;
 	    errno = 0 ;
-	    char *bp = uitostr(v,(dbuf+dlen)) ;
+	    char *bp = uitostr(uv,(dbuf+dlen)) ;
+	    rs = (- errno) ;
+	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
+	} /* end if */
+	if (rs >= 0) {
+	    const int v = -1234567 ;
+	    int dlen = decbuflen ;
+	    char dbuf[decbuflen+1] ;
+	    errno = 0 ;
+	    char *bp = itostr(v,(dbuf+dlen)) ;
 	    rs = (- errno) ;
 	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
 	} /* end if */
