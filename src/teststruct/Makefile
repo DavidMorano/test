@@ -33,25 +33,25 @@ LINT		?= lint
 
 DEFS +=
 
-INCS +=
+INCS += teststruct_sub.hh
 
 MODS +=
 
 LIBS += -lf -luo -lu
 
 
-DEPS_MAIN +=
+DEPS_MAIN += sub1.o sub2.o
 
 OBJ0= teststruct_main.o
-OBJ1= uintx.o
-OBJ2= varithmetic.o builtin.o
+OBJ1= sub1.o sub2.o
+OBJ2=
 OBJ3=
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o
+OBJA= obj0.o obj1.o
 OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= obja.o
@@ -157,7 +157,7 @@ obj.o:			$(OBJ)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-teststruct_main.o:	teststruct_main.cc $(DEPS_MAIN)	$(INCS)
+teststruct_main.o:	teststruct_main.cc $(DEPS_MAIN)			$(INCS)
 
 # USTREAM
 ustream.o:		ustream.dir
@@ -265,5 +265,8 @@ varithmetic.o:		varithmetic.ccm builtin.o
 # BUUILTIN
 builtin.o:		builtin.ccm
 	makemodule $@
+
+teststruct_sub1.o:	teststruct_sub1.cc teststruct_sub.hh
+teststruct_sub2.o:	teststruct_sub2.cc teststruct_sub.hh
 
 
