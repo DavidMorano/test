@@ -1,4 +1,4 @@
-/* testvotdc SUPPOR */
+/* testvotdc SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++98 */
 
