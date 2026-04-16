@@ -1,4 +1,4 @@
-/* testpow SUPPORR (testexp) */
+/* testpow SUPPORT (testpow) */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -32,8 +32,7 @@
 #include	<cmath>
 #include	<iostream>		/* |cout(3c++)| */
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
+#include	<usysbase.h>
 #include	<mkchar.h>
 #include	<localmisc.h>
 
