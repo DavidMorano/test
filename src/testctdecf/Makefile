@@ -45,15 +45,15 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= testctdecf_main.o
-OBJ1=
-OBJ2= 
+OBJ1= xxtostr.o
+OBJ2= digtab.o
 OBJ3= 
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o
+OBJA= obj0.o obj1.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
@@ -247,6 +247,12 @@ strxcmp.dir:
 varithmetic.o:		varithmetic.dir
 varithmetic.dir:
 	makesubdir $@
+
+# DIGTAB
+digtab.o:		digtab.dir
+digtab.dir:
+	makesubdir $@
+
 
 char.o:			char.cc		char.h
 inetconv.o:		inetconv.cc	inetconv.h
