@@ -46,7 +46,7 @@ DEPS_MAIN +=
 
 OBJ0= testctdecf_main.o
 OBJ1= xxtostr.o
-OBJ2= digtab.o
+OBJ2=
 OBJ3= 
 OBJ4=
 OBJ5=
