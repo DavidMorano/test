@@ -25,20 +25,16 @@
 *******************************************************************************/
 
 #include	<envstandards.h>
-#include	<cstring>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdio>
 #include	<cmath>
-#include	<iostream>		/* |cout(3c++)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<mkchar.h>
 #include	<localmisc.h>
 
-using std::cout ;			/* variable */
 
-int main() {
+int main(int,mainv,mainv) {
 	long double	n49 = 49.0 ;
 	long double	n50 = 50.0 ;
 	long double	n51 = 51.0 ;
