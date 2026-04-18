@@ -21,7 +21,7 @@
 #define	CF_SHIFT	0		/* shift */
 #define	CF_VMULONE	0		/* multiply */
 #define	CF_MULTIPLY	0		/* multiply */
-#define	CF_MULTIPLIER	0		/* multiplier */
+#define	CF_MULTIPLIER	1		/* multiplier */
 
 /* revision history:
 
@@ -144,7 +144,7 @@ struct looksz {
 
 /* forward references */
 
-local int	test_vmulone() noex ;
+local int	test_vmuluone() noex ;
 local int	test_multiply() noex ;
 local int	test_divshow() noex ;
 local int	test_divshow1() noex ;
@@ -185,7 +185,7 @@ cbool		f_prvar		= CF_PRVAR ;
 cbool		f_cast		= CF_CAST ;
 cbool		f_values	= CF_VALUES ;
 cbool		f_shift		= CF_SHIFT ;
-cbool		f_vmulone	= CF_VMULONE ;
+cbool		f_vmuluone	= CF_VMULONE ;
 cbool		f_multiply	= CF_MULTIPLY ;
 cbool		f_multiplier	= CF_MULTIPLIER ;
 
@@ -237,8 +237,8 @@ int mainsub(int,mainv,mainv) noex {
 	    	printf("thing.b=%d\n",thing.b) ;
 	}
 	if (rs >= 0) {
-	    if_constexpr (f_vmulone) {
-	        rs = test_vmulone() ;
+	    if_constexpr (f_vmuluone) {
+	        rs = test_vmuluone() ;
 	    }
 	}
 	if (rs >= 0) {
@@ -502,7 +502,7 @@ local bool divest(mut uchar *q,mut uchar *r,con uchar *u,con uchar *v) noex {
     	return fz ;
 } /* end subroutine (divest) */
 
-local void vdivfull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
+local void vdivufull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
     udiv<uint>	res{} ;
     uchar	tmp[n+4] ;
     uchar	*t ;
@@ -535,7 +535,7 @@ local void vdivfull(int n,uchar *q,uchar *r,uchar *u,uchar *v) noex {
 	t[i+0] = uchar(res.rem) ;
     } /* end for */
     DPRINTF("ret\n") ;
-} /* end subroutine (vdivfull) */
+} /* end subroutine (vdivufull) */
 
 local int test_divshow2() noex {
     int		rs = SR_OK ;
@@ -550,7 +550,7 @@ local int test_divshow2() noex {
         DPRINTF("i=%d\n",i) ;
     	vload(2,v,den) ;
         DPRINTF("den=%02X:%02X\n",v[1],v[0]) ;
-	vdivfull(4,q,r,u,v) ;
+	vdivufull(4,q,r,u,v) ;
 	{
 	    const uint uu = vjoin(4,u) ;
 	    const uint vv = vjoin(2,v) ;
@@ -706,7 +706,7 @@ local int test_divshort() noex {
 	    for (int j = 1 ; j < (UCHAR_MAX + 1) ; ++j) {
 	        uchar d = uchar(j) ;
 	        loadval(n,dd,dividend) ;
-    	        rem0 = vdivshort(n,q,dd,d) ;
+    	        rem0 = vdivushort(n,q,dd,d) ;
 	        mkv(&quo0,q) ;
 	        quo1 = dividend / d ;
 	        rem1 = uchar(dividend % d) ;
@@ -743,7 +743,7 @@ local int test_divhone() noex {
             vload(2,v,divisor) ;
             (void) q ;
             (void) r ;
-            if ((fz = vdivh(n,q,r,u,v)) == false) {
+            if ((fz = vdivuh(n,q,r,u,v)) == false) {
                 res.quo = vjoin(nh,q) ;
                 res.rem = vjoin(nh,r) ;
                 {
@@ -788,7 +788,7 @@ local int test_divhrand() noex {
 	for (int j = 1 ; j <= USHORT_MAX ; j += 1) {
 	    ushort divisor = ushort(j) ;
             vload(2,v,divisor) ; 
-            if ((fz = vdivh(n,q,r,u,v)) == false) {
+            if ((fz = vdivuh(n,q,r,u,v)) == false) {
                 res.quo = vjoin(nh,q) ;
                 res.rem = vjoin(nh,r) ;
                 {
@@ -897,7 +897,7 @@ local int test_shift() noex {
 	return rs ;
 } /* end subroutine (test_shift) */
 
-local int test_vmulone() noex {
+local int test_vmuluone() noex {
 	int		rs = SR_OK ;
 	uchar		u[4] ;
 	uchar		v[4] ;
@@ -914,16 +914,16 @@ local int test_vmulone() noex {
             DPRINTF("qq=%08X\n",qq) ;
 	}
 	{
-	    vmul(8,r,u,v) ;
+	    vmulu(8,r,u,v) ;
     DPRINTF("r=%02X:%02X:%02X:%02X\n",r[3],r[2],r[1],r[0]) ;
 	} /* end block */
 	{
-	    vmulone(8,r,u,v0) ;
+	    vmuluone(8,r,u,v0) ;
     DPRINTF("r=%02X:%02X:%02X:%02X\n",r[3],r[2],r[1],r[0]) ;
 	}
 	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
-} /* end subroutine (test_vmulone) */
+} /* end subroutine (test_vmuluone) */
 
 local int test_multiply() noex {
 	int		rs = SR_OK ;
