@@ -286,7 +286,7 @@ int main(int argc,mainv,mainv) {
 	    {
 	        const thing	*tp ;
 	        if ((rs = ol.findmin(&tp)) >= 0) {
-		    const int	v = tp->getval() ;
+		    cint	v = tp->getval() ;
 	            cout << "min=" << v << endl ;
 		} else {
 	            cout << "bad rs=" << rs << endl ;
@@ -371,7 +371,7 @@ local int testio() {
 	    {
 	        ifstream	is(ifn) ;
 		if (is.good()) {
-		    const int	llen = LINEBUFLEN ;
+		    cint	llen = LINEBUFLEN ;
 		    char	lbuf[LINEBUFLEN+1] ;
 		    if ((rs = readline(is,lbuf,llen)) > 0) {
 		        cout << "read> " << lbuf << endl ;
@@ -430,15 +430,14 @@ local int testlambda(void) {
 
 #if	CF_TESTIN
 local int testin() {
-	const int	n = 20 ;
+	cint		n = 20 ;
 	int		rs = SR_OK ;
-	int		i ;
-	for (i = 0 ; i < n ; i += 1) {
+	for (int i = 0 ; i < n ; i += 1) {
 	    int	v ;
  	    cin >> v ;
 	    if (cin.eof()) break ;
 	    cout << "i" << i << "=" << v << endl ;
-	}
+	} /* end for */
 	return rs ;
 }
 /* end subroutine (testin) */
