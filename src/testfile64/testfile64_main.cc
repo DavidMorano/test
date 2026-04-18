@@ -1,4 +1,4 @@
-/* testfile64_main SUPORT */
+/* testfile64_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
