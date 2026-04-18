@@ -248,6 +248,11 @@ varithmetic.o:		varithmetic.dir
 varithmetic.dir:
 	makesubdir $@
 
+# INTEXT
+intext.o:		intext.dir
+intext.dir:
+	makesubdir $@
+
 char.o:			char.cc		char.h
 inetconv.o:		inetconv.cc	inetconv.h
 base64.o:		base64.cc	base64.h
@@ -265,10 +270,6 @@ timeval.o:		timeval.cc	timeval.hh
 
 # TESTINT
 testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
-
-# INTX
-intext.o:		intext.ccm	loadvals.o
-	makemodule $@
 
 arithsteps.o:		arithsteps.ccm
 
