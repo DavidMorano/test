@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-/* the the |ctdecf)3uc)| subroutine */
+/* the the |ctdecf(3uc)| subroutine */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	0		/* compile-time debugging */
@@ -26,7 +26,7 @@
 	main
 
 	Description:
-	This little program tests the 'ctdecf(3dam)' subroutine.
+	This little program tests the |ctdecf(3uc)| subroutine.
 
 ******************************************************************************/
 
@@ -36,12 +36,13 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdio>
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<usupport.h>
+#include	<usupport.h>		/* |ctdec(3u)| */
 #include	<ctdecf.h>
 #include	<xxtostr.h>		/* |uitostr(3u)| */
-#include	<localmisc.h>
+#include	<localmisc.h>		/* |DECBUFLEN| */
 
 #pragma		GCC dependency		"mod/ulibvals.ccm"
 
@@ -49,7 +50,7 @@ import ulibvals ;
 
 /* local defines */
 
-#define	DBUFLEN		100
+#define	DBUFLEN		MAX(100,DECBUFLEN)
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	0		/* compile-time debugging */
@@ -91,7 +92,7 @@ extern "C" {
 
 /* local variables */
 
-static int	decbuflen = ulibval.decbuflen ;
+static cint	decbuflen = ulibval.decbuflen ;
 
 cbool		f_debug		= CF_DEBUG ;
 cbool		f_ctdecf	= CF_CTDECF ;
@@ -119,7 +120,7 @@ int main(int,mainv,mainv) {
 	    printf("rs=%d s=>%s<\n",rs,dbuf) ;
 	} /* end if */
 	if_constexpr (f_ctdec) if (rs >= 0) {
-	    int dlen = decbuflen ;
+	    cint dlen = decbuflen ;
 	    cint v = 1234567 ;
 	    char dbuf[decbuflen+1] ;
 	    rs = ctdec(dbuf,dlen,v) ;
@@ -127,7 +128,7 @@ int main(int,mainv,mainv) {
 	} /* end if */
 	if_constexpr (f_xxtostr) if (rs >= 0) {
 	    const uint uv = 1234567 ;
-	    int dlen = decbuflen ;
+	    cint dlen = decbuflen ;
 	    char dbuf[decbuflen+1] ;
 	    errno = 0 ;
 	    char *bp = uitostr(uv,(dbuf+dlen)) ;
@@ -136,7 +137,7 @@ int main(int,mainv,mainv) {
 	} /* end if */
 	if (rs >= 0) {
 	    const int v = -1234567 ;
-	    int dlen = decbuflen ;
+	    cint dlen = decbuflen ;
 	    char dbuf[decbuflen+1] ;
 	    errno = 0 ;
 	    char *bp = itostr(v,(dbuf+dlen)) ;
@@ -151,6 +152,5 @@ int main(int,mainv,mainv) {
 
 
 /* local subroutines */
-
 
 
