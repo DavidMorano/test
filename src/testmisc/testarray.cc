@@ -25,20 +25,15 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstring>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdio>
-#include	<cmath>
-#include	<iostream>		/* |cout(3c++)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usupport.h>
-#include	<mkchar.h>
 #include	<localmisc.h>
 
 using libu::cfdec ;			/* subroutine */
-using std::cout ;			/* variable */
 
 cint		rlen = 3 ;
 
