@@ -1,4 +1,4 @@
-/* main SUPORT */
+/* testftp_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -10,12 +10,17 @@
 
 /* revision history:
 
-	= 92/03/01, David A­D­ Morano
+	= 1992-03-01, David A­D­ Morano
 	This program was originally written.
 
 */
 
+/* Copyright © 1992 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
 /*******************************************************************************
+
+  	Name:
 
   	Description:
 	This subroutine forms a program that sends data to a remote
@@ -31,11 +36,12 @@
 #include	<netdb.h>
 #include	<ctime>
 #include	<csignal>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usyscalls.h>
 #include	<uclibmem.h>
-#include	<cstring>
 #include	<baops.h>
 #include	<bfile.h>
 #include	<sockaddress.h>
@@ -45,7 +51,6 @@
 
 #include	"config.h"
 #include	"defs.h"
-
 
 
 /* local defines */
@@ -60,19 +65,9 @@
 #define	BUFLEN		((10 * 1024) + MAXHOSTNAMELEN)
 
 
-
 /* external variables */
 
 extern struct tm	*localtime() ;
-
-extern int	cfdeci(const char *,int,int *) ;
-extern int	matstr(char * const *,const char *,int) ;
-extern int	dialuss(const char *,int,int) ;
-extern int	opentmpusd(const char *,int,mode_t,char *) ;
-extern int	dialticotsordnls(const char *,int,const char *,int,int) ;
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strbasename(char *) ;
 
 
 /* external variables */
