@@ -1,6 +1,9 @@
-/* main SUPPOER */
+/* testsig_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
+
+/* test some signal behavior */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGN	1		/* special debugging */
@@ -17,6 +20,7 @@
 
 /*******************************************************************************
 
+  	Description:
 	We test some aspects of signal operation on this OS.
 
 *******************************************************************************/
@@ -29,12 +33,14 @@
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<sbuf.h>
 #include	<ascii.h>
 #include	<strx.h>
-#include	<localmisc.h>
 #include	<exitcodes.h>
+#include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG */
 
 #include	"sighand.h"
 
@@ -53,46 +59,30 @@
 extern int	ucontext_rtn(ucontext_t *,long *) ;
 
 #if	CF_SIGDUMPER
-extern int	sigdumper(const char *,int,const char *) ;
+extern int	sigdumper(cchar *,int,cchar *) ;
 #endif /* CF_SIGDUMPER */
-
-#if	CF_DEBUGS || CF_DEBUGN
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
-
-#if	CF_DEBUGN
-extern int	nprintf(const char *,const char *,...) ;
-#endif
 
 
 /* local structures */
 
-#ifndef	TYPEDEF_CCHAR
-#define	TYPEDEF_CCHAR	1
-typedef const char	cchar ;
-#endif
-
 struct sigcode {
-	int		code ;
-	const char	*name ;
+	int	code ;
+	cchar	*name ;
 } ;
 
 
 /* forward references */
 
-static void	main_sigint(int,siginfo_t *,void *) ;
-static void	main_sighand(int,siginfo_t *,void *) ;
-static int	main_sigdump(siginfo_t *) ;
+local void	main_sigint(int,siginfo_t *,void *) ;
+local void	main_sighand(int,siginfo_t *,void *) ;
+local int	main_sigdump(siginfo_t *) ;
 
 static cchar	*strsigcode(const struct sigcode *,int) ;
 
 
 /* local variables */
 
-static const struct mapex	mapexs[] = {
+constexpr mapex		mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -107,7 +97,7 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const int	sigcatches[] = {
+constexpr int		sigcatches[] = {
 	SIGILL, 
 	SIGSEGV,
 	SIGBUS,
@@ -116,7 +106,7 @@ static const int	sigcatches[] = {
 	0
 } ;
 
-static const struct sigcode	sigcode_ill[] = {
+constexpr sigcode	sigcode_ill[] = {
 	{ ILL_ILLOPC, "ILLOPC" },
 	{ ILL_ILLOPN, "ILLOPN" },
 	{ ILL_ILLADR, "ILLADR" },
@@ -128,31 +118,32 @@ static const struct sigcode	sigcode_ill[] = {
 	{ 0, NULL }
 } ;
 
-static const struct sigcode	sigcode_segv[] = {
+constexpr sigcode	sigcode_segv[] = {
 	{ SEGV_MAPERR, "MAPERR" },
 	{ SEGV_ACCERR, "ACCERR" },
 	{ 0, NULL }
 } ;
 
-static const struct sigcode	sigcode_bus[] = {
+constexpr sigcode	sigcode_bus[] = {
 	{ BUS_ADRALN, "ADRALN" },
 	{ BUS_ADRERR, "ADRERR" },
 	{ BUS_OBJERR, "OBJERR" },
 	{ 0, NULL }
 } ;
 
-static const int	sigints[] = {
+constexpr int		sigints[] = {
 	SIGINT,
 	SIGTERM,
 	0
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,mainv argv,mainv envv) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ex = EX_OK ;
@@ -204,9 +195,9 @@ int main(int argc,cchar **argv,cchar **envv)
 
 
 /* ARGSUSED */
-static void main_sigint(int sn,siginfo_t *sip,void *vcp)
+local void main_sigint(int sn,siginfo_t *sip,void *vcp)
 {
-	const int	wlen = LINEBUFLEN ;
+	cint	wlen = LINEBUFLEN ;
 	int		wl ;
 	cchar		*fmt = "sig=%u\n" ;
 	char		wbuf[LINEBUFLEN+1] ;
@@ -231,11 +222,9 @@ static void main_sigint(int sn,siginfo_t *sip,void *vcp)
 }
 /* end subroutine (main_sigint) */
 
-
 /* ARGSUSED */
-static void main_sighand(int sn,siginfo_t *sip,void *vcp)
-{
-	const int	wlen = LINEBUFLEN ;
+local void main_sighand(int sn,siginfo_t *sip,void *vcp) {
+	cint	wlen = LINEBUFLEN ;
 	int		rs = SR_OK ;
 	int		wl ;
 	cchar		*fmt = "sig=%u\n" ;
@@ -273,17 +262,15 @@ static void main_sighand(int sn,siginfo_t *sip,void *vcp)
 }
 /* end subroutine (main_sighand) */
 
-
-static int main_sigdump(siginfo_t *sip)
-{
-	const int	wlen = LINEBUFLEN ;
-	const int	si_signo = sip->si_signo ;
-	const int	si_code = sip->si_code ;
+local int main_sigdump(siginfo_t *sip) {
+	cint	wlen = LINEBUFLEN ;
+	cint	si_signo = sip->si_signo ;
+	cint	si_code = sip->si_code ;
 	int		wl ;
-	const char	*sn = strabbrsig(sip->si_signo) ;
-	const char	*as = "*na*" ;
-	const char	*scs = NULL ;
-	const char	*fmt ;
+	cchar	*sn = strabbrsig(sip->si_signo) ;
+	cchar	*as = "*na*" ;
+	cchar	*scs = NULL ;
+	cchar	*fmt ;
 	char		wbuf[LINEBUFLEN+1] ;
 	char		abuf[16+1] ;
 #if	CF_DEBUGN
@@ -323,12 +310,10 @@ static int main_sigdump(siginfo_t *sip)
 }
 /* end subroutine (main_sigdump) */
 
-
-static const char *strsigcode(const struct sigcode *scp,int code)
-{
+local cchar *strsigcode(const struct sigcode *scp,int code) {
 	int		i ;
 	int		f = FALSE ;
-	const char	*sn = "UNKNOWN" ;
+	cchar	*sn = "UNKNOWN" ;
 	for (i = 0 ; scp[i].code != 0 ; i += 1) {
 	    f = (scp[i].code == code) ;
 	    if (f) break ;
