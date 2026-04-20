@@ -1,6 +1,19 @@
-/* main SUPPOER (mainfmtstr) */
+/* main SUPPORT (mainfmtstr) */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test some string formatting code */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+/* Copyright © 2017 1998 A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* MUST be first to configure */
 #include	<sys/types.h>
