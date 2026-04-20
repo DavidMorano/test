@@ -1,4 +1,4 @@
-/* main SUPPOER (testfindbit) */
+/* testfindbit_main SUPPORT (testfindbit) */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
