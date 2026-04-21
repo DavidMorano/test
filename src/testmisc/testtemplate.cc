@@ -31,7 +31,8 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usyscalls.h>
-#include	<localmisc.h>
+#include	<uconcepts.hh>
+#include	<localmisc.h>		/* |eol| */
 
 using std::sqrt ;			/* overloaded-subroutine */
 using std::cbrt ;			/* overloaded-subroutine */
@@ -43,6 +44,10 @@ template<typename T> void fun(T v) noex {
 }
 
 template<typename T> local void delayed(T v) noex ;
+
+template<concharp T> local void printcs(const T s) noex {
+    cout << s << eol ;
+}
 
 int main(int,mainv,mainv) {
     const int	vint = 1 ;
@@ -63,6 +68,11 @@ int main(int,mainv,mainv) {
 	cout << "res=" << res << eol ;
     }
     delayed(2) ;
+    {
+	constexpr char 	arr[] = "array of chars" ;
+	printcs("Hello world!") ;
+	printcs(arr) ;
+    }
 }
 /* end subroutine (main) */
 
