@@ -46,14 +46,14 @@ DEPS_MAIN +=
 
 OBJ0= testenv_main.o
 OBJ1= strkeycmp.o matkeystr.o
-OBJ2=
+OBJ2= getenver.o
 OBJ3= 
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o
+OBJA= obj0.o obj1.o obj2.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
@@ -284,5 +284,7 @@ xxtostr.o:		xxtostr.cc	xxtostr.h
 
 strkeycmp.o:		strkeycmp.cc	strkeycmp.h
 matkeystr.o:		matkeystr.cc	matkeystr.h
+
+getenver.o:		getenver.cc	getenver.h
 
 
