@@ -42,6 +42,7 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usupport.h>		/* |cfdec(3u)| */
+#include	<getenver.h>
 #include	<intceil.h>
 #include	<mapex.h>
 #include	<strkeycmp.h>
@@ -115,7 +116,7 @@ cbool			f_debug = CF_DEBUG ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = EX_INFO ;
 	int		len = (COLUMNS-40) ;
@@ -130,18 +131,28 @@ int main(int argc,mainv argv,mainv envv) {
 	} /* end if (arguments) */
 	(void) len ;
 	{
+	    printf("search\n") ;
 	    for (cauto &e : tests) {
-		if (int ei = matkeystr(environ,e,-1) ; ei >= 0) {
+		if (cint ei = matkeystr(environ,e,-1) ; ei >= 0) {
 		    cchar *valp = environ[ei] ;
 		    if (cchar *tp = strchr(environ[ei],'=') ; tp) {
 			valp = (tp+1) ;
 		    } /* end if */
 		    {
 			strnul es(valp,len) ;
-			{
-		            printf("test=%s v=%s\n",e,ccp(es)) ;
-			}
+		        printf("test=%s v=%s\n",e,ccp(es)) ;
 		    }
+		} else {
+		    printf("test=%s not-found\n",e) ;
+		} /* end if */
+	    } /* end for */
+	} /* end block */
+	{
+	    printf("getenver\n") ;
+	    for (cauto &e : tests) {
+		if (cchar *valp = getenver(e,-1) ; valp) {
+			strnul es(valp,len) ;
+		        printf("test=%s v=%s\n",e,ccp(es)) ;
 		} else {
 		    printf("test=%s not-found\n",e) ;
 		} /* end if */
