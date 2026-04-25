@@ -109,7 +109,7 @@ cbool		f_debug		= CF_DEBUG ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	constexpr int	dfd = (f_debug) ? FD_STDERR : -1 ;
 	int		ex = EX_OK ;
 	int		rs = SR_OK ;
