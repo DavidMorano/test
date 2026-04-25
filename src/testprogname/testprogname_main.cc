@@ -38,6 +38,7 @@
 #include	<usyscalls.h>
 #include	<usysflag.h>		/* |usysflag(3u)| */
 #include	<prognamevar.hh>
+#include	<shellunder.h>
 #include	<localmisc.h>		/* |MAXPATHLEN| */
 
 
@@ -76,27 +77,34 @@ cint		maxpath = MAXPATHLEN ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
     	prognamevar	progname(argc,argv,envv) ;
     	cnothrow	nt{} ;
 	cnullptr	np{} ;
+	con pid_t	ppid = getppid() ;
 	cchar		*cp = getenv("_") ;
+	printf("ppid=%u\n",ppid) ;
 	if (argc > 0) {
 	    printf("argname=%s\n", ((argc > 0) ? argv[0] : "")) ;
 	}
 	{
-	    printf("progfname=%s\n", ((cp != nullptr) ? cp : "")) ;
+	    shellunder_data sd ;
+	    printf("shellunder=%s\n", ((cp != nullptr) ? cp : "")) ;
+	    if (cp) {
+	        shellunder_load(&sd,cp) ;
+	        printf("shellname=%s\n",sd.execname) ;
+	    }
 	}
 	{
 	    cchar *execname = getexecname() ;
 	    printf("execname=%s\n",execname) ;
 	}
 	{
-	    printf("progname=%s\n",ccp(progname)) ;
+	    printf("prognamevar=%s\n",ccp(progname)) ;
 	}
 	{
 	    cp = getprogname() ;
-	    printf("progname=%s\n", ((cp != nullptr) ? cp : "")) ;
+	    printf("getprogname=%s\n", ((cp != nullptr) ? cp : "")) ;
 	}
 	if (usysflag.darwin) {
 	    if (char *pbuf ; (pbuf = new(nt) char[maxpath + 1]) != np) {
