@@ -248,10 +248,10 @@ constexpr char		oterms[] = {
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
-	struct proginfo	pi, *pip = &pi ;
-	struct servent	*sep ;
-	USTAT		sb ;
+int main(int argc,con mainv argv,con mainv envv) {
+	proginfo	pi, *pip = &pi ;
+	servent		*sep ;
+	ustat		sb ;
 	USERINFO	u ;
 	KEYOPT		akopts ;
 	VECSTR		svars ;
@@ -2395,7 +2395,7 @@ struct proginfo	*pip ;
 cchar	dname[] ;
 int		mode ;
 {
-	USTAT		sb ;
+	ustat		sb ;
 
 	int	rs ;
 
@@ -2451,12 +2451,8 @@ int		mode ;
 
 
 /* check if the directory of a file is present */
-local int checkfiledir(pip,fname)
-struct proginfo	*pip ;
-cchar	fname[] ;
-{
-	USTAT		sb ;
-
+local int checkfiledir(proginfo *pip,cchar *fname) noex {
+	ustat		sb ;
 	int	rs ;
 	int	sl ;
 
