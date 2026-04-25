@@ -124,7 +124,7 @@ constexpr cpcchar	dialers[] = {
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainb envv) {
+int main(int argc,con mainv argv,con mainb envv) {
 	struct proginfo	pi, *pip = &pi ;
 	bfile	errfile, *efp = &errfile ;
 	bfile	outfile, *ofp = &outfile ;
