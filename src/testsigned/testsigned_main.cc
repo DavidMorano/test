@@ -48,12 +48,16 @@ local int sub(int) ;
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	int		siw ;
 	uint		uiw ;
 	char		ch = char(0xff) ;
 	signed char	sch = schar(0xff) ;
 	uchar		uch = char(0xff) ;
+
+	(void) argc ;
+	(void) argv ;
+	(void) envv ;
 
 #if	CF_INTEGRALTYPE
 	siw = (sch & 0xff) ;
