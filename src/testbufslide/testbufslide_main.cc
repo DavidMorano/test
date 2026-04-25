@@ -140,7 +140,7 @@ cbool		f_text	= true ;	/* <- always for this test */
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ex = EXIT_SUCCESS ;
