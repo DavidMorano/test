@@ -28,7 +28,7 @@
 
 import libutil ;			/* |lenstr(3u)| */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
 	int		rs = SR_OK ;
 	int		ex = EXIT_SUCCESS ;
 	if (argc > 1) {
