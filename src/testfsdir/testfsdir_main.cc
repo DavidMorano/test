@@ -66,7 +66,7 @@ local int dirlist(cchar *name) noex {
 	return rs ;
 } /* end subroutine (dirlist) */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	int		ex = 0 ;
 	int		rs = SR_OK ;
 	for (int ai = 1 ; (rs >= 0) && (ai < argc) ; ai += 1) {
