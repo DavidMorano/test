@@ -237,7 +237,7 @@ static cchar	*hello = "hello world!" ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	testcon		tc ;
 	thing		a(1), b(2), c(3) ;
 
