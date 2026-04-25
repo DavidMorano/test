@@ -30,11 +30,6 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<unistd.h>
-#include	<csignal>
-#include	<climits>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>		/* |getenv(3c)| */
 #include	<cstring>		/* |strchr(3c)| */
@@ -50,7 +45,7 @@
 #include	<strnul.hh>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |COLUMNS| + |DECBUFLEN| */
-#include	<dprintf.hh>		/* debugging */
+#include	<dprintf.hh>		/* |DPRINTF(3u)| */
 
 
 /* local defines */
@@ -75,8 +70,6 @@ typedef string_view	strview ;
 
 
 /* external variables */
-
-extern mainv environ ;
 
 
 /* local structures */
@@ -103,6 +96,7 @@ constexpr MAPEXENT	mapexs[] = {
 } ; /* end array (mapexs) */
 
 constexpr cpcchar	tests[] = {
+    "HOME",
     "PATH",
     "LIBPATH",
     "INCPATH"
@@ -121,7 +115,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		ex = EX_INFO ;
 	int		len = (COLUMNS-40) ;
 	DPRINTF("ent\n") ;
-	(void) envv ;
 	if (argc > 1) {
 	    if (cchar *ap = argv[1] ; ap) {
 	        if (int v ; cfdec(ap,-1,&v) >= 0) {
@@ -129,13 +122,12 @@ int main(int argc,con mainv argv,con mainv envv) {
 		}
 	    }
 	} /* end if (arguments) */
-	(void) len ;
 	{
-	    printf("search\n") ;
+	    printf("search-raw\n") ;
 	    for (cauto &e : tests) {
-		if (cint ei = matkeystr(environ,e,-1) ; ei >= 0) {
-		    cchar *valp = environ[ei] ;
-		    if (cchar *tp = strchr(environ[ei],'=') ; tp) {
+		if (cint ei = matkeystr(envv,e,-1) ; ei >= 0) {
+		    cchar *valp = envv[ei] ;
+		    if (cchar *tp = strchr(envv[ei],'=') ; tp) {
 			valp = (tp+1) ;
 		    } /* end if */
 		    {
