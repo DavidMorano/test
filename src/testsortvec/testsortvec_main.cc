@@ -55,7 +55,7 @@ local int	slcmp(cchar **,cchar **) noex ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
 	bfile	infile, *ifp = &infile ;
 	bfile	outfile, *ofp = &outfile ;
 	bfile	tmpfile, *tfp = &tmpfile ;
