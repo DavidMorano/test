@@ -341,11 +341,11 @@ constexpr cpcchar	pstrs[] = {
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv) {
-	struct proginfo	pi, *pip = &pi ;
-	struct locinfo	li, *lip = &li ;
+int main(int argc,con mainv argv,con mainv) {
 	SIGACTION	san ;
 	SIGACTION	sao[nelem(sigints) + nelem(sigignores)] ;
+	proginfo	pi, *pip = &pi ;
+	locinfo		li, *lip = &li ;
 	keyopt		akopts ;
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
