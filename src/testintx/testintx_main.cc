@@ -226,7 +226,7 @@ template <typename T> local int printvar(T vv) noex {
 	return rs ;
 } /* end subroutine (printvar) */
 
-int mainsub(int,mainv,mainv) noex {
+int mainsub(int,con mainv,con mainv) noex {
     	looksz		thing{} ;
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
@@ -304,7 +304,7 @@ int mainsub(int,mainv,mainv) noex {
 	return ex ;
 } /* end subroutine (mainsub) */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
     	cnothrow	nt{} ;
     	cint		sl = MINSIGSTKSZ +  SIGSTKSZ ;
     	int		ex = EXIT_FAILURE ;
