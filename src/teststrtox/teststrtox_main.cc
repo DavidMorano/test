@@ -407,7 +407,7 @@ constexpr int		llen = LINEBUFLEN ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
     	prognamevar	progname(argc,argv,envv) ;
 	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
