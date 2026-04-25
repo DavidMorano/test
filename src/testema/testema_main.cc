@@ -59,7 +59,7 @@ cchar	ts[] = "(David A Morano) dave.a.morano@gmail.com <d@gmail.com>"
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = EX_OK ;
 
