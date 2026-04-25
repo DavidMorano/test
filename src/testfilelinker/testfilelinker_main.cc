@@ -32,7 +32,7 @@ import libutil ;			/* |lenstr(3u)| */
 
 cbool		f_debug = true ;
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ex = EXIT_SUCCESS ;
