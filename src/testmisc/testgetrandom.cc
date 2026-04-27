@@ -1,8 +1,11 @@
 /* testgetrandom SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C89 */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
-#define	CF_DEBUGMALL	1		/* debugging memory-allocations */
+/* test the |getrandom(3uc)| subroutine */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 
 /* revision history:
 
@@ -16,38 +19,57 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/random.h>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdarg>
 #include	<cstdio>
-#include	<usystem.h>
-#include	<localmisc.h>
+#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usupport.h>		/* |cfdec(3u)| */
+#include	<getx.h>		/* |getourenv(3uc)| */
+#include	<mkchar.h>
+#include	<exitcodes.h>
+#include	<localmisc.h>		/* |COLUMNS| */
+#include	<dprint.hh>		/* |DPRINTF(3u)| */
 
 
 /* local defines */
 
-#ifndef	COLUMNS
-#define	COLUMNS		80
-#endif
-
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
 #define	RBUFLEN		20
 
-#define	VARDEBUGFNAME	"TESTUCOPEN_DEBUGFILE"
 #define	VARCOLUMNS	"COLUMNS"
 
-
-#if	CF_DEBUGS
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugprinthexblock(cchar *,int,cvoid *,int) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	0		/* compile-time debugging */
 #endif
+
+
+/* imported namespaces */
+
+using std::min ;			/* subroutine-template */
+using std::max ;			/* subroutine-template */
+using libu::cfdec ;			/* subroutine */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
 
 
 /* forward references */
+
+
+/* local variables */
+
+cbool		f_debug = CF_DEBUG ;
 
 
 /* exported variables */
@@ -55,82 +77,34 @@ extern int	strlinelen(cchar *,int,int) ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
-
-#if	CF_DEBUGS && CF_DEBUGMALL
-	uint		mo_start = 0 ;
-#endif
-
+int main(int argc,con mainv argv,con mainv envv) {
+    	cnullptr	np{} ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		cols = COLUMNS ;
-	cchar		*cp ;
-
-#if	CF_DEBUGS
-	{
-	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
-	        rs1 = debugopen(cp) ;
-	        debugprintf("main: DEB fd=%u\n",rs1) ;
-	    }
-	}
-#endif /* CF_DEBUGS */
-
-#if	CF_DEBUGS && CF_DEBUGMALL
-	uc_mallset(1) ;
-	uc_mallout(&mo_start) ;
+	DPRINTF("ent\n") ;
+#if	(COMMENT == 0)
+	DPRINTF("not-comment\n") ;
 #endif
-
-	if ((cp = getourenv(envv,VARCOLUMNS)) != NULL) {
-	     int	v ;
-	     rs = cfdeci(cp,-1,&v) ;
-	     cols = v ;
+	if (cchar *cp ; (cp = getourenv(envv,VARCOLUMNS)) != np) {
+	     if (int v ; (rs = cfdec(cp,-1,&v)) >= 0) {
+	         cols = v ;
+	     }
 	}
-
 	if (rs >= 0) {
-	    const int	rlen = RBUFLEN ;
-	    int		rc = 0 ;
-	    cchar	*pn = "testgetrandom" ;
+	    cint	rlen = RBUFLEN ;
 	    char	rbuf[RBUFLEN+1] ;
-	    printf("random> ") ;
-	    if ((rc = getrandom(rbuf,rlen,0)) >= 0) {
-		const int	rl = rc ;
-		int		ch ;
-		int		i ;
-#if	CF_DEBUGS
-	        debugprinthexblock(pn,cols,rbuf,rl) ;
-#endif
-		for (i < 0 ; i < rl ; i += 1) {
-		    ch = MKCHAR(rbuf[i]) ;
-		    printf(" %02x",ch) ;
-		}
-		printf("\n") ;
+	    DPRINTF("random> \n") ;
+	    if (int rc ; (rc = getrandom(rbuf,rlen,0)) > 0) {
+		cint	rl = min(rc,(cols/3)) ;
+		for (int i = 0 ; i < rl ; i += 1) {
+		    cint ch = MKCHAR(rbuf[i]) ;
+	    	    DPRINTR(" %02x",ch) ;
+		} /* end for */
+		DPRINTR("\n") ;
 	    } /* end if */
-#if	CF_DEBUGS
-	    debugprintf("main: getrandom() rc=%d\n",rc) ;
-#endif
 	} /* end if (arguments) */
-
-	if (rs < 0)
-	printf("failure (%d)\n",rs) ;
-
-#if	CF_DEBUGS
-	debugprintf("main: out rs=%d\n",rs) ;
-#endif
-
-#if	CF_DEBUGS && CF_DEBUGMALL
-	{
-	    uint	mo ;
-	    uc_mallout(&mo) ;
-	    debugprintf("main: final mallout=%u\n",(mo-mo_start)) ;
-	    uc_mallset(0) ;
-	}
-#endif
-
-#if	CF_DEBUGS
-	debugclose() ;
-#endif
-
-	return 0 ;
+	if (rs < 0) DPRINTF("failure (%d)\n",rs) ;
 }
 /* end subroutine (main) */
 
