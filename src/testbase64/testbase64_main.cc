@@ -49,7 +49,7 @@
 #include	<mkchar.h>
 #include	<localmisc.h>
 #include	<libdebug.h>		/* LIBDEBUG */
-#include	<dprintf.hh>		/* debugging */
+#include	<dprint.hh>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
