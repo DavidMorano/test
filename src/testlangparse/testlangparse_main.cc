@@ -49,16 +49,16 @@
 #include	<ascii.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| + |MAXLINELEN| */
-#include	<debprintf.h>		/* |DEBPRINTF| */
+#include	<deb.hh>		/* |DEBPRINTF| */
 
 #include	<langparse.h>
 
 #pragma		GCC dependency		"mod/libutil.ccm"
-#pragma		GCC dependency		"mod/debug.ccm"
+#pragma		GCC dependency		"mod/deb.ccm"
 #pragma		GCC dependency		"mod/testlangutil.ccm"
 
 import libutil ;			/* |getlenstr(3u)| */
-import debug ;
+import deb ;
 import testlangutil ;
 
 /* local defines */
