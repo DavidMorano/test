@@ -46,7 +46,7 @@ static int	filer_printcont(FILER *,int,const char *,int) ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	filer		ofile, *ofp = &ofile  ;
 	const int	mcols = MSGCOLS ;
 	const int	hlen = MAXPATHLEN ;
