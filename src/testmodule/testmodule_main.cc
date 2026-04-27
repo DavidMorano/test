@@ -44,7 +44,7 @@
 #include	<stdintx.h>
 #include	<prognamevar.hh>
 #include	<localmisc.h>		/* |MAXPATHLEN| */
-#include	<dprintf.hh>		/* debugging */
+#include	<dprint.hh>		/* debugging */
 
 import testmod ;
 
