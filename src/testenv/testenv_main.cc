@@ -45,7 +45,7 @@
 #include	<strnul.hh>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |COLUMNS| + |DECBUFLEN| */
-#include	<dprintf.hh>		/* |DPRINTF(3u)| */
+#include	<dprint.hh>		/* |DPRINTF(3u)| */
 
 
 /* local defines */
