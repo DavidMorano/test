@@ -42,7 +42,7 @@
 #include	<localmisc.h>		/* |COLUMNS| */
 #include	<libf.h>		/* LIBF */
 #include	<libdebug.h>		/* LIBDEBUG */
-#include	<dprintf.hh>		/* debugging */
+#include	<dprint.hh>		/* debugging */
 
 
 /* local defines */
