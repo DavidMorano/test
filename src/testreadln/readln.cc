@@ -103,13 +103,9 @@
 #include	<usysbase.h>
 #include	<mkchar.h>
 #include	<localmisc.h>		/* |eol(3local)| */
-#include	<dprintf.hh>		/* debugging */
+#include	<dprint.hh>		/* |DPRINT{x}(3u)| */
 
 #include	"readln.hh"
-
-#pragma		GCC dependency		"mod/debug.ccm"
-
-import debug ;
 
 /* local defines */
 
