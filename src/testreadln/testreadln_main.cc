@@ -41,9 +41,9 @@
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| */
 
-#pragma		GCC dependency		"mod/debug.ccm"
+#pragma		GCC dependency		"mod/deb.ccm"
 
-import debug ;
+import deb ;
 
 /* local defines */
 
