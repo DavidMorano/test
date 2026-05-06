@@ -188,11 +188,6 @@ int main(int argc,cchar **argv,cchar **envv) {
 
 #if	CF_TZSET
 	tzset() ;
-#if	CF_DEBUGS
-	debugprintf("main: tzset() daylight=%d\n",daylight) ;
-	debugprintf("main: tzset() timezone=%d(%um) altzone=%d(%um)\n",
-	    timezone,(timezone/60),altzone,(altzone/60)) ;
-#endif
 #endif /* CF_TZSET */
 
 /* ftime(3c) */
