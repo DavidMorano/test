@@ -2,12 +2,35 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
+/* test time time function */
+/* version %I% last-modified %G% */
 
 #define	CF_TZSET	0		/* call 'tzset(3)' */
 #define	CF_LOCALTIME	0
 #define	CF_MKTIME	1
 
+/* revision history:
 
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1992 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<ctime>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstdio>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
+
+
+/* local defines */
 
 #undef	LOCAL_DARWIN
 #define	LOCAL_DARWIN	\
@@ -19,50 +42,19 @@
 
 
 
-
-#include	<sys/types.h>
-#include	<ctime>
-#include	<cstring>
-#include	<cstdio>
-
-
-
-/* local defines */
-
-#define	A	(__STDC__ != 0) 
-#define	B	defined(_POSIX_C_SOURCE) 
-#define	C	defined(_XOPEN_SOURCE)
-
-#if	(A != 0) || (B != 0) || (C != 0)
-extern long	altzone ;
-#endif
-
-
-
 /* local structures */
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
-	struct tm	tms, *tmp = NULL ;
-
-	time_t	t, daytime = time(NULL) ;
-
+int main(int argc,con mainv argv,con mainv envv) {
+	TM	tms, *tmp = nullptr ;
+	time_t	daytime = time(nullptr) ;
+	time_t	t ;
 	int	rs ;
-
-
-#if	LOCAL_SUNOS
-	timezone = 0 ;
-	altzone = 0 ;
-#endif
 
 #if	CF_TZSET
 	tzset() ;
@@ -74,11 +66,11 @@ char	*envv[] ;
 
 	fprintf(stdout,"test: localtime\n") ;
 
-	memset(&tms,0,sizeof(struct tm)) ;
+	memset(&tms,0,sizeof(TM)) ;
 
 	tmp = localtime_r(&daytime,&tms) ;
 
-	if (tmp != NULL) {
+	if (tmp != nullptr) {
 
 		fprintf(stdout,"sec=   %u\n",tmp->tm_sec) ;
 		fprintf(stdout,"min=   %u\n",tmp->tm_min) ;
@@ -88,17 +80,11 @@ char	*envv[] ;
 		fprintf(stdout,"year=  %u\n",tmp->tm_year) ;
 		fprintf(stdout,"wday=  %u\n",tmp->tm_wday) ;
 		fprintf(stdout,"isdst= %d\n",tmp->tm_isdst) ;
-
-#if	LOCAL_DARWIN
 		fprintf(stdout,"zone=  %s\n",tmp->tm_zone) ;
 		fprintf(stdout,"gmtoff=%d\n",tmp->tm_gmtoff) ;
-#elif	LOCAL_SUNOS
-		fprintf(stdout,"tz=    %ld\n",timezone) ;
-		fprintf(stdout,"az=    %ld\n",altzone) ;
-#endif
-
-	} else
+	} else {
 		fprintf(stdout,"failed\n") ;
+	}
 
 #endif /* CF_LOCALTIME */
 
@@ -108,11 +94,9 @@ char	*envv[] ;
 
 	fprintf(stdout,"test: mktime\n") ;
 
-	if (tmp == NULL) {
-
+	if (tmp == nullptr) {
 		tmp = &tms ;
-		memset(&tms,0,sizeof(struct tm)) ;
-
+		memset(&tms,0,sizeof(TM)) ;
 		tms.tm_year = 107 ;
 		tms.tm_mon = 7 ;
 		tms.tm_mday = 28 ;
@@ -120,35 +104,17 @@ char	*envv[] ;
 		tms.tm_min = 0 ;
 		tms.tm_sec = 0 ;
 		tms.tm_isdst = -1 ;
-
 	}
-
-#if	LOCAL_DARWIN
-	tmp->tm_gmtoff = 0 ;
-	tmp->tm_zone = NULL ;
-#endif
-
 	t = mktime(tmp) ;
-
 	fprintf(stdout,"time=%lX\n",t) ;
-
-#if	LOCAL_DARWIN
 		fprintf(stdout,"zone=  %s\n",tmp->tm_zone) ;
 		fprintf(stdout,"gmtoff=%d\n",tmp->tm_gmtoff) ;
-#elif	LOCAL_SUNOS
-		fprintf(stdout,"tz=    %ld\n",timezone) ;
-		fprintf(stdout,"az=    %ld\n",altzone) ;
-#endif
 
 #endif /* CF_MKTIME */
 
 /* done */
-
-	fflush(stdout) ;
-
 	return 0 ;
 }
 /* end subroutine (main) */
-
 
 
