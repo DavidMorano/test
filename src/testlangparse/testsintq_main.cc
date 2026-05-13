@@ -38,11 +38,8 @@
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<new>			/* placement-new */
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysrets.h>
+#include	<usysbase.h>
 #include	<usyscalls.h>
-#include	<getfdfile.h>		/* |FD_STDERR| */
 #include	<ccfile.hh>
 #include	<strnul.hh>
 #include	<six.h>			/* |sichr(3uc)| */
