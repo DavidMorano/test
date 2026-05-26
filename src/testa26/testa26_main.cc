@@ -40,7 +40,7 @@
 #include	<baops.h>
 #include	<field.h>
 #include	<paramopt.h>
-#include	<exitcodes.h>
+#include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -118,7 +118,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
