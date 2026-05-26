@@ -56,8 +56,8 @@
 #include	<hostaddr.h>
 #include	<sockaddress.h>
 #include	<timestr.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
@@ -214,7 +214,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -222,7 +222,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -237,8 +237,10 @@ static const struct mapex	mapexs[] = {
 } ;
 
 
-/* exported subroutines */
+/* exported variables */
 
+
+/* exported subroutines */
 
 int main(argc,argv,envv)
 int	argc ;
