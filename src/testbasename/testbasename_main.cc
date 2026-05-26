@@ -33,18 +33,18 @@
 #include	<cstring>
 #include	<new>			/* |nothrow(3c++)| */
 #include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
+#include	<usysbase.h>
 #include	<usyscalls.h>
-#include	<sfx.h>			/* |sfbasename(3uc)| */
-#include	<rmx.h>			/* |rmeol(3uc)| */
-#include	<libf.h>		/* |freadln(3f)| */
-#include	<strw.h>		/* |strwcpy(3uc)| */
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<usupport.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libf.h>		/* LIBF */
+#include	<dprint.hh>		/* LIBF */
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
+import ureserve ;			/* |sf{x}(3u)| */
 
 /* local defines */
 
@@ -55,17 +55,14 @@
 
 /* imported namespaces */
 
-using std::nothrow ;			/* constant */
+using libu::strwcpy ;			/* subroutine */
+using libu::rmeol ;			/* subroutine */
 
 
 /* local typedefs */
 
 
 /* external subroutines */
-
-extern "C" {
-    extern int	freadln(FILE *,char *,int) noex ;
-}
 
 
 /* external variables */
@@ -114,7 +111,9 @@ int main(int,mainv,mainv) {
 	    } /* end if (m-a-f) */
 	    delete [] lbuf ;
 	} /* end if (m-a-f) */
-	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
+	if ((ex == EX_OK) && (rs < 0)) {
+	    ex = EX_DATAERR ;
+	}
 	return ex ;
 }
 /* end subroutine (main) */
