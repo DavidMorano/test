@@ -36,15 +36,15 @@
 #include	<iomanip>
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<getfdfile.h>		/* |FD_{x}| */
+#include	<usyscalls.h>
 #include	<vecelem.h>		/* <- under test */
 #include	<exitcodes.h>
 #include	<localmisc.h>
-#include	<debprintf.h>
+#include	<deb.hh>
 
-#pragma		GCC dependency		"mod/debug.ccm"
+#pragma		GCC dependency		"mod/deb.ccm"
 
-import debug ;
+import deb ;
 
 /* local defines */
 
