@@ -110,7 +110,7 @@ int vecelem_start(vecelem *op,int esz,int vn,int vo) noex {
 	                op->va = p ;
 	    	        op->n = vn ;
 		    	op->magval = VECELEM_MAGIC ;
-	            } /* end if (memory-allocation) */
+	            } /* end if (memory-acquire) */
 	        } /* end if */
 	    } /* end if (valid) */
 	    if (rs < 0) {
@@ -441,7 +441,7 @@ consteval int mkoptmask() noex {
 local int vecelem_setopts(vecelem *op,int vo) noex {
 	constexpr int	optmask = mkoptmask() ;
 	int		rs = SR_INVALID ;
-	if ((vo & (~ optmask)) == 0) ylikely {
+	if ((vo & (compl optmask)) == 0) ylikely {
 	    rs = SR_OK ;
 	    op->fl = {} ;
 	    if (vo & vecelemm.reuse)		op->fl.oreuse		= true ;
