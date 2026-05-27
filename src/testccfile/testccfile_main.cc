@@ -24,30 +24,32 @@
 	Description:
 	This program tests the CCFILE object.
 
+	Program-Symopsis:
+	$ testccfile.x <type(s)> <file(s)>
+
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstdio>		/* |FILE(3stdio)| */
-#include	<cstring>		/* |strcmp(3c)| */
-#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<ulogerror.h>
-#include	<usupport.h>
-#include	<umem.hh>
-#include	<ustream.hh>
-#include	<getfdfile.h>		/* |FD_STDIN| */
-#include	<ascii.h>
-#include	<ccfile.hh>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD |FILE(3stdio)| */
+#include	<cstring>		/* CSTD |strcmp(3c)| */
+#include	<algorithm>		/* C++STD |min(3c++)| + |max(3c++)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
+#include	<umem.hh>		/* LIBU */
+#include	<ustream.hh>		/* LIBU */
+#include	<ulogerror.h>		/* LIBU */
+#include	<ascii.h>		/* LIBU */
+#include	<ccfile.hh>		/* LIBU */
 #include	<bufos.hh>
 #include	<rmx.h>			/* |rmeol(3uc)| */
-#include	<strnul.hh>
+#include	<strnul.hh>		/* LIBU */
 #include	<strlinelen.h>
-#include	<mkchar.h>
-#include	<localmisc.h>
+#include	<mkchar.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 #include	<libf.h>		/* LIBF */
 #include	<dprint.hh>		/* debugging */
 
@@ -100,16 +102,16 @@ struct maininfo {
 	int		inlen ;
 	int		flen ;
     	maininfo_fl	fl{} ;
-	int start() noex ;
-	int finish() noex ;
-	int proc(cchar *) noex ;
-	int proc_text(cchar *) noex ;
+	int start	() noex ;
+	int finish	() noex ;
+	int proc	(cchar *) noex ;
+	int proc_text	(cchar *) noex ;
 	int proc_textstream(cchar *) noex ;
-	int proc_textcc(cchar *) noex ;
-	int proc_bin(cchar *) noex ;
+	int proc_textcc	(cchar *) noex ;
+	int proc_bin	(cchar *) noex ;
 	int proc_binstream(cchar *) noex ;
-	int proc_bincc(cchar *) noex ;
-	int proc_binraw(cchar *) noex ;
+	int proc_bincc	(cchar *) noex ;
+	int proc_binraw	(cchar *) noex ;
 	void dtor() noex ;
 	destruct maininfo() noex {
 	    if (fbuf || inbuf) dtor() ;
@@ -256,24 +258,24 @@ int maininfo::proc_textcc(cchar *fn) noex {
 	int		idx = 0 ;
 	int		wlen = 0 ; /* return-value */
 	DPRINTF("ent fn=%s\n",fn) ;
-	    if (ccfile inf ; (rs = inf.open(fn,"r")) >= 0) {
-	        DPRINTF("open rs=%d\n",rs) ;
-	        while ((rs = inf.readln(inbuf,inlen)) > 0) {
-		    cint len = rs ;
-		    if_constexpr (f_debug) {
-		        dprintline(inbuf,len) ;
-		    }
-		    rs = fwriter(ofp,inbuf,len) ;
-		    wlen += rs ;
-	            DPRINTF("fwriter rs=%d\n",rs) ;
-		    idx += len ;
-		    if (rs < 0) break ;
-	        } /* end while */
-		DPRINTF("while rs=%d\n",rs) ;
-	        rs1 = inf.close ;
-	        if (rs >= 0) rs = rs1 ;
-		DPRINTF("close rs=%d\n",rs1) ;
-	    } /* end if (ccfile) */
+	if (ccfile inf ; (rs = inf.open(fn,"r")) >= 0) {
+	    DPRINTF("open rs=%d\n",rs) ;
+	    while ((rs = inf.readln(inbuf,inlen)) > 0) {
+		cint len = rs ;
+		if_constexpr (f_debug) {
+		    dprintline(inbuf,len) ;
+		}
+		rs = fwriter(ofp,inbuf,len) ;
+		wlen += rs ;
+	        DPRINTF("fwriter rs=%d\n",rs) ;
+		idx += len ;
+		if (rs < 0) break ;
+	    } /* end while */
+	    DPRINTF("while rs=%d\n",rs) ;
+	    rs1 = inf.close ;
+	    if (rs >= 0) rs = rs1 ;
+	    DPRINTF("close rs=%d\n",rs1) ;
+	} /* end if (ccfile) */
 	DPRINTF("ret rs=%d idx=%d wlen=%d \n",rs,idx,wlen) ;
 	return (rs >= 0) ? wlen : rs ;
 } /* end method (maininfo::proc_textcc) */
@@ -344,11 +346,11 @@ int maininfo::proc_binraw(cchar *fn) noex {
 	if (rs >= 0) {
 	    while ((rs = u_read(ifd,inbuf,inlen)) > 0) {
 		cint len = rs ;
-	DPRINTF("u_read rs=%d\n",rs) ;
+		DPRINTF("u_read rs=%d\n",rs) ;
 		if_constexpr (f_debug) {
 		    dprintline(inbuf,len) ;
 		}
-	DPRINTF("-> fwriter len=%d\n",len) ;
+		DPRINTF("-> fwriter len=%d\n",len) ;
 		rs = fwriter(ofp,inbuf,len) ;
 		wlen += rs ;
 		if (rs < 0) break ;
