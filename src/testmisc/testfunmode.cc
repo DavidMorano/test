@@ -13,7 +13,7 @@
 
 using std::cout ;			/* variable */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
     	funmode	fc{} ;
 
 	cout << "fc=" << int(fc) << eol ;
