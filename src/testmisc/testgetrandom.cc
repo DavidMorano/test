@@ -26,8 +26,8 @@
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
+#include	<usyscalls.h>
 #include	<usupport.h>		/* |cfdec(3u)| */
-#include	<getx.h>		/* |getourenv(3uc)| */
 #include	<mkchar.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |COLUMNS| */
