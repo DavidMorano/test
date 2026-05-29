@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -luo -lf -lu -lf
+LIBS += -ldebug -luo -lu -lf
 
 
 DEPS_MAIN += 
@@ -45,15 +45,15 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= testutmpacc_main.o
-OBJ1= utmpxx.o 
-OBJ2= libdebug.o
-OBJ3= 
-OBJ4=
+OBJ1= ucstream.o 
+OBJ2= openx.o
+OBJ3= libdebug.o
+OBJ4= 
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o obj2.o
+OBJA= obj0.o 
 OBJB= obj4.o 
 
 OBJ= obja.o
@@ -165,6 +165,16 @@ ustream.o:		ustream.dir
 ustream.dir:
 	makesubdir $@
 
+# UCSTREAM
+ucstream.o:		ucstream.dir
+ucstream.dir:
+	makesubdir $@
+
+# FILER
+filer.o:		filer.dir
+filer.dir:
+	makesubdir $@
+
 # STRN
 strn.o:			strn.dir
 strn.dir:
@@ -268,6 +278,11 @@ libdebug.dir:
 # FMTSTR
 fmtstr.o:		fmtstr.dir
 fmtstr.dir:
+	makesubdir $@
+
+# OPENX
+openx.o:		openx.dir
+openx.dir:
 	makesubdir $@
 
 bufsizeget.o:		bufsizeget.cc	bufsizeget.h
