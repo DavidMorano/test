@@ -11,18 +11,15 @@
 	= 2000-05-14, David A­D­ Morano
 	Originally written for Rightcore Network Services.
 
-	= 2017-10-06, David A­D­ Morano
-	Updated and enhanced.
-
 */
 
-/* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 /*******************************************************************************
 
   	Description:
 	This is test code for seeing how the compiler handles a
-	cnstant division.
+	constant division.
 
 *******************************************************************************/
 
@@ -83,7 +80,7 @@ int main(int argc,con mainv argv,con mainv) {
 	                con uint	q = (num / 10) ;
 	                printf("num=%10u q=%10u\n",num,q) ;
 		    } /* end if (atoui) */
-		    if (errno) rs = ( -errno) ;
+		    if (errno) rs = (neg errno) ;
 		} /* end if (non-empry) */
 		if (rs < 0) break ;
 	    } /* end for */
