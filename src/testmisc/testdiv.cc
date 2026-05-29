@@ -25,23 +25,23 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<cmath>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usupport.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD |nullptr_t| */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cmath>			/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 using libu::cfdec ;			/* subroutine */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	int		ex = EXIT_SUCCESS ;
     	int		rs = SR_OK ;
     	if (argc > 1) {
-	    for (int i = 1 ; i < argc ; ++i) {
-		cchar *ap = argv[i] ;
+	    for (int ai = 1 ; ai < argc ; ++ai) {
+		cchar *ap = argv[ai] ;
 		if (*ap) {
 	            if (ulong num ; (rs = cfdec(ap,-1,&num)) >= 0) {
 	                ulong	den = argc ;
@@ -56,6 +56,7 @@ int main(int argc,mainv argv,mainv) {
 	                printf("rem=%u\n",rem) ;
 		    } /* end if (cfdec) */
 		} /* end if (valid) */
+		if (rs < 0) break ;
 	    } /* end for */
 	} /* end if (arguments) */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
