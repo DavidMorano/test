@@ -17,7 +17,7 @@
 /* Use is subject to license terms. */
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>
 #include	<cstdlib>
 #include	<cstdio>
