@@ -36,7 +36,6 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usyscalls.h>
-#include	<getfdfile.h>		/* |FD_STDERR| */
 #include	<readln.hh>
 #include	<exitcodes.h>
 #include	<localmisc.h>		/* |eol| */
