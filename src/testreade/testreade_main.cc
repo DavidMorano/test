@@ -34,8 +34,6 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usyscalls.h>
-#include	<ureade.h>
-#include	<getfdfile.h>		/* |FD_STDIN| */
 #include	<stdfnames.h>
 #include	<funcodes.h>
 #include	<rmx.h>			/* |rmeol(3uc)| */
