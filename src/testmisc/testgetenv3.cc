@@ -25,7 +25,7 @@
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
-#include	<dprint.hh>		/* LIBF */
+#include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
 
 #include	"getenv3.h"
 
