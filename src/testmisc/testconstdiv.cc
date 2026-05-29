@@ -18,20 +18,47 @@
 
 /* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
 
+/*******************************************************************************
+
+  	Description:
+	This is test code for seeing how the compiler handles a
+	constant division.
+
+*******************************************************************************/
+
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<usystem.h>
-#include	<localmisc.h>
+#include	<sys/types.h>		/* POSIX */
+#include	<sys/param.h>		/* POSIX */
+#include	<cstddef>		/* CSTD |nullptr_t| */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	<int_fastdiv.hh>
 
 #pragma		GCC dependency		"mod/constdiv.ccm"
 
 import constdiv ;
+
+/* local defines */
+
+
+/* local namespaces */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
+
 
 /* forward references */
 
@@ -110,7 +137,9 @@ int main(int,cchar **,cchar **) {
  	    if (f_bad) ex = 1 ;
 	}
 
-	if (rs < 0) ex = 1 ;
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	}
 	return ex ;
 }
 /* end subroutine (main) */
