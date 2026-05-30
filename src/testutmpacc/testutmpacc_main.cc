@@ -92,8 +92,8 @@ int main(int argc,con mainv argv,con mainv envv) {
 	(void) argc ;
 	(void) argv ;
 	(void) envv ;
-	(void) np ;
 	(void) rs1 ;
+	(void) np ;
 
 #if	CF_DEBUG
 	{
@@ -161,7 +161,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 		        rs = main_list(uebuf,uelen) ;
 		    }
 		    rs1 = mem.free(uebuf) ;
-		    if (rs >= 0) rs = rs1 ;;
+		    if (rs >= 0) rs = rs1 ;
 	        } /* end if (m-a-f) */
 	    } /* end if (utmpacc_entbuflen) */
 	} /* end if (ok) */
