@@ -39,7 +39,7 @@
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libf.h>		/* LIBF */
-#include	<dprint.hh>		/* LIBF */
+#include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
