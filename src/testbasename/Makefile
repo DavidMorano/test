@@ -37,7 +37,7 @@ INCS +=
 
 MODS += 
 
-LIBS += -lf -luo -lu
+LIBS += -lf -lu
 
 
 DEPS_MAIN += 
@@ -52,16 +52,10 @@ OBJ_FILES +=
 OBJ_MAIN= obj_main.o
 
 
-INCDIRS=
-#INCDIRS= -I$(INCDIR)
+INCDIRS +=
+LIBDIRS += -L lib
 
-TESTLIB= $(REPOROOT)/lib
-LIBDIRS= -L$(TESTLIB) -L$(LIBDIR)
-#LIBDIRS= -L$(LIBDIR)
-
-
-RUNINFO+= -rpath $(TESTLIB)
-RUNINFO+= -rpath $(RUNDIR)
+RUNINFO += -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
 
 # flag setting
@@ -102,11 +96,11 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	makemodule $(*)
+	gxx -c -x c++ -o $@ -O $<
 
 
 $(T).x:			$(OBJ_MAIN)
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $(OBJ_MAIN) $(LIBINFO)
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -126,6 +120,7 @@ install:		$(T).x
 
 obj_main.o:		$(OBJ_FILES)
 	$(CXX) -r -o $@ $(LDFLAGS) $^
+
 
 testbasename_main.o:	testbasename_main.cc $(DEPS_MAIN)	$(INCS)
 
