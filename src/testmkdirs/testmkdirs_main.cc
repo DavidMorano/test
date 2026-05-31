@@ -42,8 +42,8 @@
 #include	<bfile.h>
 #include	<keyopt.h>
 #include	<userinfo.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
