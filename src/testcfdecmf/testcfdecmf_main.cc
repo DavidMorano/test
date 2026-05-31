@@ -35,7 +35,7 @@
 #include	<cfdecmf.h>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
-#include	<dprint.hh>		/* LIBF |DPRINTF(3u)| */
+#include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	0		/* debugging */
