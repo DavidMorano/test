@@ -35,15 +35,15 @@
 #include	<usysbase.h>
 #include	<usyscalls.h>		/* |um(3u)| */
 #include	<localmisc.h>
-#include	<debprintf.h>		/* |DEBPRINTF(3uc)| */
+#include	<deb.hh>		/* |DEBPRINTF(3uc)| */
 
 #include	"sintq.h"
 
 #pragma		GCC dependency		"mod/libutil.ccm"
-#pragma		GCC dependency		"mod/debug.ccm"
+#pragma		GCC dependency		"mod/deb.ccm"
 
 import libutil ;			/* |memcopy(3u)| */
-import debug ;				/* |debprintf(3uc)| */
+import deb ;				/* |debprintf(3uc)| */
 
 /* local defines */
 
@@ -95,7 +95,7 @@ int sintq_start(sintq *op,int ne) noex {
 	            op->cnt = 0 ;
 	            op->ri = 0 ;
 	            op->wi = 0 ;
-	        } /* end if (memory-allocation) */
+	        } /* end if (memory-acquire) */
 	    } /* end if (valid) */
 	} /* end if (non-null) */
 	return rs ;
@@ -291,7 +291,7 @@ local int sinq_ext(sintq *op) noex {
 		    op->qbuf = na ;
 		    op->qlen = nlen ;
 		} /* end if (memory-deallocation) */
-	    } /* end if (memory-allocation) */
+	    } /* end if (memory-acquire) */
 	} /* end if (bug-check) */
 	DEBPRINTF("ret rs=%d nlen=%d\n",rs,nlen) ;
 	return rs ;
