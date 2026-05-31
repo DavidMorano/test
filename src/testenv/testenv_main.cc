@@ -5,7 +5,7 @@
 /* test some aspect of environment handling */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUG	0		/* special debugging */
+#define	CF_DEBUG	1		/* special debugging */
 
 /* revision history:
 
@@ -37,15 +37,14 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<usupport.h>		/* |cfdec(3u)| */
-#include	<getenver.h>
+#include	<usyscalls.h>
 #include	<intceil.h>
-#include	<mapex.h>
 #include	<strkeycmp.h>
 #include	<matkeystr.h>
 #include	<strnul.hh>
-#include	<exitcodes.h>
-#include	<localmisc.h>		/* |COLUMNS| + |DECBUFLEN| */
-#include	<dprint.hh>		/* |DPRINTF(3u)| */
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
+#include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
 
 
 /* local defines */
@@ -80,7 +79,7 @@ typedef string_view	strview ;
 
 /* local variables */
 
-constexpr MAPEXENT	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT,	EX_NOUSER },
 	{ SR_AGAIN,	EX_TEMPFAIL },
 	{ SR_DEADLK,	EX_TEMPFAIL },
@@ -112,8 +111,8 @@ cbool			f_debug = CF_DEBUG ;
 
 int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
-	int		ex = EX_INFO ;
-	int		len = (COLUMNS-40) ;
+	int		ex = EX_OK ;
+	int		len = (COLUMNS - 40) ;
 	DPRINTF("ent\n") ;
 	if (argc > 1) {
 	    if (cchar *ap = argv[1] ; ap) {
@@ -122,7 +121,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 		}
 	    }
 	} /* end if (arguments) */
-	{
+	if (rs >= 0) {
 	    printf("search-raw\n") ;
 	    for (cauto &e : tests) {
 		if (cint ei = matkeystr(envv,e,-1) ; ei >= 0) {
@@ -139,18 +138,18 @@ int main(int argc,con mainv argv,con mainv envv) {
 		} /* end if */
 	    } /* end for */
 	} /* end block */
-	{
+	if (rs >= 0) {
 	    printf("getenver\n") ;
 	    for (cauto &e : tests) {
 		if (cchar *valp = getenver(e,-1) ; valp) {
-			strnul es(valp,len) ;
-		        printf("test=%s v=%s\n",e,ccp(es)) ;
+		    strnul es(valp,len) ;
+		    printf("test=%s v=%s\n",e,ccp(es)) ;
 		} else {
 		    printf("test=%s not-found\n",e) ;
 		} /* end if */
 	    } /* end for */
 	} /* end block */
-	if ((rs < 0) && (ex == EX_OK)) {
+	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
 	}
 	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
