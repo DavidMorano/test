@@ -47,7 +47,6 @@
 #include	<usyscalls.h>
 #include	<usupport.h>		/* |getustime(3u)| */
 #include	<usysutility.hh>	/* |snprintf(3u)| */
-#include	<getfdfile.h>
 #include	<strx.h>		/* |stræbbrerr(3uc)| */
 #include	<localmisc.h>
 #include	<libf.h>		/* LIBF */
