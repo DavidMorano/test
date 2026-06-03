@@ -1,0 +1,30 @@
+# TESTMKPROGENV_ENCFILE
+# charset=ISO8859-1
+#
+
+#
+# test the |mkprogenv(3uc)| subroutine
+# version %I% last-modified %G%
+#
+
+
+#
+# revision history:
+#
+#	= 1998-04-13, David A-D- Morano
+#	Originally written for Rightcore Network Services.
+#
+
+#
+# Copyright © 2017 David A­D­ Morano.  All rights reserved.
+# Use is subject to license terms.
+#
+
+
+VERSION		"0"
+WHATINFO	"@(#)testmkprogenv "
+BANNER		"Test MKPROGENV"
+SEARCHNAME	"testmkprogenv"
+VARPRNAME	"LOCAL"
+
+
