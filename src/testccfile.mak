@@ -45,10 +45,10 @@ DEPS_MAIN += bufos.o
 OBJ00= testccfile_main.o
 OBJ01= rmx.o isx.o char.o
 OBJ02= strn.o sfx.o six.o
-OBJ03= inetconv.o ustream.o
-OBJ04= strx.o strw.o matxstr.o
+OBJ03= inetaddrx.o ustream.o
+OBJ04= strcpyx.o strx.o strw.o matxstr.o
 OBJ05= nleadx.o
-OBJ06= strnxcmp.o strxcmp.o dictdiff.o
+OBJ06= strnxcmp.o strxcmp.o
 OBJ07= ucinetconv.o ccfile.o readln.o
 
 OBJ08= fmtstr.o fmtflag.o 
@@ -66,8 +66,7 @@ OBJ= obja.o objb.o
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -110,11 +109,11 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	makemodule $(*)
+	gxx -c -x c++ -o $@ -O $<
 
 
-$(T).x:			obj.o Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -223,6 +222,11 @@ bufos.o:		bufos.dir
 bufos.dir:
 	makesubdir $@
 
+# STRCPYX
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
+
 # STRX
 strx.o:			strx.dir
 strx.dir:
@@ -263,11 +267,14 @@ fmtflag.o:		fmtflag.dir
 fmtflag.dir:
 	makesubdir $@
 
+# INETADDRX
+inetaddrx.o:		inetaddrx.dir
+inetaddrx.dir:
+	makesubdir $@
+
 char.o:			char.cc		char.h
-inetconv.o:		inetconv.cc	inetconv.h
 base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
-dictdiff.o:		dictdiff.cc	dictdiff.h
 
 nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
