@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -lf -lu
 
 
 DEPS_MAIN += 
@@ -46,14 +46,14 @@ DEPS_MAIN +=
 
 OBJ0= testenv_main.o
 OBJ1= strkeycmp.o matkeystr.o
-OBJ2= getenver.o
+OBJ2=
 OBJ3= 
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o obj2.o
+OBJA= obj0.o obj1.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
@@ -61,8 +61,6 @@ OBJ= obja.o
 
 
 INCDIRS=
-
-#LIBDIRS= -L $(LIBDIR)
 LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
@@ -106,11 +104,11 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	makemodule $(*)
+	gxx -c -x c++ -o $@ -O $<
 
 
-$(T).x:			obj.o Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -274,7 +272,7 @@ testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
 intext.o:		intext.ccm	loadvals.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 arithsteps.o:		arithsteps.ccm
 
@@ -284,7 +282,5 @@ xxtostr.o:		xxtostr.cc	xxtostr.h
 
 strkeycmp.o:		strkeycmp.cc	strkeycmp.h
 matkeystr.o:		matkeystr.cc	matkeystr.h
-
-getenver.o:		getenver.cc	getenver.h
 
 
