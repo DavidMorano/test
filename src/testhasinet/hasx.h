@@ -24,8 +24,6 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
-#include	<matstr.h>		/* |matstr(3uc)| used below */
-#include	<stdfnames.h>		/* |stdfnames| used below */
 
 #include	<hasall.h>
 #include	<hasbasename.h>
@@ -38,10 +36,10 @@
 #include	<hasnot.h>
 #include	<hasonly.h>
 #include	<hasourmjd.h>
+#include	<haspath.h>
 #include	<hasprint.h>
-#include	<hasprime.h>
+#include	<hasmisc.h>
 #include	<hasuniq.h>
-#include	<hasvarprefix.h>
 
 #include	<hasallof.h>		/* special (different return) */
 
@@ -50,9 +48,6 @@ EXTERNC_begin
 
 local inline bool hascontent(cchar *fp,int fl) noex {
 	return hasnotempty(fp,fl) ;
-}
-local inline bool hasfnamespecial(cchar *fp,int fl) noex {
-	return (matstr(stdfnames,fp,fl) >= 0) ;
 }
 local inline bool hasValidMagic(cchar *sp,int sl,cchar *ms) noex  {
 	return hasvalidmagic(sp,sl,ms) ;
