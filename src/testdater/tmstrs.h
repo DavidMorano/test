@@ -14,7 +14,7 @@
 #define	TMSTRS_INCLUDE	1
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 
 #if	(! defined(TMSTRS_MASTER)) || (TMSTRS_MASTER == 0)
