@@ -5,7 +5,6 @@
 /* program to test COMSAT */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debug switch */
 #define	CF_DEBUG	1		/* run-time debug switch */
 
 /* revision history:
@@ -32,10 +31,10 @@
 #include	<sys/socket.h>
 #include	<netinet/in.h>
 #include	<arpa/inet.h>
+#include	<stropts.h>
 #include	<unistd.h>
 #include	<fcntl.h>
 #include	<netdb.h>
-#include	<stropts.h>
 #include	<ctime>
 #include	<cstddef>
 #include	<cstdlib>
@@ -55,6 +54,7 @@
 #include	<hostinfo.h>
 #include	<hostaddr.h>
 #include	<sockaddress.h>
+#include	<inetaddrx.h>
 #include	<timestr.h>
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
@@ -63,6 +63,9 @@
 #include	"defs.h"
 #include	"comsatmsg.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -71,34 +74,6 @@
 
 #ifndef	USERBUFLEN
 #define	USERBUFLEN	(NODENAMELEN + (2 * 1024))
-#endif
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
-
-#ifndef	INET4ADDRLEN
-#define	INET4ADDRLEN	sizeof(in_addr_t)
-#endif
-
-#ifndef	INET6ADDRLEN
-#define	INET6ADDRLEN	16
-#endif
-
-#ifndef	INETXADDRLEN
-#define	INETXADDRLEN	MAX(INET4ADDRLEN,INET6ADDRLEN)
-#endif /* INETXADDRLEN */
-
-#ifndef	INET4_ADDRSTRLEN
-#define	INET4_ADDRSTRLEN	16
-#endif
-
-#ifndef	INET6_ADDRSTRLEN
-#define	INET6_ADDRSTRLEN	46	/* Solaris® says this is 46! */
-#endif
-
-#ifndef	INETX_ADDRSTRLEN
-#define	INETX_ADDRSTRLEN	MAX(INET4_ADDRSTRLEN,INET6_ADDRSTRLEN)
 #endif
 
 #define	COMSATMSGLEN	(MAXPATHLEN+USERNAMELEN+32)
@@ -111,19 +86,31 @@
 
 #define	DEFPORTSPEC	"biff"
 
+#ifndef	PI
+#define	PI		proginfo
+#endif
+
+#ifndef	LI
+#define	LI		locinfo
+#endif
+
+#ifndef	PI
+#define	PI		proginfo
+#endif
+
+#ifndef	LI
+#define	LI		locinfo
+#endif
+
+#ifndef	SA
+#define	SA		sockaddress
+#endif
+
 
 /* external subroutines */
 
-extern int	proginfo_setpiv(PROGINFO *,cchar * const pivars *) ;
+extern int	proginfo_setpiv(PI *,cchar *,const pivars *) ;
 extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-local int	debugaddrprint(cchar *,SOCKADDR *sap) ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
 
 
 /* external variables */
@@ -133,15 +120,15 @@ extern char	hostaddrinfo_makedate[] ;
 
 /* local structures */
 
-struct locinfo_flags {
+LI_fl {
 	uint		dummy:1 ;
 } ;
 
-struct locinfo {
-	struct locinfo_flags	have, f, changed, final ;
-	struct locinfo_flags	init, open ;
+LI {
+	locinfo_fl	have, f, changed, final ;
+	locinfo_fl	init, open ;
 	vecstr		stores ;
-	PROGINFO	*pip ;
+	PI	*pip ;
 	cchar	*muname ;	/* mail-username */
 	cchar	*portspec ;	/* port-specification */
 	char		*msgbuf ;
@@ -153,9 +140,9 @@ struct locinfo {
 
 #ifdef	COMMENT
 struct prepname {
-	ulong		magic ;
-	cchar	*hostname ;
+	cchar		*hostname ;
 	int		hostnamelen ;
+	ulong		magval ;
 	int		f_alloc ;
 } ;
 #endif /* COMMENT */
@@ -163,16 +150,16 @@ struct prepname {
 
 /* forward references */
 
-local int	usage(PROGINFO *) ;
+local int	usage(PI *) ;
 
-local int	locinfo_start(struct locinfo *,PROGINFO *) ;
-local int	locinfo_mkmsg(struct locinfo *) ;
-local int	locinfo_setentry(struct locinfo *,cchar **,
+local int	locinfo_start(LI *,PI *) ;
+local int	locinfo_mkmsg(LI *) ;
+local int	locinfo_setentry(LI *,cchar **,
 			cchar *,int) ;
-local int	locinfo_sendmsg(struct locinfo *,struct addrinfo *) ;
-local int	locinfo_finish(struct locinfo *) ;
+local int	locinfo_sendmsg(LI *,ADDRINFO *) ;
+local int	locinfo_finish(LI *) ;
 
-local int	procname(PROGINFO *,bfile *,cchar *) ;
+local int	procname(PI *,bfile *,cchar *) ;
 
 #ifdef	COMMENT
 local int	prepname_start(struct prepname *,cchar *) ;
@@ -195,7 +182,7 @@ static cchar *argopts[] = {
 	"to",
 	"mu",
 	"mo",
-	NULL
+	nullptr
 } ;
 
 enum argopts {
@@ -247,12 +234,12 @@ int	argc ;
 char	*argv[] ;
 char	*envv[] ;
 {
-	PROGINFO	pi, *pip = &pi ;
-	struct locinfo	li, *lip = &li ;
+	PI	pi, *pip = &pi ;
+	LI	li, *lip = &li ;
 
 	USERINFO	u ;
 
-	KEYOPT		akopts ;
+	keyopt		akopts ;
 
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
@@ -264,32 +251,32 @@ char	*envv[] ;
 	int	v ;
 	int	ex = EX_INFO ;
 	int	f_optplus, f_optminus, f_optequal ;
-	int	f_version = FALSE ;
-	int	f_usage = FALSE ;
-	int	f_help = FALSE ;
+	int	f_version = false ;
+	int	f_usage = false ;
+	int	f_help = false ;
 	int	f ;
 
 	cchar	*argp, *aop, *akp, *avp ;
-	cchar	*argval = NULL ;
+	cchar	*argval = nullptr ;
 	char	argpresent[NARGGROUPS] ;
 	char	userbuf[USERBUFLEN + 1] ;
-	cchar	*pr = NULL ;
-	cchar	*sn = NULL ;
-	cchar	*afname = NULL ;
-	cchar	*ofname = NULL ;
-	cchar	*efname = NULL ;
-	cchar	*afspec = NULL ;
-	cchar	*portspec = NULL ;
-	cchar	*muname = NULL ;
-	cchar	*moffset = NULL ;
+	cchar	*pr = nullptr ;
+	cchar	*sn = nullptr ;
+	cchar	*afname = nullptr ;
+	cchar	*ofname = nullptr ;
+	cchar	*efname = nullptr ;
+	cchar	*afspec = nullptr ;
+	cchar	*portspec = nullptr ;
+	cchar	*muname = nullptr ;
+	cchar	*moffset = nullptr ;
 	cchar	*cp ;
 
-#if	CF_DEBUGS || CF_DEBUG
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+#if	CF_DEBUG
+	if ((cp = getourenv(envv,VARDEBUGFNAME)) != nullptr) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	rs = proginfo_start(pip,envv,argv[0],VERSION) ;
 	if (rs < 0) {
@@ -297,7 +284,7 @@ char	*envv[] ;
 	    goto badprogstart ;
 	}
 
-	if ((cp = getenv(VARBANNER)) == NULL) cp = BANNER ;
+	if ((cp = getenv(VARBANNER)) == nullptr) cp = BANNER ;
 	proginfo_setbanner(pip,cp) ;
 
 /* miscellaneous early stuff */
@@ -325,7 +312,7 @@ char	*envv[] ;
 	ai_max = 0 ;
 	ai_pos = 0 ;
 	argr = argc ;
-	for (ai = 0 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
+	for (ai = 0 ; (ai < argc) && (argv[ai] != nullptr) ; ai += 1) {
 	    if (rs < 0) break ;
 	    argr -= 1 ;
 	    if (ai == 0) continue ;
@@ -351,15 +338,15 @@ char	*envv[] ;
 	            aop = argp + 1 ;
 	            akp = aop ;
 	            aol = argl - 1 ;
-	            f_optequal = FALSE ;
-	            if ((avp = strchr(aop,'=')) != NULL) {
-	                f_optequal = TRUE ;
+	            f_optequal = false ;
+	            if ((avp = strchr(aop,'=')) != nullptr) {
+	                f_optequal = true ;
 	                akl = avp - aop ;
 	                avp += 1 ;
 	                avl = aop + argl - 1 - avp ;
 	                aol = akl ;
 	            } else {
-	                avp = NULL ;
+	                avp = nullptr ;
 	                avl = 0 ;
 	                akl = aol ;
 	            }
@@ -373,7 +360,7 @@ char	*envv[] ;
 /* program root */
 	                case argopt_root:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            pr = avp ;
 	                    } else {
@@ -392,7 +379,7 @@ char	*envv[] ;
 /* temporary directory */
 	                case argopt_tmpdir:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            pip->tmpdname = avp ;
 	                    } else {
@@ -410,7 +397,7 @@ char	*envv[] ;
 
 /* version */
 	                case argopt_version:
-	                    f_version = TRUE ;
+	                    f_version = true ;
 	                    if (f_optequal)
 	                        rs = SR_INVALID ;
 	                    break ;
@@ -419,7 +406,7 @@ char	*envv[] ;
 	                case argopt_verbose:
 	                    pip->verboselevel = 2 ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
 	                                rs = optvalue(avp,avl) ;
 	                                pip->verboselevel = rs ;
@@ -428,13 +415,13 @@ char	*envv[] ;
 	                    break ;
 
 	                case argopt_help:
-	                    f_help = TRUE ;
+	                    f_help = true ;
 	                    break ;
 
 /* program search name */
 	                case argopt_sn:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            sn = avp ;
 	                    } else {
@@ -453,7 +440,7 @@ char	*envv[] ;
 /* argument list file */
 	                case argopt_af:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            afname = avp ;
 	                    } else {
@@ -472,7 +459,7 @@ char	*envv[] ;
 /* output file */
 	                case argopt_of:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            ofname = avp ;
 	                    } else {
@@ -491,7 +478,7 @@ char	*envv[] ;
 /* error file */
 	                case argopt_ef:
 	                    if (f_optequal) {
-	                        f_optequal = FALSE ;
+	                        f_optequal = false ;
 	                        if (avl)
 	                            efname = avp ;
 	                    } else {
@@ -558,7 +545,7 @@ char	*envv[] ;
 	            } else {
 
 	                while (akl--) {
-			    const int	kc = MKCHAR(*akp) ;
+			    cint	kc = MKCHAR(*akp) ;
 
 	                    switch (kc) {
 
@@ -566,7 +553,7 @@ char	*envv[] ;
 	                    case 'D':
 	                        pip->debuglevel = 1 ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
 	                                    rs = optvalue(avp,avl) ;
 	                                    pip->debuglevel = rs ;
@@ -588,11 +575,11 @@ char	*envv[] ;
 	                        break ;
 
 	                    case 'V':
-	                        f_version = TRUE ;
+	                        f_version = true ;
 	                        break ;
 
 	                    case 'Q':
-	                        pip->f.quiet = TRUE ;
+	                        pip->f.quiet = true ;
 	                        break ;
 
 	                    case 'a':
@@ -654,7 +641,7 @@ char	*envv[] ;
 	                    case 'v':
 	                        pip->verboselevel = 2 ;
 	                        if (f_optequal) {
-	                            f_optequal = FALSE ;
+	                            f_optequal = false ;
 	                            if (avl) {
 	                                rs = optvalue(avp,avl) ;
 	                                pip->verboselevel = rs ;
@@ -663,7 +650,7 @@ char	*envv[] ;
 	                        break ;
 
 	                    case '?':
-	                        f_usage = TRUE ;
+	                        f_usage = true ;
 	                        break ;
 
 	                    default:
@@ -696,12 +683,12 @@ char	*envv[] ;
 
 	} /* end while (all command line argument processing) */
 
-	if (efname == NULL) efname = getenv(VARERRORFNAME) ;
-	if (efname == NULL) efname = BFILE_STDERR ;
+	if (efname == nullptr) efname = getenv(VARERRORFNAME) ;
+	if (efname == nullptr) efname = BFILE_STDERR ;
 	if ((rs1 = bopen(&errfile,efname,"wca",0666)) >= 0) {
 	    pip->efp = &errfile ;
-	    pip->open.errfile = TRUE ;
-	    bcontrol(&errfile,BC_SETBUFLINE,TRUE) ;
+	    pip->open.errfile = true ;
+	    bcontrol(&errfile,BC_SETBUFLINE,true) ;
 	}
 
 	if (rs < 0)
@@ -743,7 +730,7 @@ char	*envv[] ;
 	    usage(pip) ;
 
 	if (f_help)
-	    printhelp(NULL,pip->pr,pip->searchname,HELPFNAME) ;
+	    printhelp(nullptr,pip->pr,pip->searchname,HELPFNAME) ;
 
 	if (f_version || f_help || f_usage)
 	    goto retearly ;
@@ -753,7 +740,7 @@ char	*envv[] ;
 
 /* check arguments */
 
-	if ((afspec != NULL) && (afspec[0] != '\0')) {
+	if ((afspec != nullptr) && (afspec[0] != '\0')) {
 	    rs = getaf(afspec,-1) ;
 	    lip->af = rs ;
 	}
@@ -765,7 +752,7 @@ char	*envv[] ;
 
 /* user */
 
-	rs = userinfo(&u,userbuf,USERBUFLEN,NULL) ;
+	rs = userinfo(&u,userbuf,USERBUFLEN,nullptr) ;
 	if (rs < 0) {
 	    ex = EX_NOUSER ;
 	    goto baduser ;
@@ -779,19 +766,19 @@ char	*envv[] ;
 
 /* get a TMPDIR */
 
-	if (pip->tmpdname == NULL) pip->tmpdname = getenv(VARTMPDNAME) ;
-	if (pip->tmpdname == NULL) pip->tmpdname = TMPDNAME ;
+	if (pip->tmpdname == nullptr) pip->tmpdname = getenv(VARTMPDNAME) ;
+	if (pip->tmpdname == nullptr) pip->tmpdname = TMPDNAME ;
 
 /* sort out the arguments and apply defaults */
 
-	if (portspec == NULL) portspec = DEFPORTSPEC ;
+	if (portspec == nullptr) portspec = DEFPORTSPEC ;
 
-	if (muname == NULL) muname = u.username ;
+	if (muname == nullptr) muname = u.username ;
 
 	lip->portspec = portspec ;
 	lip->muname = muname ;
 
-	if ((moffset != NULL) && (moffset[0] != '\0')) {
+	if ((moffset != nullptr) && (moffset[0] != '\0')) {
 	    rs = cfdeci(moffset,-1,&v) ;
 	    lip->mo = v ;
 	}
@@ -804,7 +791,7 @@ char	*envv[] ;
 
 /* go */
 
-	if ((ofname == NULL) || (ofname[0] == '\0') ||
+	if ((ofname == nullptr) || (ofname[0] == '\0') ||
 	    (ofname[0] == '-')) ofname = BFILE_STDOUT ;
 	rs = bopen(ofp,ofname,"wct",0666) ;
 	if (rs < 0) {
@@ -821,7 +808,7 @@ char	*envv[] ;
 	for (ai = 1 ; ai < argc ; ai += 1) {
 
 	    f = (ai <= ai_max) && BATST(argpresent,ai) ;
-	    f = f || ((ai > ai_pos) && (argv[ai] != NULL)) ;
+	    f = f || ((ai > ai_pos) && (argv[ai] != nullptr)) ;
 	    if (! f) continue ;
 
 	    cp = argv[ai] ;
@@ -832,7 +819,7 @@ char	*envv[] ;
 
 	} /* end for (processing positional arguments) */
 
-	if ((rs >= 0) && (afname != NULL) && (afname[0] != '\0')) {
+	if ((rs >= 0) && (afname != nullptr) && (afname[0] != '\0')) {
 	    bfile	argfile ;
 
 	    if (strcmp(afname,"-") == 0) afname = BFILE_STDIN ;
@@ -927,13 +914,13 @@ retearly:
 	    debugprintf("main: exiting ex=%u (%d)\n",ex,rs) ;
 #endif
 
-	if (pip->efp != NULL) {
+	if (pip->efp != nullptr) {
 	    bclose(pip->efp) ;
-	    pip->efp = NULL ;
+	    pip->efp = nullptr ;
 	}
 
 	if (pip->open.akopts) {
-	    pip->open.akopts = FALSE ;
+	    pip->open.akopts = false ;
 	    keyopt_finish(&akopts) ;
 	}
 
@@ -946,7 +933,7 @@ badlocstart:
 ret0:
 badprogstart:
 
-#if	(CF_DEBUGS || CF_DEBUG)
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
@@ -968,7 +955,7 @@ badarg:
 
 
 local int usage(pip)
-PROGINFO	*pip ;
+PI	*pip ;
 {
 	int	rs ;
 	int	wlen = 0 ;
@@ -990,16 +977,16 @@ PROGINFO	*pip ;
 
 
 local int locinfo_start(lip,pip)
-struct locinfo	*lip ;
-PROGINFO	*pip ;
+LI	*lip ;
+PI	*pip ;
 {
 	int	rs ;
 
 
-	if (lip == NULL)
+	if (lip == nullptr)
 	    return SR_FAULT ;
 
-	memset(lip,0,sizeof(struct locinfo)) ;
+	memclear(lip) ;
 	lip->pip = pip ;
 	lip->to = -1 ;
 	lip->af = AF_UNSPEC ;
@@ -1012,18 +999,18 @@ PROGINFO	*pip ;
 
 
 local int locinfo_finish(lip)
-struct locinfo	*lip ;
+LI	*lip ;
 {
 	int	rs = SR_OK ;
 	int	rs1 ;
 
 
-	if (lip == NULL)
+	if (lip == nullptr)
 	    return SR_FAULT ;
 
-	if (lip->msgbuf != NULL) {
+	if (lip->msgbuf != nullptr) {
 	    uc_free(lip->msgbuf) ;
-	    lip->msgbuf = NULL ;
+	    lip->msgbuf = nullptr ;
 	}
 
 	rs1 = vecstr_start(&lip->stores,0,0) ;
@@ -1033,23 +1020,14 @@ struct locinfo	*lip ;
 }
 /* end subroutine (locinfo_finish) */
 
-
-local int locinfo_mkmsg(lip)
-struct locinfo	*lip ;
-{
-	PROGINFO	*pip = lip->pip ;
-
-	struct comsatmsg_mailoff	m0 ;
-
-	const int	msglen = COMSATMSGLEN ;
-
+local int locinfo_mkmsg(LI *lip) noex {
+	PI	*pip = lip->pip ;
+	struct comsatmsg_mailoff	m0{} ;
+	cint	msglen = COMSATMSGLEN ;
 	int	rs = SR_OK ;
 	int	len = 0 ;
-
 	char	msgbuf[COMSATMSGLEN+1] ;
 
-
-	memset(&m0,0,sizeof(struct comsatmsg_mailoff)) ;
 	strwcpy(m0.username,lip->muname,USERNAMELEN) ;
 	m0.offset = lip->mo ;
 
@@ -1078,7 +1056,7 @@ struct locinfo	*lip ;
 
 
 int locinfo_setentry(lip,epp,vp,vl)
-struct locinfo	*lip ;
+LI	*lip ;
 cchar	**epp ;
 cchar	vp[] ;
 int		vl ;
@@ -1087,8 +1065,8 @@ int		vl ;
 	int	len = 0 ;
 
 
-	if (lip == NULL) return SR_FAULT ;
-	if (epp == NULL) return SR_FAULT ;
+	if (lip == nullptr) return SR_FAULT ;
+	if (epp == nullptr) return SR_FAULT ;
 
 	if (! lip->open.stores) {
 	    rs = vecstr_start(&lip->stores,4,0) ;
@@ -1098,13 +1076,13 @@ int		vl ;
 	if (rs >= 0) {
 	    int	oi = -1 ;
 
-	    if (*epp != NULL) oi = vecstr_findaddr(&lip->stores,*epp) ;
+	    if (*epp != nullptr) oi = vecstr_findaddr(&lip->stores,*epp) ;
 
-	    if (vp != NULL) {
+	    if (vp != nullptr) {
 	        len = strnlen(vp,vl) ;
 	        rs = vecstr_store(&lip->stores,vp,len,epp) ;
 	    } else
-		*epp = NULL ;
+		*epp = nullptr ;
 
 	    if ((rs >= 0) && (oi >= 0))
 	        vecstr_del(&lip->stores,oi) ;
@@ -1117,12 +1095,12 @@ int		vl ;
 
 
 local int locinfo_sendmsg(lip,aip)
-struct locinfo	*lip ;
-struct addrinfo	*aip ;
+LI	*lip ;
+ADDRINFO	*aip ;
 {
-	PROGINFO	*pip = lip->pip ;
+	PI	*pip = lip->pip ;
 	SOCKADDR	*sap ;
-	const int	to = lip->to ;
+	cint	to = lip->to ;
 	int		rs ;
 	int		flags = 0 ;
 	int		sal ;
@@ -1154,22 +1132,18 @@ struct addrinfo	*aip ;
 }
 /* end subroutine (locinfo_sendmsg) */
 
-
-local int procname(pip,ofp,hostname)
-PROGINFO	*pip ;
-bfile		*ofp ;
-cchar	hostname[] ;
-{
-	struct locinfo	*lip = pip->lip ;
-	struct addrinfo	hint, *aip ;
+local int procname(PI *pip,bfile *ofp,cchar *hostname) noex {
+	LI	*lip = pip->lip ;
+	ADDRINFO	hint{} ;
+	ADDRINFO	*aip ;
 	HOSTADDR	ha ;
-	const int	proto = IPPROTO_UDP ;
+	cint	proto = IPPROTO_UDP ;
 	int		rs ;
 	int		rs1 ;
 	cchar	*hn ;
 	cchar	*ps ;
 
-	if (hostname == NULL) return SR_FAULT ;
+	if (hostname == nullptr) return SR_FAULT ;
 
 #if	CF_DEBUG
 	if (DEBUGLEVEL(3))
@@ -1179,14 +1153,11 @@ cchar	hostname[] ;
 	if ((hostname[0] == '\0') || (hostname[0] == '-'))
 	    hostname = LOCALHOST ;
 
-	if (pip->debuglevel > 0)
+	if (pip->debuglevel > 0) {
 	    bprintf(pip->efp,"%s: host=%s\n",
 	        pip->progname,hostname) ;
-
-/* prepare hints */
-
-	memset(&hint,0,sizeof(struct addrinfo)) ;
-
+	}
+	/* prepare hints */
 	hint.ai_protocol = proto ;
 	if (lip->af >= 0) {
 	    int pf = getpf(lip->af) ;
@@ -1194,7 +1165,7 @@ cchar	hostname[] ;
 	        hint.ai_family = pf ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("dialudp: af=%u pf=%u\n",lip->af,hint.ai_family) ;
 #endif
 
@@ -1212,7 +1183,7 @@ cchar	hostname[] ;
 
 	        while ((rs1 = hostaddr_enum(&ha,&cur,&aip)) >= 0) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		    debugprintf("dialudp: trying proto=%u\n",
 			aip->ai_protocol) ;
 #endif
@@ -1231,7 +1202,7 @@ cchar	hostname[] ;
 
 		if ((rs >= 0) && (c == 0)) rs = SR_HOSTUNREACH ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("dialudp: done rs=%d c=%u\n",rs,c) ;
 #endif
 
@@ -1261,23 +1232,16 @@ cchar	name[] ;
 {
 	int	rs = SR_OK ;
 	int	nl ;
-	int	f = FALSE ;
+	int	f = false ;
 
+	if (ep == nullptr) return SR_FAULT ;
+	if (name == nullptr) return SR_FAULT ;
+	if (name[0] == '\0') return SR_INVALID ;
 
-	if (ep == NULL)
-	    return SR_FAULT ;
-
-	if (name == NULL)
-	    return SR_FAULT ;
-
-	if (name[0] == '\0')
-	    return SR_INVALID ;
-
-	memset(ep,0,sizeof(struct prepname)) ;
-
+	memclear(ep) ;
 	nl = strlen(name) ;
 	while ((nl > 0) && (name[nl - 1] == '.')) {
-	    f = TRUE ;
+	    f = true ;
 	    nl -= 1 ;
 	}
 
@@ -1286,16 +1250,16 @@ cchar	name[] ;
 	    cchar	*ccp ;
 	    rs = uc_mallocstrw(name,nl,&ccp) ;
 	    if (rs >= 0) {
-	        ep->f_alloc = TRUE ;
+	        ep->f_alloc = true ;
 	        ep->hostname = ccp ;
 	        ep->hostnamelen = nl ;
 	    }
 	}
 
 	if (rs >= 0)
-	    ep->magic = PREPNAME_MAGIC ;
+	    ep->magval = PREPNAME_MAGIC ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("prepname_start: ret rs=%d f=%u f_a=%u\n",
 	    rs,f, ep->f_alloc) ;
 #endif
@@ -1304,52 +1268,39 @@ cchar	name[] ;
 }
 /* end if (prepname_start) */
 
-
-local int prepname_finish(ep)
-struct prepname	*ep ;
-{
-
-
-#if	CF_DEBUGS
+local int prepname_finish(prepname *ep) noex {
+#if	CF_DEBUG
 	debugprintf("prepname_finish: entered\n") ;
 #endif
-
-	if (ep == NULL)
-	    return SR_FAULT ;
-
-#if	CF_DEBUGS
+	if (ep == nullptr) return SR_FAULT ;
+#if	CF_DEBUG
 	debugprintf("prepname_finish: magic?\n") ;
 #endif
-
-	if (ep->magic != PREPNAME_MAGIC)
-	    return SR_NOTOPEN ;
-
-#if	CF_DEBUGS
+	if (ep->magval != PREPNAME_MAGIC) return SR_NOTOPEN ;
+#if	CF_DEBUG
 	debugprintf("prepname_finish: f_a=%u\n", ep->f_alloc) ;
 #endif
 
-	if (ep->f_alloc && (ep->hostname != NULL)) {
+	if (ep->f_alloc && (ep->hostname != nullptr)) {
 	    uc_free(ep->hostname) ;
-	    ep->hostname = NULL ;
+	    ep->hostname = nullptr ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("prepname_finish: ret\n") ;
 #endif
 
-	ep->f_alloc = FALSE ;
-	ep->hostname = NULL ;
-	ep->magic = 0 ;
+	ep->f_alloc = false ;
+	ep->hostname = nullptr ;
+	ep->magval = 0 ;
 	return SR_OK ;
-}
-/* end if (prepname_finish) */
+} /* end if (prepname_finish) */
 
 #endif /* COMMENT */
 
-
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG
 local int debugaddrprint(cchar *s,SOCKADDR *sap) noex {
-	SOCKADDRESS	*ap = (SOCKADDRESS *) sap ;
+	SA	*ap = (SA *) sap ;
 	int	rs = SR_OK ;
 	int	af = 0 ;
 	int	port = 0 ;
@@ -1373,9 +1324,8 @@ local int debugaddrprint(cchar *s,SOCKADDR *sap) noex {
 	    debugprintf("%s addr=%s\n",s,addrstr) ;
 	}
 	return rs ;
-}
-/* end subroutine (debugaddrprint) */
-#endif /* (CF_DEBUGS || CF_DEBUG) */
+} /* end subroutine (debugaddrprint) */
+#endif /* (CF_DEBUG || CF_DEBUG) */
 
 
 
