@@ -1,4 +1,0 @@
-TESTFMT
-
-Test format strings.
-
