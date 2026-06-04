@@ -34,7 +34,6 @@
 #include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD |FILE(3stdio)| */
 #include	<cstring>		/* CSTD |strcmp(3c)| */
-#include	<algorithm>		/* C++STD |min(3c++)| + |max(3c++)| */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
@@ -44,18 +43,20 @@
 #include	<ulogerror.h>		/* LIBU */
 #include	<ascii.h>		/* LIBU */
 #include	<ccfile.hh>		/* LIBU */
-#include	<bufos.hh>
-#include	<rmx.h>			/* |rmeol(3uc)| */
+#include	<bufos.hh>		/* LIBUC */
+#include	<rmx.h>			/* LIBUC |rmeol(3uc)| */
+#include	<strlinelen.h>		/* LIBUC */
 #include	<strnul.hh>		/* LIBU */
-#include	<strlinelen.h>
 #include	<mkchar.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libf.h>		/* LIBF */
-#include	<dprint.hh>		/* debugging */
+#include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
+#pragma		GCC dependency		"mod/ucstream.ccm"
 
 import libutil ;			/* |lenstr(3u)| */
+import ucstream ;
 
 /* local defines */
 
@@ -71,8 +72,6 @@ import libutil ;			/* |lenstr(3u)| */
 
 /* imported namespaces */
 
-using std::min ;			/* subroutine-template */
-using std::max ;			/* subroutine-template */
 using libu::umem ;			/* variable */
 using std::nothrow ;			/* constant */
 
@@ -92,6 +91,7 @@ struct maininfo_fl {
     	uint		test:1 ;
     	uint		text:1 ;
     	uint		stream:1 ;
+    	uint		streamer:1 ;
 	uint		ccfile:1 ;
 } ; /* end struct (maininfo_fl) */
 
@@ -107,9 +107,11 @@ struct maininfo {
 	int proc	(cchar *) noex ;
 	int proc_text	(cchar *) noex ;
 	int proc_textstream(cchar *) noex ;
+	int proc_textstreamer(cchar *) noex ;
 	int proc_textcc	(cchar *) noex ;
 	int proc_bin	(cchar *) noex ;
 	int proc_binstream(cchar *) noex ;
+	int proc_binstreamer(cchar *) noex ;
 	int proc_bincc	(cchar *) noex ;
 	int proc_binraw	(cchar *) noex ;
 	void dtor() noex ;
@@ -147,6 +149,8 @@ int main(int argc,con mainv argv,con mainv) {
 			    mi.fl.text = true ;
 			} else if (strcmp(arg,"stream") == 0) {
 			    mi.fl.stream = true ;
+			} else if (strcmp(arg,"streamer") == 0) {
+			    mi.fl.streamer = true ;
 			} else if (strcmp(arg,"ccfile") == 0) {
 			    mi.fl.ccfile = true ;
 			} else {
@@ -226,6 +230,9 @@ int maininfo::proc_text(cchar *fn) noex {
 	if (fl.stream) {
 	    rs = proc_textstream(fn) ;
     	    wlen += rs ;
+	} else if (fl.streamer) {
+	    rs = proc_textstreamer(fn) ;
+    	    wlen += rs ;
 	} else {
 	    rs = proc_textcc(fn) ;
     	    wlen += rs ;
@@ -250,7 +257,26 @@ int maininfo::proc_textstream(cchar *fn) noex {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (ustream) */
 	return (rs >= 0) ? wlen : rs ;
-} /* end method (maininfo::proc_textistream) */
+} /* end method (maininfo::proc_textstream) */
+
+int maininfo::proc_textstreamer(cchar *fn) noex {
+	int		rs = SR_OK ;
+	int		rs1 ;
+	int		wlen = 0 ; /* return-value */
+	if (ucstream sf ; (rs = sf.open(fn)) >= 0) {
+	    while ((rs = sf.readln(inbuf,inlen)) > 0) {
+		cint len = rs ;
+		{
+		    rs = fwriter(ofp,inbuf,len) ;
+		    wlen += rs ;
+		}
+		if (rs < 0) break ;
+	    } /* end while */
+	    rs1 = sf.close ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (ustream) */
+	return (rs >= 0) ? wlen : rs ;
+} /* end method (maininfo::proc_textstreamer) */
 
 int maininfo::proc_textcc(cchar *fn) noex {
     	int		rs = SR_NOMEM ;
@@ -286,6 +312,9 @@ int maininfo::proc_bin(cchar *fn) noex {
 	if (fl.stream) {
 	    rs = proc_binstream(fn) ;
 	    wlen += rs ;
+	} else if (fl.streamer) {
+	    rs = proc_binstreamer(fn) ;
+	    wlen += rs ;
 	} else if (fl.ccfile) {
 	    rs = proc_bincc(fn) ;
 	    wlen += rs ;
@@ -313,7 +342,26 @@ int maininfo::proc_binstream(cchar *fn) noex {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (ustream) */
 	return (rs >= 0) ? wlen : rs ;
-} /* end method (maininfo::proc_bintream) */
+} /* end method (maininfo::proc_binstream) */
+
+int maininfo::proc_binstreamer(cchar *fn) noex {
+    	int		rs = SR_OK ;
+	int		rs1 ;
+	int		wlen = 0 ;
+	if (ucstream sf ; (rs = sf.open(fn)) >= 0) {
+	    while ((rs = sf.read(inbuf,inlen)) > 0) {
+		cint len = rs ;
+		{
+		    rs = fwriter(ofp,inbuf,len) ;
+		    wlen += rs ;
+		}
+		if (rs < 0) break ;
+	    } /* end while */
+	    rs1 = sf.close ;
+	    if (rs >= 0) rs = rs1 ;
+	} /* end if (ustream) */
+	return (rs >= 0) ? wlen : rs ;
+} /* end method (maininfo::proc_bintreamer) */
 
 int maininfo::proc_bincc(cchar *fn) noex {
     	int		rs = SR_OK ;
