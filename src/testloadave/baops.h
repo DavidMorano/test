@@ -18,7 +18,7 @@
 #define	BAOPS_INCLUDE	1
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<localmisc.h>
 
