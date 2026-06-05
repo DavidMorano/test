@@ -74,7 +74,8 @@ constexpr cpcchar	fmts[] = {
 	"10oxxx",
 	"10hljhljdx",
 	"12lldxx",
-	"016lx<<hello-there>>"
+	"016lx<<hello-there>>",
+	"032llx<<hello-there>>"
 } ; /* end array */
 
 namespace {
