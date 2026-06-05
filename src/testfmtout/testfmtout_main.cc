@@ -28,6 +28,7 @@
 #include	<sys/param.h>		/* POSIX */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
@@ -36,6 +37,7 @@
 #include	<exitcodes.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<bfile.h>		/* LIBB */
+#include	<libdebug.h>		/* LIBEBUG |DEBUGPRINTF(3debug)| */
 
 
 /* local defines */
@@ -64,6 +66,7 @@ local int sub1(bfile *) noex ;
 local int sub2(bfile *) noex ;
 local int sub3(bfile *) noex ;
 local int sub4(bfile *) noex ;
+local int sub5(bfile *) noex ;
 
 
 /* local variables */
@@ -72,7 +75,8 @@ constexpr sub_f		subs[] = {
     	sub1,
 	sub2,
 	sub3,
-	sub4
+	sub4,
+	sub5
 } ; /* end array */
 
 
@@ -95,6 +99,9 @@ int main(int,mainv,mainv) {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (bfile) */
 	ex = (rs >= 0) ? EX_OK : EX_DATAERR ;
+	if (ex) {
+	    fprintf(stderr,"ret ex=%d\n",ex) ;
+	}
 	return ex ;
 }
 /* end subroutine (main) */
@@ -107,28 +114,63 @@ local int sub1(bfile *ofp) noex {
 }
 
 local int sub2(bfile *ofp) noex {
+    	cint		v = 33 ;
+    	int		rs ;
+    	cchar *fmt = "value(08b)=%08b\n" ;
+	if ((rs = ofp->printf(fmt,v)) >= 0) {
+	    fmt = "val-oct(08o)=%08o\n" ;
+	    if ((rs = ofp->printf(fmt,v)) >= 0) {
+	        fmt = "val-hex(x)=%x\n" ;
+	        if ((rs = ofp->printf(fmt,v)) >= 0) {
+	            fmt = "val-hex(12x)=%12x\n" ;
+	            if ((rs = ofp->printf(fmt,v)) >= 0) {
+	                fmt = "val-hex(08x)=%08x\n" ;
+	                if ((rs = ofp->printf(fmt,v)) >= 0) {
+	                    fmt = "val-hex(012x)=%012x\n" ;
+	                    if ((rs = ofp->printf(fmt,v)) >= 0) {
+	                        rs = SR_OK ;
+			    }
+		        }
+		    }
+	        }
+	    }
+	}
+	return rs ;
+} /* end subroutine (sub2) */
+
+local int sub3(bfile *ofp) noex {
     	cchar *fmt = "value=%3d\n" ;
 	cint	v = 42 ;
 	int	rs ;
 	if ((rs = ofp->printf(fmt,v)) >= 0) {
-	    long lv = 442 ;
-	    fmt = "long-value=%4ld\n" ;
-	    if ((rs = ofp->printf(fmt,lv)) >= 0) {
-		lv = (neg lv) ;
-	        fmt = "neg-long-value=%4ld\n" ;
-	        rs = ofp->printf(fmt,lv) ;
+	    fmt = "val-zf=%06d\n" ;
+	    if ((rs = ofp->printf(fmt,v)) >= 0) {
+	        long lv = 442 ;
+	        fmt = "long-value=%4ld\n" ;
+	        if ((rs = ofp->printf(fmt,lv)) >= 0) {
+		    lv = (neg lv) ;
+	            fmt = "neg-long-value=%4ld\n" ;
+	            rs = ofp->printf(fmt,lv) ;
+	        }
 	    }
 	}
-    	return rs ;
-} /* end subroutine (sub2) */
-
-local int sub3(bfile *ofp) noex {
-    	int		rs = SR_OK ;
-    	(void) ofp ;
     	return rs ;
 } /* end subroutine (sub3) */
 
 local int sub4(bfile *ofp) noex {
+    	longlong	llv = -1 ;
+    	int		rs = SR_OK ;
+	cchar		*fmt = "longlong-value(6lld)=%6lld\n" ;
+    	if ((rs = ofp->printf(fmt,llv)) >= 0) {
+	    fmt = "longlong-x-value(036llx)=%036llx\n" ;
+    	    if ((rs = ofp->printf(fmt,llv)) >= 0) {
+	        rs = SR_OK ;
+	    }
+	}
+    	return rs ;
+} /* end subroutine (sub4) */
+
+local int sub5(bfile *ofp) noex {
     	return ofp->printf("Goodbye.\n") ;
 }
 
