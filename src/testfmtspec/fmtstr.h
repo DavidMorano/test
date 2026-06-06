@@ -30,9 +30,6 @@
 #ifndef	FMTSTR_NULLSTR
 #define	FMTSTR_NULLSTR		"(null)"
 #endif
-#ifndef	FMTSTR_MINFILL
-#define	FMTSTR_MINFILL		1	/* minimum fill width */
-#endif
 
 
 EXTERNC_begin
