@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lb -luo -lu
+LIBS += -ldebug -luo -lu
 
 
 INCDIRS=
@@ -55,15 +55,14 @@ LDFLAGS		?= $(MAKELDFLAGS)
 
 
 OBJ0= testfmtout_main.o
-OBJ1= 
+OBJ1= libb.o fmtstr.o
 OBJ2= 
 OBJ3= 
 
-OBJA= obj0.o 
-#OBJA= obj0.o obj1.o
+OBJA= obj0.o obj1.o
 #OBJB= obj2.o obj3.o
 
-OBJ= $(OBJA)
+OBJ= obja.o
 
 
 .SUFFIXES:		.hh .ii .iim .ccm
@@ -118,9 +117,6 @@ clean:
 control:
 	(uname -n ; date) > Control
 
-envs:
-	env
-
 
 obj0.o:			$(OBJ0)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJ0)
@@ -135,6 +131,27 @@ obj3.o:			$(OBJ3)
 	$(LD) $(LDFLAGS) -r -o $@ $(OBJ3)
 
 
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
 testfmtour_main.o:	testfomtout_main.cc 		$(INCS)
+
+# LIBB
+libb.o:			libb.dir
+libb.dir:
+	makesubdir $@
+
+# FMTSTR
+fmtstr.o:		fmtstr.dir
+fmtstr.dir:
+	makesubdir $@
 
 
