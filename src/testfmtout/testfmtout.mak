@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lb -ldebug -luo -lu
+LIBS += -ldebug -luo -lu
 
 
 INCDIRS=
