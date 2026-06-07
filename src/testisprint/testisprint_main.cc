@@ -13,7 +13,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 /*******************************************************************************
@@ -31,6 +31,7 @@
 #include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
+#include	<ascii.h>		/* LIBU */
 #include	<ischarx.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
 
@@ -67,10 +68,15 @@ cint		chtablen = (UCHAR_MAX + 1) ;
 /* exported subroutines */
 
 int main(int,con mainv,con mainv) {
-	for (int i = 0 ; i < chtablen ; i += 1) {
+	for (int ch, ans, i = 0 ; i < chtablen ; i += 1) {
 	    if (isprintlatin(i)) {
-		printf("%02x %c\n",i,i) ;
+		ch = ((i == CH_TAB) || (i == CH_NBSP)) ? ' ' : i ;
+		ans = 'y' ;
+	    } else {
+		ans = 'n' ;
+		ch = ' ' ;
 	    }
+	    printf("%02x %c %c\n",i,ch,ans) ;
 	} /* end for */
 } /* end subroutine (main) */
 
