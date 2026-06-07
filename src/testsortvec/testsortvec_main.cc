@@ -1,4 +1,4 @@
-/* testsort_vec_main SUPPORT (testsort) */
+/* testsortvec_main SUPPORT (testsort) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -14,7 +14,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
