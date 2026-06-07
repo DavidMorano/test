@@ -1,4 +1,5 @@
-/* main SUPPORT (testaddrset) */
+/* testaddrset_main SUPPORT (testaddrset) */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* test the ADDRSET object */
@@ -12,19 +13,20 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<climits>		/* |INT_MAX| */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |EXIT_{xx}| */
-#include	<cstdio>
-#include	<iostream>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysrets.h>
+#include	<climits>		/* CSTD |INT_MAX| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD |EXIT_{xx}| */
+#include	<cstdio>		/* CSTD */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysrets.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 import addrset ;
 
@@ -39,7 +41,6 @@ import addrset ;
 
 /* imported namespaces */
 
-using std::nullptr_t ;			/* type */
 using std::clog ;			/* variable */
 using std::cerr ;			/* variable */
 using std::cout ;			/* variable */
@@ -60,15 +61,15 @@ using std::nothrow ;			/* constant */
 
 /* forward references */
 
-static int ents_load(addrset_ent *) noex ;
-static int ents_ins(addrset_ent *,addrset *) noex ;
-static int ents_present(addrset_ent *,addrset *) noex ;
-static int ents_get(addrset_ent *,addrset *) noex ;
-static int ents_have(addrset_ent *,addrset_ent *) noex ;
-static int ents_cents(addrset_ent *,addrset *) noex ;
-static int ents_enum(addrset_ent *,addrset *) noex ;
-static int ents_rem(addrset_ent *,addrset *) noex ;
-static int ents_czero(addrset_ent *,addrset *) noex ;
+local int ents_load(addrset_ent *) noex ;
+local int ents_ins(addrset_ent *,addrset *) noex ;
+local int ents_present(addrset_ent *,addrset *) noex ;
+local int ents_get(addrset_ent *,addrset *) noex ;
+local int ents_have(addrset_ent *,addrset_ent *) noex ;
+local int ents_cents(addrset_ent *,addrset *) noex ;
+local int ents_enum(addrset_ent *,addrset *) noex ;
+local int ents_rem(addrset_ent *,addrset *) noex ;
+local int ents_czero(addrset_ent *,addrset *) noex ;
 
 
 /* local variables */
@@ -121,7 +122,7 @@ int main(int,mainv,mainv) {
 
 /* local subroutines */
 
-static int ents_load(addrset_ent *ents) noex {
+local int ents_load(addrset_ent *ents) noex {
 	custime		sti = time(nullptr) ;
 	size_t		sz ;
 	int		rs = SR_OK ;
@@ -142,7 +143,7 @@ static int ents_load(addrset_ent *ents) noex {
 }
 /* end subroutine (ents_load) */
 
-static int ents_ins(addrset_ent *ents,addrset *tp) noex {
+local int ents_ins(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_ins: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -155,7 +156,7 @@ static int ents_ins(addrset_ent *ents,addrset *tp) noex {
 }
 /* end subroutine (ents_ins) */
 
-static int ents_present(addrset_ent *ents,addrset *tp) noex {
+local int ents_present(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_present: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -167,7 +168,7 @@ static int ents_present(addrset_ent *ents,addrset *tp) noex {
 }
 /* end subroutine (ents_present) */
 
-static int ents_get(addrset_ent *ents,addrset *tp) noex {
+local int ents_get(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_get: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -182,7 +183,7 @@ static int ents_get(addrset_ent *ents,addrset *tp) noex {
 }
 /* end subroutine (ents_get) */
 
-static int ents_have(addrset_ent *ents,addrset_ent *ep) noex {
+local int ents_have(addrset_ent *ents,addrset_ent *ep) noex {
 	int		rs = SR_OK ;
 	bool		f = false ;
 	for (int i = 0 ; (!f) && (i < nents) ; i += 1) {
@@ -195,7 +196,7 @@ static int ents_have(addrset_ent *ents,addrset_ent *ep) noex {
 }
 /* end subroutine (ents_have) */
 
-static int ents_rem(addrset_ent *ents,addrset *tp) noex {
+local int ents_rem(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
 	cerr << "ents_rem: ent" << eol ;
 	for (int i = 0 ; (rs >= 0) && (i < nents) ; i += 1) {
@@ -207,7 +208,7 @@ static int ents_rem(addrset_ent *ents,addrset *tp) noex {
 }
 /* end subroutine (ents_get) */
 
-static int ents_cents(addrset_ent *,addrset *tp) noex {
+local int ents_cents(addrset_ent *,addrset *tp) noex {
 	int		rs ;
 	if ((rs = tp->count) >= 0) {
 	    cint	c = rs ;
@@ -220,7 +221,7 @@ static int ents_cents(addrset_ent *,addrset *tp) noex {
 }
 /* end subroutine (ents_cents) */
 
-static int ents_enum(addrset_ent *ents,addrset *tp) noex {
+local int ents_enum(addrset_ent *ents,addrset *tp) noex {
 	int		rs ;
 	int		rs1 ;
 	addrset_cur	cur ;
@@ -238,7 +239,7 @@ static int ents_enum(addrset_ent *ents,addrset *tp) noex {
 	return rs ;
 }
 
-static int ents_czero(addrset_ent *,addrset *tp) noex {
+local int ents_czero(addrset_ent *,addrset *tp) noex {
 	int		rs ;
 	if ((rs = tp->count) >= 0) {
 	    cint	c = rs ;
