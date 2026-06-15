@@ -26,7 +26,7 @@
 
 	Description:
 	This subroutine is the front-end for the program that sets
-	the "system" varialbes at machine boot-up time.
+	the "system" variables at machine boot-up time.
 
 	Synopsis:
 	$ testvars [-s] [file(s)]
@@ -60,8 +60,8 @@
 #include	<filer.h>
 #include	<field.h>
 #include	<char.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
