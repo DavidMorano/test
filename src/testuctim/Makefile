@@ -43,16 +43,16 @@ LIBS += -luo -lu
 DEPS_MAIN += dupstr.o six.o hasx.o isx.o
 
 OBJ0= testuctim_main.o
-OBJ1= dupstr.o
-OBJ2= six.o hasx.o isx.o
-OBJ3= uctim.o
+OBJ1= uctim.o
+OBJ2=
+OBJ3= 
 
-OBJ= obj0.o obj1.o obj2.o obj3.o
+OBJ= obj0.o obj1.o
+#OBJ= obj0.o obj1.o obj2.o obj3.o
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
