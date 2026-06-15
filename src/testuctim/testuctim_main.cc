@@ -16,15 +16,13 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
-#include	<libdebug.h>		/* LIBDEBUG */
-
-#include	"hasprint.h"
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEUGPRINTF(3debug)| */
 
 
 /* local defines */
