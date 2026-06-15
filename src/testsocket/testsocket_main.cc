@@ -50,8 +50,7 @@
 #include	<hostaddr.h>
 #include	<sockaddress.h>
 #include	<mapex.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
 #include	<dprint.hh>		/* |DPRINT(3u)| */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
@@ -95,7 +94,7 @@ local int	mainopen() noex ;
 
 /* local variables */
 
-constexpr MAPEXENT	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT,	EX_NOUSER },
 	{ SR_AGAIN,	EX_TEMPFAIL },
 	{ SR_DEADLK,	EX_TEMPFAIL },
@@ -109,9 +108,9 @@ constexpr MAPEXENT	mapexs[] = {
 	{ 0, 0 }
 } ; /* end array (mapexs) */
 
-cchar fn[] = "sockfile" ;
+cchar		fn[] = "sockfile" ;
 
-cbool	f_debug	= CF_DEBUG ;
+cbool		f_debug	= CF_DEBUG ;
 
 
 /* exported variables */
