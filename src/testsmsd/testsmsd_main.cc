@@ -122,11 +122,11 @@ extern int	watch(struct proginfo *, BUILTIN *) ;
 /* forward references */
 
 local int	usage(struct proginfo *) ;
-local int	procopts(struct proginfo *,KEYOPT *) ;
+local int	procopts(struct proginfo *,keyopt *) ;
 local int	progserial(struct proginfo *) ;
 local int	checkdir(struct proginfo *,cchar *,int) ;
 local int	checkfiledir(struct proginfo *,cchar *) ;
-local int	getprogopts(struct proginfo *,KEYOPT *,vecstr *) ;
+local int	getprogopts(struct proginfo *,keyopt *,vecstr *) ;
 local int	procfile(struct proginfo *,int (*)(char *,char *,VECSTR *),
 			char *,vecstr *,char *,VECSTR *) ;
 local int	caf(struct proginfo *) ;
@@ -253,7 +253,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	servent		*sep ;
 	ustat		sb ;
 	USERINFO	u ;
-	KEYOPT		akopts ;
+	keyopt		akopts ;
 	VECSTR		svars ;
 	BUILTIN		bis ;
 	SRVTAB_ENT	*srvp ;
@@ -509,7 +509,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 /* log file */
 	                    case argopt_logfile:
-				    pip->final.logfname = TRUE ;
+				    pip->finval.logfname = TRUE ;
 	                        if (f_optequal) {
 
 	                            f_optequal = FALSE ;
@@ -615,7 +615,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 /* mutex lock PID file */
 	                        case 'P':
-				    pip->final.pidfname = TRUE ;
+				    pip->finval.pidfname = TRUE ;
 	                            if (argr <= 0) {
 					rs = SR_INVALID ;
 					break ;
@@ -671,7 +671,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 /* TCP port to listen on */
 	                        case 'p':
-				    pip->final.portspec = TRUE ;
+				    pip->finval.portspec = TRUE ;
 	                            if (argr <= 0) {
 					rs = SR_INVALID ;
 					break ;
@@ -688,7 +688,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 /* reuse the bind addresses */
 	                        case 'r':
-				    pip->final.reuse = TRUE ;
+				    pip->finval.reuse = TRUE ;
 	                            pip->f.reuse = TRUE ;
 	                            break ;
 
@@ -2149,11 +2149,11 @@ struct proginfo	*pip ;
 /* process the program ako-options */
 local int procopts(pip,kop)
 struct proginfo	*pip ;
-KEYOPT		*kop ;
+keyopt		*kop ;
 {
 	struct locinfo	*lip = pip->cip ;
 
-	KEYOPT_CUR	kcur ;
+	keyopt_cur	kcur ;
 
 	int	rs = SR_OK ;
 	int	oi ;
