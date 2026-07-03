@@ -49,7 +49,7 @@ static int procargs(struct ainfo *,SYSREALNAME *) ;
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	struct arginfo	ainfo ;
 	SYSREALNAME	grm ;
 
