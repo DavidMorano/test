@@ -13,7 +13,7 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
 #include	<clanguage.h>
 #include	<usysbase.h>
@@ -31,7 +31,7 @@ extern int	strlinelen(cchar *,int,int) noex ;
 #endif
 
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	char		rbuf[MAXPATHLEN+1] ;
 
