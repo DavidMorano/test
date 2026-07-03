@@ -159,7 +159,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	bfile	errfile ;
 	bfile	outfile, *ofp = &outfile ;
 	USERINFO	u ;
-	KEYOPT	akopts ;
+	keyopt	akopts ;
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	argvalue = -1 ;
