@@ -24,7 +24,7 @@
 #ifndef	NLSDIALASSIST_INCLUDE
 #define	NLSDIALASSIST_INCLUDE	1
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<localmisc.h>
 
 #define	NLPS_REQ0	"NLPS:000:001:"	/* version 0 */
