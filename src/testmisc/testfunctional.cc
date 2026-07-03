@@ -86,7 +86,7 @@ struct teststruct {
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	using namespace std::placeholders ;
     	teststruct	our ;
 	{
