@@ -16,7 +16,7 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
 #include	<usystem.h>
-#include	<getbufsize.h>
+#include	<bufsizeget.h>
 #include	<ucpwcache.h>		/* |ucpwcache_name(3uc)| */
 
 #define	VARDEBUGFNAME	"TESTUGETPW_DEBUGFILE"
@@ -29,7 +29,7 @@ extern int	strlinelen(const char *,int,int) ;
 #endif
 
 
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 
 #if	CF_DEBUGS && CF_DEBUGMALL
 	uint		mo_start = 0 ;
@@ -53,7 +53,7 @@ int main(int argc,mainv argv,mainv envv) {
 #endif
 
 	if (argv != NULL) {
-	    if ((rs = getbufsize(getbufsize_pw)) >= 0) {
+	    if ((rs = bufsizeget(bufsizeget_pw)) >= 0) {
 	        struct passwd	pw ;
 	        const int	pwlen = rs ;
 	        char		*pwbuf ;
@@ -80,7 +80,7 @@ int main(int argc,mainv argv,mainv envv) {
 		    rs1 = uc_free(pwbuf) ;
 		    if (rs >= 0) rs = rs1 ;
 	        } /* end if (memory-allocation) */
-	    } /* end if (getbufsize) */
+	    } /* end if (bufsizeget) */
 	} /* end if (ugetpw) */
 
 #if	CF_DEBUGS
