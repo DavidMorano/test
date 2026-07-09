@@ -26,14 +26,17 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstdio>
-#include	<array>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<array>			/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
 
@@ -61,7 +64,7 @@ namespace {
 	consteval tester() noex {
 	    val = 0 ;
 	    mkval() ;
-	} ;
+	} ; /* end ctor */
     } ; /* end struct (tester) */
 } /* end namespace */
 
@@ -71,7 +74,7 @@ constexpr int		preps[] = {
 
 consteval int sumpreps(int mval) noex {
     	int sum = 0 ;
-    	for (cauto &v: preps) {
+    	for (cauto &v : preps) {
 	    if (v == mval) {
 	        sum += v ;
 	    }
@@ -89,7 +92,7 @@ consteval void tester::mkval() noex {
 
 /* forward references */
 
-consteval int summer(int a, int b) noex {
+consteval int summer(int a,int b) noex {
     	return a + b ;
 }
 
@@ -98,7 +101,7 @@ consteval int deliver() noex {
 	int sum = 0 ;
 	for (int i = 0 ; i < 3 ; i += 1) {
 	    sum += summer(1,a[i]) ;
-	}
+	} /* end for */
 	return sum ;
 } /* end subroutine (deliver) */
 
@@ -107,20 +110,37 @@ consteval int deliver() noex {
 
 constexpr tester	test_data ;
 
+constexpr cpcchar	strs[] = {
+    	"NUL",
+	"TAB",
+	nullptr
+} ; /* end array (strs) */
+
 
 /* exported variables */
 
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+consteval int sumstrs() noex {
+    	int	v = 0 ;
+    	for (int i = 0 ; strs[i] ; i += 1) {
+	    v += clenstr(strs[i]) ;
+	} /* end for */
+	return v ;
+} /* end subroutine (sumstrs) */
+
+int main(int,con mainv,con mainv) {
     	printf("val=%d\n",test_data.val) ;
 	{
 	    constexpr int sum = deliver() ;
 	    printf("sum=%d\n",sum) ;
 	}
-}
-/* end subroutine (main) */
+	{
+	    constexpr int v = sumstrs() ;
+	    printf("sumstrs=%d\n",v) ;
+	}
+} /* end subroutine (main) */
 
 
 /* local subroutines */
