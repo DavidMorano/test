@@ -61,7 +61,7 @@ constexpr cpcchar	nums[] = {
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	FILE		*ofp = stdout ;
 	cint		linelen = LINEBUFLEN ;
 	int		ex = EXIT_SUCCESS ;
