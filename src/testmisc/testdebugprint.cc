@@ -2,30 +2,45 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1
-#include	<envstandards.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<usystem.h>
-#include	<localmisc.h>
-#include	<debug.h>
+/* test the |debugptinf(3debug)| subroutine and some friends */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* debugging */
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #define	VARDEBUGFNAME	"TESTDEBUGPRINT_DEBUGFILE"
 
 
-int main(int argc,mainv argv,mainv envv) {
-	int		rs ;
-	int		ex = 0 ;
+int main(int argc,con mainv argv,con mainv envv) {
+	int		rs = SR_OK ;
+	int		ex = EXIT_SUCCESS ;
 	cchar		*msg = "here\nis\033" ;
-	cchar		*cp ;
 
-#if	CF_DEBUGS
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+#if	CF_DEBUG
+	if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	rs = debugprintf("main: msg=>%s<\n",msg) ;
 
@@ -33,11 +48,13 @@ int main(int argc,mainv argv,mainv envv) {
 	    debugprintf("main: rs=%d\n",rs) ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
-	if (rs < 0) ex = 1 ;
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	}
 	return ex ;
 }
 /* end subroutine (main) */
