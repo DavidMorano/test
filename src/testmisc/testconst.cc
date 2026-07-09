@@ -16,22 +16,23 @@
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cinttypes>
-#include	<cstring>
-#include	<new>			/* |nothrow(3c++)| */
-#include	<initializer_list>
-#include	<utility>
-#include	<functional>
-#include	<algorithm>
-#include	<vector>
-#include	<string>
-#include	<fstream>
-#include	<iostream>
-#include	<iomanip>
-#include	<usystem.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cinttypes>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<new>			/* C++STD |nothrow(3c++)| */
+#include	<initializer_list>	/* C++STD */
+#include	<utility>		/* C++STD */
+#include	<functional>		/* C++STD */
+#include	<algorithm>		/* C++STD */
+#include	<vector>		/* C++STD */
+#include	<string>		/* C++STD */
+#include	<fstream>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
@@ -74,12 +75,9 @@ struct values {
 /* local variables */
 
 static const char	staticstr[] = "staticstr" ;
-
-const char		localstr[] = "localstr" ;
-
 extern const char	str[] = "Hello world!" ;
-
 extern const float	fpi = floatconv(3.1415) ;
+const char		localstr[] = "localstr" ;
 
 const int	pi = 3 ;
 
@@ -105,7 +103,7 @@ const values	values_data ;
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	constexpr values	val ;
 	cout << staticstr << eol ;
 	cout << str << eol ;
