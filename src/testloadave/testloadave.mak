@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -luo -lf -lu
+LIBS += -ldebug -luo -lf -lu
 
 
 DEPS_MAIN += 
@@ -45,7 +45,7 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= loadave_main.o
-OBJ1=
+OBJ1= loadave.o
 OBJ2=
 OBJ3= 
 OBJ4=
@@ -53,7 +53,7 @@ OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o
+OBJA= obj0.o obj1.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
@@ -160,6 +160,9 @@ obj.o:			$(OBJ)
 
 
 loadave_main.o:		loadave_main.cc $(DEPS_MAIN)	$(INCS)
+
+loadave.o:		loadave.cc	loadave.h	$(INCS)
+
 
 # USTREAM
 ustream.o:		ustream.dir
