@@ -1,6 +1,6 @@
 /* loadvals HEADER */
 /* charset=ISO8859-1 */
-/* lang=C20 */
+/* lang=C++20 */
 
 /* subroutine interfaces to compiler built-in instrinsics */
 /* version %I% last-modified %G% */
@@ -17,6 +17,7 @@
 
 #ifndef	LOADVALS_INCLUDE
 #define	LOADVALS_INCLUDE
+#ifdef	__cplusplus
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
@@ -26,6 +27,7 @@
 #include	<usysdefs.h>
 
 
+#endif /* __cplusplus */
 #endif /* LOADVALS_INCLUDE */
 
 
