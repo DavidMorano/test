@@ -104,7 +104,7 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	gxx -c -x c++ -o $@ -O $<
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
 $(T).x:			obj.o
@@ -258,7 +258,6 @@ base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
 dictdiff.o:		dictdiff.cc	dictdiff.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
@@ -272,7 +271,7 @@ testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
 intext.o:		intext.ccm	loadvals.o
-	gxx -c -x c++ -o $@ -O $<
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 arithsteps.o:		arithsteps.ccm
 
