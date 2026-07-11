@@ -1,176 +1,290 @@
-# MAKEFILE
+# MAKEFILE (testgetpwd)
 
 T= testgetpwd
- 
-ALL= $(T) $(T).$(OFF)
 
-SRCROOT= $(HOME)
+ALL= $(T).x
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
 
-#LDCRTDIR= /opt/SUNWspro/WS6/lib
-#LDCRTDIR= /opt/SUNWspro/SC4.0/lib
-#LDCRTDIR= /opt/SUNWspro/lib
-LDCRTDIR= $(SRCROOT)/lib
-
-
-CC= gcc
-CCOPTS= -O3 -mcpu=ultrasparc # -fpic
-#CCOPTS= -g
-
-# HyperSPARC
-#CCOPTS= -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-
-# UltraSPARC
-#CCOPTS= -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
-
-
-DEF0= -D$(OSTYPE)=1 -DSOLARIS=1 
-DEF1= -DPOSIX=1 -D_POSIX_PTHREAD_SEMANTICS=1 -D_REENTRANT=1
-DEF2= -D_POSIX_C_SOURCE=199506L -D_POSIX_PER_PROCESS_TIMER_SOURCE=1
-DEF3= -D__EXTENSIONS__=1
-DEF4=
-
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4)
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
-INCDIRS= -I$(INCDIR)
-CFLAGS= $(CCOPTS) $(DEFS) $(INCDIRS)
+DEFS +=
 
-#LD= $(CC)
-#LD= cc
-LD= ld
-LDFLAGS= -m -R$(LIBDIR)/$(OFD):$(LIBDIR)
+INCS +=
 
+MODS +=
 
-LIBDIRS= -L$(LIBDIR)/$(OFD) -L$(LIBDIR)
-
-LIB0=
-LIB1= -Bstatic -ldam -Bdynamic
-LIB2=
-LIB3= -Bstatic -lb -lut -luc -Bdynamic
-LIB4= -Bstatic -lu -Bdynamic
-LIB5= -L$(GNU)/lib -lgcc
-LIB6= -lkstat -lpthread -lsocket -lnsl
-LIB7= -lc
-
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
+LIBS += -lf -luo -lu
 
 
-CRTI= $(LDCRTDIR)/crti.o
-CRT1= $(LDCRTDIR)/crt1.o
-CRTN= $(LDCRTDIR)/crtn.o
+DEPS_MAIN += 
+DEPS_MAIN +=
+DEPS_MAIN += 
 
-CRT0= $(CRTI) $(CRT1)
-CRTC= makedate.o
+OBJ0= testgetpwd_main.o
+OBJ1= getpwd.o
+OBJ2= sncpyx.o
+OBJ3= strkeycmp.o matkeystr.o
+OBJ4= 
+OBJ5=
+OBJ6=
+OBJ7=
 
-LINT= lint
-LINTFLAGS= -uxn -Dlint $(DEFS) $(INCDIRS)
+OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJB= obj4.o 
+#OBJB= obj4.o obj5.o obj6.o obj7.o
 
-NM= nm
-NMFLAGS= -xs
-
-CPP= cpp
-
-
-OBJ00= 
-OBJ01= main.o whatinfo.o
-OBJ02= getpwd.o
-OBJ03=
-OBJ04=
-OBJ05=
-OBJ06=
-OBJ07=
-OBJ08=
-OBJ09=
-OBJ10=
-OBJ11=
-OBJ12=
-OBJ13=
-OBJ14=
-OBJ15=
-OBJ16=
-OBJ17=
-OBJ18=
-OBJ19=
-OBJ20=
-OBJ21=
-OBJ22=
-OBJ23=
-
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07) 
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-OBJC= $(OBJ16) $(OBJ17) $(OBJ18) $(OBJ19) $(OBJ20) $(OBJ21) $(OBJ22) $(OBJ23)
-
-OBJ= $(OBJA) $(OBJB) $(OBJC)
-
-OBJS= $(CRT0) $(OBJ) $(CRTC)
+OBJ= obja.o
 
 
+INCDIRS=
+
+#LIBDIRS= -L $(LIBDIR)
+LIBDIRS= -L lib
+
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
+
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS) -g
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
+
+
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
 
 all:			$(ALL)
 
+
+.c.i:
+	$(CPP) $(CPPFLAGS) $< > $(*).i
+
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
 .c.o:
-	$(CC) -c $(CFLAGS) $<
+	$(COMPILE.c) $<
 
-.c.ln:
-	$(LINT) -uxn $(DEFS) $(INCDIRS) $<
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	makemodule $(*)
 
 
-$(T):			$(T).ee
-	cp -p $(T).ee $(T)
-
-$(T).x:			$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).$(OFF) $(OFF):	$(T).x
-	cp -p $(T).x $(T).$(OFF)
+$(T).x:			obj.o Makefile
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
 
 $(T).nm:		$(T).x
-	nm -x $(T).x > $(T).nm
-
-strip:			$(T).x
-	strip $(T).x
-	rm -f $(T) $(T).$(OFF)
-
-install:		$(ALL)
-	bsdinstall $(ALL) $(BINDIR)
-
-install-raw:		$(T).x
-	cp -p $(T).x $(T)
-	rm -f $(BINDIR)/$(T).$(OFF)
-	bsdinstall $(T) $(BINDIR)
+	$(NM) $(NMFLAGS) $(T).x > $(T).nm
 
 again:
-	rm -fr $(ALL) $(T) $(T).x
+	rm -f $(T).x
 
-clean:			again
-	rm -f *.o $(ALL)
+clean:
+	makeclean $(ALL)
 
 control:
 	(uname -n ; date) > Control
 
 
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-main.o:			main.c config.h defs.h
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-whatinfo.o:		whatinfo.c config.h
-
-main.p:			main.c
-	$(CPP) $(DEFS) $(INCDIRS) main.c > main.p
-
-main.ln:
-	$(LINT) -uxn $(DEFS) $(INCDIRS) $<
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testgetpwd_main.o:	testgetpwd_main.cc $(DEPS_MAIN)	$(INCS)
+
+# USTREAM
+ustream.o:		ustream.dir
+ustream.dir:
+	makesubdir $@
+
+# STRN
+strn.o:			strn.dir
+strn.dir:
+	makesubdir $@
+
+# SFX
+sfx.o:			sfx.dir
+sfx.dir:
+	makesubdir $@
+
+# SIX
+six.o:			six.dir
+six.dir:
+	makesubdir $@
+
+# RMX
+rmx.o:			rmx.dir
+rmx.dir:
+	makesubdir $@
+
+# HASX
+hasx.o:			hasx.dir
+hasx.dir:
+	makesubdir $@
+
+# ISX
+isx.o:			isx.dir
+isx.dir:
+	makesubdir $@
+
+# BUFOS
+bufos.o:		bufos.dir
+bufos.dir:
+	makesubdir $@
+
+# STRCPTX
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
+
+# STRWCPY
+strwcpy.o:		strwcpy.dir
+strwcpy.dir:
+	makesubdir $@
+
+# STRW
+strw.o:			strw.dir
+strw.dir:
+	makesubdir $@
+
+# STRX
+strx.o:			strx.dir
+strx.dir:
+	makesubdir $@
+
+# NLEADX
+nleadx.o:		nleadx.dir
+nleadx.dir:
+	makesubdir $@
+
+# MATXSTR
+matxstr.o:		matxstr.dir
+matxstr.dir:
+	makesubdir $@
+
+# STRNXCMP
+strnxcmp.o:		strnxcmp.dir
+strnxcmp.dir:
+	makesubdir $@
+
+# STRXCMP
+strxcmp.o:		strxcmp.dir
+strxcmp.dir:
+	makesubdir $@
+
+# VARITHMETIC
+varithmetic.o:		varithmetic.dir
+varithmetic.dir:
+	makesubdir $@
+
+# DIGTAB
+digtab.o:		digtab.dir
+digtab.dir:
+	makesubdir $@
+
+
+sncpyx.o:		sncpyx.cc	sncpyx.h
+char.o:			char.cc		char.h
+inetconv.o:		inetconv.cc	inetconv.h
+base64.o:		base64.cc	base64.h
+base128.o:		base128.cc	base128.h
+dictdiff.o:		dictdiff.cc	dictdiff.h
+
+ccfile.o:		ccfile.cc	ccfile.hh
+readln.o:		readln.cc	readln.hh
+
+ureade.o:		ureade.cc	ureade.h
+ucinetconv.o:		ucinetconv.cc	ucinetconv.h
+
+timeval.o:		timeval.cc	timeval.hh
+
+# TESTINT
+testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
+
+# INTX
+intext.o:		intext.ccm	loadvals.o
+	gxx -c -x c++ -o $@ -O $<
+
+arithsteps.o:		arithsteps.ccm
+
+loadvals.o:		loadvals.ccm
+
+xxtostr.o:		xxtostr.cc	xxtostr.h
+
+strkeycmp.o:		strkeycmp.cc	strkeycmp.h
+matkeystr.o:		matkeystr.cc	matkeystr.h
+
+getpwd.o:		getpwd.cc	getpwd.h
 
 
