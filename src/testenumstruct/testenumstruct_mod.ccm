@@ -1,0 +1,45 @@
+/* testenumstruct_mod MODULE (primary) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test enumerations */
+/* version %I% last-modified %G% */
+
+
+/* revision history:
+
+	= 1989-03-01, David A-D- Morano
+	This subroutine was originally written.
+
+*/
+
+/* Copyright © 1989 David A-D- Morano.  All rights reserved. */
+
+module ;
+
+#include	<envstandards.h>	/* MUST be first to configure */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
+
+export module testenumstruct_mod ;
+
+export {
+    enum struct keys : int {
+	key_zero,
+	key_one,
+	key_two,
+	key_overlast
+    } ; /* end enum */
+} /* end export */
+
+export {
+    extern int printkey(keys) noex ;
+} /* end export */
+
+
