@@ -46,9 +46,9 @@ DEPS_MAIN +=
 
 OBJ0= testgetpwd_main.o
 OBJ1= getpwd.o
-OBJ2= getenver.o
+OBJ2= sncpyx.o
 OBJ3= strkeycmp.o matkeystr.o
-OBJ4= sncpyx.o
+OBJ4= 
 OBJ5=
 OBJ6=
 OBJ7=
@@ -57,7 +57,7 @@ OBJA= obj0.o obj1.o obj2.o obj3.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
-OBJ= obja.o objb.o
+OBJ= obja.o
 
 
 INCDIRS=
@@ -261,7 +261,6 @@ base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
 dictdiff.o:		dictdiff.cc	dictdiff.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
@@ -275,7 +274,7 @@ testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
 intext.o:		intext.ccm	loadvals.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 arithsteps.o:		arithsteps.ccm
 
@@ -286,7 +285,6 @@ xxtostr.o:		xxtostr.cc	xxtostr.h
 strkeycmp.o:		strkeycmp.cc	strkeycmp.h
 matkeystr.o:		matkeystr.cc	matkeystr.h
 
-getenver.o:		getenver.cc	getenver.h
 getpwd.o:		getpwd.cc	getpwd.h
 
 
