@@ -154,8 +154,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	}
 	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
