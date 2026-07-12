@@ -40,6 +40,8 @@
 #include	<usystem.h>
 #include	<localmisc.h>
 
+#include	"testmod_config.h"
+
 import modhello ;
 
 
@@ -73,8 +75,7 @@ using std::cout ;			/* variable */
 
 void sub(cchar *sp) noex {
     	hello_there(sp) ;
-}
-/* end subroutine (sub) */
+} /* end subroutine (sub) */
 
     void subfrank(cchar *sp) noex {
     	cout << "sub-frank - " << sp << eol ;
