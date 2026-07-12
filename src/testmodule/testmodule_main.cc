@@ -32,19 +32,18 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<climits>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |geprogname(3c)| */
-#include	<cstdint>
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<usysflag.h>		/* |usysflag(3u)| */
-#include	<stdintx.h>
-#include	<prognamevar.hh>
-#include	<localmisc.h>		/* |MAXPATHLEN| */
-#include	<dprint.hh>		/* debugging */
+#include	<climits>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdint>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usysflag.h>		/* LIBU |usysflag(3u)| */
+#include	<stdintx.h>		/* LIBU */
+#include	<prognamevar.hh>	/* LIBDAM */
+#include	<localmisc.h>		/* LIBU |MAXPATHLEN| */
+#include	<dprint.hh>		/* LIBU debugging */
 
 import testmod ;
 
