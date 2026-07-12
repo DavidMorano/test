@@ -58,8 +58,7 @@ OBJ= obja.o
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -102,11 +101,11 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	makemodule $(*)
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
-$(T).x:			obj.o Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -247,7 +246,6 @@ base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
 dictdiff.o:		dictdiff.cc	dictdiff.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
@@ -261,11 +259,11 @@ testint.o:		testint.ccm	intext.o varithmetic.o loadval.o
 
 # INTX
 intext.o:		intext.ccm	varithmetic.o loadval.o
-	makemodule $@
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 # VARITHMETIC
 varithmetic.o:		varithmetic.ccm	builtin.o muldigs.o
-	makemodule $@
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 loadval.o:		loadval.ccm	bitmanip.o
 
@@ -279,6 +277,6 @@ prognamevar.o:		prognamevar.cc	prognamevar.hh shellunder.h
 shellunder.o:		shellunder.cc	shellunder.h
 
 testmod.o:		testmod.ccm	testmod.hh
-	makemodule $@
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
