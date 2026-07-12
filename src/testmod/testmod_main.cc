@@ -88,8 +88,7 @@ extern void	sub(cchar *) noex ;
 int main(int,mainv,mainv) {
     	hello_there("main-there") ;
 	sub("main-sub") ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
