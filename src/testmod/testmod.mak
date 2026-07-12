@@ -33,7 +33,7 @@ LINT		?= lint
 
 DEFS +=
 
-INCS += testmod.h
+INCS += testmod_config.h
 
 MODS += modhello.ccm
 
@@ -53,8 +53,7 @@ DEPS_MAIN= modhello.o
 
 
 INCDIRS +=
-
-LIBDIRS += -L$(LIBDIR)
+LIBDIRS += -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -97,11 +96,11 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	makemodule $(*)
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
 $(T).x:			$(OBJ)
-	$(LD) -o $@ $(LDFLAGS) $(OBJ)
+	$(LD) -o $@ $(LDFLAGS) $^
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -137,21 +136,18 @@ objb.o:			$(OBJB)
 
 
 modhello.o:		modhello0.o modhello1.o
-	$(LD) -r -o $@ $(LDFLAGS) modhello0.o modhello1.o
+	$(LD) -r -o $@ $(LDFLAGS) $^
 
 modhello0.o:		modhello.ccm
-	makemodule modhello
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
-modhello1.o:		modhello1.cc modhello.ccm
-	makemodule modhello
-	$(COMPILE.cc) modhello1.cc
+modhello1.o:		modhello1.cc modhello0.o
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 testmod_main.o:		testmod_main.cc testmod_sub.hh $(DEPS_MAIN)
-	makemodule modhello
 	$(COMPILE.cc) $<
 
 testmod_sub.o:		testmod_sub.cc testmod_sub.hh $(DEPS_MAIN)
-	makemodule modhello
 	$(COMPILE.cc) $<
 
 
