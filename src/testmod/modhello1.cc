@@ -59,5 +59,5 @@ void hello_there (cchar *sp)  noex {
 	access() ;
 	cout << "one=" << hello_one << " two=" << hello_two << eol ;
 	cout << hex << s << eol ;
-}
+} /* end subroutine */
 
