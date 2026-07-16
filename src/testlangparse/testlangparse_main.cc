@@ -27,25 +27,25 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |atoi(3c)| */
-#include	<cstdarg>
-#include	<cstdio>		/* |printf(3c)| */
-#include	<iostream>
-#include	<new>			/* placement-new */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<ccfile.hh>
-#include	<strnul.hh>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD |atoi(3c)| */
+#include	<cstdarg>		/* CSTD */
+#include	<cstdio>		/* CSTD |printf(3c)| */
+#include	<iostream>		/* C++STD */
+#include	<new>			/* C++STD placement-new */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<ccfile.hh>		/* LIBU */
+#include	<strnul.hh>		/* LIBU */
 #include	<six.h>			/* |sichr(3uc)| */
 #include	<sfx.h>			/* |sfchr(3uc)| */
 #include	<rmx.h>			/* |rmeol(3uc)| */
-#include	<ascii.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>		/* |eol| + |MAXLINELEN| */
+#include	<ascii.h>		/* LIBU */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |eol| + |MAXLINELEN| */
 #include	<deb.hh>		/* |DEBPRINTF| */
 
 #include	<langparse.h>
