@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -lu
+LIBS += -luo -lf -lu
 
 
 DEPS_MAIN += bufos.o
@@ -276,7 +276,6 @@ char.o:			char.cc		char.h
 base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
