@@ -180,7 +180,6 @@ base128.o:		base128.cc	base128.h		$(INCS)
 
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
-nzeros.o:		nzeros.ccm
 strlinelen.o:		strlinelen.cc	strlinelen.h
 
 
