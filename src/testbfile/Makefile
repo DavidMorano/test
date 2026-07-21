@@ -1,357 +1,327 @@
-# MAKEFILE (libb)
+# MAKEFILE (testbfile)
 
 T= testbfile
 
 ALL= $(T).x
 
-SRCROOT= $(HOME)
+
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
+
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
-BINDIR= $(SRCROOT)/bin
-MANDIR= $(SRCROOT)/man/man1
-HELPDIR= $(SRCROOT)/share/help
+DEFS +=
+
+INCS +=
+
+MODS +=
+
+LIBS += -ldebug -luo -lu -lf
 
 
-CC= gcc
-GPP= g++
+DEPS_MAIN += 
+DEPS_MAIN +=
+DEPS_MAIN += 
 
-CCOPTS_GCCALL= -pthreads -fexceptions
-CCOPTS_CCALL= -MT
+OBJ0= testbfile_main.o
+OBJ1= libb.o
+OBJ2= openx.o
+OBJ3= libdebug.o
+OBJ4= 
+OBJ5=
+OBJ6=
+OBJ7=
 
-CCOPTS_GCCOPTSPARC= -mcpu=ultrasparc
-CCOPTS_GCCLIBSPARC= -mno-app-regs
+OBJA= obj0.o obj1.o
+OBJB= obj4.o 
 
-CCOPTS= $(CCOPTS_GCCALL) -O $(CCOPTS_GCCOPTSPARC)
-#CCOPTS= $(CCOPTS_GCCALL) -g -O
-#CCOPTS= $(CCOPTS_GCCALL) -g -pg
-CCOPTS= $(CCOPTS_GCCALL) -g -Wstrict-aliasing
-
-CCOPTS_GCCLIB= -fpic $(CCOPTS_GCCLIBSPARC)
-
-#CCOPTS= $(CCOPTS_CCALL) -g -xs
-
-
-DEF0=
-DEF1=
-DEF2=
-DEF3=
-DEF4=
-DEF5=
-DEF6=
-DEF7= $(LF_DEFS)
-
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6) $(DEF7)
+OBJ= obja.o
 
 
-INCDIRS= -I$(INCDIR)
+INCDIRS=
+LIBDIRS= -L lib
 
-CPPFLAGS= $(DEFS) $(INCDIRS)
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
 
-CFLAGS= $(CCOPTS) $(LF_CFLAGS)
-
-#LD= $(CC)
-
-LDFLAGS= $(LF_LDFLAGS)
-
-
-LIBDIRS= -L$(SRCROOT)/lib
-
-LIB0=
-LIB1= -ldam -lb
-LIB2=
-LIB3= -luc -lu
-LIB4= -L$(GNU)/lib -lstdc++ -lgcc_eh -lgcc
-LIB5= 
-LIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-LIB7= -ldl -lc
-
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS) -g
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
 
 
-XLIBDIRS= -L$(SRCROOT)/lib
-
-XLIB0=
-XLIB1= -ldam -lb
-XLIB2= -ldebug
-XLIB3= -luc -lu
-XLIB4=
-XLIB5= 
-XLIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-XLIB7= -ldl
-
-XLIBS= $(XLIB0) $(XLIB1) $(XLIB2) $(XLIB3) $(XLIB4) $(XLIB5) $(XLIB6) $(XLIB7)
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
-RANLIB= ranlib
+default:		$(T).x
 
-LINT= lint
-LINTFLAGS= -uxn -Dlint
+all:			$(ALL)
 
-NM= nm
-NMFLAGS= -xs -v
-
-CXREF= cxref
-CXREFFLAGS= -R -s
-
-CPP= cpp
-
-LORDER= lorder
-TSORT= tsort
-
-RM= rm -f
-
-
-INCS= bfile.h
-
-
-OBJ00= bopen.o bopentmp.o bopencmd.o bopenrcmd.o bopenlock.o 
-OBJ01= bopenmod.o bdup.o bminmod.o
-OBJ02= bread.o breadline.o breadlines.o bgetc.o 
-OBJ03= bwrite.o bwriteblock.o bputc.o bprintf.o bwriteblanks.o bprintline.o
-OBJ04= bcopyblock.o
-OBJ05= bflush.o breserve.o
-OBJ06= bcontrol.o btruncate.o brewind.o bisterm.o
-OBJ07= bseek.o btell.o
-OBJ08= bopensched.o bopenshell.o bopenrcmde.o
-OBJ09= 
-OBJ10= bfile_flush.o bfile_pagein.o bfile.o
-OBJ11= mkfdfname.o 
-OBJ12=
-#OBJ13= debugprintf.o nprintf.o fdprintf.o strlinelen.o
-OBJ14=
-OBJ15= getnfile.o findfilepath.o
-OBJ16= strbasename.o strwset.o
-OBJ17= getpwd.o permsched.o lockfile.o
-OBJ18= ctdec.o cthex.o 
-OBJ19= vstrkeycmp.o strkeycmp.o
-OBJ20= mkdirs.o mktmpfile.o 
-OBJ21=
-OBJ22= bufprintf.o format.o hasprintbad.o isprintbad.o
-#OBJ23= econvert.o
-
-OBJ24=
-OBJ25=
-OBJ26=
-OBJ27=
-OBJ28=
-OBJ29=
-OBJ30=
-OBJ31=
-
-OBJ32=
-OBJ33=
-OBJ34=
-OBJ35=
-OBJ36=
-OBJ37=
-OBJ38=
-OBJ39= 
-
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07)
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-OBJC= $(OBJ16) $(OBJ17) $(OBJ18) $(OBJ19) $(OBJ20) $(OBJ21) $(OBJ22) $(OBJ23)
-OBJD= $(OBJ24) $(OBJ25) $(OBJ26) $(OBJ27) $(OBJ28) $(OBJ29) $(OBJ30) $(OBJ31)
-OBJE= $(OBJ32) $(OBJ33) $(OBJ34) $(OBJ35) $(OBJ36) $(OBJ37) $(OBJ38) $(OBJ39)
-
-OBJ= $(OBJA) $(OBJB) $(OBJC) $(OBJD) $(OBJE)
-
-OBJS= obja.o objb.o objc.o objd.o obje.o
-
-
-.SUFFIXES:		.ls .i .cx .cs
-
-
-default:		all
-
-all:			$(ALL) $(T).a(bprintf.o)
- 
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.cc.o:
-	$(GPP) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
 
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
-.c.cx:
-	$(CXREF) -C $(CXREFFLAGS) $(CPPFLAGS) $<
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
 
-.c.cs:
-	$(CXREF) $(CXREFFLAGS) $(CPPFLAGS) -o $(*).cs $<
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
+.c.o:
+	$(COMPILE.c) $<
+
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
-$(T).a:			$(OBJ)
-	$(AR) -cr $@ $?
-	ranlib $@
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
-$(T).so:		$(OBJS) bfile.map Makefile $(T).a
-	$(LD) -o $@ -G -B reduce -M bfile.map \
-		$(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS)
-
-$(T).nm:		$(T).so
-	$(NM) $(NMFLAGS) $(T).so > $(T).nm
-
-$(T).order order:	$(OBJ) $(T).a
-	$(LORDER) $(T).a | $(TSORT) > $(T).order
-	$(RM) $(T).a
-	while read O ; do $(AR) -cr $(T).a $${O} ; done < $(T).order
-
-install.pre:
-	filefind . -s h | makenewer -af - -d $(INCDIR)
-
-install:		$(T).a
-	makenewer $(T).a $(LIBDIR)
-	makenewer $(INCS) $(INCDIR)
-
-install.$(OFF):		install
-
-safe:
-	makesafe -v=3 -I $(INCDIR) $(OBJ)
-
-clean:			again
-	rm -f $(T).a *.o
+$(T).nm:		$(T).x
+	$(NM) $(NMFLAGS) $(T).x > $(T).nm
 
 again:
-	rm -f $(T).a
+	rm -f $(T).x
+
+clean:
+	makeclean $(ALL)
 
 control:
-	uname -n > Control
-	date >> Control
+	(uname -n ; date) > Control
+
+
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
 obja.o:			$(OBJA)
-	$(LD) -o $@ -r $(LDFLAGS) $(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 objb.o:			$(OBJB)
-	$(LD) -o $@ -r $(LDFLAGS) $(OBJB)
-
-objc.o:			$(OBJC)
-	$(LD) -o $@ -r $(LDFLAGS) $(OBJC)
-
-objd.o:			$(OBJD)
-	$(LD) -o $@ -r $(LDFLAGS) $(OBJD)
-
-obje.o:			$(OBJE)
-	$(LD) -o $@ -r $(LDFLAGS) $(OBJE)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-$(T).a(bprintf.o):	bprintf.o
-
-$(T).a(nprintf.o):	nprintf.o
-
-$(T).a(debugprintf.o):	debugprintf.o
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-# special (very special) processing for NPRINTF
-nprintf_r.o:		nprintf.map Makefile nprintf.o lockfile.o format.o 
-	$(LD) -r -o $@ -B reduce -M nprintf.map nprintf.o lockfile.o format.o
+testbfile_main.o:	testbfile_main.cc $(DEPS_MAIN)	$(INCS)
 
-nprintf.o:		Makefile nprintf.c
+# USTREAM
+ustream.o:		ustream.dir
+ustream.dir:
+	makesubdir $@
 
+# UCSTREAM
+ucstream.o:		ucstream.dir
+ucstream.dir:
+	makesubdir $@
 
-# special (very special) processing for DEBPRINTF
-debugprintf_r.o:	debugprintf.map Makefile debugprintf.o format.o 
-	$(LD) -r -o $@ -B reduce -M debugprintf.map debugprintf.o format.o
+# FILER
+filer.o:		filer.dir
+filer.dir:
+	makesubdir $@
 
-debugprintf.o:		Makefile debugprintf.c
+# STRN
+strn.o:			strn.dir
+strn.dir:
+	makesubdir $@
 
+# SFX
+sfx.o:			sfx.dir
+sfx.dir:
+	makesubdir $@
 
-econvert.o:	econvert.obj
-	rm -f econvert.o
-	cp -p econvert.obj econvert.o
+# SIX
+six.o:			six.dir
+six.dir:
+	makesubdir $@
 
+# RMX
+rmx.o:			rmx.dir
+rmx.dir:
+	makesubdir $@
 
-ids.o:			ids.c ids.h
-storebuf.o:		storebuf.c storebuf.h
-dupstr.o:		dupstr.c dupstr.h
-snflags.o:		snflags.c snflags.h
+# HASX
+hasx.o:			hasx.dir
+hasx.dir:
+	makesubdir $@
 
+# ISX
+isx.o:			isx.dir
+isx.dir:
+	makesubdir $@
 
-bcontrol.o:		bcontrol.c bfile.h
-bisterm.o:		bisterm.c bfile.h
-bcopy.o:		bcopy.c bfile.h
-bcopyblock.o:		bcopyblock.c bfile.h
-bcopyfile.o:		bcopyfile.c bfile.h
-bflush.o:		bflush.c bfile.h
-breserve.o:		breserve.c bfile.h
-bgetc.o:		bgetc.c bfile.h
-bopen.o:		bopen.c bfile.h
-bopencmd.o:		bopencmd.c bfile.h
-bopenlock.o:		bopenlock.c bfile.h
-bopenrcmd.o:		bopenrcmd.c bfile.h
-bopenremote.o:		bopenremote.c bfile.h
-bopensched.o:		bopensched.c bfile.h
-bopentmp.o:		bopentmp.c bfile.h
-bprintf.o:		bprintf.c bfile.h
-bprintline.o:		bprintline.c bfile.h
-bputc.o:		bputc.c bfile.h
-bread.o:		bread.c bfile.h
-breadline.o:		breadline.cc bfile.h
-	$(GPP) -c $(GPPFLAGS) $(CFLAGS) $(CPPFLAGS) breadline.cc
-breadline.o:		breadline.cc bfile.h
-breadlines.o:		breadlines.c bfile.h
-bseek.o:		bseek.c bfile.h
-btell.o:		btell.c bfile.h
-btruncate.o:		btruncate.c bfile.h
-bwasteline.o:		bwasteline.c bfile.h
-bwrite.o:		bwrite.c bfile.h
-bwriteblock.o:		bwriteblock.c bfile.h
-bwriteblanks.o:		bwriteblanks.c bfile.h
-bprintcleanline.o:	bprintcleanline.c bfile.h
-bprintcleanlines.o:	bprintcleanlines.c bfile.h
-brewind.o:		brewind.c bfile.h
- 
-btell64.o:		btell64.c bfile.h
-bseek64.o:		bseek64.c bfile.h
+# BUFOS
+bufos.o:		bufos.dir
+bufos.dir:
+	makesubdir $@
 
-bfile.o:		bfile.c bfile.h
-bdup.o:			bdup.c bfile.h
+# STRCPTX
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
 
-bfile_flush.o:		bfile_flush.c bfile.h
-bfile_pagein.o:		bfile_pagein.c bfile.h
-bfile_fnames.o:		bfile_fnames.c bfile.h
+# STRWCPY
+strwcpy.o:		strwcpy.dir
+strwcpy.dir:
+	makesubdir $@
 
-mkfdfname.o:		mkfdfname.c bfile.h
+# STRW
+strw.o:			strw.dir
+strw.dir:
+	makesubdir $@
 
+# STRX
+strx.o:			strx.dir
+strx.dir:
+	makesubdir $@
 
-format.o:		format.c
+# NLEADX
+nleadx.o:		nleadx.dir
+nleadx.dir:
+	makesubdir $@
 
-sfbasename.o:		sfbasename.c
+# MATXSTR
+matxstr.o:		matxstr.dir
+matxstr.dir:
+	makesubdir $@
 
-sfdirname.o:		sfdirname.c
+# STRNXCMP
+strnxcmp.o:		strnxcmp.dir
+strnxcmp.dir:
+	makesubdir $@
 
-strbasename.o:		strbasename.c
+# STRXCMP
+strxcmp.o:		strxcmp.dir
+strxcmp.dir:
+	makesubdir $@
 
-ctdec.o:		ctdec.c
+# VARITHMETIC
+varithmetic.o:		varithmetic.dir
+varithmetic.dir:
+	makesubdir $@
 
+# DIGTAB
+digtab.o:		digtab.dir
+digtab.dir:
+	makesubdir $@
 
-# testing
+# LIBUO
+libuo.o:		libuo.dir
+libuo.dir:
+	makesubdir $@
 
-X01= testbfile
+# UTMPXX
+utmpxx.o:		utmpxx.dir
+utmpxx.dir:
+	makesubdir $@
 
-#X01OBJ00= $(X01).o
-X01OBJ00= main.o
-X01OBJ01= bopen.o bread.o breadline.o bwrite.o bflush.o
-X01OBJ02= bfile.o bfile_flush.o
-X01OBJ03= debugprintf.o debug.o
+# LIBDEBUG
+libdebug.o:		libdebug.dir
+libdebug.dir:
+	makesubdir $@
 
-X01OBJ= $(X01OBJ00) $(X01OBJ01) $(X01OBJ02) $(X01OBJ03)
+# FMTSTR
+fmtstr.o:		fmtstr.dir
+fmtstr.dir:
+	makesubdir $@
 
-$(X01).o:		$(X01).c bfile.h
+# OPENX
+openx.o:		openx.dir
+openx.dir:
+	makesubdir $@
 
-$(X01).x:		$(X01OBJ)
-	$(CC) -o $@ $(X01OBJ) $(XLIBDIRS) $(XLIBS)
+# LIBB
+libb.o:			libb.dir
+libb.dir:
+	makesubdir $@
 
-main.o:			main.c bfile.h
+bufsizeget.o:		bufsizeget.cc	bufsizeget.h
+bufsizevar.o:		bufsizevar.cc	bufsizevar.hh
 
+char.o:			char.cc		char.h
+inetconv.o:		inetconv.cc	inetconv.h
+base64.o:		base64.cc	base64.h
+base128.o:		base128.cc	base128.h
+dictdiff.o:		dictdiff.cc	dictdiff.h
+
+ccfile.o:		ccfile.cc	ccfile.hh
+readln.o:		readln.cc	readln.hh
+
+ureade.o:		ureade.cc	ureade.h
+ucinetconv.o:		ucinetconv.cc	ucinetconv.h
+
+timeval.o:		timeval.cc	timeval.hh
+
+# TESTINT
+testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
+
+# INTX
+intext.o:		intext.ccm	loadvals.o
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
+arithsteps.o:		arithsteps.ccm
+
+loadvals.o:		loadvals.ccm
+
+xxtostr.o:		xxtostr.cc	xxtostr.h
+mapex.o:		mapex.cc	mapex.h
+
+strkeycmp.o:		strkeycmp.cc	strkeycmp.h
+matkeystr.o:		matkeystr.cc	matkeystr.h
 
 
