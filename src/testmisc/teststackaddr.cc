@@ -1,5 +1,11 @@
-/* teststackaddr */
+/* teststackaddr SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C89 */
+
+/* test various stack operations */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* debugging */
 
 /* revision history:
 
@@ -10,69 +16,66 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#define	CF_DEBUGS	1
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
+#include	<stackaddr.h>
+#include	<localmisc.h>
+#include	<libdebug.h>
 
-#include	"stackaddr.h"
 
 #define	VARDEBUGFNAME	"TESTSTACKADDR_DEBUGFILE"
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
+struct xpair {
+	cchar	*hp ;
+	cchar	*up ;
+} ; /* end struct (xpair) */
 
-
-struct pair {
-	const char	*hp ;
-	const char	*up ;
-} ;
-
-static struct pair	pairs[] = {
+constexpr xpair		xpairs[] = {
 	{ "h3", "u3" },
 	{ "h3", "u3a" },
 	{ "h2", "u2" },
-	{ NULL, "u2a" },
+	{ nullptr, "u2a" },
 	{ "h2", "u2b" },
 	{ "h1", "u1" },
-	{ NULL, "u0" },
-	{ NULL, NULL }
-} ;
+	{ nullptr, "u0" },
+	{ nullptr, nullptr }
+} ; /* end array (xparis) */
 
 
-int main(int argc,const char **argv,const char **envv)
-{
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,con mainv argv,con mainv envv) {
 	STACKADDR	s ;
+	cint		rlen = MAXPATHLEN ;
+	int		rs ;
+	int		rs1 ;
+	char		rbuf[MAXPATHLEN+1] ;
 
-	const int	rlen = MAXPATHLEN ;
-
-	int	rs ;
-	int	rs1 ;
-
-	char	rbuf[MAXPATHLEN+1] ;
-
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
-	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
+	    if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
 	        debugopen(cp) ;
+	    }
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if ((rs = stackaddr_start(&s,rbuf,rlen)) >= 0) {
-	    int		i ;
-	    const char	*hp ;
-	    const char	*up ;
+	    cchar	*hp ;
+	    cchar	*up ;
 	    debugprintf("main: stackaddr_start() rs=%d\n",rs) ;
 
-	    for (i = 0 ; pairs[i].up != NULL ; i += 1) {
-		hp = pairs[i].hp ;
-		up = pairs[i].up ;
+	    for (int i = 0 ; xpairs[i].up ; i += 1) {
+		hp = xpairs[i].hp ;
+		up = xpairs[i].up ;
 		rs = stackaddr_add(&s,hp,-1,up,-1) ;
 	        debugprintf("main: stackaddr_add() rs=%d\n",rs) ;
 		if (rs < 0) break ;
@@ -85,11 +88,12 @@ int main(int argc,const char **argv,const char **envv)
 
 	printf("sa=%s\n",rbuf) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
 }
 /* end subroutine (main) */
+
 
