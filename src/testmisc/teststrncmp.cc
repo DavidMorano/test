@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C99 */
 
+/* test the |strncmp(3c)| subroutine */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -28,7 +31,7 @@
 
 import libutil ;			/* |lenstr(3u)| */
 
-int main(int argc,mainv,mainv) {
+int main(int argc,con mainv,con mainv) {
 	int		rs = SR_OK ;
 	int		ex = EXIT_SUCCESS ;
 	{
