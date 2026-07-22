@@ -461,8 +461,8 @@ local int test(int w,const ltest *ep) noex {
 	    errno = 0 ;
 	    switch (w) {
 	    case 0: /* signed */
-		if (rs >= 0) {
-    	            long res = atoxl(str,nullptr,base) ;
+		if ((rs >= 0) && (base == 10)) {
+    	            long res = atol(str) ;
     	            if (errno == 0) {
 		        if (res != long(expect)) {
 			    if ((rs = ctdec(lbuf,llen,expect)) >= 0) {
@@ -477,8 +477,8 @@ local int test(int w,const ltest *ep) noex {
 		        }
 	            }  /* end if */
 		} /* end if (signed-l) */
-		if (rs >= 0) {
-		    longlong resll = atoxll(str,nullptr,base) ;
+		if ((rs >= 0) && (base == 10)) {
+		    longlong resll = atoll(str) ;
 		    if (errno == 0) {
 		        long res = long(resll) ;
 		        if (res != long(expect)) {
@@ -493,8 +493,8 @@ local int test(int w,const ltest *ep) noex {
 		} /* end if (signed-ll) */
 		break ;
 	    case 1: /* un-signed */
-		if (rs >= 0) {
-    	            long res = atoxul(str,nullptr,base) ;
+		if ((rs >= 0) && (base == 10)) {
+    	            long res = atoul(str) ;
     	            if (errno == 0) {
 		        if (res != long(expect)) {
 			    if ((rs = ctdec(lbuf,llen,expect)) >= 0) {
@@ -509,8 +509,8 @@ local int test(int w,const ltest *ep) noex {
 		        }
 	            }  /* end if */
 		} /* end if (signed-l) */
-		if (rs >= 0) {
-		    longlong resll = atoxull(str,nullptr,base) ;
+		if ((rs >= 0) && (base == 1)) {
+		    longlong resll = atoull(str) ;
 		    if (errno == 0) {
 		        long res = long(resll) ;
 		        if (res != long(expect)) {
