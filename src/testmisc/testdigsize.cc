@@ -63,7 +63,7 @@ using std::cout ;			/* variable */
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	cint	bsizes[] = { 8, 16, 32, 64, 128, 256, 512, 1024 } ;
 	cint	bases[] = { 2, 8, 10, 16, 64 } ;
 	for (cauto bs : bsizes) {
