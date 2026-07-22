@@ -70,7 +70,7 @@ namespace {
 
 constexpr int		preps[] = {
     	1, 2, 3
-} ;
+} ; /* end array */
 
 consteval int sumpreps(int mval) noex {
     	int sum = 0 ;
@@ -86,7 +86,7 @@ consteval void tester::mkval() noex {
     	constexpr array<int,4>	a{ 1, 3, 5, 7 } ;
 	for (cauto &av : a) {
     	    val += sumpreps(av) ;
-	}
+	} /* end for */
 } /* end method (tester::mkval) */
 
 
@@ -94,7 +94,7 @@ consteval void tester::mkval() noex {
 
 consteval int summer(int a,int b) noex {
     	return a + b ;
-}
+} /* end subroutine */
 
 consteval int deliver() noex {
 	constexpr array<int,3> a = { 1, 2, 3 } ;
