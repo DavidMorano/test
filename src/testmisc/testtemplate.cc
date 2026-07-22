@@ -49,7 +49,7 @@ template<concharp T> local void printcs(const T s) noex {
     cout << s << eol ;
 }
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     const int	vint = 1 ;
     const long	vlong = 2 ;
     fun(vint) ;
