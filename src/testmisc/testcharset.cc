@@ -88,7 +88,7 @@ const cchar	ßgªstr[] = "strª" ;
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	cout << "Hello world! - Jâck Smîth" << eol ;
 	{
 	    int	ºch = 'à' ;
