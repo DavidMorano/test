@@ -34,7 +34,7 @@
 #include	<mkchar.h>
 #include	<localmisc.h>
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	cint	sch = MKCHAR('­') ;
 	int	n = 0 ;
 	cchar	*sp = "this­that­other" ;
