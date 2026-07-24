@@ -25,32 +25,35 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
-#include	<sys/types.h>		/* |getgroups(2)| */
-#include	<sys/param.h>		/* |getgroups(2)| */
-#include	<unistd.h>		/* |sysconf(2)| */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-#include	<usyscalls.h>
-#include	<localmisc.h>
+#include	<sys/types.h>		/* POSIX® |getgroups(2)| */
+#include	<sys/param.h>		/* POSIX® |getgroups(2)| */
+#include	<unistd.h>		/* POSIX® |sysconf(2)| */
+#include	<cstddef>		/* CSTD |nullptr_t| */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<usysrets.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 
-static void	clktck() noex ;
-static void	maxgroups() noex ;
-static void	getgroups() noex ;
+local void	clktck() noex ;
+local void	maxgroups() noex ;
+local void	getgroups() noex ;
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	clktck() ;
 	maxgroups() ;
 	getgroups() ;
 } /* end subroutine (main) */
 
-static void clktck() noex {
+
+/* local subroutines */
+
+local void clktck() noex {
     	clong lv = sysconf(_SC_CLK_TCK) ;
 	{
 	    cint	v = int(lv) ;
@@ -58,7 +61,7 @@ static void clktck() noex {
 	}
 } /* end subroutine (clktck) */
 
-static void maxgroups() noex {
+local void maxgroups() noex {
     	clong lv = sysconf(_SC_NGROUPS_MAX) ;
 	{
 	    cint	v = int(lv) ;
@@ -66,7 +69,7 @@ static void maxgroups() noex {
 	}
 } /* end subroutine (maxgoups) */
 
-static void getgroups() noex {
+local void getgroups() noex {
     	gid_t	gids[256+1] ;
     	cint	ng = getgroups(0,gids) ;
 	printf("getgroup=%d\n",ng) ;
