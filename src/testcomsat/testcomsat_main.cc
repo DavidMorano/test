@@ -26,36 +26,36 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/socket.h>
-#include	<netinet/in.h>
-#include	<arpa/inet.h>
-#include	<stropts.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<netdb.h>
-#include	<ctime>
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<getproto.h>
-#include	<getpf.h>
-#include	<getaf.h>
-#include	<baops.h>
-#include	<keyopt.h>
-#include	<vecstr.h>
-#include	<bfile.h>
-#include	<userinfo.h>
-#include	<inetaddr.h>
-#include	<netorder.h>
-#include	<hostinfo.h>
-#include	<hostaddr.h>
-#include	<sockaddress.h>
-#include	<inetaddrx.h>
-#include	<timestr.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/socket.h>		/* POSIX® */
+#include	<netinet/in.h>		/* POSIX® */
+#include	<arpa/inet.h>		/* POSIX® */
+#include	<stropts.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<netdb.h>		/* POSIX® */
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<getproto.h>		/* LIBUC */
+#include	<getpf.h>		/* LIBUC */
+#include	<getaf.h>		/* LIBUC */
+#include	<baops.h>		/* LIBUC */
+#include	<keyopt.h>		/* LIBUC */
+#include	<vecstr.h>		/* LIBUC */
+#include	<bfile.h>		/* LIBUC */
+#include	<userinfo.h>		/* LIBUC */
+#include	<inetaddr.h>		/* LIBUC */
+#include	<netorder.h>		/* LIBUC */
+#include	<hostinfo.h>		/* LIBUC */
+#include	<hostaddr.h>		/* LIBUC */
+#include	<sockaddress.h>		/* LIBUC */
+#include	<inetaddrx.h>		/* LIBUC */
+#include	<timestr.h>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 
@@ -120,11 +120,11 @@ extern char	hostaddrinfo_makedate[] ;
 
 /* local structures */
 
-LI_fl {
+strict locinfo_fl {
 	uint		dummy:1 ;
-} ;
+} ; /* end struct (locinfo_fl) */
 
-LI {
+struct locinfo {
 	locinfo_fl	have, f, changed, final ;
 	locinfo_fl	init, open ;
 	vecstr		stores ;
@@ -136,7 +136,7 @@ LI {
 	int		to ;
 	int		af ;		/* address-family */
 	int		mo ;		/* mail-offset */
-} ;
+} ; /* end struct (locinfo) */
 
 #ifdef	COMMENT
 struct prepname {
@@ -144,7 +144,7 @@ struct prepname {
 	int		hostnamelen ;
 	ulong		magval ;
 	int		f_alloc ;
-} ;
+} ; /* end struct */
 #endif /* COMMENT */
 
 
@@ -152,38 +152,22 @@ struct prepname {
 
 local int	usage(PI *) ;
 
-local int	locinfo_start(LI *,PI *) ;
-local int	locinfo_mkmsg(LI *) ;
+local int	locinfo_start(LI *,PI *) noex ;
+local int	locinfo_mkmsg(LI *) noex ;
 local int	locinfo_setentry(LI *,cchar **,
-			cchar *,int) ;
-local int	locinfo_sendmsg(LI *,ADDRINFO *) ;
-local int	locinfo_finish(LI *) ;
+			cchar *,int) noex ;
+local int	locinfo_sendmsg(LI *,ADDRINFO *) noex ;
+local int	locinfo_finish(LI *) noex ;
 
-local int	procname(PI *,bfile *,cchar *) ;
+local int	procname(PI *,bfile *,cchar *) noex ;
 
 #ifdef	COMMENT
-local int	prepname_start(struct prepname *,cchar *) ;
-local int	prepname_finish(struct prepname *) ;
+local int	prepname_start(prepname *,cchar *) noex ;
+local int	prepname_finish(prepname *) noex ;
 #endif
 
 
 /* local variables */
-
-static cchar *argopts[] = {
-	"ROOT",
-	"TMPDIR",
-	"VERSION",
-	"VERBOSE",
-	"HELP",
-	"sn",
-	"af",
-	"of",
-	"ef",
-	"to",
-	"mu",
-	"mo",
-	nullptr
-} ;
 
 enum argopts {
 	argopt_root,
@@ -199,7 +183,23 @@ enum argopts {
 	argopt_mu,
 	argopt_mo,
 	argopt_overlast
-} ;
+} ; /* end enum (argopts) */
+
+constexpr cpcchar	argopts[] = {
+	"ROOT",
+	"TMPDIR",
+	"VERSION",
+	"VERBOSE",
+	"HELP",
+	"sn",
+	"af",
+	"of",
+	"ef",
+	"to",
+	"mu",
+	"mo",
+	nullptr
+} ; /* end array */
 
 constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
@@ -207,7 +207,7 @@ constexpr pivars	initvars = {
 	VARPROGRAMROOT3,
 	PROGRAMROOT,
 	VARPRLOCAL
-} ;
+} ; /* end array */
 
 constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
@@ -221,7 +221,7 @@ constexpr mapex_map	mapexs[] = {
 	{ SR_INTR, EX_INTR },
 	{ SR_EXIT, EX_TERM },
 	{ 0, 0 }
-} ;
+} ; /* end array */
 
 
 /* exported variables */
@@ -229,21 +229,13 @@ constexpr mapex_map	mapexs[] = {
 
 /* exported subroutines */
 
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	PI	pi, *pip = &pi ;
 	LI	li, *lip = &li ;
-
-	USERINFO	u ;
-
+	userinfo	u ;
 	keyopt		akopts ;
-
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
-
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	pan ;
@@ -947,16 +939,12 @@ badarg:
 	usage(pip) ;
 	goto retearly ;
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-local int usage(pip)
-PI	*pip ;
-{
+local int usage(PI *pip) noex {
 	int	rs ;
 	int	wlen = 0 ;
 
@@ -972,53 +960,35 @@ PI	*pip ;
 
 	wlen += rs ;
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (usage) */
+} /* end subroutine (usage) */
 
-
-local int locinfo_start(lip,pip)
-LI	*lip ;
-PI	*pip ;
-{
+local int locinfo_start(LI *lip,PI *pip) noex {
 	int	rs ;
-
-
-	if (lip == nullptr)
-	    return SR_FAULT ;
-
+	if (lip == nullptr) return SR_FAULT ;
 	memclear(lip) ;
 	lip->pip = pip ;
 	lip->to = -1 ;
 	lip->af = AF_UNSPEC ;
 
 	rs = vecstr_start(&lip->stores,0,0) ;
-
 	return rs ;
-}
-/* end subroutine (locinfo_start) */
+} /* end subroutine (locinfo_start) */
 
-
-local int locinfo_finish(lip)
-LI	*lip ;
-{
+local int locinfo_finish(LI *lip) noex {
 	int	rs = SR_OK ;
 	int	rs1 ;
+	if (lip == nullptr) return SR_FAULT ;
 
-
-	if (lip == nullptr)
-	    return SR_FAULT ;
-
-	if (lip->msgbuf != nullptr) {
+	if (lip->msgbuf) {
 	    uc_free(lip->msgbuf) ;
 	    lip->msgbuf = nullptr ;
 	}
-
+	{
 	rs1 = vecstr_start(&lip->stores,0,0) ;
 	if (rs >= 0) rs = rs1 ;
-
+	}
 	return rs ;
-}
-/* end subroutine (locinfo_finish) */
+} /* end subroutine (locinfo_finish) */
 
 local int locinfo_mkmsg(LI *lip) noex {
 	PI	*pip = lip->pip ;
