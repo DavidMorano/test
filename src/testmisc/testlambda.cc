@@ -9,7 +9,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
@@ -24,8 +24,8 @@
 #define	SR_OK		0
 #endif
 
-#ifndef	SR_LOCKLOST
-#define	SR_LOCKLOST	-20
+#ifndef	SR_LOCKFAIL
+#define	SR_LOCKFAIL	-20
 #endif
 
 #ifndef	SR_TIMEDOUT
@@ -82,7 +82,7 @@ int main(int,const char **,const char **) {
 		cout << "c=" << c++ << '\n' ;
 		cout << "cn=" << cn++ << '\n' ;
 	        if (!f_init) {
-		    rs = SR_LOCKLOST ;
+		    rs = SR_LOCKFAIL ;
 	        } else if (f_initdone) {
 		    rs = 1 ;
 	        }
