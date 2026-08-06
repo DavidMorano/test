@@ -39,7 +39,7 @@
 
 using namespace std ;
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	cint	cha = 'À' ;
 #if	CF_MULTI
 	cint	multi = 'abcd' ;
