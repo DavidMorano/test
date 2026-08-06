@@ -84,7 +84,7 @@ const cchar	gßstr[] = "g-str" ;
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	cout << "Hello world! - Jâck Smîth" << eol ;
 	{
 	    cchar	*ßthere = "xx-there" ;
