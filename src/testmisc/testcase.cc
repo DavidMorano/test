@@ -22,7 +22,7 @@ using std::cout ;			/* variable */
 cchar		strmain[] = "Héllo" ;
 cchar		strsub[] = "HÉl" ;
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	cnullptr	np{} ;
     if (cc *tp ; (tp = strstr(strmain,strsub)) != np) {
 	cout << "strstr" << eol ;
