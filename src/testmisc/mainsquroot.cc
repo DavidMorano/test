@@ -19,7 +19,7 @@
 *******************************************************************************/
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
 #include	<math.h>
 #include	<localmisc.h>
