@@ -13,9 +13,9 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
-#include	<getbufsize.h>
+#include	<bufsizeget.h>
 #include	<usystem.h>
 #include	<grcache.h>
 
@@ -59,7 +59,7 @@ int main(int argc,const char **argv,const char **envv) {
 
 	    if (argv != NULL) {
 	        struct group	gr ;
-	        const int	grlen = getbufsize(getbufsize_gr) ;
+	        const int	grlen = bufsizeget(bufsizeget_gr) ;
 	        char		*grbuf ;
 		if ((rs = uc_malloc((grlen+1),&grbuf)) >= 0) {
 	            int		ai ;
