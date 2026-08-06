@@ -24,17 +24,10 @@
 #include	<utypedefs.h>
 #include	<utypealiases.h>
 #include	<usysdefs.h>
-#include	<localmisc.h>
-
-
-#ifndef	eol
-#define	eol	'\n'
-#endif
+#include	<localmisc.h>		/* |eol| */
 
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
-
-typedef const char *const 	*mainv ;
 
 struct multi {
 	int	a ;
@@ -42,17 +35,17 @@ struct multi {
 	int	c ;
 } ;
 
-static int	mkterms() noexcept ;
+local int	mkterms() noexcept ;
 
 static multi	aa = { 1 } ;
 
 extern "C" {
-    static void __attribute__ ((constructor)) init() noexcept {
+    local void __attribute__ ((constructor)) init() noexcept {
 	printf("init\n") ;
     }
 }
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
 	static cint	srs = mkterms() ;
 	static cchar	*under = getenv("_") ;
 	int		rs ;
@@ -80,12 +73,12 @@ int main(int argc,mainv argv,mainv) {
 /* end subroutine (main) */
 
 extern "C" {
-    static void __attribute__ ((destructor)) fini() noexcept {
+    local void __attribute__ ((destructor)) fini() noexcept {
 	printf("fini\n") ;
     }
 }
 
-static int mkterms() noexcept {
+local int mkterms() noexcept {
     cout << "mkterms\n" ;
     return 0 ;
 }
