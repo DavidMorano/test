@@ -70,7 +70,7 @@ using std::cout ;			/* variable */
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	int	hpos = 40 ;
     	cout << "\e7" ;
     	cout << "\e[10;1H" ;
