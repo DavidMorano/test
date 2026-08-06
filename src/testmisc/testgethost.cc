@@ -1,62 +1,76 @@
-/* testinit (C89) */
+/* testgethost SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* non-switchable debug print-outs */
-#define	CF_DEBUG	1		/* switchable at invocation */
-#define	CF_DEBUGMALL	1		/* debug memory allocation */
+/* get the |uc_gethostbyname(3uc)| subroutine */
+/* version %I% last-modified %G% */
 
-#include	<envstandards.h>
+#define	CF_DEBUG	1		/* debugging */
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
-#include	<usystem.h>
-#include	<getbufsize.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<uclibmem.h>
+#include	<ucgetx.h>
 #include	<hostent.h>
 #include	<localmisc.h>
-
-#ifndef	VARDEBUGFNAME
-#define	VARDEBUGFNAME	"TESTGETHOST_DEBUGFILE"
-#endif
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
+#include	<dprint.hh>
 
 
-int main(int argc,const char **argv,const char **envv) {
+/* local defines */
+
+
+/* imported namespaces */
+
+using libuc::libmem ;			/* variable */
+
+
+/* local typedefs */
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
-	const char	*cp ;
-
-#if	CF_DEBUGS || CF_DEBUG
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
-	    rs = debugopen(cp) ;
-	    debugprintf("main: starting DFD=%d\n",rs) ;
-	}
-#endif /* CF_DEBUGS */
-
+	int		rs1 ;
+	int		ex = EXIT_SUCCESS ;
 	if (argc > 0) {
-	    HOSTENT	he ;
-	    const int	helen = getbufsize(getbufsize_he) ;
-	    char	*hebuf ;
-	    if ((rs = uc_malloc((helen+1),&hebuf)) >= 0) {
-	    	int	ai ;
-	        for (ai = 1 ; ai < argc ; ai += 1) {
+	    if (char *hebuf ; (rs = lm_ho(&hebuf)) >= 0) {
+	        HOSTENT	he ;
+	        cint	helen = rs ;
+	        for (int ai = 1 ; ai < argc ; ai += 1) {
 	            cchar	*name = argv[ai] ;
-	            if (name[0] != '\0') {
-	                rs = uc_gethostbyname(name,&he,hebuf,helen) ;
-		        printf("rs=%d \n",rs) ;
+	            if (name[0]) {
+	                rs = uc_gethostbyname(&he,hebuf,helen,name) ;
+		        printf("get n=%s rs=%d \n",name,rs) ;
 	            }
 	        } /* end for */
-		uc_free(hebuf) ;
+		rs1 = lm_free(hebuf) ;
+		if (rs >= 0) rs = rs1 ;
 	    } /* end if (memory-allocation) */
 	} /* end if (positive) */
-
-#if	(CF_DEBUGS || CF_DEBUG)
-	debugclose() ;
-#endif
-
-	return 0 ;
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	}
+	return ex ;
 }
 /* end subroutine (main) */
+
 
