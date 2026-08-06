@@ -5,7 +5,7 @@
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/syslog.h>
 #include	<cstdlib>
@@ -27,7 +27,7 @@ extern int	strlinelen(const char *,int,int) ;
 #endif
 
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	GRMEMS	grm ;
 
 #if	CF_DEBUGS && CF_DEBUGMALL
