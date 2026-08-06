@@ -13,7 +13,7 @@
 
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<cmath>
 #include	<cinttypes>
@@ -31,8 +31,9 @@
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
-#include	<usystem.h>
-#include	<getourenv.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
 #include	<localmisc.h>
 
 
