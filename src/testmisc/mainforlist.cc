@@ -25,14 +25,14 @@
 #include	<functional>
 #include	<algorithm>
 #include	<forward_list>
-#include	<usystem.h>
-#include	<string>
 #include	<vector>
+#include	<string>
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
-#include	<usystem.h>
-#include	<getourenv.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
 #include	<localmisc.h>
 
 
