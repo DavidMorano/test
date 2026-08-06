@@ -46,8 +46,9 @@
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
-#include	<usystem.h>
-#include	<getourenv.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
 #include	<ctdec.h>
 #include	<strwcpy.h>
 #include	<localmisc.h>
@@ -125,7 +126,7 @@ static int	printlist(ourlist &,cchar *) ;
 
 /* exported subroutines */
 
-int main(int argc,mainv,mainv envv) {
+int main(int argc,con mainv,con mainv envv) {
 #if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
 	uint		mo_start ;
 #endif
