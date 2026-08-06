@@ -304,8 +304,6 @@ fifostr.o:		fifostr.c fifostr.h
 
 hdb.o:			hdb.c hdb.h
 
-bits.o:			bits.c bits.h baops.h
-
 baops.o:		baops.c baops.h
 
 cksum.o:		cksum.c cksum.h
