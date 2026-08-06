@@ -41,9 +41,7 @@ LIBS += -lmacuser -lu
 
 
 INCDIRS=
-
 LIBDIRS= -L$(LIBDIR)
-
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -102,6 +100,8 @@ control:
 	(uname -n ; date) > Control
 
 
-main.o:			main.cc			$(INCS)
+tesrstrnul.o:		teststrnul.cc			$(INCS)
+
+strnul.o:		strnul.cc	strnul.hh
 
 
