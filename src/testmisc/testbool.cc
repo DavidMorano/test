@@ -32,7 +32,7 @@
 #include	<localmisc.h>
 
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	int		ex = EXIT_SUCCESS ;
     	int		rs = SR_OK ;
 	{
