@@ -13,7 +13,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 
@@ -21,6 +21,8 @@
 #include	<cstddef>
 #include	<cstdlib>
 #include	<cstdio>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<usysdefs_af.h>
 
 int main() {
