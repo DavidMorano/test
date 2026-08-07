@@ -4,11 +4,11 @@
 #define	CF_DEBUG	1		/* switchable at invocation */
 #define	CF_DEBUGMALL	1		/* debug memory allocation */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<cstdio>
 #include	<usystem.h>
-#include	<getbufsize.h>
+#include	<bufsizeget.h>
 #include	<hostent.h>
 #include	<localmisc.h>
 
@@ -37,7 +37,7 @@ int main(int argc,const char **argv,const char **envv) {
 
 	if (argc > 0) {
 	    HOSTENT	he ;
-	    const int	helen = getbufsize(getbufsize_he) ;
+	    const int	helen = bufsizeget(bufsizeget_he) ;
 	    char	*hebuf ;
 	    if ((rs = uc_malloc((helen+1),&hebuf)) >= 0) {
 	    	int	ai ;
