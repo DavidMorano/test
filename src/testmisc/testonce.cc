@@ -82,7 +82,7 @@ static void tryer() noex {
 	    osyncstream(sout) << "thread=" << id << " ret\n" ;
 }
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	int		ex = 0 ;
 	int		rs = 0 ;
 	thread		ts[5] ;
