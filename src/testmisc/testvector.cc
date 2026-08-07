@@ -13,7 +13,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
@@ -31,7 +31,7 @@
 using std::vector ;			/* type */
 using std::cout ;			/* variable */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	vector<int>	l ;
 	l.push_back(2) ;
 	l.push_back(3) ;
