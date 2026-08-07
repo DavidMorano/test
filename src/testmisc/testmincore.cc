@@ -84,7 +84,7 @@ namespace {
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	mgr		mo ;
 	int		rs ;
 	mo(3) ;
