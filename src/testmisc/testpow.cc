@@ -24,7 +24,7 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstdio>
@@ -34,7 +34,7 @@
 #include	<localmisc.h>
 
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	long double	n49 = 49.0 ;
 	long double	n50 = 50.0 ;
 	long double	n51 = 51.0 ;
