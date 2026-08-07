@@ -307,8 +307,6 @@ lookaside.o:		lookaside.c lookaside.h
 
 plainq.o:		plainq.c plainq.h
 
-bits.o:			bits.c bits.h baops.h
-
 baops.o:		baops.c baops.h
 
 
