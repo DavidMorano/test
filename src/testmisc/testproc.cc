@@ -36,7 +36,7 @@
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	const pid_t	pid = getpid() ;
 	int		rs = 0 ;
 	int		ex = 0 ;
