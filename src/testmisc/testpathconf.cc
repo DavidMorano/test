@@ -12,7 +12,7 @@
 #include	<localmisc.h>
 
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
 	if (argc > 1) {
 	    cint	req = _PC_LINK_MAX ;
 	    cchar	*fn = argv[1] ;
