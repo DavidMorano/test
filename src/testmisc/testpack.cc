@@ -1,4 +1,5 @@
 /* testpack SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* revision history:
@@ -8,7 +9,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
@@ -20,6 +21,7 @@
 #include	<usysrets.h>
 #include	<sncpyx.h>
 #include	<sncpyxw.h>
+#include	<localmisc.h>		/* LIBU */
 
 
 using std::nullptr_t ;			/* type */
