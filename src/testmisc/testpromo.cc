@@ -36,7 +36,7 @@
 #include	<usysbase.h>
 #include	<localmisc.h>
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	uint	uv ;
 	{
 	    schar a = -3 ;
