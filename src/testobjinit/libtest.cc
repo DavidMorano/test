@@ -1,7 +1,7 @@
 /* libtest */
 /* lang=C++11 */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<new>
 #include	<utility>
 #include	<cstdio>
