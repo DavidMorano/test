@@ -76,7 +76,7 @@ struct derived : base {
     	cchar	*name = "unset" ;
 } ;
 
-int main(int argc,mainv,mainv) {
+int main(int argc,con mainv,con mainv) {
     	int		ex = 0 ;
 	int		rs = 0 ;
 	derived		dev("a") ;
