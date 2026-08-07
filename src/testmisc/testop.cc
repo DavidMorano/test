@@ -54,8 +54,6 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" int	sisub(cchar *,int,cchar *) ;
-
 
 /* external variables */
 
@@ -82,12 +80,12 @@ public:
 	     int	rs = SR_OK ;
 	     list.push_back(v) ;
 	     return rs ;
-	}
+	} ;
 	int add(T &v) {
 	     int	rs = SR_OK ;
 	     list.push_back(v) ;
 	     return rs ;
-	}
+	} ;
 	int findmin(const T **rpp) {
 	    int		rs = SR_OK ;
 	    if (rpp != NULL) {
@@ -170,25 +168,25 @@ struct thingless {
     bool operator () (const thing &t1,const thing &t2) const {
 	return (t1.id < t2.id) ;
     } ;
-} ;
+} ; /* end struct */
 
 int thing::init(int a) {
 	id = a ;
 	return 0 ;
-}
+} /* end method */
 
 /* this IS a MEMBER function */
 thing &thing::operator += (const thing &b) {
 	fprintf(stderr,"main: operator C\n") ;
 	this->id += b.id ;
 	return *this ;
-}
+} /* end method */
 
 thing &thing::operator += (const thing b) {
 	fprintf(stderr,"main: operator B\n") ;
 	this->id += b.id ;
 	return *this ;
-}
+} /* end method */
 
 /* this is a NON-MEMBER function */
 thing operator + (const thing &a,const thing &b) {
@@ -197,7 +195,7 @@ thing operator + (const thing &a,const thing &b) {
 	r.id = a.id + b.id ;
 	r.id = a.id + b.id ;
 	return r ;
-}
+} /* end method */
 
 struct tupler {
 	int	a = 0 ;
@@ -262,7 +260,7 @@ static staticobj	so ;
 
 /* exported subroutines */
 
-int main(int argc,mainv,mainv) {
+int main(int argc,con mainv,con mainv) {
 	FILE		*efp = stderr ;
 	thing		a(11), b(23), c(9) ;
 	int		ex = 0 ;
@@ -384,8 +382,7 @@ local int testio() {
 	    }
 	}
 	return rs ;
-}
-/* end subroutine (testio) */
+} /* end subroutine (testio) */
 
 int readline(ifstream &is,char *lbuf,int llen) {
 	int		rs = SR_OK ;
@@ -393,8 +390,7 @@ int readline(ifstream &is,char *lbuf,int llen) {
 	    rs = is.gcount() ;
 	}
 	return rs ;
-}
-/* end subroutine (readline) */
+} /* end subroutine (readline) */
 
 #endif /* CF_TESTIO */
 
@@ -424,8 +420,7 @@ local int testlambda(void) {
 	cout << "sum=" << sum << '\n' ;
 
 	return 0 ;
-}
-/* end subroutine (testlambda) */
+} /* end subroutine (testlambda) */
 #endif /* CF_TESTLAMBDA */
 
 #if	CF_TESTIN
@@ -439,8 +434,7 @@ local int testin() {
 	    cout << "i" << i << "=" << v << endl ;
 	} /* end for */
 	return rs ;
-}
-/* end subroutine (testin) */
+} /* end subroutine (testin) */
 #endif /* CF_TESTIN */
 
 #if	CF_INH
@@ -455,7 +449,7 @@ struct A {
 	~A() {
 	   fprintf(stderr,"A(%u) dtor\n",n) ;
 	} ;
-} ;
+} ; /* end struct */
 
 struct B : public A {
 	int		n = 0 ;
@@ -468,15 +462,14 @@ struct B : public A {
 	~B() {
 	   fprintf(stderr,"B(%u) dtor\n",n) ;
 	} ;
-} ;
+} ; /* end struct */
 
 local int inh() {
 	A		a(23) ;
 	B		b(1) ;
 	cout << "n=" << a.n << endl ;
 	return 0 ;
-}
-/* end subroutine (inh) */
+} /* end subroutine (inh) */
 #endif /* CG_INH */
 
 #if	CF_CALLOBJ
@@ -492,11 +485,11 @@ struct callobj {
 	    cout << "callobj::timeout\n" ;
 	    return v ;
 	} ;
-} ;
+} ; /* end struct */
 local int testcallobj_sub(void *objp) {
 	callobj		*op = (callobj *) objp ;
 	return op->timeout() ;
-}
+} /* end subroutine */
 local int testcallobj() {
 	callobj		obj ;
 	void		*objp ;
@@ -507,7 +500,7 @@ local int testcallobj() {
 	testcallobj_sub(objp) ;
 
 	return 0 ;
-}
+} /* end subroutine */
 #endif /* CF_CALLOBJ */
 
 
