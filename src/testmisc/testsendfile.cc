@@ -12,7 +12,7 @@
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
 #include	<usystem.h>
 #include	<opendial.h>
