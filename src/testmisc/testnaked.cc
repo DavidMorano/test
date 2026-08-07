@@ -57,7 +57,7 @@ extern int	nprintf(cchar *,cchar *,...) ;
 /* exported subroutines */
 
 /* ARGSUSED */
-int main(int argc,mainv argv,mainv envv) {
+int main(int argc,con mainv argv,con mainv envv) {
 	FILE		*ofp = stdout ;
 
 #if	CF_DEBUGS && CF_DEBUGMALL
