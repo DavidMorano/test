@@ -1,6 +1,6 @@
 /* main */
 
-/* test the PARAMFILE object */
+/* test the paramfile object */
 
 
 #define	CF_DEBUGS	1		/* non-switchable debug print-outs */
@@ -19,13 +19,13 @@
 
 /******************************************************************************
 
-	This little subroutine tests the PARAMFILE object.
+	This little subroutine tests the paramfile object.
 
 
 ******************************************************************************/
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -113,7 +113,7 @@ const char	*envv[] ;
 	bfile	infile, *ifp = &infile ;
 	bfile	outfile, *ofp = &outfile ;
 
-	PARAMFILE	params ;
+	paramfile	params ;
 
 	FIELD		f ;
 
@@ -156,7 +156,7 @@ const char	*envv[] ;
 
 	bopen(ifp,BFILE_STDIN,"dr",0666) ;
 
-	bprintf(ofp,"PARAMFILE object test program\n") ;
+	bprintf(ofp,"paramfile object test program\n") ;
 
 
 /* initial stuff */
@@ -175,9 +175,9 @@ const char	*envv[] ;
 
 #if	CF_ENUM
 	{
-	        PARAMFILE_ENT		pe ;
+	        paramfile_ent		pe ;
 
-	        PARAMFILE_CUR	cur ;
+	        paramfile_cur	cur ;
 
 		int	el = 0 ;
 		char	ebuf[EBUFLEN + 1] ;
@@ -233,7 +233,7 @@ const char	*envv[] ;
 /* process the current query */
 
 	    if (len > 0) {
-	        PARAMFILE_CUR	cur ;
+	        paramfile_cur	cur ;
 		int	vl = 0 ;
 		char	vbuf[VBUFLEN + 1] ;
 
