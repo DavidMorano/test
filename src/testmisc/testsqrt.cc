@@ -31,7 +31,7 @@
 #include	<localmisc.h>
 
 
-int main(int argc,mainv,mainv) {
+int main(int argc,con mainv,con mainv) {
 	double		a = 2.0 ;
 	double		b ;
 
