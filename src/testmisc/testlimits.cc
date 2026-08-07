@@ -73,7 +73,7 @@
 
 /* exported subroutines */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
 	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	int		c = 0 ;
