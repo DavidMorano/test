@@ -4,21 +4,22 @@
 
 #define	CF_DEBUGS	1
 
-#include	<envstandards.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<usystem.h>
-#include	<localmisc.h>		/* |COLUMNS| */
-#include	<debug.h>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |COLUMNS| */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #define	VARDEBUGFNAME	"TESTNPRINT_DEBUGFILE"
 
 #define	NDF		"testnprint.deb"
 
 
-int main(int argc,mainv argv,mainv envv) {
-	const int	cols = COLUMNS ;
+int main(int argc,con mainv argv,con mainv envv) {
+	cint		cols = COLUMNS ;
 	int		rs ;
 	cchar		*msg = "here/nis/hello" ;
 
