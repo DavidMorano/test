@@ -46,7 +46,7 @@ constexpr int	vals[] = {
     	1, 3, 4, 9, -3
 } ;
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	for (cauto &v : vals) {
     	    cint n = sub(v) ;
 	    printf("v=%d\tn=%d\n",v,n) ;
