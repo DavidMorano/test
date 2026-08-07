@@ -102,7 +102,7 @@ static void sub1() ;
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	Base	*bp = new Derived("a") ;
 	cout << bp << eol ;
 	{
