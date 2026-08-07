@@ -38,7 +38,7 @@
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
 
-int main(int argc,mainv argv,mainv) {
+int main(int argc,con mainv argv,con mainv) {
     	int		rs = SR_OK ;
 	int		ex = EXIT_SUCCESS ;
 	cchar		*pn = "testlinkfile" ;
