@@ -13,12 +13,12 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<strings.h>		/* |strcasecmp(3c)| + |strcmp(3c)| */
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<strnxcmp.h>		/* |strnndictcmp(3uc)| */
+#include	<strings.h>		/* BSD |str{x}cmp(3c)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<strnxcmp.h>		/* LIBUC |strnndictcmp(3uc)| */
 
 #include	<stremacmp.h>
 #include	<strkeycmp.h>
@@ -26,6 +26,7 @@
 #include	<strxxxxcmp.h>
 #include	<strleadcmp.h>
 #include	<strpcmp.h>
+#include	<dictdiff.h>
 
 
 EXTERNC_begin
