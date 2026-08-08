@@ -1,4 +1,5 @@
 /* testmemtrack SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* test the MEMTRACK object */
@@ -12,7 +13,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
@@ -41,11 +42,11 @@ using namespace	std ;
 
 /* local variables */
 
-static const memtrack_ent	ents[] = {
+constexpr memtrack_ent	ents[] = {
 	{ (void *) 0x1, 100 },
 	{ (void *) 0x2, 200 },
 	{ (void *) 0x0, 0 }
-} ;
+} ; /* end array */
 
 
 /* exported variables */
