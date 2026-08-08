@@ -38,17 +38,17 @@
 #include	<usupport.h>
 #include	<ulogerror.h>
 #include	<umem.hh>
-#include	<libf.h>		/* |fwrite(3f)| */
-#include	<ascii.h>
+#include	<ascii.h>		/* LIBU */
 #include	<base64.h>
 #include	<ccfile.hh>
 #include	<bufos.hh>
 #include	<rmx.h>			/* |rmeol(3uc)| */
-#include	<strnul.hh>
-#include	<mkchar.h>
-#include	<localmisc.h>
+#include	<strnul.hh>		/* LIBU */
+#include	<mkchar.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<dprint.hh>		/* LIBU debugging */
 #include	<libdebug.h>		/* LIBDEBUG */
-#include	<dprint.hh>		/* debugging */
+#include	<libf.h>		/* |fwrite(3f)| */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
