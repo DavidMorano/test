@@ -30,18 +30,18 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstring>		/* |strchr(3c)| */
-#include	<string_view>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usupport.h>		/* |cfdec(3u)| */
-#include	<usyscalls.h>
-#include	<intceil.h>
-#include	<strkeycmp.h>
-#include	<matkeystr.h>
-#include	<strnul.hh>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD |strchr(3c)| */
+#include	<string_view>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU |cfdec(3u)| */
+#include	<usyscalls.h>		/* LIBU */
+#include	<intceil.h>		/* LIBU */
+#include	<strkeycmp.h>		/* LIBUC */
+#include	<matkeystr.h>		/* LIBUC */
+#include	<strnul.hh>		/* LIBU */[
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
 #include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
