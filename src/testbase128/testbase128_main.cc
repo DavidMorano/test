@@ -32,23 +32,23 @@
 #include	<cstdio>
 #include	<new>			/* |nothrow(3c++)| */
 #include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<usupport.h>
-#include	<ulogerror.h>
-#include	<umem.hh>
-#include	<libf.h>		/* |fwrite(3f)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
+#include	<ulogerror.h>		/* LIBU */
+#include	<umem.hh>		/* LIBU */
 #include	<ascii.h>
 #include	<base128.h>		/* <- under test! */
 #include	<ccfile.hh>
 #include	<bufos.hh>
 #include	<rmx.h>			/* |rmeol(3uc)| */
-#include	<strnul.hh>
-#include	<mkchar.h>
-#include	<localmisc.h>
+#include	<strnul.hh>		/* LIBU */
+#include	<mkchar.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<dprint.hh>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
-#include	<dprint.hh>
+#include	<libf.h>		/* |fwrite(3f)| */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
