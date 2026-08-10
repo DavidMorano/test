@@ -53,6 +53,9 @@
 #define	NLOOPS		100
 #define	SLEEPTIME	3
 
+#define	DW		dirwatch
+#define	DW_ENT		dirwatch_ent
+
 
 /* local namespaces */
 
@@ -82,7 +85,7 @@
 
 int main(int argc,con mainv argv,con mainv envv) {
 	DW		dir ;
-	DW_CUR	cur ;
+	DW_CUR		cur ;
 	bfile		outfile, *ofp = &outfile ;
 	int	ex = EX_INFO ;
 	int	rs, rs1, i, j, len ;
@@ -125,62 +128,40 @@ int main(int argc,con mainv argv,con mainv envv) {
 #endif
 
 
-	rs = dw_start(&dir,dirname) ;
+	rs = dirwatch_start(&dir,dirname) ;
 
 #if	CF_DEBUGS
-	debugprintf("main: dw_start() rs=%d\n",rs) ;
+	debugprintf("main: dirwatch_start() rs=%d\n",rs) ;
 #endif
 
 	if (rs >= 0) {
-
 	    DW_ENT	e ;
-
 	    time_t	daytime ;
-
 	    int		jid ;
-
-
 	    for (i = 0 ; i < NLOOPS ; i += 1) {
-
 	        sleep(SLEEPTIME) ;
-
 	        daytime = time(NULL) ;
-
-	        if (dw_check(&dir,daytime) > 0) {
-
-	            dw_curbegin(&dir,&cur) ;
-
-	            while (TRUE) {
-
-	                rs1 = dw_enumcheckable(&dir,&cur,&e) ;
+	        if (dirwatch_check(&dir,daytime) > 0) {
+	            dirwatch_curbegin(&dir,&cur) ;
+	            forever {
+	                rs1 = dirwach_curenumck(&dir,&cur,&e) ;
 
 #if	CF_DEBUGS
-	debugprintf("main: dw_enumcheckable() rs=%d\n",rs1) ;
+	debugprintf("main: dirwatch_enumcheckable() rs=%d\n",rs1) ;
 #endif
 
 	                jid = rs1 ;
 	                if (rs1 < 0) break ;
-
-	                bprintf(ofp,"checkable jid=%d %s\n",
-	                    jid,e.name) ;
-
+	                bprintf(ofp,"checkable jid=%d %s\n", jid,e.name) ;
 	            } /* end while */
-
-	            dw_curend(&dir,&cur) ;
-
+	            dirwatch_curend(&dir,&cur) ;
 	        } /* end if */
-
 	    } /* end while */
-
-	    dw_finish(&dir) ;
-
-	} else
+	    dirwatch_finish(&dir) ;
+	} else {
 	    bprintf(ofp,"couldn't initialize (%d)\n",rs) ;
-
-
+	}
 	ex = EX_OK ;
-
-
 done:
 
 #if	CF_DEBUGS
@@ -188,15 +169,7 @@ done:
 #endif
 
 	bclose(ofp) ;
-
 	return ex ;
-}
-/* end subroutine (main) */
-
-
-
-/* LOCAL SUBROUTINES */
-
-
+} /* end subroutine (main) */
 
 
