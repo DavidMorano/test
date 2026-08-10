@@ -11,12 +11,16 @@
 
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
 #include	<cstdio>
-
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<usystem.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+
 #include	"setstr.h"
 
 
@@ -27,13 +31,8 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-extern int	debugprinthexblock(cchar *,int,const void *,int) ;
-#endif
+
+/* exported variables */
 
 
 /* exported subroutines */
@@ -92,7 +91,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 		    SETSTR_CUR	c ;
 		    if ((rs = setstr_curbegin(&ss,&c)) >= 0) {
 			cchar	*cp ;
-			while ((rs1 = setstr_enum(&ss,&c,&cp)) >= 0) {
+			while ((rs1 = setstr_curenum(&ss,&c,&cp)) >= 0) {
 	
 #if	CF_DEBUGS
 			debugprintf("testsetstr: s=%s\n",cp) ;
