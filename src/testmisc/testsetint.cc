@@ -77,7 +77,7 @@ int main(int argc,const char **argv,const char **envv)
 	    if (rs >= 0) rs = setint_addval(&ints,17) ;
 	    if ((rs = setint_curbegin(&ints,&cur)) >= 0) {
 		int	v ;
-		while ((rs1 = setint_enum(&ints,&cur,&v)) >= 0) {
+		while ((rs1 = setint_curenum(&ints,&cur,&v)) >= 0) {
 		    printf("main: v=%d\n",v) ;
 		} /* end while */
 		if ((rs >= 0) && (rs1 != SR_NOTFOUND)) rs = rs1 ;
