@@ -1151,7 +1151,7 @@ local int procname(PI *pip,bfile *ofp,cchar *hostname) noex {
 		int	rs1 ;
 		int	c = 0 ;
 
-	        while ((rs1 = hostaddr_enum(&ha,&cur,&aip)) >= 0) {
+	        while ((rs1 = hostaddr_curenum(&ha,&cur,&aip)) >= 0) {
 
 #if	CF_DEBUG
 		    debugprintf("dialudp: trying proto=%u\n",
