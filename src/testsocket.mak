@@ -270,7 +270,6 @@ base128.o:		base128.cc	base128.h
 dictdiff.o:		dictdiff.cc	dictdiff.h
 snwcpyer.o:		snwcpyer.cc	snwcpyx.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
@@ -284,7 +283,7 @@ testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
 # INTX
 intext.o:		intext.ccm	loadvals.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 sockaddress.o:		sockaddress.cc	sockaddress.h
 
