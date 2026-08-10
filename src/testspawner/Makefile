@@ -180,7 +180,7 @@ OBJ15=
 OBJ16=
 OBJ17= spawnproc.o
 OBJ18= spawner.o
-OBJ19= envhelp.o mkprogenv.o
+OBJ19=
 OBJ20=
 OBJ21=
 OBJ22=
@@ -384,10 +384,6 @@ pwcache.o:		pwcache.c pwcache.h
 
 termout.o:		termout.cc termout.h ansigr.h
 	$(GPP) -c $(GPPFLAGS) $(CFLAGS) $(CPPFLAGS) termout.cc
-
-mkprogenv.o:		mkprogenv.c mkprogenv.h
-
-envhelp.o:		envhelp.c envhelp.h
 
 spawner.o:		spawner.c spawner.h
 
