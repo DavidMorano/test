@@ -84,7 +84,7 @@ constexpr ents_f	funcs[] = {
 	ents_enum,
 	ents_rem,
 	ents_czero
-} ;
+} ; /* end array */
 
 constexpr int		nents = NENTS ;
 
@@ -116,8 +116,7 @@ int main(int,mainv,mainv) {
 	cerr << "exiting rs=" << rs << '\n' ;
 	if (rs < 0) ex = EXIT_FAILURE ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -140,8 +139,7 @@ local int ents_load(addrset_ent *ents) noex {
 	} /* end for */
 	cerr << "ents_load: ret rs=" << rs << eol ;
 	return rs ;
-}
-/* end subroutine (ents_load) */
+} /* end subroutine (ents_load) */
 
 local int ents_ins(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
@@ -153,8 +151,7 @@ local int ents_ins(addrset_ent *ents,addrset *tp) noex {
 	} /* end for */
 	cerr << "ents_ins: ret rs=" << rs << eol ;
 	return rs ;
-}
-/* end subroutine (ents_ins) */
+} /* end subroutine (ents_ins) */
 
 local int ents_present(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
@@ -165,8 +162,7 @@ local int ents_present(addrset_ent *ents,addrset *tp) noex {
 	} /* end for */
 	cerr << "ents_present: ret rs=" << rs << eol ;
 	return rs ;
-}
-/* end subroutine (ents_present) */
+} /* end subroutine (ents_present) */
 
 local int ents_get(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
@@ -180,8 +176,7 @@ local int ents_get(addrset_ent *ents,addrset *tp) noex {
 	} /* end for */
 	cerr << "ents_get: ret rs=" << rs << eol ;
 	return rs ;
-}
-/* end subroutine (ents_get) */
+} /* end subroutine (ents_get) */
 
 local int ents_have(addrset_ent *ents,addrset_ent *ep) noex {
 	int		rs = SR_OK ;
@@ -218,15 +213,13 @@ local int ents_cents(addrset_ent *,addrset *tp) noex {
 	    }
 	}
 	return rs ;
-}
-/* end subroutine (ents_cents) */
+} /* end subroutine (ents_cents) */
 
 local int ents_enum(addrset_ent *ents,addrset *tp) noex {
 	int		rs ;
 	int		rs1 ;
-	addrset_cur	cur ;
 	cerr << "ents_enum: ent" << eol ;
-	if ((rs = tp->curbegin(&cur)) >= 0) {
+	if (addrset_cur	cur ; (rs = tp->curbegin(&cur)) >= 0) {
 	    addrset_ent		e ;
 	    while ((rs = tp->curenum(&cur,&e)) > 0) {
 		rs = ents_have(ents,&e) ;
@@ -237,7 +230,7 @@ local int ents_enum(addrset_ent *ents,addrset *tp) noex {
 	} /* end if (addrset-cur) */
 	cerr << "ents_enum: ret rs=" << rs << eol ;
 	return rs ;
-}
+} /* end subroutine */
 
 local int ents_czero(addrset_ent *,addrset *tp) noex {
 	int		rs ;
@@ -249,7 +242,6 @@ local int ents_czero(addrset_ent *,addrset *tp) noex {
 	    }
 	}
 	return rs ;
-}
-/* end subroutine (ents_czero) */
+} /* end subroutine (ents_czero) */
 
 
