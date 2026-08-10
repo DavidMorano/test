@@ -34,7 +34,7 @@ extern int	mimetypes_finish(MIMETYPES *) ;
 extern int	mimetypes_file(MIMETYPES *,const char *) ;
 extern int	mimetypes_curbegin(MIMETYPES *,MIMETYPES_CUR *) ;
 extern int	mimetypes_curend(MIMETYPES *,MIMETYPES_CUR *) ;
-extern int	mimetypes_enum(MIMETYPES *,MIMETYPES_CUR *,char *,char *) ;
+extern int	mimetypes_curenum(MIMETYPES *,MIMETYPES_CUR *,char *,char *) ;
 extern int	mimetypes_fetch(MIMETYPES *,const char *,MIMETYPES_CUR *,
 			char *) ;
 extern int	mimetypes_find(MIMETYPES *,char *,const char *) ;
