@@ -24,7 +24,7 @@
 #define	PROGLOG_INCLUDE	1
 
 
-#include	<envstandards.h>	/* must be before others */
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<stdarg.h>
 #include	<userinfo.h>
