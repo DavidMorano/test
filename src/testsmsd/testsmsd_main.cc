@@ -71,7 +71,7 @@
 #include	<getax.h>
 #include	<srvtab.h>
 #include	<acctab.h>
-#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<nistinfo.h>
 #include	<localmisc.h>
 
@@ -2174,7 +2174,7 @@ keyopt		*kop ;
 
 	keyopt_curbegin(kop,&kcur) ;
 
-	while ((kl = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	while ((kl = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
 /* get the first value for this key */
 
