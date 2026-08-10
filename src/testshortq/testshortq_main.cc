@@ -34,11 +34,11 @@
 #include	<ccfile.hh>
 #include	<shortq.h>
 #include	<rmx.h>			/* |rmeol(3uc)| */
-#include	<strnul.hh>
-#include	<mkchar.h>
-#include	<localmisc.h>
+#include	<strnul.hh>		/* LIBU */
+#include	<mkchar.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<dprint.hh>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
-#include	<dprint.hh>
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
