@@ -1,4 +1,5 @@
 /* testsinglist JEADER */
+/* charset=ISO8859-1 */
 /* lang=C++20 */
 
 /* test the object |singlist(3uc)| */
@@ -12,6 +13,6 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
