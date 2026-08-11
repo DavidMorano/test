@@ -245,7 +245,6 @@ base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
 dictdiff.o:		dictdiff.cc	dictdiff.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
@@ -256,15 +255,15 @@ timeval.o:		timeval.cc	timeval.hh
 
 # INTX
 uintx.o:		uintx.ccm varithmetic.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 # VARITHMETIC
 varithmetic.o:		varithmetic.ccm builtin.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 # BUUILTIN
 builtin.o:		builtin.ccm
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 teststruct_sub1.o:	teststruct_sub1.cc teststruct_sub.hh
 teststruct_sub2.o:	teststruct_sub2.cc teststruct_sub.hh
