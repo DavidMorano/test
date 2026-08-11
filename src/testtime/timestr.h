@@ -20,12 +20,12 @@
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<time.h>		/* |time_t| */
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<nistinfo.h>
+#include	<time.h>		/* CSTD |time_t| */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<nistinfo.h>		/* LIBUC */
 
 
 enum timestrstypes {
@@ -42,19 +42,19 @@ enum timestrstypes {
 
 EXTERNC_begin
 
-extern char *timestr_log(time_t,char *) noex ;
-extern char *timestr_msg(time_t,char *) noex ;
-extern char *timestr_std(time_t,char *) noex ;
-extern char *timestr_logz(time_t,char *) noex ;
-extern char *timestr_edate(time_t,char *) noex ;
-extern char *timestr_gmlog(time_t,char *) noex ;
-extern char *timestr_hdate(time_t,char *) noex ;
-extern char *timestr_gmlogz(time_t,char *) noex ;
-extern char *timestr_gmtstd(time_t,char *) noex ;
-extern char *timestr_date(time_t,int,char *) noex ;
-extern char *timestr_scandate(time_t,char *) noex ;
-extern char *timestr_elapsed(time_t,char *) noex ;
-extern char *timestr_nist(time_t,nistinfo *,char *) noex ;
+extern char *timestr_log	(time_t,char *) noex ;
+extern char *timestr_msg	(time_t,char *) noex ;
+extern char *timestr_std	(time_t,char *) noex ;
+extern char *timestr_logz	(time_t,char *) noex ;
+extern char *timestr_edate	(time_t,char *) noex ;
+extern char *timestr_gmlog	(time_t,char *) noex ;
+extern char *timestr_hdate	(time_t,char *) noex ;
+extern char *timestr_gmlogz	(time_t,char *) noex ;
+extern char *timestr_gmtstd	(time_t,char *) noex ;
+extern char *timestr_date	(time_t,char *,int) noex ;
+extern char *timestr_scandate	(time_t,char *) noex ;
+extern char *timestr_elapsed	(time_t,char *) noex ;
+extern char *timestr_nist	(time_t,char *,nistinfo *) noex ;
 
 EXTERNC_end
 
