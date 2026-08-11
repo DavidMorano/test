@@ -62,18 +62,18 @@ type subroutine.
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |geprogname(3c)| */
-#include	<cstdint>
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<usysflag.h>		/* |usysflag(3u)| */
-#include	<prognamevar.hh>
-#include	<stdintx.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdint>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usysflag.h>		/* LIBU |usysflag(3u)| */
+#include	<stdintx.h>		/* LIBU */
 #include	<strtox.h>		/* LIBU */
-#include	<localmisc.h>		/* |MAXPATHLEN| */
+#include	<prognamevar.hh>	/* LIBDAM */
+#include	<localmisc.h>		/* LIBU |MAXPATHLEN| */
 
 
 /* local defines */
