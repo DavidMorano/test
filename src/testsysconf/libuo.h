@@ -9,7 +9,7 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 #ifndef	LIBUO_INCLUDE
@@ -98,10 +98,8 @@
 #include	<dstr.h>
 #include	<dupstr.h>
 #include	<ebuf.h>
-#include	<envhelp.h>
-#include	<envlist.h>
-#include	<envmgr.h>
 #include	<envs.h>
+#include	<envx.h>
 #include	<epsem.h>
 #include	<estrings.h>
 #include	<exitcodes.h>
@@ -113,7 +111,6 @@
 #include	<filer.h>
 #include	<findbit.h>
 #include	<findfilepath.h>
-#include	<findinline.h>
 #include	<findxfile.h>
 #include	<format.h>
 #include	<fsdir.h>
@@ -164,9 +161,8 @@
 #include	<mkdirs.h>
 #include	<mkfile.h>
 #include	<mklogid.h>
-#include	<mkprogenv.h>
 #include	<mktmp.h>
-#include	<mkuix.h>
+#include	<mkui.h>
 #include	<mkx.h>
 #include	<modload.h>
 #include	<namecache.h>
