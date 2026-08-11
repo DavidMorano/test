@@ -121,7 +121,7 @@ constexpr get_f		subgets[] = {
 } ; /* end array (subgets) */
 
 int main(int,con mainv,con mainv) {
-    	[[maybe_unused]] cnullptr	np{} ;
+    	cnullptr	np{} ;
     	int		ex = EX_OK ;
 	int		rs = SR_OK ;
     	DPRINTF("ent\n") ;
@@ -130,6 +130,10 @@ int main(int,con mainv,con mainv) {
 		rs = (*g)() ;
 		if (rs < 0) break ;
 	    } /* end for */
+	} /* end if (ok) */
+	if (rs >= 0) {
+	    rs = unprocessors ;
+	    printf("n=%d\n",rs) ;
 	} /* end if (ok) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(np,rs) ;
