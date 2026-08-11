@@ -34,11 +34,11 @@
 
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>		/* system types */
-#include	<sys/time.h>		/* <- interval timers are here */
-#include	<time.h>		/* i-timer types */
-#include	<clanguage.h>
-#include	<usysbase.h>
+#include	<sys/types.h>		/* IPOSIX system types */
+#include	<sys/time.h>		/* POSIX <- interval timers are here */
+#include	<time.h>		/* CSTD i-timer types */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<psen.h>		/* POSIX® semaphore */
 
 
@@ -52,9 +52,9 @@ typedef int (*uctim_f)(void *objp,int timid,int arg) noex ;
 EXTERNC_end
 
 struct uctim_entry {
+	uctim_f		notf ;		/* notify function (C-linkage) */
 	void		*objp ;		/* fcuntion argument (object pointer) */
 	psem		*psemp ;	/* POSIX® Semaphore pointer */
-	uctim_f		notf ;		/* notify function (C-linkage) */
 	ITIMERVAL	it ;		/* i-timer-value */
 	int		id ;		/* timer-ID */
 	int		arg ;		/* function argument */
