@@ -72,10 +72,13 @@ using libuc::mem ;			/* variable */
 namespace {
     struct procer {
 	mainv		argv ;
-	char		*lbuf ;
+	charp		lbuf ;
 	int		argc ;
 	int		llen ;
-	procer(int c,con mainv v) noex : argc(c), argv(v) { } ;
+	procer(int c,con mainv v) noex : argc(c), argv(v) {
+	    lbuf = nullptr ;
+	    llen = 0 ;
+	} ; /* end ctor */
 	operator int () noex ;
 	int procout() noex ;
 	int procfile(bfile *,cchar *) noex ;
@@ -100,18 +103,20 @@ cbool			f_debug		= CF_DEBUG ;
 int main(int argc,con mainv argv,con mainv envv) {
 	cnullptr	np{} ;
 	int		rs = SR_OK ;
-	int		ex = EX_INFO ;
+	int		ex = EX_SUCCESS ;
 	DEBUGPRINTF("ent\n") ;
 	fprintf(stderr,"ent\n") ;
 	(void) envv ;
 	if_constexpr (f_debug) {
 	    if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
+		fprintf(stderr,"debugfile=%s\n",cp) ;
 	        if ((rs = debugopen(cp)) >= 0) {
 	        DEBUGPRINTF("starting\n") ;
-		fprintf(stderr,"debugging=%d\n",rs) ;
 		}
+		fprintf(stderr,"debugging=%d\n",rs) ;
 	    } /* end if (getoutenv) */
 	} /* end if_constexpr (f_debug) */
+	DEBUGPRINTF("start rs=%d argc=%d\n",rs,argc) ;
 	if ((rs >= 0) && (argc > 1)) {
 	    if (procer po(argc,argv) ; (rs = po) >= 0) {
 		DEBUGPRINTF("procer rs=%d\n",rs) ;
@@ -125,8 +130,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
 	DEBUGCLOSE() ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
