@@ -46,13 +46,14 @@ DEPS_MAIN +=
 
 OBJ0= testsysconf_main.o
 OBJ1= bufsizeget.o bufsizevar.o
-OBJ2=
-OBJ3= 
+OBJ2= usysconf.o
+OBJ3= ucsysconf.o
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
+OBJA= obj0.o obj1.o obj2.o obj3.o
 OBJA= obj0.o obj1.o
 OBJB= obj4.o 
 
@@ -160,9 +161,24 @@ obj.o:			$(OBJ)
 
 testsysconf_main.o:	testsysconf_main.cc $(DEPS_MAIN)	$(INCS)
 
+# USYSCONF
+usysconf.o:		usysconf.dir
+usysconf.dir:
+	makesubdir $@
+
 # USTREAM
 ustream.o:		ustream.dir
 ustream.dir:
+	makesubdir $@
+
+# UCSYSCONF
+ucsysconf.o:		ucsysconf.dir
+ucsysconf.dir:
+	makesubdir $@
+
+# LIBUO
+libuo.o:		libuo.dir
+libuo.dir:
 	makesubdir $@
 
 # STRN
@@ -248,11 +264,6 @@ varithmetic.dir:
 # DIGTAB
 digtab.o:		digtab.dir
 digtab.dir:
-	makesubdir $@
-
-# LIBUO
-libuo.o:		libuo.dir
-libuo.dir:
 	makesubdir $@
 
 bufsizeget.o:		bufsizeget.cc	bufsizeget.h
