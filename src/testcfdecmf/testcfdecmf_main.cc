@@ -25,8 +25,8 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* CSTD |nullptr_t| */
-#include	<cstdlib>		/* CSTD |getenv(3c)| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD */
 #include	<iostream>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
