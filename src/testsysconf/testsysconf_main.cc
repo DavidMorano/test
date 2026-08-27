@@ -26,7 +26,7 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cerrno>		/* CSTD */
-#include	<cstddef>		/* CSTD |nullptr_t| */
+#include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD |getenv(3c)| */
 #include	<cstdio>		/* CSTD */
 #include	<iostream>		/* CSTD */
@@ -34,6 +34,7 @@
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
 #include	<ucsysconf.h>		/* LIBUC */
+#include	<bufsizeget.h>		/* LIBUC */
 #include	<bufsizevar.hh>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
@@ -53,6 +54,9 @@ constexpr cmdpair	pairs[] = {
 	{ _SC_LINE_MAX,		"LINEMAX" },
 	{ _SC_LINK_MAX,		"LINKMAX" },
 	{ _SC_SYMLOOP_MAX,	"SYMLOOPMAX" },
+	{ _SC_TZNAME_MAX,	"TZNAMEMAX" },
+	{ _SC_TZABBR_MAX,	"TZABBRMAX" },
+	{ _SC_ZONEINFO_MAX,	"ZONEINFOMAX" },
 	{ _SC_UTMPENT_SIZE_MAX,	"UTMPENTMAX" }
 } ; /* end array */
 
@@ -80,7 +84,7 @@ constexpr bool		f_debug = CF_DEBUG ;
     	int		rs = SR_OK ;
 	printf("getu\n") ;
     	    for (cauto &e : pairs) {
-    	        rs = uc_sysconfval(e.cmd,np) ;
+    	        rs = u_sysconfval(e.cmd,np) ;
 	        printf("%s=%d\n",e.str,rs) ;
 		if (rs < 0) break ;
 	    } /* end for */
@@ -99,25 +103,38 @@ constexpr bool		f_debug = CF_DEBUG ;
 	return rs ;
 } /* end subroutine (getuc) */
 
-[[maybe_unused]] local int getbuf() noex {
+[[maybe_unused]] local int bufget() noex {
     	int		rs ;
 	DPRINTF("ent\n") ;
-	printf("getbuf\n") ;
+	printf("bufget\n") ;
 	if ((rs = maxlinelen) >= 0) {
 	    printf("maxlinelen=%d\n",rs) ;
-	}
+	    if ((rs = bufsizeget(bufsize_ml)) >= 0) {
+		printf("bufsizeget-ml=%d\n",rs) ;
+	    } /* end if (bufsizeget) */
+	} /* end if (maxlinelen) */
 	DPRINTF("ret rs=%d\n",rs) ;
 	return rs ;
-} /* end subroutine (getbuf) */
+} /* end subroutine (bufget) */
 
+[[maybe_unused]] local int getuobj() noex {
+    	int		rs = SR_OK ;
+	printf("getuobj\n") ;
+	if ((rs = libu::usysconf.tzname) >= 0) {
+	    cint val = rs ;
+	    printf("tzname=%d\n",val) ;
+	}
+	return rs ;
+} /* end subroutine (getuobj) */
 
 typedef int (*get_f)() noex ;
 
 constexpr get_f		subgets[] = {
     	getraw,
 	getu,
+	getuobj,
 	getuc,
-	getbuf
+	bufget
 } ; /* end array (subgets) */
 
 int main(int,con mainv,con mainv) {
