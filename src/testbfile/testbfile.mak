@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -ldebug -luo -lu -lf
+LIBS += -ldebug -lb -luo -lu -lf
 
 
 DEPS_MAIN += 
@@ -45,9 +45,9 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= testbfile_main.o
-OBJ1= libb.o
-OBJ2= openx.o
-OBJ3= libdebug.o
+OBJ1= libdebug.o
+OBJ2=
+OBJ3= 
 OBJ4= 
 OBJ5=
 OBJ6=
@@ -270,11 +270,6 @@ utmpxx.o:		utmpxx.dir
 utmpxx.dir:
 	makesubdir $@
 
-# LIBDEBUG
-libdebug.o:		libdebug.dir
-libdebug.dir:
-	makesubdir $@
-
 # FMTSTR
 fmtstr.o:		fmtstr.dir
 fmtstr.dir:
@@ -283,6 +278,11 @@ fmtstr.dir:
 # OPENX
 openx.o:		openx.dir
 openx.dir:
+	makesubdir $@
+
+# LIBDEBUG
+libdebug.o:		libdebug.dir
+libdebug.dir:
 	makesubdir $@
 
 # LIBB
