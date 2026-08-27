@@ -1,6 +1,6 @@
 /* main SUPPORT (testansic) */
 /* charset=ISO8859-1 */
-/* lang=C20 */
+/* lang=C++20 */
 
 /* see if you have an ANSI compiler or the K&R compiler */
 /* version %I% last-modified %G% */
