@@ -16,15 +16,16 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
 #include	<string>
 #include	<string_view>
 #include	<iostream>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<strnul.hh>
-#include	<localmisc.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<strnul.hh>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 
 using std::cout ;
