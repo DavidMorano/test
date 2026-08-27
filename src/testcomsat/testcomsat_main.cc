@@ -41,10 +41,10 @@
 #include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
+#include	<baops.h>		/* LIBU */
 #include	<getproto.h>		/* LIBUC */
 #include	<getpf.h>		/* LIBUC */
 #include	<getaf.h>		/* LIBUC */
-#include	<baops.h>		/* LIBUC */
 #include	<keyopt.h>		/* LIBUC */
 #include	<vecstr.h>		/* LIBUC */
 #include	<bfile.h>		/* LIBUC */
