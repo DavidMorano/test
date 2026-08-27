@@ -43,8 +43,8 @@ LIBS += -lf -luo -lu
 DEPS_MAIN += strtox.o
 
 OBJ0= teststrtox_main.o
-OBJ1= strtox.o
-OBJ2= prognamevar.o shellunder.o
+OBJ1= prognamevar.o shellunder.o
+OBJ2= strtox.o
 OBJ3=
 OBJ4=
 OBJ5=
@@ -58,8 +58,7 @@ OBJ= obja.o
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -105,8 +104,8 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).x:			obj.o Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -247,7 +246,6 @@ base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
 dictdiff.o:		dictdiff.cc	dictdiff.h
 
-nzeros.o:		nzeros.ccm	nzeros.h
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
@@ -261,11 +259,11 @@ testint.o:		testint.ccm	intext.o varithmetic.o loadval.o
 
 # INTX
 intext.o:		intext.ccm	varithmetic.o loadval.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 # VARITHMETIC
 varithmetic.o:		varithmetic.ccm	builtin.o muldigs.o
-	makemodule $@
+	gxx -c -x c++ -o $@ -O $<
 
 loadval.o:		loadval.ccm	bitmanip.o
 
