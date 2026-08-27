@@ -1,6 +1,6 @@
 /* intext HEADER */
 /* charset=ISO8859-1 */
-/* lang=C20 */
+/* lang=C++20 */
 
 /* subroutine interfaces to compiler built-in instrinsics */
 /* version %I% last-modified %G% */
@@ -17,15 +17,17 @@
 
 #ifndef	INTEXT_INCLUDE
 #define	INTEXT_INCLUDE
+#ifdef	__cplusplus /* C++ only */
 
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
 
 
+#endif /* __cplusplus */
 #endif /* INTEXT_INCLUDE */
 
 
