@@ -1,4 +1,4 @@
-TESTSTR
+TESTSTRTOL
 
-This is the test for the 'str' object (development in progress)!
+This program test the |strtol(3c)| subroutine.
 
