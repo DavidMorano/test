@@ -186,8 +186,8 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        cint	nlen = realnameLEN ;
 	        char	nbuf[realnameLEN+1] ;
 	        while (rs >= 0) {
-	            rs = ipasswd_enum(&pwi,&cur,ubuf,ss,rbuf,rlen) ;
-	            debugprintf("main: ipasswd_enum() rs=%d\n",rs) ;
+	            rs = ipasswd_curenum(&pwi,&cur,ubuf,ss,rbuf,rlen) ;
+	            debugprintf("main: ipasswd_curenum() rs=%d\n",rs) ;
 	            if (rs < 0) break ;
 	            debugprintf("main: username=%s\n",ubuf) ;
 	            for (int j = 0 ; (j < 5) && ss[j] ; j += 1) {
