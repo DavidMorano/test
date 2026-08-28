@@ -26,13 +26,10 @@
 
 #define	VECSORTHAND		struct vecsorthand_head
 
-
 #ifndef	TYPEDEF_VECENTCMP
 #define	TYPEDEF_VECENTCMP
 EXTERNC_begin
-
 typedef int (*vecsorthand_cmpf)(cvoid *,cvoid *) noex ;
-
 EXTERNC_end
 #endif /* TYPEDEF_VECENTCMP */
 
@@ -58,14 +55,14 @@ struct vecsorthand_iter {
 	vecsorthand_iter() = default ;
 	vecsorthand_iter(void **ov,int oi,int oii) noex : va(ov), i(oi) {
 	    ii = oii ;
-	} ;
+	} ; /* end */
 	vecsorthand_iter(const vecsorthand_iter &oit) noex {
 	    if (this != &oit) {
 		va = oit.va ;
 		i = oit.i ;
 		ii = oit.ii ;
 	    }
-	} ;
+	} ; /* end */
 	vecsorthand_iter &operator = (const vecsorthand_iter &oit) noex {
 	    if (this != &oit) {
 		va = oit.va ;
@@ -73,14 +70,14 @@ struct vecsorthand_iter {
 		ii = oit.ii ;
 	    }
 	    return *this ;
-	} ;
+	} ; /* end */
 	bool operator != (const vecsorthand_iter &) noex ;
 	bool operator == (const vecsorthand_iter &) noex ;
 	void *operator * () noex {
 	    void	*rp = nullptr ;
 	    if (i < ii) rp = va[i] ;
 	    return rp ;
-	} ;
+	} ; /* end */
 	vecsorthand_iter operator + (int) const noex ;
 	vecsorthand_iter operator += (int) noex ;
 	vecsorthand_iter operator ++ () noex ; /* pre */
@@ -94,11 +91,11 @@ struct vecsorthand_co {
 	void operator () (vecsorthand *p,int m) noex {
 	    op = p ;
 	    w = m ;
-	} ;
+	} ; /* end */
 	int operator () (int = 0) noex ;
 	operator int () noex {
 	    return operator () () ;
-	} ;
+	} ; /* end */
 } ; /* end struct (vecsorthand_co) */
 struct vecsorthand : vecsorthand_head {
 	vecsorthand_co	count ;
@@ -109,30 +106,30 @@ struct vecsorthand : vecsorthand_head {
 	    del		(this,vecsorthandmem_del) ;
 	    finish	(this,vecsorthandmem_finish) ;
 	    va = nullptr ;
-	} ;
+	} ; /* end ctor */
 	vecsorthand(const vecsorthand &) = delete ;
 	vecsorthand &operator = (const vecsorthand &) = delete ;
-	int start(vecsorthand_cmpf,int = 0) noex ;
-	int add(cvoid *) noex ;
-	int get(int,void *) noex ;
-	int delhand(cvoid *) noex ;
-	int search(cvoid *,void *) noex ;
+	int start	(vecsorthand_cmpf,int = 0) noex ;
+	int add		(cvoid *) noex ;
+	int get		(int,void *) noex ;
+	int delhand	(cvoid *) noex ;
+	int search	(cvoid *,void *) noex ;
 	vecsorthand_iter begin() noex {
 	    vecsorthand_iter	it(va,0,i) ;
 	    return it ;
-	} ;
+	} ; /* end */
 	vecsorthand_iter end() noex {
 	    vecsorthand_iter	it(va,i,i) ;
 	    return it ;
-	} ;
-	void dtor() noex ;
-	operator int () noex ;
+	} ; /* end */
+	void dtor	() noex ;
+	operator int 	() noex ;
 	destruct vecsorthand() {
 	    if (va) dtor() ;
-	} ;
+	} ; /* end destruct */
 } ; /* end struct (vecsorthand) */
 #else	/* __cplusplus */
-typedef VECSORTHAND		vecsorthand ;
+typedef VECSORTHAND	vecsorthand ;
 #endif /* __cplusplus */
 
 EXTERNC_begin
