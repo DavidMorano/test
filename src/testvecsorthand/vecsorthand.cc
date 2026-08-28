@@ -30,13 +30,13 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<uclibmem.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<uclibmem.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"vecsorthand.h"
 
@@ -49,7 +49,6 @@
 /* imported namespaces */
 
 using libuc::libmem ;			/* variable */
-using std::nothrow ;			/* constant */
 
 
 /* local typedefs */
@@ -107,11 +106,10 @@ int vecsorthand_start(vecsorthand *op,cmp_f cmpfunc,int vn) noex {
 	            op->va[0] = nullptr ;
 	            op->cmpf = cmpfunc ;
 	        }
-	    } /* end if (m-a) */
+	    } /* end if (memory-acquire) */
 	} /* end if (vecsorthand_ctor) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_start) */
+} /* end subroutine (vecsorthand_start) */
 
 int vecsorthand_finish(vecsorthand *op) noex {
 	int		rs = SR_FAULT ;
@@ -122,14 +120,13 @@ int vecsorthand_finish(vecsorthand *op) noex {
 	        rs1 = libmem.free(op->va) ;
 	        if (rs >= 0) rs = rs1 ;
 	        op->va = nullptr ;
-	    }
+	    } /* end if (memory-release) */
 	    op->c = 0 ;
 	    op->i = 0 ;
 	    op->e = 0 ;
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_finish) */
+} /* end subroutine (vecsorthand_finish) */
 
 int vecsorthand_add(vecsorthand *op,cvoid *nep) noex {
 	int		rs = SR_FAULT ;
@@ -139,7 +136,7 @@ int vecsorthand_add(vecsorthand *op,cvoid *nep) noex {
 	    if (op->va) ylikely {
 	        if ((rs = vecsorthand_extend(op)) >= 0) ylikely {
 		    if (op->i > 0) ylikely {
-		        auto	cf = op->cmpf ;
+		        cauto	cf = op->cmpf ;
 			int	rc = -1 ;
 	                int	bot = 0 ;
 	                int	top = topidx(op->i) ;
@@ -157,10 +154,10 @@ int vecsorthand_add(vecsorthand *op,cvoid *nep) noex {
 	                if (i < op->i) {
 	                    if ((rc != 0) && (cf(nep,op->va[i]) > 0)) {
 	                        i += 1 ;
-	                    }
+	                    } /* end if */
 	                    for (int j = (op->i - 1) ; j >= i ; j -= 1) {
 	                        op->va[j + 1] = op->va[j] ;
-	                    }
+	                    } /* end for */
 	                } /* end if */
 		    } /* end if (non-zero positive) */
 	            op->va[i] = voidpp(nep) ;
@@ -171,8 +168,7 @@ int vecsorthand_add(vecsorthand *op,cvoid *nep) noex {
 	    } /* end if (open) */
 	} /* end if (non-null) */
 	return (rs >= 0) ? i : rs ;
-}
-/* end subroutine (vecsorthand_add) */
+} /* end subroutine (vecsorthand_add) */
 
 int vecsorthand_get(vecsorthand *op,int i,void *vp) noex {
 	int		rs = SR_NOTFOUND ;
@@ -181,10 +177,10 @@ int vecsorthand_get(vecsorthand *op,int i,void *vp) noex {
 	    if (op->va) ylikely {
 		void		*rval = nullptr ;
 		rs = SR_NOTFOUND ;
-		if ((i >= 0) && (i < op->i)) {
+		if ((i >= 0) && (i < op->i)) ylikely {
 	    	    rval = op->va[i] ;
 	    	    rs = i ;
-		}
+		} /* end if */
 	        if (vp) {
 	            void	**rpp = voidpp(vp) ;
 	            *rpp = rval ;
@@ -192,8 +188,7 @@ int vecsorthand_get(vecsorthand *op,int i,void *vp) noex {
 	    } /* end if (open) */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_get) */
+} /* end subroutine (vecsorthand_get) */
 
 int vecsorthand_del(vecsorthand *op,int i) noex {
 	int		rs = SR_FAULT ;
@@ -201,11 +196,11 @@ int vecsorthand_del(vecsorthand *op,int i) noex {
 	    rs = SR_NOTOPEN ;
 	    if (op->va) ylikely {
 		rs = SR_NOTFOUND ;
-	        if ((i >= 0) && (i < op->i)) {
+	        if ((i >= 0) && (i < op->i)) ylikely {
 	            op->i -= 1 ;
 	            for (int j = i ; j < op->i ; j += 1) {
 	                op->va[j] = op->va[j + 1] ;
-	            }
+	            } /* end for */
 	            op->va[op->i] = nullptr ;
 	            op->c -= 1 ;		/* decrement list count */
 	            rs = op->c ;
@@ -213,8 +208,7 @@ int vecsorthand_del(vecsorthand *op,int i) noex {
 	    } /* end if (open) */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_del) */
+} /* end subroutine (vecsorthand_del) */
 
 int vecsorthand_delhand(vecsorthand *op,cvoid *ep) noex {
 	int		rs = SR_FAULT ;
@@ -235,8 +229,7 @@ int vecsorthand_delhand(vecsorthand *op,cvoid *ep) noex {
 	    } /* end if (open) */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_delhand) */
+} /* end subroutine (vecsorthand_delhand) */
 
 int vecsorthand_count(vecsorthand *op) noex {
 	int		rs = SR_FAULT ;
@@ -247,8 +240,7 @@ int vecsorthand_count(vecsorthand *op) noex {
 	    } /* end if (open) */
 	} /* end if (non-null) */
 	return rs ;
-}
-/* end subroutine (vecsorthand_count) */
+} /* end subroutine (vecsorthand_count) */
 
 int vecsorthand_search(vecsorthand *op,cvoid *ep,void *vrp) noex {
 	int		rs = SR_FAULT ;
@@ -258,14 +250,14 @@ int vecsorthand_search(vecsorthand *op,cvoid *ep,void *vrp) noex {
 	    if (op->va) ylikely {
 		rs = SR_NOTFOUND ;
 		if (op->i > 0) ylikely {
-		    auto	cf = op->cmpf ;
+		    cauto	cf = op->cmpf ;
 		    int		rc = -1 ;
 	            int		bot = 0 ;
 	            int		top = topidx(op->i) ;
 	            i = (bot + top) / 2 ;
-		    auto lamb = [&op,&cf,&ep] (int ii) noex {
+		    cauto lamb = [&op,&cf,&ep] (int ii) noex {
 			return cf(ep,op->va[ii]) ;
-		    } ;
+		    } ; /* end lambda */
 		    while (((top - bot) > 0) && ((rc = lamb(i)) != 0)) {
 		        if (rc < 0) {
 	                    top = i - 1 ;
@@ -287,8 +279,7 @@ int vecsorthand_search(vecsorthand *op,cvoid *ep,void *vrp) noex {
 	    } /* end if (open) */
 	} /* end if (non-null) */
 	return (rs >= 0) ? i : rs ;
-}
-/* end subroutine (vecsorthand_search) */
+} /* end subroutine (vecsorthand_search) */
 
 
 /* private subroutines */
@@ -308,27 +299,27 @@ local int vecsorthand_extend(vecsorthand *op) noex {
 	        ne = (op->e * 2) ;
 	        sz = (ne * szof(void **)) ;
 	        rs = libmem.rall(op->va,sz,&nva) ;
-	    }
-	    if (rs >= 0) {
+	    } /* end if */
+	    if (rs >= 0) ylikely {
 	        op->va = nva ;
 	        op->e = ne ;
 		op->va[op->i] = nullptr ;
-	    }
+	    } /* end if (ok) */
 	} /* end if */
 	return rs ;
 } /* end subroutine (vecsorthand_extend) */
 
 int vecsorthand::start(cmp_f cf,int vn) noex {
 	return vecsorthand_start(this,cf,vn) ;
-}
+} /* end method */
 
 int vecsorthand::add(cvoid *nep) noex {
 	return vecsorthand_add(this,nep) ;
-}
+} /* end method */
 
 int vecsorthand::get(int ai,void *rvp) noex {
 	return vecsorthand_get(this,ai,rvp) ;
-}
+} /* end method */
 
 void vecsorthand::dtor() noex {
 	if (cint rs = finish ; rs < 0) {
