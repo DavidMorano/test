@@ -1,20 +1,27 @@
-/* testmaintqotd */
-/* lang=C89 */
+/* testmaintqotd SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test something */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<cstdarg>
-#include	<cstdio>
-#include	<tzfile.h>		/* for TM_YEAR_BASE */
-
-#include	<usystem.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdarg>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<fsdir.h>
 #include	<filer.h>
 #include	<tmtime.hh>
 #include	<dayspec.h>
-#include	<localmisc.h>
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"maintqotd.h"
 
@@ -29,35 +36,48 @@
 #define	VARDEBUGFNAME	"TESTMAINTQOTD_DEBUGFILE"
 
 
-#if	CF_DEBUGS
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
+/* local defines */
+
+
+/* local namespaces */
+
+
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
 
 
 /* forward references */
 
-static int curdate(DAYSPEC *,int) ;
-static int defspec(DAYSPEC *,DAYSPEC *) ;
-static int cvtdate(DAYSPEC *,cchar *) ;
+local int curdate(dayspec *,int) ;
+local int defspec(dayspec *,dayspec *) ;
+local int cvtdate(dayspec *,cchar *) ;
 
-static int dumpfile(int,int) ;
-static int dumpdir(int,int) ;
+local int dumpfile(int,int) ;
+local int dumpdir(int,int) ;
 
 #ifdef	COMMENT
-static int filer_oread(FILER *,void *,int,int) ;
-static int filer_refill(FILER *,int) ;
+local int filer_oread(FILER *,void *,int,int) ;
+local int filer_refill(FILER *,int) ;
 #endif /* COMMENT */
+
+
+/* exported variables */
+
 
 /* exported subroutines */
 
-int main(int argc,cchar **argv,cchar **envv)
-{
-	DAYSPEC		defs ;
+int main(int argc,con mainv argv,con mainv envv) {
+	dayspec		defs ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
@@ -69,16 +89,16 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	cchar	*pr = "/usr/add-on/local" ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
-	    debugprintf("main: starting\n") ;
+	    DEBUGPRINTF("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -95,8 +115,8 @@ int main(int argc,cchar **argv,cchar **envv)
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
 	        cchar	*qp = argv[ai] ;
 	        const int	of = O_RDONLY ;
-#if	CF_DEBUGS
-	        debugprintf("main: qp=%s\n",qp) ;
+#if	CF_DEBUG
+	        DEBUGPRINTF("main: qp=%s\n",qp) ;
 #endif
 	        if ((rs = cvtdate(&defs,qp)) >= 0) {
 	            const int	to = -1 ;
@@ -104,12 +124,12 @@ int main(int argc,cchar **argv,cchar **envv)
 	            if ((rs1 = maintqotd(pr,mjd,of,to)) >= 0) {
 	                ustat	sb ;
 	                int		fd = rs1 ;
-#if	CF_DEBUGS
-	                debugprintf("main: maintqotd() rs=%d\n",rs1) ;
+#if	CF_DEBUG
+	                DEBUGPRINTF("main: maintqotd() rs=%d\n",rs1) ;
 #endif
 	                if ((rs = u_fstat(fd,&sb)) >= 0) {
-#if	CF_DEBUGS
-	                    debugprintf("main: mode=\\x%08x\n",sb.st_mode) ;
+#if	CF_DEBUG
+	                    DEBUGPRINTF("main: mode=\\x%08x\n",sb.st_mode) ;
 #endif
 	                    if (S_ISDIR(sb.st_mode)) {
 	                        rs = dumpdir(fd,of) ;
@@ -122,8 +142,8 @@ int main(int argc,cchar **argv,cchar **envv)
 	                rs = SR_OK ;
 	                printf("not_found qp=%s (%d)\n",qp,rs1) ;
 	            }
-#if	CF_DEBUGS
-	            debugprintf("main: maintqotd-out rs=%d\n",rs1) ;
+#if	CF_DEBUG
+	            DEBUGPRINTF("main: maintqotd-out rs=%d\n",rs1) ;
 #endif
 	        } /* end if (cvtdate) */
 	        if (rs < 0) break ;
@@ -132,20 +152,20 @@ int main(int argc,cchar **argv,cchar **envv)
 
 done:
 
-#if	CF_DEBUGS
-	debugprintf("main: out rs=%d\n",rs) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main: out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
-	    debugprintf("main: final mallout=%u\n",(mo-mo_start)) ;
+	    DEBUGPRINTF("main: final mallout=%u\n",(mo-mo_start)) ;
 	    uc_mallset(0) ;
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
@@ -156,7 +176,7 @@ done:
 
 /* local subroutines */
 
-static int dumpfile(int fd,int of) noex {
+local int dumpfile(int fd,int of) noex {
 	cint		fo = (of | O_NETWORK) ;
 	int		rs ;
 	if (filer b ; (rs = filer_start(&b,fd,0z,0,fo)) >= 0) {
@@ -171,8 +191,8 @@ static int dumpfile(int fd,int of) noex {
 	    filer_finish(&b) ;
 	} /* end if (filer) */
 
-#if	CF_DEBUGS
-	debugprintf("main/dumpfile: rs=%d\n",rs) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main/dumpfile: rs=%d\n",rs) ;
 #endif
 
 	return rs ;
@@ -180,7 +200,7 @@ static int dumpfile(int fd,int of) noex {
 /* end subroutine (dumpfile) */
 
 
-static int dumpdir(int fd,int of)
+local int dumpdir(int fd,int of)
 {
 	FSDIR		d ;
 	FSDIR_ENT	de ;
@@ -189,8 +209,8 @@ static int dumpdir(int fd,int of)
 
 	char	dbuf[USERNAMELEN+1] ;
 
-#if	CF_DEBUGS
-	debugprintf("main/dumpdir: entered\n") ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main/dumpdir: entered\n") ;
 #endif
 	if ((rs = bufprintf(dbuf,dlen,"/dev/fd/%u",fd)) >= 0) {
 	    if ((rs = fsdir_open(&d,dbuf)) >= 0) {
@@ -201,8 +221,8 @@ static int dumpdir(int fd,int of)
 	    } /* end if (fsdir) */
 	} /* end if */
 
-#if	CF_DEBUGS
-	debugprintf("main/dumpdir: ret rs=%d\n",rs) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main/dumpdir: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
 }
@@ -211,7 +231,7 @@ static int dumpdir(int fd,int of)
 
 #ifdef	COMMENT
 
-static int filer_oread(op,rbuf,rlen,to)
+local int filer_oread(op,rbuf,rlen,to)
 FILER		*op ;
 void		*rbuf ;
 int		rlen ;
@@ -228,15 +248,15 @@ int		to ;
 
 	if (op == NULL) return SR_FAULT ;
 
-#if	CF_DEBUGS
-	debugprintf("filer_oread: rlen=%d to=%d\n",rlen,to) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("filer_oread: rlen=%d to=%d\n",rlen,to) ;
 #endif
 
 	rc = (op->fl.net) ? FILER_RCNET : 1 ;
 	while (tlen < rlen) {
 
-#if	CF_DEBUGS
-	    debugprintf("filer_oread: 0 while-top tlen=%d op->len=%d\n", 
+#if	CF_DEBUG
+	    DEBUGPRINTF("filer_oread: 0 while-top tlen=%d op->len=%d\n", 
 	        tlen,op->len) ;
 #endif
 	    if (op->len <= 0) {
@@ -247,10 +267,10 @@ int		to ;
 	        }
 	    }
 
-#if	CF_DEBUGS
-	    debugprintf("filer_oread: refilled rs=%d f_to=%u\n",
+#if	CF_DEBUG
+	    DEBUGPRINTF("filer_oread: refilled rs=%d f_to=%u\n",
 	        rs,f_timedout) ;
-	    debugprintf("filer_oread: op->len=%d tlen=%d\n", op->len,tlen) ;
+	    DEBUGPRINTF("filer_oread: op->len=%d tlen=%d\n", op->len,tlen) ;
 #endif
 
 	    if ((op->len == 0) || f_timedout)
@@ -276,19 +296,19 @@ int		to ;
 	    char	tbuf[10+1] = { 0 } ;
 	    int	i ;
 	    rs = u_write(op->fd,tbuf,0) ;
-#if	CF_DEBUGS
-	    debugprintf("filer_oread: timed-out? rs=%d\n",rs) ;
+#if	CF_DEBUG
+	    DEBUGPRINTF("filer_oread: timed-out? rs=%d\n",rs) ;
 #endif
 	    for (i = 0 ; i < 4 ; i += 1) {
 	        rs = u_read(op->fd,tbuf,10) ;
-#if	CF_DEBUGS
-	        debugprintf("filer_oread: u_read() rs=%d\n",rs) ;
+#if	CF_DEBUG
+	        DEBUGPRINTF("filer_oread: u_read() rs=%d\n",rs) ;
 #endif
 	    }
 	} /* end if (timed-out) */
 
-#if	CF_DEBUGS
-	debugprintf("filer_oread: ret rs=%d tlen=%u\n",rs,tlen) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("filer_oread: ret rs=%d tlen=%u\n",rs,tlen) ;
 #endif
 
 	return (rs >= 0) ? tlen : rs ;
@@ -296,7 +316,7 @@ int		to ;
 /* end subroutine (filer_read) */
 
 
-static int filer_refill(FILER *op,int to)
+local int filer_refill(FILER *op,int to)
 {
 	const int	fmo = FM_TIMED ;
 	int	rs = SR_OK ;
@@ -305,10 +325,10 @@ static int filer_refill(FILER *op,int to)
 
 	while ((op->len <= 0) && (rc-- > 0)) {
 
-#if	CF_DEBUGS
-	    debugprintf("filer_refill: 1 while-top tlen=%d len=%d rc=%d\n",
+#if	CF_DEBUG
+	    DEBUGPRINTF("filer_refill: 1 while-top tlen=%d len=%d rc=%d\n",
 	        tlen,op->len,rc) ;
-	    debugprintf("filer_refill: reading=%d to=%d\n",op->bufsize,to) ;
+	    DEBUGPRINTF("filer_refill: reading=%d to=%d\n",op->bufsize,to) ;
 #endif
 	    op->bp = op->buf ;
 	    if (to >= 0) {
@@ -316,8 +336,8 @@ static int filer_refill(FILER *op,int to)
 	    } else
 	        rs = u_read(op->fd,op->buf,op->bufsize) ;
 
-#if	CF_DEBUGS
-	    debugprintf("filer_refill: read rs=%d\n",rs) ;
+#if	CF_DEBUG
+	    DEBUGPRINTF("filer_refill: read rs=%d\n",rs) ;
 #endif
 
 	    if ((rs == SR_TIMEDOUT) && (tlen > 0)) {
@@ -332,44 +352,33 @@ static int filer_refill(FILER *op,int to)
 	    tlen += rs ;
 	} /* end while (refill) */
 
-#if	CF_DEBUGS
-	debugprintf("filer_refill: ret rs=%d tlen=%d\n",rs,tlen) ;
-#endif
+	DEBUGPRINTF("ret rs=%d tlen=%d\n",rs,tlen) ;
 	return (rs >= 0) ? tlen : rs ;
-}
-/* end subroutine (filer_refill) */
+} /* end subroutine (filer_refill) */
 
 #endif /* COMMENT */
 
-
-static int curdate(DAYSPEC *dsp,int y)
-{
-	TMTIME	ct ;
+local int curdate(dayspec *dsp,int y) noex {
 	time_t	dt = time(NULL) ;
 	int	rs ;
-	rs = tmtime_timelocal(&ct,dt) ;
-	dsp->y = (y > 0) ? y : (ct.year + TM_YEAR_BASE) ;
+	if (tmtime ct ; (rs = tmtime_timelocal(&ct,dt)) >= 0) {
+	dsp->y = (y > 0) ? y : (ct.year + TMTIME_YEARBASE) ;
 	dsp->m = ct.mon ;
 	dsp->d = ct.mday ;
+	}
 	return rs ;
-}
-/* end subroutine (curdate) */
+} /* end subroutine (curdate) */
 
-
-static int defspec(DAYSPEC *ddsp,DAYSPEC *dsp)
-{
+local int defspec(dayspec *ddsp,dayspec *dsp)noex {
 	int	rs = SR_OK ;
-
 	if (dsp->y < 0) dsp->y = ddsp->y ;
 	if (dsp->m < 0) dsp->m = ddsp->m ;
 	if (dsp->d < 0) dsp->d = ddsp->d ;
-
 	return rs ;
-}
-/* end subroutine (defspec) */
+} /* end subroutine (defspec) */
 
-static int cvtdate(DAYSPEC *ddsp,cchar *qp) noex {
-	DAYSPEC	ds ;
+local int cvtdate(dayspec *ddsp,cchar *qp) noex {
+	dayspec	ds ;
 	int	rs = SR_OK ;
 	int	mjd = 0 ;
 	if ((qp[0] == '+') || (qp[0] == '-')) {
