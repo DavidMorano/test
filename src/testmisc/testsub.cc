@@ -2,6 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test someone calling an 'extern' subroutine */
+/* version %I% last-modified %G% */
+
+
 /* revision history:
 
 	= 1998-04-13, David A-D- Morano
@@ -13,12 +17,13 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstdlib>
-#include	<cstring>
-#include	<dlfcn.h>
-#include	<utypedefs.h>
-#include	<clanguage.h>
-#include	<iostream>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* LIBU */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<clanguage.h>		/* LIBU */
 
 
 using std::cout ;
@@ -26,6 +31,6 @@ using std::cout ;
 
 void sub() noex {
 	cout << "sub\n" ;
-}
+} /* end subroutine */
 
 
