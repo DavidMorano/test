@@ -5,9 +5,9 @@
 /* program to test the VECHAND object */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
+#define	CF_DEBUGS	0		/* non-switchable print-outs */
 #define	CF_DEBUG	1		/* switchable at invocation */
-#define	CF_GETEXECNAME	1		/* use 'getexecname(3c)' */
+#define	CF_GETEXECNAME	1		/* use |getexecname(3c)| */
 
 /* revision history:
 
@@ -25,7 +25,7 @@
 
 *******************************************************************************/
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -42,7 +42,7 @@
 #include	<cstdlib>		/* |getenv(3c)| */
 #include	<clanguage.h>
 #include	<usysbase.h>
-#include	<getx.h>		/* |getourenv(3uc)| */
+#include	<usyscalls.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<vecstr.h>
@@ -180,7 +180,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	for (i = 0 ; i < MAXARGGROUPS ; i += 1) argpresent[i] = 0 ;
 
-	npa = 0 ;			/* number of positional so far */
+	npa = 0 ;			/* number of positional */
 	maxai = 0 ;
 	i = 0 ;
 	argr = argc - 1 ;
@@ -215,7 +215,7 @@ int main(int argc,mainv argv,mainv envv) {
 	                if ((avp = strchr(aop,'=')) != NULL) {
 
 #if	CF_DEBUGS
-	                    debugprintf("main: got an option key w/ a value\n") ;
+	                    debugprintf("main: option key w/ value\n") ;
 #endif
 
 	                    akl = avp - aop ;
@@ -241,13 +241,13 @@ int main(int argc,mainv argv,mainv envv) {
 /* do we have a keyword match or should we assume only key letters ? */
 
 #if	CF_DEBUGS
-	                debugprintf("main: about to check for a key word match\n") ;
+	                debugprintf("main: check for key-word match\n") ;
 #endif
 
 	                if ((kwi = matstr(argopts,akp,akl)) >= 0) {
 
 #if	CF_DEBUGS
-	                    debugprintf("main: option keyword=%t kwi=%d\n",
+	                    debugprintf("main: keyword=%t kwi=%d\n",
 	                        akp,akl,kwi) ;
 #endif
 
