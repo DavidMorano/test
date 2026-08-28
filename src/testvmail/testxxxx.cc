@@ -28,13 +28,13 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<climits>
-#include	<cstddef>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<strnul.hh>
-#include	<exitcodes.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<strnul.hh>		/* LIBU */
+#include	<exitcodes.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
 
 
