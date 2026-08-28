@@ -31,15 +31,15 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<climits>		/* |INT_MIN| + |INT_MAX| */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<uclibmem.h>
-#include	<localmisc.h>
+#include	<climits>		/* CSTD |INT_MIN| + |INT_MAX| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<algorithm>		/* C++STD |min(3c++)| + |max(3c++)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<uclibmem.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"vecint.h"
 
@@ -118,8 +118,7 @@ int vecint_start(vecint *op,int vn,int vo) noex {
 	    } /* end if */
 	} /* end if (non-null) */
 	return (rs >= 0) ? vn : rs ;
-}
-/* end subroutine (vecint_start) */
+} /* end subroutine (vecint_start) */
 
 int vecint_finish(vecint *op) noex {
 	int		rs ;
@@ -136,8 +135,7 @@ int vecint_finish(vecint *op) noex {
 	    op->magval = 0 ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_finish) */
+} /* end subroutine (vecint_finish) */
 
 int vecint_add(vecint *op,VECINT_TYPE v) noex {
 	int		rs ;
@@ -145,10 +143,9 @@ int vecint_add(vecint *op,VECINT_TYPE v) noex {
 	    rs = vecint_addval(op,v) ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_add) */
+} /* end subroutine (vecint_add) */
 
-extern int vecint_addlist(vecint *op,const VECINT_TYPE *lp,int ll) noex {
+int vecint_addlist(vecint *op,const VECINT_TYPE *lp,int ll) noex {
 	int		rs ;
 	if ((rs = vecint_magic(op,lp)) >= 0) ylikely {
 	    for (int i = 0 ; (rs >= 0) && (i < ll) ; i += 1) {
@@ -156,8 +153,7 @@ extern int vecint_addlist(vecint *op,const VECINT_TYPE *lp,int ll) noex {
 	    }
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_addlist) */
+} /* end subroutine (vecint_addlist) */
 
 int vecint_adduniq(vecint *op,VECINT_TYPE v) noex {
 	int		rs ;
@@ -174,8 +170,7 @@ int vecint_adduniq(vecint *op,VECINT_TYPE v) noex {
 	    }
 	} /* end if (magic) */
 	return (rs >= 0) ? i : rs ;
-}
-/* end subroutine (vecint_adduniq) */
+} /* end subroutine (vecint_adduniq) */
 
 int vecint_insert(vecint *op,int ii,VECINT_TYPE val) noex {
 	int		rs ;
@@ -194,8 +189,7 @@ int vecint_insert(vecint *op,int ii,VECINT_TYPE val) noex {
 	    } /* end if (valid) */
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_insert) */
+} /* end subroutine (vecint_insert) */
 
 int vecint_assign(vecint *op,int ii,VECINT_TYPE val) noex {
 	int		rs ;
@@ -215,8 +209,7 @@ int vecint_assign(vecint *op,int ii,VECINT_TYPE val) noex {
 	    } /* end if (valid) */
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_assign) */
+} /* end subroutine (vecint_assign) */
 
 int vecint_resize(vecint *op,int n) noex {
 	int		rs ;
@@ -241,8 +234,7 @@ int vecint_resize(vecint *op,int n) noex {
 	    } /* end if (valid) */
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_resize) */
+} /* end subroutine (vecint_resize) */
 
 int vecint_getval(vecint *op,int i,VECINT_TYPE *rp) noex {
 	int		rs ;
@@ -255,8 +247,7 @@ int vecint_getval(vecint *op,int i,VECINT_TYPE *rp) noex {
 	     }
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_getval) */
+} /* end subroutine (vecint_getval) */
 
 int vecint_del(vecint *op,int i) noex {
 	int		rs ;
@@ -310,8 +301,7 @@ int vecint_del(vecint *op,int i) noex {
 	    } /* end if (found) */
 	} /* end if (magic) */
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (vecint_del) */
+} /* end subroutine (vecint_del) */
 
 int vecint_delall(vecint *op) noex {
 	int		rs ;
@@ -321,8 +311,7 @@ int vecint_delall(vecint *op) noex {
 	    op->fi = 0 ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_delall) */
+} /* end subroutine (vecint_delall) */
 
 int vecint_count(vecint *op) noex {
 	int		rs ;
@@ -330,8 +319,7 @@ int vecint_count(vecint *op) noex {
 	    rs = op->c ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_count) */
+} /* end subroutine (vecint_count) */
 
 int vecint_extent(vecint *op) noex {
 	int		rs ;
@@ -339,8 +327,7 @@ int vecint_extent(vecint *op) noex {
 	    rs = op->i ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_extent) */
+} /* end subroutine (vecint_extent) */
 
 int vecint_sort(vecint *op) noex {
 	int		rs ;
@@ -357,8 +344,7 @@ int vecint_sort(vecint *op) noex {
 	    rs = op->c ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_sort) */
+} /* end subroutine (vecint_sort) */
 
 int vecint_setsorted(vecint *op) noex {
 	int		rs ;
@@ -367,8 +353,7 @@ int vecint_setsorted(vecint *op) noex {
 	    rs = op->c ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_setsorted) */
+} /* end subroutine (vecint_setsorted) */
 
 int vecint_find(vecint *op,VECINT_TYPE v) noex {
 	int		rs ;
@@ -393,8 +378,7 @@ int vecint_find(vecint *op,VECINT_TYPE v) noex {
 	    } /* end if */
 	} /* end if (magic) */
 	return (rs >= 0) ? i : rs ;
-}
-/* end subroutine (vecint_find) */
+} /* end subroutine (vecint_find) */
 
 int vecint_match(vecint *op,VECINT_TYPE v) noex {
 	int		rs ;
@@ -404,8 +388,7 @@ int vecint_match(vecint *op,VECINT_TYPE v) noex {
 	    rs = SR_OK ;
 	}
 	return rs ;
-}
-/* end subroutine (vecint_match) */
+} /* end subroutine (vecint_match) */
 
 int vecint_getvec(vecint *op,VECINT_TYPE **rpp) noex {
 	int		rs ;
@@ -414,8 +397,7 @@ int vecint_getvec(vecint *op,VECINT_TYPE **rpp) noex {
 	    rs = op->i ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_getvec) */
+} /* end subroutine (vecint_getvec) */
 
 int vecint_mkvec(vecint *op,VECINT_TYPE *va) noex {
 	int		rs ;
@@ -429,8 +411,7 @@ int vecint_mkvec(vecint *op,VECINT_TYPE *va) noex {
 	    } /* end for */
 	} /* end if (magic) */
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (vecint_mkvec) */
+} /* end subroutine (vecint_mkvec) */
 
 int vecint_curbegin(vecint *op,vecint_cur *curp) noex {
 	int		rs ;
@@ -438,8 +419,7 @@ int vecint_curbegin(vecint *op,vecint_cur *curp) noex {
 	    curp->i = 0 ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_curend) */
+} /* end subroutine (vecint_curend) */
 
 int vecint_curend(vecint *op,vecint_cur *curp) noex {
 	int		rs ;
@@ -447,8 +427,7 @@ int vecint_curend(vecint *op,vecint_cur *curp) noex {
 	    curp->i = 0 ;
 	} /* end if (magic) */
 	return rs ;
-}
-/* end subroutine (vecint_curend) */
+} /* end subroutine (vecint_curend) */
 
 int vecint_curenum(vecint *op,vecint_cur *curp,VECINT_TYPE *rp) noex {
 	int		rs ;
@@ -464,8 +443,7 @@ int vecint_curenum(vecint *op,vecint_cur *curp,VECINT_TYPE *rp) noex {
 	} /* end if (magic) */
 	if (rp) *rp = (rs >= 0) ? v : VECINT_MIN ;
 	return rs ;
-}
-/* end subroutine (vecint_curenum) */
+} /* end subroutine (vecint_curenum) */
 
 int vecint_audit(vecint *op) noex {
 	int		rs ;
@@ -481,8 +459,7 @@ int vecint_audit(vecint *op) noex {
 	    rs = (i == c) ? SR_OK : SR_BADFMT ;
 	} /* end if (magic) */
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (vecint_audit) */
+} /* end subroutine (vecint_audit) */
 
 
 /* private subroutines */
@@ -497,13 +474,12 @@ consteval int mkoptmask() noex {
 	m |= vecintm.sorted ;
 	m |= vecintm.ordered ;
 	return m ;
-}
-/* end subroutine (mkoptmask) */
+} /* end subroutine (mkoptmask) */
 
 local int vecint_setopts(vecint *op,int vo) noex {
 	constexpr int	optmask = mkoptmask() ;
 	int		rs = SR_INVALID ;
-	if ((vo & (~ optmask)) == 0) ylikely {
+	if ((vo & (compl optmask)) == 0) ylikely {
 	    rs = SR_OK ;
 	    op->fl = {} ;
 	    if (vo & vecintm.reuse)		op->fl.oreuse = true ;
@@ -515,8 +491,7 @@ local int vecint_setopts(vecint *op,int vo) noex {
 	    if (vo & vecintm.conserve)		op->fl.oconserve = true ;
 	} /* end if (valid) */
 	return rs ;
-}
-/* end subroutine (vecint_setopts) */
+} /* end subroutine (vecint_setopts) */
 
 local int vecint_addval(vecint *op,VECINT_TYPE v) noex {
 	int		rs = SR_OK ;
@@ -529,7 +504,7 @@ local int vecint_addval(vecint *op,VECINT_TYPE v) noex {
 	    i = op->fi ;
 	    while ((i < op->i) && (op->va[i] != VECINT_MIN)) {
 	        i += 1 ;
-	    }
+	    } /* end while */
 	    if (i < op->i) {
 	        op->va[i] = v ;
 	        op->fi = (i + 1) ;
@@ -549,15 +524,14 @@ local int vecint_addval(vecint *op,VECINT_TYPE v) noex {
 	        i = op->i ;
 	        op->va[(op->i)++] = v ;
 	        op->va[op->i] = VECINT_MIN ;
-	    }
+	    } /* end if (ok) */
 	} /* end if */
 	if (rs >= 0) ylikely {
 	    op->c += 1 ;		/* increment list count */
 	    op->fl.issorted = false ;
-	}
+	} /* end if (ok) */
 	return (rs >= 0) ? i : rs ;
-}
-/* end subroutine (vecint_addval) */
+} /* end subroutine (vecint_addval) */
 
 local int vecint_extend(vecint *op,int amount) noex {
 	int		rs = SR_OK ;
@@ -582,8 +556,7 @@ local int vecint_extend(vecint *op,int amount) noex {
 	    }
 	} /* end if (needed) */
 	return rs ;
-}
-/* end subroutine (vecint_extend) */
+} /* end subroutine (vecint_extend) */
 
 local int vecint_insertval(vecint *op,int ii,VECINT_TYPE val) noex {
 	if (ii < op->i) ylikely {
@@ -609,8 +582,7 @@ local int vecint_insertval(vecint *op,int ii,VECINT_TYPE val) noex {
 	op->c += 1 ;
 	op->fl.issorted = false ;
 	return ii ;
-}
-/* end subroutine (vecint_insertval) */
+} /* end subroutine (vecint_insertval) */
 
 local int vecint_extrange(vecint *op,int n) noex {
 	if (n > op->i) {
@@ -620,13 +592,11 @@ local int vecint_extrange(vecint *op,int n) noex {
 	    op->va[op->i] = VECINT_MIN ;
 	}
 	return SR_OK ;
-}
-/* end subroutine (vecint_extrange) */
+} /* end subroutine (vecint_extrange) */
 
 local int deftypecmp(const VECINT_TYPE *l1p,const VECINT_TYPE *l2p) noex {
 	return intsat(*l1p - *l2p) ;
-}
-/* end subroutine (deftypecmp) */
+} /* end subroutine (deftypecmp) */
 
 int vecint_st::operator () (int vn,int vo) noex {
     	int		rs = SR_BUGCHECK ;
@@ -638,27 +608,27 @@ int vecint_st::operator () (int vn,int vo) noex {
 	    } /* end switch */
 	} /* end if (non-null) */
 	return rs ;
-}
+} /* end method */
 
 int vecint::add(VECINT_TYPE v) noex {
 	return vecint_add(this,v) ;
-}
+} /* end method */
 
 int vecint::addlist(const VECINT_TYPE *ap,int al) noex {
 	return vecint_addlist(this,ap,al) ;
-}
+} /* end method */
 
 int vecint::adduniq(VECINT_TYPE v) noex {
 	return vecint_adduniq(this,v) ;
-}
+} /* end method */
 
 int vecint::insert(int idx,VECINT_TYPE v) noex {
 	return vecint_insert(this,idx,v) ;
-}
+} /* end method */
 
 int vecint::assign(int idx,VECINT_TYPE v) noex {
 	return vecint_insert(this,idx,v) ;
-}
+} /* end method */
 
 int vecint::del(int idx) noex {
     	int		rs ;
@@ -668,39 +638,39 @@ int vecint::del(int idx) noex {
 	    rs = vecint_delall(this) ;
 	}
 	return rs ;
-}
+} /* end method */
 
 int vecint::find(VECINT_TYPE v) noex {
 	return vecint_find(this,v) ;
-}
+} /* end method */
 
 int vecint::match(VECINT_TYPE v) noex {
 	return vecint_match(this,v) ;
-}
+} /* end method */
 
 int vecint::getval(int idx,VECINT_TYPE *rp) noex {
 	return vecint_getval(this,idx,rp) ;
-}
+} /* end method */
 
 int vecint::getvec(VECINT_TYPE **rpp) noex {
 	return vecint_getvec(this,rpp) ;
-}
+} /* end method */
 
 int vecint::mkvec(VECINT_TYPE *rva) noex {
 	return vecint_mkvec(this,rva) ;
-}
+} /* end method */
 
 int vecint::curbegin(vecint_cur *curp) noex {
 	return vecint_curbegin(this,curp) ;
-}
+} /* end method */
 
 int vecint::curend(vecint_cur *curp) noex {
 	return vecint_curend(this,curp) ;
-}
+} /* end method */
 
 int vecint::curenum(vecint_cur *curp,VECINT_TYPE *rp) noex {
 	return vecint_curenum(this,curp,rp) ;
-}
+} /* end method */
 
 void vecint::dtor() noex {
 	if (cint rs = finish ; rs < 0) {
@@ -743,7 +713,7 @@ int vecint_co::operator () (int a) noex {
 
 bool vecint_iter::operator == (const vecint_iter &oit) noex {
 	return (va == oit.va) && (i == oit.i) && (ii == oit.ii) ;
-}
+} /* end method */
 
 bool vecint_iter::operator != (const vecint_iter &oit) noex {
 	bool		f = false ;
@@ -753,32 +723,31 @@ bool vecint_iter::operator != (const vecint_iter &oit) noex {
 	    f = (i < oit.i) ;
 	}
 	return f ;
-}
-/* end method (vecint_iter::operator) */
+} /* end method (vecint_iter::operator) */
 
 vecint_iter vecint_iter::operator + (int n) const noex {
 	vecint_iter	rit(va,i,i) ;
 	rit.i = ((rit.i + n) >= 0) ? (rit.i + n) : 0 ;
 	return rit ;
-}
+} /* end method */
 
 vecint_iter vecint_iter::operator += (int n) noex {
 	vecint_iter	rit(va,i,i) ;
 	i = ((i + n) >= 0) ? (i + n) : 0 ;
 	rit.i = i ;
 	return rit ;
-}
+} /* end method */
 
 vecint_iter vecint_iter::operator ++ () noex { /* pre */
 	increment() ;
 	return (*this) ;
-}
+} /* end method */
 
 vecint_iter vecint_iter::operator ++ (int) noex { /* post */
 	vecint_iter	pre(*this) ;
 	increment() ;
 	return pre ;
-}
+} /* end method */
 
 void vecint_iter::increment(int n) noex {
 	if ((i + n) < 0) n = -i ;
