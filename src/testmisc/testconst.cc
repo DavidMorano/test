@@ -1,130 +1,29 @@
-/* testconst SUPPORT (testconst) */
-/* charset=ISO8859-1 */
-/* lang=C++20 */
+/* main (testconst) */
 
-/* test constant evaluations */
-/* version %I% last-modified %G% */
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/types.h>
+#include	<cstddef>
+#include	<cstdio>
+#include	<localmisc.h>
 
+#if	defined(_WCHAR_T)
+#define	WCHAR	1
+#else
+#define	WCHAR	0
+#endif
 
-/* revision history:
+typedef int	xchar_t ;
 
-	= 2013-07-11, David A­D­ Morano
-	Originally written for Rightcore Network Services.
+int main(int argc,cchar **argv,cchar **envv)
+{
+	const int64_t	a = 0 ;
+	const xchar_t	j = 1 ;
+	wchar_t		b ;
 
-*/
+	printf("%lld wchar=%u\n",a,WCHAR) ;
 
-/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
-
-#include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* CSTD */
-#include	<cstdlib>		/* CSTD */
-#include	<cinttypes>		/* CSTD */
-#include	<cstring>		/* CSTD */
-#include	<new>			/* C++STD |nothrow(3c++)| */
-#include	<initializer_list>	/* C++STD */
-#include	<utility>		/* C++STD */
-#include	<functional>		/* C++STD */
-#include	<algorithm>		/* C++STD */
-#include	<vector>		/* C++STD */
-#include	<string>		/* C++STD */
-#include	<fstream>		/* C++STD */
-#include	<iostream>		/* C++STD */
-#include	<iomanip>		/* C++STD */
-#include	<clanguage.h>		/* LIBU */
-#include	<usysbase.h>		/* LIBU */
-#include	<localmisc.h>		/* LIBU */
-
-#pragma		GCC dependency		"mod/libutil.ccm"
-
-import libutil ;			/* |cvtconst(3u)| */
-
-/* local defines */
-
-
-/* name-spaces */
-
-using std::cout ;			/* variable */
-
-
-/* external subroutines */
-
-
-/* external variables */
-
-
-/* local structures (and methods) */
-
-consteval int subval(int v) noex {
-    	return (v * 1) ;
-}
-
-struct values {
-    	int	res ;
-	consteval values() noex {
-	    res = 1 ;
-	    for (int i = 1 ; i < 10 ; i += 1) {
-		res *= subval(i) ;
-	    }
-	} ;
-} ; /* end struct */
-
-
-/* forward references */
-
-
-/* local variables */
-
-static const char	staticstr[] = "staticstr" ;
-extern const char	str[] = "Hello world!" ;
-extern const float	fpi = floatconv(3.1415) ;
-const char		localstr[] = "localstr" ;
-
-const int	pi = 3 ;
-
-    struct ginit {
-        int	gval ;
-	constexpr ginit() noex {
-	    gval = 1 ; 
-	} ;
-	constexpr int geter() const noex ;
-    } ; /* end struct */
-
-extern const ginit	ginit_data ;
-
-constinit const ginit	ginit_data ;
-
-extern const values	values_data ;
-
-const values	values_data ;
-
-
-/* exported variables */
-
-
-/* exported subroutines */
-
-int main(int,con mainv,con mainv) {
-    	constexpr values	val ;
-	cout << staticstr << eol ;
-	cout << str << eol ;
-	cout << "fpi=" << fpi << eol ;
-	cout << "pi=" << pi << eol ;
-	cout << localstr << eol ;
-	cout << val.res << eol ;
-	cout << ginit_data.geter() << eol ;
-	{
-	    int	a = 1 ;
-	    cout << "a=" << ({ const typeof(a) cval = a ; cval ; }) << eol ;
-	    cout << "a=" << cvtconst(a) << eol ;
-	}
+	return 0 ;
 }
 /* end subroutine (main) */
-
-constexpr int ginit::geter() const noex {
-    return gval ;
-}
-
-
-/* local subroutines */
 
 
