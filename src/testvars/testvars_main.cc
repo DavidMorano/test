@@ -1659,7 +1659,7 @@ keyopt		*kop ;
 /* process program options */
 
 	keyopt_curbegin(kop,&kcur) ;
-	while ((kl = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	while ((kl = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
 /* get the first value for this key */
 
@@ -1906,7 +1906,7 @@ cchar	getfname[] ;
 
 	    vars_curbegin(&sv,&cur) ;
 
-	    while ((vl = vars_enum(&sv,&cur,kbuf,KBUFLEN,vbuf,VBUFLEN)) >= 0) {
+	    while ((vl = vars_curenum(&sv,&cur,kbuf,KBUFLEN,vbuf,VBUFLEN)) >= 0) {
 
 	        c += 1 ;
 	        rs = bprintf(ofp,"%s=%t\n",kbuf,vbuf,vl) ;
@@ -1981,7 +1981,7 @@ vars	*vlp ;
 	vbuf[0] = '\0' ;
 	hdb_curbegin(&lip->mvars,&cur) ;
 
-	while (hdb_enum(&lip->mvars,&cur,&key,&val) >= 0) {
+	while (hdb_curenum(&lip->mvars,&cur,&key,&val) >= 0) {
 
 		kp = (cchar *) key.buf ;
 		kl = key.len ;
@@ -2349,7 +2349,7 @@ cchar	dbname[] ;
 
 	hdbstr_curbegin(&lip->vars,&cur) ;
 
-	while (hdbstr_enum(&lip->vars,&cur,&kp,&vp,&vl) >= 0) {
+	while (hdbstr_curenum(&lip->vars,&cur,&kp,&vp,&vl) >= 0) {
 
 #if	CF_DEBUG
 	    debugprintf("main/procset: k=%s v=>%t<\n",
