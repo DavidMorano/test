@@ -59,14 +59,14 @@ ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
 
-DEPS_MAIN += vecelem.o debug.o
+DEPS_MAIN += vecelem.o deb.o
 DEPS_MAIN += 
 DEPS_MAIN += 
 DEPS_MAIN += 
 
 OBJ0= testvecelem.o
 OBJ1= vecelem.o
-OBJ2= debug.o
+OBJ2= deb.o
 OBJ3= 
 
 OBJA= obj0.o obj1.o obj2.o
@@ -172,8 +172,8 @@ filerec.dir:
 	makesubdir $@
 
 # DEBUG		(libu)
-debug.o:		debug.dir
-debug.dir:
+deb.o:		deb.dir
+deb.dir:
 	makesubdir $@
 
 # STRFILER	(libuc)
