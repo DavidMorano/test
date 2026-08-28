@@ -67,8 +67,7 @@
 
 extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 extern int	makedate_date(cchar *,cchar **) ;
-extern int	proginfo_setpiv(PI *,cchar *,
-			const struct pivars *) ;
+extern int	proginfo_setpiv(PI *,cchar *, const pivars *) ;
 
 
 /* external variables */
@@ -102,7 +101,7 @@ enum argopts {
 	argopt_db,
 	argopt_qs,
 	argopt_overlast
-} ;
+} ; /* end enum */
 
 constexpr cpcchar	argopts[] = {
 	"ROOT",
@@ -117,7 +116,7 @@ constexpr cpcchar	argopts[] = {
 	"db",
 	"qs",
 	nullptr
-} ;
+} ; /* end array */
 
 constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
@@ -125,7 +124,7 @@ constexpr pivars	initvars = {
 	VARPROGRAMROOT3,
 	PROGRAMROOT,
 	VARPRLOCAL
-} ;
+} ; /* end array */
 
 constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
@@ -137,21 +136,21 @@ constexpr mapex_map	mapexs[] = {
 	{ SR_REMOTE, EX_PROTOCOL },
 	{ SR_NOSPC, EX_TEMPFAIL },
 	{ 0, 0 }
-} ;
+} ; /* end array */
 
 enum akonames {
 	akoname_print,
 	akoname_add,
 	akoname_inc,
 	akoname_overlast
-} ;
+} ; /* end enum */
 
 constexpr cpcchar	akonames[] = {
 	"print",
 	"add",
 	"inc",
 	nullptr
-} ;
+} ; /* end array */
 
 
 /* exported variables */
@@ -951,7 +950,7 @@ local int procopts(PI *pip,keyopt *kop) noex {
 	if (rs >= 0) {
 	if ((rs = keyopt_curbegin(kop,&kcur)) >= 0) {
 
-	while ((kl = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	while ((kl = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
 	    vl = keyopt_fetch(kop,kp,nullptr,&vp) ;
 
@@ -1077,7 +1076,7 @@ local int proclist(PI *pip,bfile *ofp,cchar *dbfname) noex {
 
 #if	CF_DEBUG
 	if (DEBUGLEVEL(3))
-	debugprintf("main/proclist: tmpx_enum() rs1=%d\n",rs1) ;
+	debugprintf("main/proclist: tmpx_curenum() rs1=%d\n",rs1) ;
 #endif
 
 	    if (rs1 == SR_NOTFOUND) break ;
