@@ -1,10 +1,13 @@
-/* main (testbins) */
-/* lang=C++11 */
+/* testbins_main SUPPORT (testbins) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test something w/ VMAIL */
+/* version %I% last-modified %G% */
 
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
-
 
 /* revision history:
 
@@ -26,15 +29,12 @@
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<climits>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
-
-#include	<cstdlib>
 #include	<cinttypes>
 #include	<cstring>
 #include	<new>
@@ -49,21 +49,20 @@
 #include	<ostream>
 #include	<iostream>
 #include	<iomanip>
-
-#include	<usystem.h>
-#include	<ascii.h>
-#include	<bfile.h>
-#include	<localmisc.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<ascii.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 
 #include	"defs.h"
 #include	"config.h"
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
 
 /* local defines */
-
-#ifndef	MKCHAR
-#define	MKCHAR(ch)	((ch) & UCHAR_MAX)
-#endif
 
 #ifndef	PCS
 #define	PCS		"/usr/add-on/pcs"
@@ -75,8 +74,12 @@
 
 #define	OBUFLEN		(LINEBUFLEN*2)
 
-#ifndef	PROGINFO
-#define	PROGINFO	struct proginfo
+#ifndef	PI
+#define	PI		proginfo
+#endif
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* compile-time debugging */
 #endif
 
 
@@ -87,7 +90,7 @@ using namespace	std ;
 
 /* external subroutines */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern "C" int	debugopen(const char *) ;
 extern "C" int	debugprintf(const char *,...) ;
 extern "C" int	debugprinthex(const char *,int,const char *,int) ;
@@ -98,8 +101,8 @@ extern "C" int	strlinelen(const char *,int,int) ;
 
 /* forward references */
 
-#if	CF_DEBUGS
-static int	debugprintchars(cchar *,const wchar_t *,int) ;
+#if	CF_DEBUG
+local int	debugprintchars(cchar *,const wchar_t *,int) ;
 #endif
 
 
@@ -116,9 +119,9 @@ static const int 	values[] = {
 /* ASRGUSED */
 int main(int argc,cchar *argv[],cchar *envv[])
 {
-	PROGINFO	pi, *pip = &pi ;
+	PI	pi, *pip = &pi ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
@@ -127,19 +130,19 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	const char	*pr = PCS ;
 	const char	*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
 
-	memset(pip,0,sizeof(PROGINFO)) ;
+	memset(pip,0,sizeof(PI)) ;
 	pip->pr = pr ;
 
 /* go */
@@ -158,7 +161,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	        int	i ;
 		cout << "sch=" << sch << endl ;
 	        i = ((back-front)/2) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		{
 		    const wchar_t	*w = (const wchar_t *) values ;
 		    debugprintchars("main:",w,back) ;
@@ -167,7 +170,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 #endif
 	        while (front < back) {
 		    ch = values[i] ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		    debugprintf("main: top i=%u ch=%u\n",i,ch) ;
 #endif
 		    if (sch > ch) {
@@ -177,12 +180,12 @@ int main(int argc,cchar *argv[],cchar *envv[])
 		    } else {
 			break ;
 		    }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		    debugprintf("main: bot front=%u back=%u\n",front,back) ;
 #endif
 	            i = (front + ((back-front)/2)) ;
 	        } /* end while */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("main: front=%u\n",front) ;
 		debugprintf("main: back=%u\n",back) ;
 		debugprintf("main: i=%u ch=%u\n",i,ch) ;
@@ -195,11 +198,11 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	    } /* end for */
 	} /* end if (ok) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: done rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -208,29 +211,25 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-#if	CF_DEBUGS
-static int debugprintchars(cchar *id,const wchar_t *wbuf,int wlen)
-{
-	int	i ;
-	for (i = 0 ; i < wlen ; i += 1) {
+#if	CF_DEBUG
+local int debugprintchars(cchar *id,const wchar_t *wbuf,int wlen) noex {
+	for (int i = 0 ; i < wlen ; i += 1) {
 	    const int	ch = wbuf[i] ;
 	    debugprintf("main/%s: wc[%02u]=%08x\n",id,i,ch) ;
 	}
 	return 0 ;
-}
-/* end subroutine (debugprintchars) */
-#endif /* CF_DEBUGS */
+} /* end subroutine (debugprintchars) */
+#endif /* CF_DEBUG */
+
 
