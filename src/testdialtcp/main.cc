@@ -1,27 +1,24 @@
-/* main */
+/* testdialtcp_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* testing */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0
 #define	CF_DEBUG	1
 #define	CF_DIALTCPMUX	0
 #define	CF_SLEEP	0
 
-
 /* revision history:
 
-	= 88/02/01, David A­D­ Morano
-
+	= 1988-02-01, David A­D­ Morano
 	This subroutine was originally written.
 
-
-	= 88/02/10, David A­D­ Morano
-
+	= 1988-02-10, David A­D­ Morano
 	This subroutine was modified to not write out anything
 	to standard output if the access time of the associated
 	terminal has not been changed in 10 minutes.
-
 
 */
 
@@ -29,29 +26,26 @@
 
 /************************************************************************
 
-	Call as :
-
+	Synopsis:
 	$ testdialtcp
-
 
 *************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<sys/param.h>
+#include	<libgen.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<ctime>
-#include	<libgen.h>
 #include	<netdb.h>
+#include	<ctime>
+#include	<cstdlib>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<lfm.h>
 #include	<bfile.h>
 #include	<baops.h>
