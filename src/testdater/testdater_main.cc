@@ -38,21 +38,21 @@
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<ctime>
-#include	<csignal>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<bfile.h>
+#include	<ctime>			/* CSTD */
+#include	<csignal>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<field.h>
-#include	<char.h>
 #include	<tmctime>
 #include	<sntmctime>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<char.h>
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
+#include	<bfile.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -76,8 +76,7 @@
 
 extern "C" {
     extern int	proginfo_setpiv(PI *,cchar *,const pivars *) noex ;
-}
-
+} /* end */
 
 /* external variables */
 
@@ -265,8 +264,7 @@ badprogstart:
 #endif
 
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -303,8 +301,7 @@ local int process(PI *pip,dater *dp,cchar *ofn) noex {
 	} /* end if (bfile-output) */
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (process) */
+} /* end subroutine (process) */
 
 local int procin(PI *pip,dater *dp,bfile *ofp) noex {
 	int		rs ;
@@ -349,8 +346,7 @@ local int procin(PI *pip,dater *dp,bfile *ofp) noex {
 	} /* end if (bfile-input) */
 
 	return rs ;
-}
-/* end subroutine (procin) */
+} /* end subroutine (procin) */
 
 local int procline(PI *pip,dater *dp,bfile *ofp,cchar *lbuf,int llen) noex {
 	int		rs ;
@@ -482,8 +478,7 @@ local int procline(PI *pip,dater *dp,bfile *ofp,cchar *lbuf,int llen) noex {
 	} /* end if (field) */
 
 	return rs ;
-}
-/* end subroutine (procline) */
+} /* end subroutine (procline) */
 
 #if	CF_DUMPZINFO
 local int dumpzinfo(dater *dp,cchar *fname) noex {
@@ -507,8 +502,7 @@ local int dumpzinfo(dater *dp,cchar *fname) noex {
 	} /* end if */
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (dumpzinfo) */
+} /* end subroutine (dumpzinfo) */
 #endif /* CF_DUMPZINFO */
 
 
