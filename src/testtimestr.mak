@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -lf -lu
 
 
 DEPS_MAIN += 
@@ -55,7 +55,6 @@ OBJ7=
 
 OBJA= obj0.o obj1.o 
 OBJB= obj4.o 
-#OBJB= obj4.o obj5.o obj6.o obj7.o
 
 OBJ= obja.o
 
@@ -109,8 +108,8 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).x:			obj.o Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
