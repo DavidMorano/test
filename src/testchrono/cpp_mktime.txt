@@ -1,0 +1,51 @@
+
+#include <chrono>
+#include <iostream>
+
+int main() {
+    // 1. Define the time zone target
+    const std::chrono::time_zone* tz = std::chrono::locate_zone("America/New_York");
+
+    // 2. Define individual integer components
+    int year = 2026;
+    unsigned month = 8;
+    unsigned day = 29;
+
+    int hours = 21;
+    int minutes = 53;
+    int seconds = 0;
+
+    // 3. Construct the Date component
+    std::chrono::year_month_day ymd{
+        std::chrono::year{year},
+        std::chrono::month{month},
+        std::chrono::day{day}
+    };
+
+    // 4. Construct the Time component (as a duration)
+    auto time_duration = std::chrono::hours{hours}
+                       + std::chrono::minutes{minutes}
+                       + std::chrono::seconds{seconds};
+
+    // 5. Combine into a type-safe local time point
+    // std::chrono::local_days converts the calendar date to a days-resolution time point
+    std::chrono::local_time<std::chrono::seconds> local_tp{
+        std::chrono::local_days{ymd} + time_duration
+    };
+
+    // 6. Construct the final zoned_time
+    std::chrono::zoned_time zt{tz, local_tp};
+
+    // Output validation
+    std::cout << "Constructed zoned_time: " << zt << "\n";
+}
+
+
+// Choose the EARLIER system time if the local time is ambiguous
+std::chrono::zoned_time zt_earlier{tz, local_tp, std::chrono::choose::earlier};
+
+// Choose the LATER system time if the local time is ambiguous
+std::chrono::zoned_time zt_later{tz, local_tp, std::chrono::choose::later};
+
+
+
