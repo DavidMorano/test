@@ -15,7 +15,7 @@
 ******************************************************************************/
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -192,7 +192,7 @@ char	*envv[] ;
 
 	    if (len > 0) {
 
-	        PARAMFILE_CUR	cur ;
+	        paramfile_cur	cur ;
 
 
 	        configvars_curbegin(&cvs,&cur) ;
