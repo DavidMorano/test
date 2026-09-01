@@ -78,7 +78,6 @@ cbool		f_debug		= CF_DEBUG ;
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) noex {
-	[[maybe_unused]] cnullptr	np{} ;
 	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
