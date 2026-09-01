@@ -57,7 +57,7 @@ using std::cout ;			/* variable */
 
 /* local typedefs */
 
-using sub_f	= int (*)() noex ;
+using sub_f	= int (*)(time_t) noex ;
 
 
 /* external subroutines */
@@ -72,12 +72,12 @@ using sub_f	= int (*)() noex ;
 /* forward references */
 
 local int procargs	(int,con mainv) noex ;
-local int procvals	() noex ;
-local int procdefzone	() noex ;
-local int proceval	() noex ;
-local int proclocaltime	() noex ;
-local int procmktime	() noex ;
-local int procmktimer	() noex ;
+local int procvals	(time_t) noex ;
+local int procdefzone	(time_t) noex ;
+local int proceval	(time_t) noex ;
+local int proclocaltime	(time_t) noex ;
+local int procmktime	(time_t) noex ;
+local int procmktimer	(time_t) noex ;
 
 
 /* local variables */
@@ -100,7 +100,6 @@ cbool		f_debug		= CF_DEBUG ;
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) noex {
-	[[maybe_unused]] cnullptr	np{} ;
 	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
@@ -111,8 +110,9 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	    rs = procargs(argc,argv) ;
 	} /* end if (ok) */
 	if (rs >= 0) {
+	    custime dt = getustime ;
 	    for (cauto &fun : subs) {
-		rs = fun() ;
+		rs = fun(dt) ;
 		if (rs < 0) break ;
 	    } /* end for */
 	} /* end if (ok) */
@@ -146,8 +146,7 @@ local int procargs(int argc,con mainv argv) noex {
 	return rs ;
 } /* end subroutine (procargs) */
 
-local int procvals() noex {
-    	custime		dt = getustime ;
+local int procvals(time_t dt) noex {
 	cint		tlen = TIMEBUFLEN ;
     	int		rs = SR_OK ;
 	char		tbuf[TIMEBUFLEN + 1] ;
@@ -183,13 +182,13 @@ constexpr cpcchar	znames[] = {
         "US/Pacific"
 } ; /* end array (znames) */
 
-local int procdefzone() noex {
+local int procdefzone(time_t) noex {
     using namespace	std::chrono ;
     int		rs = SR_OK ;
     // 1. Alias the standard traits specialization for convenience
-    using tz_traits = std::chrono::zoned_traits<const time_zone *>;
+    using tz_traits = std::chrono::zoned_traits<const time_zone *> ;
     // 2. Fetch the default time zone pointer (returns UTC time zone pointer)
-    const time_zone *def_zone = tz_traits::default_zone();
+    const time_zone *def_zone = tz_traits::default_zone() ;
     // 3. Output the name of the retrieved time zone
     if (def_zone) {
         cout << "defzone="<< def_zone->name() << eol ;
@@ -197,14 +196,14 @@ local int procdefzone() noex {
     return rs ;
 } /* end subroutine (procdefzone) */
 
-local int proceval() noex {
+local int proceval(time_t) noex {
     	using namespace std::chrono ;
 	using		std::setw ;
     	int		rs = SR_OK ;
         try {
             for (cauto &zn : znames) {
-	        con time_zone *zp = locate_zone(zn) ;
-                cout << setw(20) << zn << " " << zp->name() << eol ;
+	        con time_zone *tzp = locate_zone(zn) ;
+                cout << setw(20) << zn << " " << tzp->name() << eol ;
 	    } /* end for */
         } catch (const std::runtime_error& ex) {
             cout << ex.what() << '\n';
@@ -214,48 +213,40 @@ local int proceval() noex {
     	return rs ;
 } /* end subroutine (procvals) */
 
-local int proclocaltime() noex {
+local int proclocaltime(time_t) noex {
     using namespace std::chrono ;
     con time_point	now = system_clock::now() ;
     con time_zone	*tzp = current_zone() ;
     int			rs = SR_OK ;
     // 1. Get the current time in the local time zone
     zoned_time local_time{ tzp , now } ;
-
     // 2. Extract the local time point (analogous overall local timestamp)
     auto local_tp = local_time.get_local_time();
-
     // 3. Separate into Date components (Year, Month, Day)
     local_days local_date = floor<std::chrono::days>(local_tp);
     year_month_day ymd{local_date};
-
     // 4. Separate into Time components (Hours, Minutes, Seconds, Subseconds)
     hh_mm_ss hms{local_tp - local_date};
-
     // 5. Access individual fields directly
-    int year   = static_cast<int>(ymd.year());
-    unsigned month = static_cast<unsigned>(ymd.month());
-    unsigned day   = static_cast<unsigned>(ymd.day());
-
-    (void) year ;
-    (void) month ;
-    (void) day ;
-
-    long hours   = hms.hours().count();
-    long minutes = hms.minutes().count();
-    long seconds = hms.seconds().count();
-
-    (void) hours ;
-    (void) minutes ;
-    (void) seconds ;
+    int 	tm_year		= static_cast<int>(ymd.year());
+    unsigned 	tm_month	= static_cast<unsigned>(ymd.month());
+    unsigned 	tm_day		= static_cast<unsigned>(ymd.day());
+    (void) tm_year ;
+    (void) tm_month ;
+    (void) tm_day ;
+    long tm_hours   = hms.hours().count();
+    long tm_minutes = hms.minutes().count();
+    long tm_seconds = hms.seconds().count();
+    (void) tm_hours ;
+    (void) tm_minutes ;
+    (void) tm_seconds ;
     cout << "Local Date: " << ymd << eol ;
     cout << "Local Time: " << hms << eol ;
 	return rs ;
 } /* end subroutine (proclocaltime) */
 
-local int procmktime() noex {
+local int procmktime(time_t dt) noex {
         using namespace std::chrono ;
-	custime		dt = getustime ;
         con time_point	now = system_clock::now() ;
         con time_zone	*tzp = current_zone() ;
     	int		rs = SR_OK ;
@@ -283,9 +274,8 @@ local time_t mktimer(cauto &zt) noex {
 	return t ;
 } /* end subroutine (mktimer) */
 
-local int procmktimer() noex {
+local int procmktimer(time_t dt) noex {
         using namespace std::chrono ;
-	custime		dt = getustime ;
         con time_zone	*tzp = current_zone() ;
     	int		rs = SR_OK ;
 	{
@@ -302,15 +292,15 @@ local int procmktimer() noex {
                        + minutes{tmp->tm_min}
                        + seconds{tmp->tm_sec} ;
     // 5. Combine into a type-safe local time point
-    // std::chrono::local_days converts date to a days-resolution time point
+    // local_days converts date to a days-resolution time point
     local_time<seconds> local_tp{ local_days{ymd} + time_duration } ;
     // 6. Construct the final zoned_time
     zoned_time zt{ tzp, local_tp, choose::earliest } ;
     cout << "zoned_time=" << zt << eol ;
     // Output validation
     {
-	custime t = mktimer(zt) ;
-    cout << "mktimer zt=" << t << eol ;
+	custime tt = mktimer(zt) ;
+    cout << "mktimer zt=" << tt << eol ;
     cout << "mktimer dt=" << dt << eol ;
     }
 	} /* end block */
