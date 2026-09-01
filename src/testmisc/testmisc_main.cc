@@ -37,29 +37,29 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<cinttypes>
-#include	<new>
-#include	<initializer_list>
-#include	<utility>
-#include	<functional>
-#include	<algorithm>
-#include	<set>
-#include	<map>
-#include	<unordered_set>
-#include	<unordered_map>
-#include	<vector>
-#include	<string>
-#include	<fstream>
-#include	<ostream>
-#include	<iostream>
-#include	<iomanip>
-#include	<clanguage.h>
-#include	<usysbase.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cinttypes>		/* CSTD */
+#include	<new>			/* CSTD */
+#include	<initializer_list>	/* CSTD */
+#include	<utility>		/* CSTD */
+#include	<functional>		/* CSTD */
+#include	<algorithm>		/* CSTD */
+#include	<set>			/* CSTD */
+#include	<map>			/* CSTD */
+#include	<unordered_set>		/* CSTD */
+#include	<unordered_map>		/* CSTD */
+#include	<vector>		/* CSTD */
+#include	<string>		/* CSTD */
+#include	<fstream>		/* CSTD */
+#include	<ostream>		/* CSTD */
+#include	<iostream>		/* CSTD */
+#include	<iomanip>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<hasduplicate.hh>
-#include	<localmisc.h>
+#include	<localmisc.h>		/* LIBU */
 
 
 /* local defines */
@@ -217,14 +217,14 @@ struct tupler {
 /* forward references */
 
 #if	CF_LAMBDA
-static int testlambda(void) ;
+local int testlambda(void) ;
 #endif /* CF_LAMBDA */
 
 #if	CF_TESTIO
-static int testio() ;
+local int testio() ;
 #endif
 
-static int readline(ifstream &,char *,int) ;
+local int readline(ifstream &,char *,int) ;
 
 
 /* local variables */
@@ -365,18 +365,17 @@ int main(int argc,con mainv argv,con mainv envv) {
 #endif /* CF_TESTIO */
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 auto special(int a, int b) -> int {
 	return (a+b) ;
-}
+} /* end */
 
 
 /* local subroutines */
 
 #if	CF_TESTIO
-static int testio() {
+local int testio() {
 	int		rs = SR_OK ;
 	{
 	    cchar	*ofn = "ourout.txt" ;
@@ -407,12 +406,11 @@ static int testio() {
 	    }
 	}
 	return rs ;
-}
-/* end subroutine (testio) */
+} /* end subroutine (testio) */
 #endif /* CF_TESTIO */
 
 #if	CF_LAMBDA
-static int testlambda(void) {
+local int testlambda(void) {
 	vector<int>	mv = { 1, 2, 3, 4 } ;
 	int		a[3] = { 2, 1, 3 } ;
 	int		sum = 0 ;
@@ -437,15 +435,14 @@ static int testlambda(void) {
 	cout << "sum=" << sum << '\n' ;
 
 	return 0 ;
-}
-/* end subroutine (testlambda) */
+} /* end subroutine (testlambda) */
 #endif /* CF_LAMBDA */
 
 bool testcon::have() {
 	const int	ans = sisub(hello,-1,"hello") ;
 	fprintf(stderr,"main/testconn::have: ans=%u\n",(ans >= 0)) ;
 	return (ans >= 0) ;
-}
+} /* end */
 
 int readline(ifstream &is,char *lbuf,int llen) {
 	int		rs = SR_OK ;
@@ -453,7 +450,6 @@ int readline(ifstream &is,char *lbuf,int llen) {
 	    rs = is.gcount() ;
 	}
 	return rs ;
-}
-/* end subroutine (readline) */
+} /* end subroutine (readline) */
 
 
