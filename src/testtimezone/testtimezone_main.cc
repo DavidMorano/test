@@ -56,11 +56,26 @@ import ulibvals ;			/* |ulibval(3u)| */
 #endif
 
 
+/* imported namespaces */
+
 using std::is_same_v ;			/* template */
 using std::type_info ;			/* template */
 using std::cout ;			/* variable */
 using libuc::mem ;			/* variable */
 
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
+
+
+/* forward references */
 
 local int libtypes	() noex ;
 local int libchrono	() noex ;
@@ -72,9 +87,17 @@ local int libuftime	() noex ;
 local int libtimezone	() noex ;
 local int libtzname	() noex ;
 
+
+/* local variables */
+
 static cint	maxtzname	= ulibval.maxtzname ;
 cbool		f_debug		= CF_DEBUG ;
 
+
+/* exported variables */
+
+
+/* exported subroutines */
 
 int main(int,con mainv,con mainv envv) {
     	int		rs = SR_OK ;
@@ -100,6 +123,7 @@ int main(int,con mainv,con mainv envv) {
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	}
+	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
 	DEBUGCLOSE ;
 	return ex ;
 } /* end subrutine (main) */
