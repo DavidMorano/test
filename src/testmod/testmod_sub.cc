@@ -16,29 +16,30 @@
 /*******************************************************************************
 
   	Name:
-	mod_main
+	testmod_sub
 
 *******************************************************************************/
 
 /* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cinttypes>
-#include	<cstring>
-#include	<new>
-#include	<initializer_list>
-#include	<utility>
-#include	<functional>
-#include	<algorithm>
-#include	<vector>
-#include	<string>
-#include	<fstream>
-#include	<iostream>
-#include	<iomanip>
-#include	<usystem.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cinttypes>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<new>			/* C++STD */
+#include	<initlist>		/* C++STD */
+#include	<utility>		/* C++STD */
+#include	<functional>		/* C++STD */
+#include	<algorithm>		/* C++STD */
+#include	<vector>		/* C++STD */
+#include	<string>		/* C++STD */
+#include	<fstream>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"testmod_config.h"
 
@@ -77,9 +78,9 @@ void sub(cchar *sp) noex {
     	hello_there(sp) ;
 } /* end subroutine (sub) */
 
-    void subfrank(cchar *sp) noex {
+void subfrank(cchar *sp) noex {
     	cout << "sub-frank - " << sp << eol ;
-    }
+} /* end */
 
 
 /* local subroutines */
