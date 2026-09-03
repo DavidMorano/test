@@ -1,4 +1,4 @@
-/* testsgfe SUPPORT */
+/* testsfe SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -111,13 +111,13 @@ import libutil ;			/* |lenstr(3u)| */
 
 #define	NDEPS		100		/* default values */
 
-#define	LOCINFO		struct locinfo
-#define	LOCINFO_FL	struct locinfo_flags
-#define	LOCINFO_CUR	struct locinfo_cur
+#define	LI		locinfo
+#define	LI_FL		locinfo_flags
+#define	LI_CUR		locinfo_cur
 
-#define	CPPERR		struct cpperr
+#define	CPPERR		cpperr
 
-#define	LSTATE		struct lstate
+#define	LSTATE		lstate
 
 #define	NDF		"testbug.deb"
 
@@ -158,8 +158,8 @@ struct locinfo_flags {
 
 struct locinfo {
 	vecstr		stores ;
-	LOCINFO_FL	have, f, changed, finval ;
-	LOCINFO_FL	open ;
+	LI_FL	have, f, changed, finval ;
+	LI_FL	open ;
 	IDS		id ;
 	dirlist		incs ;
 	CACHETIME	mtdb ;
@@ -214,28 +214,28 @@ local int	procout_begin(PROGINFO *,void *,cchar *) noex ;
 local int	procout_end(PROGINFO *) noex ;
 local int	procout_printf(PROGINFO *,cchar *,...) noex ;
 
-local int	locinfo_start(LOCINFO *,PROGINFO *) noex ;
-local int	locinfo_finish(LOCINFO *) noex ;
-local int	locinfo_jobdname(LOCINFO *) noex ;
-local int	locinfo_tmpcheck(LOCINFO *) noex ;
-local int	locinfo_tmpmaint(LOCINFO *) noex ;
-local int	locinfo_tmpdone(LOCINFO *) noex ;
-local int	locinfo_fchmodown(LOCINFO *,int,ustat *,mode_t) noex ;
-local int	locinfo_loadprids(LOCINFO *) noex ;
-local int	locinfo_alreadybegin(LOCINFO *) noex ;
-local int	locinfo_alreadyend(LOCINFO *) noex ;
-local int	locinfo_alreadystat(LOCINFO *) noex ;
-local int	locinfo_incdirs(LOCINFO *) noex ;
-local int	locinfo_incadds(LOCINFO *,cchar *,int) noex ;
-local int	locinfo_alreadylookup(LOCINFO *,cchar *,int,time_t *) noex ;
+local int	locinfo_start(LI *,PROGINFO *) noex ;
+local int	locinfo_finish(LI *) noex ;
+local int	locinfo_jobdname(LI *) noex ;
+local int	locinfo_tmpcheck(LI *) noex ;
+local int	locinfo_tmpmaint(LI *) noex ;
+local int	locinfo_tmpdone(LI *) noex ;
+local int	locinfo_fchmodown(LI *,int,ustat *,mode_t) noex ;
+local int	locinfo_loadprids(LI *) noex ;
+local int	locinfo_alreadybegin(LI *) noex ;
+local int	locinfo_alreadyend(LI *) noex ;
+local int	locinfo_alreadystat(LI *) noex ;
+local int	locinfo_incdirs(LI *) noex ;
+local int	locinfo_incadds(LI *,cchar *,int) noex ;
+local int	locinfo_alreadylookup(LI *,cchar *,int,time_t *) noex ;
 
-local int	locinfo_incbegin(LOCINFO *,LOCINFO_CUR *) noex ;
-local int	locinfo_incenum(LOCINFO *,LOCINFO_CUR *,char *,int) noex ;
-local int	locinfo_incend(LOCINFO *,LOCINFO_CUR *) noex ;
-local int	locinfo_ncpu(LOCINFO *) noex ;
+local int	locinfo_incbegin(LI *,LI_CUR *) noex ;
+local int	locinfo_incenum(LI *,LI_CUR *,char *,int) noex ;
+local int	locinfo_incend(LI *,LI_CUR *) noex ;
+local int	locinfo_ncpu(LI *) noex ;
 
 #if	CF_LOCSETENT
-local int	locinfo_setentry(LOCINFO *,cchar **,cchar *,int) noex ;
+local int	locinfo_setentry(LI *,cchar **,cchar *,int) noex ;
 #endif
 
 local int cpperr_start(CPPERR *,int,cchar *,int) noex ;
@@ -341,7 +341,7 @@ constexpr char		errsub2[] = ": Cannot find include file " ;
 
 int main(int argc,con mainv argv,con mainv envv) {
 	PROGINFO	pi, *pip = &pi ;
-	LOCINFO		li, *lip = &li ;
+	LI		li, *lip = &li ;
 	ARGINFO		ainfo ;
 	bits		pargs ;
 	keyopt		akopts ;
@@ -1087,7 +1087,7 @@ local int usage(PROGINFO *pip)
 
 local int proceprintf(PROGINFO *pip,cchar *fmt,...) noex {
 	va_list		ap ;
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		len = 0 ;
@@ -1108,7 +1108,7 @@ local int proceprintf(PROGINFO *pip,cchar *fmt,...) noex {
 } /* end subroutine (proceprintf) */
 
 local int procopts(PROGINFO *pip,keyopt *kop) noex {
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	static cchar	*varp = getenv(VAROPTS) ;
 	int		rs = SR_OK ;
 	int		c = 0 ;
@@ -1199,7 +1199,7 @@ local int procopts(PROGINFO *pip,keyopt *kop) noex {
 
 local int testbugger(PROGINFO *pip)
 {
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	vecstr		args ;
 	cmode		operms = 0664 ;
 	int		rs ;
@@ -1355,7 +1355,7 @@ ret0:
 
 local int test1(PROGINFO *pip)
 {
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	vecstr		args ;
 	cmode		operms = 0664 ;
 	int		rs ;
@@ -1516,7 +1516,7 @@ ret0:
 
 local int procsubprog(PROGINFO *pip,cchar *progcpp)
 {
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	int		rs = SR_OK ;
 	cchar	*cp ;
 	cchar	**vpp = &lip->prog_cpp ;
@@ -1820,7 +1820,7 @@ local int procerrline(PROGINFO *pip,cchar *lbuf,int len)
 
 local int procout_begin(PROGINFO *pip,void *ofp,cchar *ofn)
 {
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	int		rs = SR_OK ;
 
 	if ((ofn == nullptr) || (ofn[0] == '\0') || (ofn[0] == '-')) {
@@ -1843,7 +1843,7 @@ local int procout_begin(PROGINFO *pip,void *ofp,cchar *ofn)
 } /* end subroutine (procout_begin) */
 
 local int procout_end(PROGINFO *pip) noex {
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (lip->fl.print || (pip->verboselevel > 0)) {
@@ -1863,7 +1863,7 @@ local int procout_end(PROGINFO *pip) noex {
 
 local int procout_printf(PROGINFO *pip,cchar *fmt,...) noex {
 	va_list		ap ;
-	LOCINFO		*lip = pip->lip ;
+	LI		*lip = pip->lip ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		len = 0 ;
@@ -1935,7 +1935,7 @@ local int cpperr_finish(CPPERR *ep)
 	return rs ;
 } /* end subroutine (cpperr_finish) */
 
-local int locinfo_start(LOCINFO *lip,PROGINFO *pip) noex {
+local int locinfo_start(LI *lip,PROGINFO *pip) noex {
 	int		rs = SR_OK ;
 	memclear(lip) ; /* dangerous */
 	lip->pip = pip ;
@@ -1962,7 +1962,7 @@ local int locinfo_start(LOCINFO *lip,PROGINFO *pip) noex {
 	return rs ;
 } /* end subroutine (locinfo_start) */
 
-local int locinfo_finish(LOCINFO *lip) noex {
+local int locinfo_finish(LI *lip) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	{
@@ -2000,7 +2000,7 @@ local int locinfo_finish(LOCINFO *lip) noex {
 } /* end subroutine (locinfo_finish) */
 
 #if	CF_LOCSETENT
-int locinfo_setentry(LOCINFO *lip,cchar **epp,cchar *vp,int vl) noex {
+int locinfo_setentry(LI *lip,cchar **epp,cchar *vp,int vl) noex {
 	VECSTR		*slp ;
 	int		rs = SR_OK ;
 	int		len = 0 ;
@@ -2034,7 +2034,7 @@ int locinfo_setentry(LOCINFO *lip,cchar **epp,cchar *vp,int vl) noex {
 } /* end subroutine (locinfo_setentry) */
 #endif /* CF_LOCSETENT */
 
-local int locinfo_jobdname(LOCINFO *lip) noex {
+local int locinfo_jobdname(LI *lip) noex {
 	PROGINFO	*pip = lip->pip ;
 	int		rs ;
 	if (lip->jobdname == nullptr) {
@@ -2051,7 +2051,7 @@ local int locinfo_jobdname(LOCINFO *lip) noex {
 } /* end subroutine (locinfo_jobdname) */
 
 /* this runs as an independent thread */
-local int locinfo_tmpcheck(LOCINFO *lip) noex {
+local int locinfo_tmpcheck(LI *lip) noex {
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
 
@@ -2074,7 +2074,7 @@ local int locinfo_tmpcheck(LOCINFO *lip) noex {
 } /* end subroutine (locinfo_tmpcheck) */
 
 /* this runs as an independent thread */
-local int locinfo_tmpmaint(LOCINFO *lip) noex {
+local int locinfo_tmpmaint(LI *lip) noex {
 	PROGINFO	*pip = lip->pip ;
 	cint	to = lip->to_tmpfiles ;
 	int		rs ;
@@ -2118,7 +2118,7 @@ local int locinfo_tmpmaint(LOCINFO *lip) noex {
 } /* end subroutine (locinfo_tmpmaint) */
 
 
-local int locinfo_tmpdone(LOCINFO *lip)
+local int locinfo_tmpdone(LI *lip)
 {
 	int		rs = SR_OK ;
 	int		rs1 ;
@@ -2132,7 +2132,7 @@ local int locinfo_tmpdone(LOCINFO *lip)
 } /* end subroutine (locinfo_tmpdone) */
 
 
-local int locinfo_fchmodown(LOCINFO *lip,int fd,ustat *sbp,mode_t mm)
+local int locinfo_fchmodown(LI *lip,int fd,ustat *sbp,mode_t mm)
 {
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
@@ -2158,7 +2158,7 @@ local int locinfo_fchmodown(LOCINFO *lip,int fd,ustat *sbp,mode_t mm)
 } /* end subroutine (locinfo_fchmodown) */
 
 
-local int locinfo_loadprids(LOCINFO *lip)
+local int locinfo_loadprids(LI *lip)
 {
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
@@ -2173,7 +2173,7 @@ local int locinfo_loadprids(LOCINFO *lip)
 } /* end subroutine (locinfo_loadprids) */
 
 
-local int locinfo_alreadybegin(LOCINFO *lip)
+local int locinfo_alreadybegin(LI *lip)
 {
 	int		rs = SR_OK ;
 	if (lip->fl.cache) {
@@ -2184,7 +2184,7 @@ local int locinfo_alreadybegin(LOCINFO *lip)
 	return rs ;
 } /* end subroutine (locinfo_alreadybegin) */
 
-local int locinfo_alreadyend(LOCINFO *lip) noex {
+local int locinfo_alreadyend(LI *lip) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (lip->open.cache) {
@@ -2195,7 +2195,7 @@ local int locinfo_alreadyend(LOCINFO *lip) noex {
 	return rs ;
 } /* end subroutine (locinfo_alreadyend) */
 
-local int locinfo_incdirs(LOCINFO *lip) noex {
+local int locinfo_incdirs(LI *lip) noex {
 	int		rs = SR_OK ;
 	int		c = 0 ;
 	if (cchar *cp ; (cp = getenv(VARINCDIRS)) != nullptr) {
@@ -2205,7 +2205,7 @@ local int locinfo_incdirs(LOCINFO *lip) noex {
 	return (rs >= 0) ? c : rs ;
 } /* end subroutine (locinfo_incdirs) */
 
-local int locinfo_incadds(LOCINFO *lip,cchar *sp,int sl) noex {
+local int locinfo_incadds(LI *lip,cchar *sp,int sl) noex {
 	dirlist		*dlp = &lip->incs ;
 	int		rs = SR_OK ;
 	if (lip->open.incs) {
@@ -2216,7 +2216,7 @@ local int locinfo_incadds(LOCINFO *lip,cchar *sp,int sl) noex {
 	return rs ;
 } /* end subroutine (locinfo_incadds) */
 
-local int locinfo_alreadystat(LOCINFO *lip) noex {
+local int locinfo_alreadystat(LI *lip) noex {
 	PROGINFO	*pip = lip->pip ;
 	int		rs = SR_OK ;
 	if ((pip->verboselevel > 0) || (pip->debuglevel > 0)) {
@@ -2242,7 +2242,7 @@ local int locinfo_alreadystat(LOCINFO *lip) noex {
 	return rs ;
 } /* end subroutine (locinfo_alreadystat) */
 
-local int locinfo_alreadylookup(LOCINFO *lip,cc *cp,int cl,time_t *rtp) noex {
+local int locinfo_alreadylookup(LI *lip,cc *cp,int cl,time_t *rtp) noex {
 	int		rs = SR_OK ;
 	if (lip->open.cache) {
 	    rs = cachetime_lookup(&lip->mtdb,cp,cl,rtp) ;
@@ -2250,7 +2250,7 @@ local int locinfo_alreadylookup(LOCINFO *lip,cc *cp,int cl,time_t *rtp) noex {
 	return rs ;
 } /* end subroutine (locinfo_alreadylookup) */
 
-local int locinfo_incbegin(LOCINFO *lip,LOCINFO_CUR *curp) noex {
+local int locinfo_incbegin(LI *lip,LI_CUR *curp) noex {
 	dirlist		*dlp = &lip->incs ;
 	dirlist_cur	*dcp = &curp->c ;
 	int		rs ;
@@ -2260,7 +2260,7 @@ local int locinfo_incbegin(LOCINFO *lip,LOCINFO_CUR *curp) noex {
 	return rs ;
 } /* end subroutine (locinfo_incbegin) */
 
-local int locinfo_incenum(LOCINFO *lip,LOCINFO_CUR *curp,
+local int locinfo_incenum(LI *lip,LI_CUR *curp,
 		char *rbuf,int rlen) noex {
 	dirlist		*dlp = &lip->incs ;
 	dirlist_cur	*dcp = &curp->c ;
@@ -2271,7 +2271,7 @@ local int locinfo_incenum(LOCINFO *lip,LOCINFO_CUR *curp,
 	return rs ;
 } /* end subroutine (locinfo_incenum) */
 
-local int locinfo_incend(LOCINFO *lip,LOCINFO_CUR *curp) noex {
+local int locinfo_incend(LI *lip,LI_CUR *curp) noex {
 	dirlist		*dlp = &lip->incs ;
 	dirlist_cur	*dcp = &curp->c ;
 	int		rs ;
@@ -2281,7 +2281,7 @@ local int locinfo_incend(LOCINFO *lip,LOCINFO_CUR *curp) noex {
 	return rs ;
 } /* end subroutine (locinfo_incend) */
 
-local int locinfo_ncpu(LOCINFO *lip) noex {
+local int locinfo_ncpu(LI *lip) noex {
 	int		rs = SR_OK ;
 	if (lip->ncpu == 0) {
 	    PROGINFO	*pip = lip->pip ;
