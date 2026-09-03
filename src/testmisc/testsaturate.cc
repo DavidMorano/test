@@ -5,6 +5,7 @@
 /* some tests on the 'constespr' feature in C++ */
 /* version %I% last-modified %G% */
 
+#define	CF_SATARITH	1		/* saturating arithmetic */
 
 /* revision history:
 
@@ -30,7 +31,7 @@
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD */
-#include	<numeric>		/* C++STD */
+#include	<numeric>		/* C++STD |std::saturate_cast(3c++)| */
 #include	<array>			/* C++STD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
@@ -46,7 +47,7 @@ import libutil ;			/* |lenstr(3u)| */
 /* imported namespaces */
 
 using std::add_sat ;
-using std::cast_saturate ;
+using std::saturate_cast ;
 
 
 /* local typedefs */
@@ -77,13 +78,23 @@ int main(int,con mainv,con mainv) {
 	{
 	    printf("intmin=%d\n",INT_MIN) ;
 	    printf("lw=%ld\n",lw) ;
-	    int iw = saturate<int>(lw) ;
-	    printf("iw=%d\n",iw) ;
+	    int iw = saturate_cast<short>(lw) ;
+	    printf("saturate=%d\n",iw) ;
 	}
 	{
 	    cint iw = add_sat(1,2) ;
-	    printf("iw=%d\n",iw) ;
+	    printf("add_sat=%d\n",iw) ;
 	}
+	{
+	    cint satval = saturate<short>(lw) ;
+	    printf("long->short satval=%d\n",satval) ;
+	}
+#if	CF_SATARITH /* not officially in C++26 */
+	{
+	    cint satval = sat_add(1,2) ;
+	    printf("sat_add=%d\n",satval) ;
+	}
+#endif /* COMMENT */
 } /* end subroutine (main) */
 
 
