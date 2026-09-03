@@ -40,12 +40,12 @@ MODS += modhello.ccm
 LIBS +=
 
 
-OBJ0= testmod_main.o modhello.o testmod_sub.o
-OBJ1=
+OBJ0= testmod_main.o testmod_sub.o
+OBJ1= modhello.o
 OBJ2=
 OBJ3=
 
-OBJA= obj0.o
+OBJA= obj0.o obj1.o
 
 OBJ= obja.o
 
