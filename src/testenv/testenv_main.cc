@@ -24,8 +24,7 @@
 	testenv
 
 	Description:
-	This is the front-end to make the various SHELL (KSH)
-	built-in commands into stand-alone programs.
+	This is a small test of retrieving environment variables.
 
 *******************************************************************************/
 
@@ -41,7 +40,7 @@
 #include	<intceil.h>		/* LIBU */
 #include	<strkeycmp.h>		/* LIBUC */
 #include	<matkeystr.h>		/* LIBUC */
-#include	<strnul.hh>		/* LIBU */[
+#include	<strnul.hh>		/* LIBU */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
 #include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
