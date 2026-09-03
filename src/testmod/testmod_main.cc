@@ -26,26 +26,26 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<new>
-#include	<initializer_list>
-#include	<utility>
-#include	<functional>
-#include	<algorithm>
-#include	<vector>
-#include	<string>
-#include	<fstream>
-#include	<iostream>
-#include	<iomanip>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<new>			/* C++STD */
+#include	<initializer_list>	/* C++STD */
+#include	<utility>		/* C++STD */
+#include	<functional>		/* C++STD */
+#include	<algorithm>		/* C++STD */
+#include	<vector>		/* C++STD */
+#include	<string>		/* C++STD */
+#include	<fstream>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<usysrets.h>		/* LIBU */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"testmod_sub.hh"
 
