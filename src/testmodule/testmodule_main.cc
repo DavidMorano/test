@@ -50,7 +50,7 @@ import testmod ;
 /* local defines */
 
 #ifndef	CF_DEBUG
-#define	CF_DEBUG	1		/* debugging */
+#define	CF_DEBUG	0		/* debugging */
 #endif
 
 
@@ -90,7 +90,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	DPRINTF("ent\n") ;
 	printf("%s: ent\n",ccp(progname)) ;
 	{
-	    	printname() ;
+	    	printmod("main") ;
 	}
 	DPRINTF("ret rs=%d c=%d\n",rs,c) ;
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
