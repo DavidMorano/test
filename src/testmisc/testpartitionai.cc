@@ -1,12 +1,12 @@
 /* testpartitionai */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
 /* test |partitionai()| function */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGPRINTA	1		/* print arrays */
-
 
 /* revision history:
 
@@ -91,7 +91,7 @@ extern "C" int	partidxi(int *,int,int,int) ;
 
 extern "C" void	arrswapi(int *,int,int) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugclose() ;
@@ -101,17 +101,17 @@ extern "C" int	strlinelen(cchar *,cchar *,int) ;
 
 /* forward references */
 
-static int	ourpred(int,int) ;
-static int	partest(int *,int,partpred_t,int) ;
-static int	isPart(const int *,int,partpred_t,int) ;
+local int	ourpred(int,int) ;
+local int	partest(int *,int,partpred_t,int) ;
+local int	isPart(cint *,int,partpred_t,int) ;
 
-static void	loadrand(int *,int) ;
-static void	loadagain(int *,int *,int) ;
-static void	loadfromvec(int *,const vector<int> &,int) ;
-static void	vecload(vector<int> &,const int *,int) ;
+local void	loadrand(int *,int) ;
+local void	loadagain(int *,int *,int) ;
+local void	loadfromvec(int *,const vector<int> &,int) ;
+local void	vecload(vector<int> &,cint *,int) ;
 
-#if	CF_DEBUGS && CF_DEBUGPRINTA
-static int	debugprinta(const int *,int) ;
+#if	CF_DEBUG && CF_DEBUGPRINTA
+local int	debugprinta(cint *,int) ;
 #endif
 
 
@@ -124,13 +124,13 @@ static int	debugprinta(const int *,int) ;
 /* ARGSUSED */
 int main(int argc,cchar **argv,cchar **envv)
 {
-	const int	al = 15 ;
+	cint	al = 15 ;
 	int		rs ;
 	int		ex = 0 ;
 	int		asize ;
 	int		*a ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -138,31 +138,31 @@ int main(int argc,cchar **argv,cchar **envv)
 	        debugprintf("main: starting DFD=%d\n",rs) ;
 	    }
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	asize = (2*(al+1)*sizeof(int)) ;
 	if ((rs = uc_malloc(asize,&a)) >= 0) {
-	    const int	algo[] = { 0, 1, 2, 3 } ;
-	    const int	on = 100 ;
+	    cint	algo[] = { 0, 1, 2, 3 } ;
+	    cint	on = 100 ;
 	    int		i ;
 	    int		*aa = (a+(al+1)) ;
 	    for (i = 0 ; i < on ; i += 1) {
-		const int	gn = nelem(algo) ;
+		cint	gn = nelem(algo) ;
 		int		j ;
 	        loadrand(a,al) ;
 		for (j = 0 ; j < al ; j += 1) {
-		    const int	pv = a[j] ;
+		    cint	pv = a[j] ;
 		    int		gi ;
 		    int		ans[gn+1] ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 			debugprintf("main: new i=%u j=%u pv=%u\n",i,j,pv) ;
 		        loadagain(aa,a,al) ;
 			debugprinta(aa,al) ;
 #endif
 		    for (gi = 0 ; gi < gn ; gi += 1) {
-		        const int	g = algo[gi] ;
+		        cint	g = algo[gi] ;
 		        loadagain(aa,a,al) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 			debugprintf("main: i=%u j=%u pv=%u g=%u\n",i,j,pv,g) ;
 #endif
 		        switch (g) {
@@ -197,7 +197,7 @@ int main(int argc,cchar **argv,cchar **envv)
 			    ans[gi] = partidxi(aa,0,al,j) ;
 			    break ;
 			} /* end switch */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 			debugprintf("main: ans=%u\n",ans[gi]) ;
 			debugprinta(aa,al) ;
 #endif
@@ -213,7 +213,7 @@ int main(int argc,cchar **argv,cchar **envv)
 			}
 		    }
 #endif /* COMMENT */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 			debugprintf("main: \n") ;
 #endif
 		    if (rs < 0) break ;
@@ -226,28 +226,27 @@ int main(int argc,cchar **argv,cchar **envv)
 	if (rs < 0) printf("bad\n") ;
 	if (rs < 0) ex = 1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: ret rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
 
-static int ourpred(int e,int pv)
+local int ourpred(int e,int pv)
 {
 	return (e < pv) ;
 }
 
-static int partest(int *a,int al,partpred_t fn,int pv)
+local int partest(int *a,int al,partpred_t fn,int pv)
 {
 	int		i ;
 	int		pi = 0 ;
@@ -262,14 +261,14 @@ static int partest(int *a,int al,partpred_t fn,int pv)
 }
 /* end subroutine (partest) */
 
-static int isPart(const int *a,int al,partpred_t fn,int pv)
+local int isPart(cint *a,int al,partpred_t fn,int pv)
 {
 	int		f = TRUE ;
 	if (al > 1) {
 	    int		i ;
 	    int		is = al ;
 	    for (i = 0 ; i < al ; i += 1) {
-	        const int f_pred = (fn)(a[i],pv) ;
+	        cint f_pred = (fn)(a[i],pv) ;
 		if (i < is) {
 		    if (is != al) {
 		        f = f_pred ;
@@ -286,7 +285,7 @@ static int isPart(const int *a,int al,partpred_t fn,int pv)
 }
 /* end subroutine (isPart) */
 
-static void loadrand(int *aa,int al)
+local void loadrand(int *aa,int al)
 {
 	int		i ;
 	for (i = 0 ; i < al ; i += 1) {
@@ -294,29 +293,28 @@ static void loadrand(int *aa,int al)
 	}
 }
 
-static void loadagain(int *aa,int *a,int al)
+local void loadagain(int *aa,int *a,int al)
 {
-	const int	size = (al*sizeof(int)) ;
+	cint	size = (al*sizeof(int)) ;
 	memcpy(aa,a,size) ;
 }
 
-static void loadfromvec(int *aa,const vector<int> &v,int al) 
+local void loadfromvec(int *aa,const vector<int> &v,int al) 
 {
 	for (int i = 0 ; i < al ; i += 1) {
 	    aa[i] = v[i] ;
 	} 
 }
 
-static void vecload(vector<int> &v,const int *aa,int al) 
+local void vecload(vector<int> &v,cint *aa,int al) 
 {
 	for (int i = 0 ; i < al ; i += 1) {
 	    v.push_back(aa[i]) ;
 	} 
 }
 
-
-#if	CF_DEBUGS && CF_DEBUGPRINTA
-static int debugprinta(const int *a,int al)
+#if	CF_DEBUG && CF_DEBUGPRINTA
+local int debugprinta(cint *a,int al)
 {
 	int		i ;
 	for (i = 0 ; i < al ; i += 1) {
@@ -325,6 +323,6 @@ static int debugprinta(const int *a,int al)
 	debugprintf("\n") ;
 	return 0 ;
 }
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 
