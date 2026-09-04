@@ -38,7 +38,7 @@ using std::cout ;			/* variable */
 
 int funminus(int a, int b) {
     return (a - b) ;
-}
+} /* end */
 
 struct S {
     int val ;
