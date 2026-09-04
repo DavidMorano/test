@@ -1,4 +1,10 @@
-/* main (testnewobj) */
+/* testnewobj SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test program */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -10,22 +16,23 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
 
 #include	"newobj.h"
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 
 int main()
 {
-	const int	n = 26 ;
+	cint	n = 26 ;
 	int		rs = SR_OK ;
-	const char	*s = "hello world!" ;
+	cchar	*s = "hello world!" ;
 	char		*a ;
 
 	if ((a = newobj(char,(n+1))) != NULL) {
@@ -38,7 +45,6 @@ int main()
 	printf("rs=%d\n",rs) ;
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
