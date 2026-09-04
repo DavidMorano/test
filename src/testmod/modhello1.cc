@@ -47,7 +47,7 @@ extern "C++" void subfrank(cchar *sp) noex ;
 void access() noex {
     	hidden	a{} ;
 	cout << "v=" << a.v << eol ;
-}
+} /* end */
 
 void hello_there (cchar *sp)  noex {
     	string	s = "jack-in-the-box" ;
@@ -60,4 +60,5 @@ void hello_there (cchar *sp)  noex {
 	cout << "one=" << hello_one << " two=" << hello_two << eol ;
 	cout << hex << s << eol ;
 } /* end subroutine */
+
 
