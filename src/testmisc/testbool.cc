@@ -46,7 +46,6 @@ int main(int,con mainv,con mainv) {
 	    ex = EXIT_FAILURE ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
