@@ -1,18 +1,32 @@
-/* main (testexpcook) */
+/* testexpcookie (testexpcook) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUG	0		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<climits>
+#include	<cstddef>		/* CSTD */
 #include	<cstdlib>
-
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"expcook.h"
 
@@ -24,20 +38,12 @@
 #define	MKCHAR(ch)	((ch) & UCHAR_MAX)
 #endif
 
-extern int	sfcookkey(const char *,int,const char **) ;
-
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
+extern int	sfcookkey(char *,int,char **) ;
 
 
 struct cookpair {
-	const char	*k ;
-	const char	*v ;
+	char	*k ;
+	char	*v ;
 } ;
 
 static const struct cookpair	pairs[] = {
@@ -50,31 +56,32 @@ static const struct cookpair	pairs[] = {
 } ;
 
 
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,con mainv argv,con mainv envv) {
 	EXPCOOK		ec ;
 	EXPCOOK_CUR	cur ;
 
-	const int	klen = KBUFLEN ;
-	const int	wch = MKCHAR('¿') ;
+	cint	klen = KBUFLEN ;
+	cint	wch = MKCHAR('¿') ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
 	int	rs ;
 	int	cl ;
 
-	const char	*s = "here %R is %{tz} thing %{} %{junker} end" ;
-	const char	*cp ;
+	char	*s = "here %R is %{tz} thing %{} %{junker} end" ;
+	char	*cp ;
 
 	char	kbuf[KBUFLEN+1] = { 0 } ;
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getenv(VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getenv(VARDEBUGFD1)) == NULL)
 	        cp = getenv(VARDEBUGFD2) ;
@@ -82,9 +89,9 @@ const char	*envv[] ;
 	if (cp != NULL)
 	    debugopen(cp) ;
 	debugprintf("main: starting\n") ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -102,7 +109,7 @@ const char	*envv[] ;
 
 	if ((rs = expcook_start(&ec)) >= 0) {
 	    int		i ;
-	    const char	*k, *v ;
+	    char	*k, *v ;
 
 	    for (i = 0 ; (rs >= 0) && (pairs[i].k != NULL) ; i += 1) {
 		k = pairs[i].k ;
@@ -112,7 +119,7 @@ const char	*envv[] ;
 
 	    if (rs >= 0) {
 		if ((rs = expcook_curbegin(&ec,&cur)) >= 0) {
-		    const int	rlen = VBUFLEN ;
+		    cint	rlen = VBUFLEN ;
 		    char	rbuf[VBUFLEN+1] ;
 	    	    int		rl ;
 	            while ((rl = expcook_curenum(&ec,&cur,rbuf,rlen)) >= 0) {
@@ -125,7 +132,7 @@ const char	*envv[] ;
 	    } /* end if */
 
 	    if (rs >= 0) {
-		const int	rlen = VBUFLEN ;
+		cint	rlen = VBUFLEN ;
 		char		rbuf[VBUFLEN+1] ;
 		if ((rs = expcook_exp(&ec,wch,rbuf,rlen,s,-1)) >= 0) {
 
@@ -137,7 +144,7 @@ const char	*envv[] ;
 	    expcook_finish(&ec) ;
 	} /* end if (expandcookie) */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -146,12 +153,11 @@ const char	*envv[] ;
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
