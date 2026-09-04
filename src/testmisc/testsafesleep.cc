@@ -1,4 +1,10 @@
-/* testsafesleep (C89) */
+/* testsafesleep SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test program */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -23,7 +29,7 @@ int main(int argc,cchar **argv,cchar **envv) noex {
 	hrtime_t	st, et ;
 	int		rs = SR_OK ;
 	int		ai ;
-	const char	*pn = argv[0] ;
+	cchar	*pn = argv[0] ;
 
 	for (ai = 1 ; ai < argc ; ai += 1) {
 	    cchar	*ap = argv[ai] ;
@@ -44,7 +50,6 @@ int main(int argc,cchar **argv,cchar **envv) noex {
 	fprintf(stderr,"%s: exiting (%d)\n",pn,rs) ;
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
