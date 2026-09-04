@@ -141,7 +141,6 @@ int main(int,cchar **,cchar **) {
 	    ex = EXIT_FAILURE ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
