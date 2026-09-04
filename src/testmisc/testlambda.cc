@@ -2,6 +2,10 @@
 /* charset=ISO8859-1 */
 /* C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
+
 /* revision history:
 
 	= 1998-04-13, David A-D- Morano
@@ -36,7 +40,7 @@
 /* external subroutines */
 
 extern "C" {
-	static int	xsleep(int) noex ;
+	local int	xsleep(int) noex ;
 }
 
 
@@ -71,7 +75,7 @@ public:
 
 /* exported subroutines */
 
-int main(int,const char **,const char **) {
+int main(int,cchar **,cchar **) {
 	int	rs = SR_OK ;
 	cout << "Hello world!" << '\n' ;
 	{
@@ -95,18 +99,16 @@ int main(int,const char **,const char **) {
 	} /* end block */
 	cout << "exiting rs=" << rs << '\n' ;
 	return (rs >= 0) ? 1 : rs ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
 int init() {
 	return 0 ;
-}
-/* end subroutine (init) */
+} /* end subroutine (init) */
 
-static int xsleep(int to) noex {
+local int xsleep(int to) noex {
     	sleep(to) ;
 	return 0 ;
 }
