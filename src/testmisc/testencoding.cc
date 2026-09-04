@@ -69,13 +69,12 @@ using std::cout ;			/* variable */
 
 /* forward references */
 
-static void encoding() ;
+local void encoding() ;
 
 
 /* local variables */
 
 extern cchar	gﬂstr[] ;
-
 const cchar	gﬂstr[] = "g-str" ;
 
 
@@ -94,8 +93,7 @@ int main(int,con mainv,con mainv) {
 	    cout << gﬂstr << eol ;
 	}
 	encoding() ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -117,7 +115,7 @@ void encoding() {
  
     std::println("The literal encoding is {}", literal_encoding.name());
     std::println("The aliases of literal encoding:");
-    for (const char* alias_name : literal_encoding.aliases()) {
+    for (cchar* alias_name : literal_encoding.aliases()) {
         std::println(" -> {}", alias_name);
     }
  
@@ -127,7 +125,7 @@ void encoding() {
  
     std::println("The environment encoding is {}", env_encoding.name());
     std::println("The aliases of environment encoding:");
-    for (const char* alias_name : env_encoding.aliases()) {
+    for (cchar* alias_name : env_encoding.aliases()) {
         std::println(" -> {}", alias_name);
     }
 } /* end subroutine (encoding) */
