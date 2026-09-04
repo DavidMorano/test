@@ -2,7 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C89 */
 
-#define	CF_DEBUGS	1
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
 
 /* revision history:
 
@@ -23,7 +26,7 @@
 
 extern "C" int	mkpathuser(char *,cchar *,cchar *,int) noex ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) noex ;
 extern int	debugprintf(cchar *,...) noex ;
 extern int	debugclose() noex ;
@@ -35,7 +38,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	char		rbuf[MAXPATHLEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != nullptr) {
@@ -43,7 +46,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    }
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if (argv != nullptr) {
 	    int	ai ;
@@ -54,13 +57,12 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    } /* end for */
 	} /* end if (argv) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
