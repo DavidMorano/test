@@ -5,7 +5,7 @@
 /* transfer data */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
+#define	CF_DEBUG	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	1		/* switchable debug print-outs */
 #define	CF_LOCALEOF	0		/* allow local EOF to exit */
 #define	CF_SIGPIPE	1		/* ignore SIGPIPE */
@@ -50,7 +50,7 @@
 #include	"proglog.h"
 #include	"transfer.h"
 
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG || CF_DEBUG
 #include	"debug.h"
 #endif
 
@@ -80,14 +80,14 @@
 /* external subroutines */
 
 extern int	isasocket(int) ;
-extern int	inetping(const char *,int) ;
+extern int	inetping(cchar *,int) ;
 
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugprintf(const char *,...) ;
-extern int	strlinelen(const char *,int,int) ;
+#if	CF_DEBUG || CF_DEBUG
+extern int	debugprintf(cchar *,...) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 extern char	*timestr_log(time_t,char *) ;
 extern char	*timestr_logz(time_t,char *) ;
 
@@ -106,7 +106,7 @@ extern char	*timestr_logz(time_t,char *) ;
 
 int transfer(pip,hostname,rfd,r2fd,ifd,ofd,efd,mxu)
 PROGINFO	*pip ;
-const char	hostname[] ;
+cchar	hostname[] ;
 int		rfd, r2fd ;
 int		ifd, ofd, efd ;
 int		mxu ;
@@ -116,8 +116,8 @@ int		mxu ;
 	ustat	sb ;
 	time_t		ti_pollsanity ;
 	time_t		ti_sanity ;
-	const int	pollinput = (POLLIN|POLLRDNORM|POLLRDBAND|POLLPRI) ;
-	const int	polloutput = (POLLWRNORM | POLLWRBAND) ;
+	cint	pollinput = (POLLIN|POLLRDNORM|POLLRDBAND|POLLPRI) ;
+	cint	polloutput = (POLLWRNORM | POLLWRBAND) ;
 	int		rs = SR_OK ;
 	int		pollint = (10 * POLL_INTMULT) ;
 	int		i ;
@@ -133,7 +133,7 @@ int		mxu ;
 	int		f ;
 	char		buf[BUFLEN + 1] ;
 
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG || CF_DEBUG
 	char		timebuf[TIMEBUFLEN + 1] ;
 #endif
 
@@ -788,7 +788,6 @@ int		mxu ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (transfer) */
+} /* end subroutine (transfer) */
 
 
