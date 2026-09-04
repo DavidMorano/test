@@ -109,8 +109,7 @@ int main(int,con mainv,con mainv) {
     	    cauto fn = bind_front(&teststruct::sub,our) ;
 	    cout << "bind_front fn=" << fn(10) << eol ;
 	}
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
