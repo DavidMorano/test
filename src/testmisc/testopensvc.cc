@@ -1,12 +1,12 @@
 /* testopensvc */
+/* charset=ISO8859-1 */
 /* lang=C89 */
 
 /* test opening a service */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
-
 
 /* revision history:
 
@@ -19,9 +19,12 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdarg>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<fsdir.h>
 #include	<filer.h>
 #include	<localmisc.h>
@@ -37,19 +40,19 @@
 #define	VARDEBUGFNAME	"TESTOPENSVC_DEBUGFILE"
 
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	debugprinthexblock(const char *,int,const void *,int) ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	debugprinthexblock(cchar *,int,const void *,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int dumpfile(FILE *,int,int) ;
-static int dumpdir(int,int) ;
+local int dumpfile(FILE *,int,int) ;
+local int dumpdir(int,int) ;
 
 
 /* exported subroutines */
@@ -58,13 +61,13 @@ static int dumpdir(int,int) ;
 int main(int argc,cchar **argv,cchar **envv)
 {
 	FILE		*ofp = stdout ;
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 	int		rs = SR_OK ;
 	int		ex = 0 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -72,9 +75,9 @@ int main(int argc,cchar **argv,cchar **envv)
 	        debugprintf("main: starting rs=%d\n",rs) ;
 	    }
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -82,19 +85,19 @@ int main(int argc,cchar **argv,cchar **envv)
 	if (argv != NULL) {
 	    int		ai ;
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
-	        const int	of = O_RDONLY ;
+	        cint	of = O_RDONLY ;
 	        cchar		*fn = argv[ai] ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: fn=%s\n",fn) ;
 #endif
 	        if ((rs = uc_open(fn,of,0666)) >= 0) {
 	            ustat	sb ;
 	            int			fd = rs ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: uc_open() rs=%d\n",rs) ;
 #endif
 	            if ((rs = u_fstat(fd,&sb)) >= 0) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                debugprintf("main: mode=\\o%09o\n",sb.st_mode) ;
 #endif
 	                if (S_ISDIR(sb.st_mode)) {
@@ -103,12 +106,12 @@ int main(int argc,cchar **argv,cchar **envv)
 	                    rs = dumpfile(ofp,fd,of) ;
 	                }
 	            } /* end if (fstat) */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: u_fstat-out rs=%d\n",rs) ;
 #endif
 	            u_close(fd) ;
 	        } else if (rs == SR_NOTFOUND) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: uc_open-bad rs=%d\n",rs) ;
 #endif
 	            printf("not_found fn=%s (%d)\n",fn,rs) ;
@@ -116,7 +119,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	        } else {
 	            printf("open-error fn=%s (%d)\n",fn,rs) ;
 		}
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: uc_open-out rs=%d\n",rs) ;
 #endif
 	        if (rs < 0) break ;
@@ -127,11 +130,11 @@ int main(int argc,cchar **argv,cchar **envv)
 	    printf("failure (%d)\n",rs) ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	{
 	    uint	mi[12] ;
 	    uint	mo ;
@@ -142,8 +145,8 @@ int main(int argc,cchar **argv,cchar **envv)
 	    if (mdiff > 0) {
 		UCMALLREG_CUR	cur ;
 		UCMALLREG_REG	reg ;
-		const int	size = (10*sizeof(uint)) ;
-		const char	*ids = "main" ;
+		cint	size = (10*sizeof(uint)) ;
+		cchar	*ids = "main" ;
 		uc_mallinfo(mi,size) ;
 	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
 	        debugprintf("main: MIoutnummax=%u\n",mi[ucmallreg_outnummax]) ;
@@ -168,19 +171,18 @@ int main(int argc,cchar **argv,cchar **envv)
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-static int dumpfile(FILE *ofp,int fd,int of) noex {
+local int dumpfile(FILE *ofp,int fd,int of) noex {
 	cint		to = 5 ;
 	cint		fo = (of | O_NETWORK) ;
 	int		rs ;
@@ -192,39 +194,38 @@ static int dumpfile(FILE *ofp,int fd,int of) noex {
 	    while ((rs = filer_readln(&b,lbuf,llen,to)) > 0) {
 	        int	len = rs ;
 		fbwrite(ofp,lbuf,len) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		{
 	            debugprintf("main/dumpfile: readline() len=%d\n",len) ;
 	            li = strlinelen(lbuf,len,70) ;
 	            lbuf[li] = '\0' ;
 	            debugprintf("l=>%s<\n",lbuf) ;
 		}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 	        if (rs < 0) break ;
 	    } /* end while */
 	    rs1 = filer_finish(&b) ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (filer) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpfile: ret rs=%d\n",rs) ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (dumpfile) */
+} /* end subroutine (dumpfile) */
 
 
-static int dumpdir(int fd,int of)
+local int dumpdir(int fd,int of)
 {
 	FSDIR		d ;
 	FSDIR_ENT	de ;
-	const int	dlen = MAXPATHLEN ;
+	cint	dlen = MAXPATHLEN ;
 	int		rs ;
 	int		rs1 ;
 	char		dbuf[USERNAMELEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpdir: ent\n") ;
 #endif
 	if ((rs = bufprintf(dbuf,dlen,"/dev/fd/%u",fd)) >= 0) {
@@ -237,11 +238,10 @@ static int dumpdir(int fd,int of)
 	    } /* end if (fsdir) */
 	} /* end if (bufprintf) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpdir: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (dumpdir) */
+} /* end subroutine (dumpdir) */
 
 
