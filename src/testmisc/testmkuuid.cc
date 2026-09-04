@@ -1,7 +1,11 @@
-/* testmkuuid */
-/* lang=C89 */
+/* testmkuuid SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
 
 /* revision history:
 
@@ -22,32 +26,32 @@
 #define	VARDEBUGFNAME	"TESTMKUUID_DEBUGFILE"
 
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,cchar **argv,cchar **envv) {
 	MKUUID		uuid ;
 	int		rs = SR_OK ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if ((rs = mkuuid(&uuid,0)) >= 0) {
-	    const int	rlen = MAXPATHLEN ;
+	    cint	rlen = MAXPATHLEN ;
 	    char	rbuf[MAXPATHLEN+1] ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprinthex("main: time=",80,&uuid.time,8) ;
 	    debugprinthex("main: clk=",80,&uuid.clk,8) ;
 	    debugprinthex("main: node=",80,&uuid.node,8) ;
@@ -57,13 +61,12 @@ int main(int argc,const char **argv,const char **envv) {
 	    }
 	} /* end if (argv) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
