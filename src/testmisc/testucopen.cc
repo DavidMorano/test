@@ -1,7 +1,11 @@
-/* testucopen */
-/* lang=C89 */
+/* testucopen SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 
 /* revision history:
@@ -18,15 +22,16 @@
 	Synopsis:
 	$ testucopen.x <file>
 
-
 *******************************************************************************/
-
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdarg>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<fsdir.h>
 #include	<filer.h>
 #include	<localmisc.h>
@@ -43,68 +48,68 @@
 
 extern int	fbwrite(FILE *,const void *,int) ;
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int dumpfile(int,int) ;
-static int dumpdir(int,int) ;
+local int dumpfile(int,int) ;
+local int dumpdir(int,int) ;
 
 #ifdef	COMMENT
-static int filer_oread(FILER *,void *,int,int) ;
-static int filer_refill(FILER *,int) ;
+local int filer_oread(FILER *,void *,int,int) ;
+local int filer_refill(FILER *,int) ;
 #endif /* COMMENT */
 
 
 /* exported subroutines */
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,cchar **argv,cchar **envv) {
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
 
 	if (argv != NULL) {
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    int		ai ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
-	        const char	*fn = argv[ai] ;
-	        const int	of = O_RDONLY ;
-#if	CF_DEBUGS
+	        cchar	*fn = argv[ai] ;
+	        cint	of = O_RDONLY ;
+#if	CF_DEBUG
 	        debugprintf("main: fn=%s\n",fn) ;
 #endif
 	        if ((rs1 = uc_open(fn,of,0666)) >= 0) {
 	            ustat	sb ;
 	            int			fd = rs1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: uc_open() rs=%d\n",rs1) ;
 #endif
 	            if ((rs = u_fstat(fd,&sb)) >= 0) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: mode=\\x%08x\n",sb.st_mode) ;
 #endif
 	                if (S_ISDIR(sb.st_mode)) {
@@ -120,7 +125,7 @@ int main(int argc,const char **argv,const char **envv) {
 	        } else {
 	            printf("open-error fn=%s (%d)\n",fn,rs1) ;
 		}
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: uc_open-out rs=%d\n",rs1) ;
 #endif
 	        if (rs < 0) break ;
@@ -130,11 +135,11 @@ int main(int argc,const char **argv,const char **envv) {
 	if (rs < 0)
 	printf("failure (%d)\n",rs) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -143,32 +148,31 @@ int main(int argc,const char **argv,const char **envv) {
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-static int dumpfile(int fd,int of) noex {
+local int dumpfile(int fd,int of) noex {
 	FILE		*ofp = stdout ;
 	cint		to = 5 ;
 	cint		fo = (of | O_NETWORK) ;
 	int		rs ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpfile: ent to=%d\n",to) ;
 #endif
 	if (filer b ; (rs = filer_start(&b,fd,0z,0,fo)) >= 0) {
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    int		li ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    while ((rs = filer_readln(&b,lbuf,llen,to)) > 0) {
 	        int	len = rs ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main/dumpfile: readline() len=%d\n",len) ;
 	        debugprintf("main/dumpfile: l=>%t<\n",
 			lbuf,strlinelen(lbuf,len,50)) ;
@@ -179,24 +183,23 @@ static int dumpfile(int fd,int of) noex {
 	    filer_finish(&b) ;
 	} /* end if (filer) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpfile: ret rs=%d\n",rs) ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (dumpfile) */
+} /* end subroutine (dumpfile) */
 
 
-static int dumpdir(int fd,int of)
+local int dumpdir(int fd,int of)
 {
 	FSDIR		d ;
 	FSDIR_ENT	de ;
-	const int	dlen = MAXPATHLEN ;
+	cint	dlen = MAXPATHLEN ;
 	int		rs ;
 	char		dbuf[USERNAMELEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpdir: ent\n") ;
 #endif
 	if ((rs = bufprintf(dbuf,dlen,"/dev/fd/%u",fd)) >= 0) {
@@ -208,17 +211,16 @@ static int dumpdir(int fd,int of)
 	    } /* end if (fsdir) */
 	} /* end if */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpdir: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (dumpdir) */
+} /* end subroutine (dumpdir) */
 
 
 #ifdef	COMMENT
 
-static int filer_oread(op,rbuf,rlen,to)
+local int filer_oread(op,rbuf,rlen,to)
 FILER		*op ;
 void		*rbuf ;
 int		rlen ;
@@ -235,14 +237,14 @@ int		to ;
 
 	if (op == NULL) return SR_FAULT ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("filer_oread: rlen=%d to=%d\n",rlen,to) ;
 #endif
 
 	rc = (op->f.net) ? FILER_RCNET : 1 ;
 	while (tlen < rlen) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("filer_oread: 0 while-top tlen=%d op->len=%d\n", 
 	        tlen,op->len) ;
 #endif
@@ -254,7 +256,7 @@ int		to ;
 	        }
 	    }
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("filer_oread: refilled rs=%d f_to=%u\n",
 		rs,f_timedout) ;
 	    debugprintf("filer_oread: op->len=%d tlen=%d\n", op->len,tlen) ;
@@ -284,36 +286,35 @@ int		to ;
 	        0 		} ;
 	    int	i ;
 	    rs = u_write(op->fd,tbuf,0) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("filer_oread: timed-out? rs=%d\n",rs) ;
 #endif
 	    for (i = 0 ; i < 4 ; i += 1) {
 	        rs = u_read(op->fd,tbuf,10) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("filer_oread: u_read() rs=%d\n",rs) ;
 #endif
 	    }
 	} /* end if (timed-out) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("filer_oread: ret rs=%d tlen=%u\n",rs,tlen) ;
 #endif
 
 	return (rs >= 0) ? tlen : rs ;
-}
-/* end subroutine (filer_read) */
+} /* end subroutine (filer_read) */
 
 
-static int filer_refill(FILER *op,int to)
+local int filer_refill(FILER *op,int to)
 {
-	const int	fmo = FM_TIMED ;
+	cint	fmo = FM_TIMED ;
 	int	rs = SR_OK ;
 	int	rc = 4 ;
 	int	tlen = 0 ;
 
 	while ((op->len <= 0) && (rc-- > 0)) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("filer_refill: 1 while-top tlen=%d len=%d rc=%d\n",
 	        tlen,op->len,rc) ;
 	    debugprintf("filer_refill: reading=%d to=%d\n",op->bufsize,to) ;
@@ -324,7 +325,7 @@ static int filer_refill(FILER *op,int to)
 	    } else
 	        rs = u_read(op->fd,op->buf,op->bufsize) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("filer_refill: read rs=%d\n",rs) ;
 #endif
 
@@ -340,12 +341,11 @@ static int filer_refill(FILER *op,int to)
 	    tlen += rs ;
 	} /* end while (refill) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("filer_refill: ret rs=%d tlen=%d\n",rs,tlen) ;
 #endif
 	return (rs >= 0) ? tlen : rs ;
-}
-/* end subroutine (filer_refill) */
+} /* end subroutine (filer_refill) */
 
 #endif /* COMMENT */
 
