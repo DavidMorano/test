@@ -1,18 +1,31 @@
 /* main (testgetsystypenum) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<sys/utsname.h>
 #include	<climits>
-#include	<cstdlib>
-
-#include	<usystem.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
 
 #include	"defs.h"
@@ -32,14 +45,14 @@
 
 /* external subroutines */
 
-extern int	sfcookkey(const char *,int,const char **) ;
+extern int	sfcookkey(cchar *,int,cchar **) ;
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
@@ -48,21 +61,21 @@ extern int	strlinelen(const char *,int,int) ;
 
 int main(argc,argv,envv)
 int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
+cchar	*argv[] ;
+cchar	*envv[] ;
 {
 	struct utsname		u ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
 	int	rs ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getenv(VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getenv(VARDEBUGFD1)) == NULL)
 	        cp = getenv(VARDEBUGFD2) ;
@@ -70,9 +83,9 @@ const char	*envv[] ;
 	if (cp != NULL)
 	    debugopen(cp) ;
 	debugprintf("main: starting\n") ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -87,11 +100,11 @@ const char	*envv[] ;
 
 	} /* end if (uname) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: exiting rs=%d\n",rs) ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -100,12 +113,11 @@ const char	*envv[] ;
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
