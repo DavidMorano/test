@@ -8,7 +8,7 @@
 
 /* revision history:
 
-	= 2013-07-11, David A­D­ Morano
+	= 2020-07-11, David A­D­ Morano
 	Originally written for Rightcore Network Services.
 
 */
@@ -20,13 +20,13 @@
 
 *******************************************************************************/
 
-/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2020 David A­D­ Morano.  All rights reserved. */
 
 module ;
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<string>		/* <- test */
 #include	<iostream>
 #include	<clanguage.h>
@@ -37,11 +37,13 @@ module ;
 #include	<usyscalls.h>
 #include	<localmisc.h>
 
+#include	"modhello.hh"
+
 static const char	headstr[] = "header" ;
 
 void header(cchar *s) noex {
     std::cout << headstr << " - " << s << eol ;
-}
+} /* end */
 
 export module modhello ;
 
@@ -52,22 +54,22 @@ enum hellos {
     hello_one,
     hello_two,
     hello_overlast
-} ;
+} ; /* end */
 
 export {
     extern void hello_there(cchar *) noex ;
-}
+} /* end */
 
 void jackbean(cchar *sp) noex {
     cout << "hello - " << sp << eol ;
-}
+} /* end */
 
 struct hidden {
     	int	v ;
-} ;
+} ; /* end */
 
 void hello_hidden() noex {
     	cout << "hello-hidden" << eol ;
-}
+} /* end */
 
 
