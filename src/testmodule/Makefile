@@ -35,12 +35,13 @@ DEFS +=
 
 INCS += prognamevar.hh testmod.hh
 
-MODS +=
+MODS += testmod.o
 
 LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += prognamevar.o shellunder.o six.o
+DEPS_MAIN += prognamevar.o shellunder.o testmod.o
+DEPS_MOD= testmod-parta.o testmod-partb.o
 
 OBJ0= testmodule_main.o
 OBJ1= prognamevar.o shellunder.o
@@ -276,7 +277,15 @@ builtin.o:		builtin.ccm
 prognamevar.o:		prognamevar.cc	prognamevar.hh shellunder.h
 shellunder.o:		shellunder.cc	shellunder.h
 
-testmod.o:		testmod.ccm	testmod.hh
+testmod.o:		testmod0.o $(DEPS_MOD)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+testmod0.o:		testmod.ccm	testmod.hh $(DEPS_MOD)
 	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
+testmod1.o:		testmod1.cc testmod0.o
+
+testmod-parta.o:	testmod-parta.ccm testmod.hh
+testmod-partb.o:	testmod-partb.ccm testmod.hh
 
 
