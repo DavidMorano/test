@@ -2,7 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C89 */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #define	CF_SIGPENDING	1		/* showpending */
 
@@ -31,7 +34,7 @@
 #define	VARDEBUGFNAME	"TESTSIGPENDING_DEBUGFILE"
 #define	INT_WAIT	10
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -41,7 +44,7 @@ extern int	strlinelen(cchar *,int,int) ;
 
 /* forward references */
 
-static int showpending() ;
+local int showpending() ;
 
 
 /* exported subroutines */
@@ -51,7 +54,7 @@ static int showpending() ;
 int main(int argc,cchar **argv,cchar **envv)
 {
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
@@ -59,21 +62,21 @@ int main(int argc,cchar **argv,cchar **envv)
 	int		rs1 ;
 	cchar		*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
 
 	{
 	    sigset_t	nsm, osm ;
-	    const int	sig = SIGINT ;
+	    cint	sig = SIGINT ;
 	    uc_sigsetempty(&nsm) ;
 	    if ((rs = uc_sigsetadd(&nsm,sig)) >= 0) {
 	        if ((rs = u_sigprocmask(SIG_BLOCK,&nsm,&osm)) >= 0) {
@@ -100,7 +103,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	    } /* end if */
 	} /* end block */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -109,20 +112,17 @@ int main(int argc,cchar **argv,cchar **envv)
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-static int showpending()
-{
+local int showpending() {
 	sigset_t	psm ;
 	int		rs ;
 	if ((rs = u_sigpending(&psm)) >= 0) {
@@ -135,15 +135,14 @@ static int showpending()
 	        }
 	        if (rs < 0) break ;
 	    } /* end for */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main/showpending: for-out rs=%d nsigs=%d\n",rs,i) ;
 #endif
 	}
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/showpending: out rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (showpending) */
+} /* end subroutine (showpending) */
 
 
