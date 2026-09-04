@@ -1,8 +1,23 @@
-/* testopenport */
-/* lang=C89 */
+/* testopenport SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<cstdarg>
@@ -19,7 +34,7 @@
 #define	VARDEBUGFNAME	"TESTOPENPORT_DEBUGFILE"
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -29,7 +44,7 @@ extern int	strlinelen(cchar *,int,int) ;
 
 /* forward references */
 
-static int procopen(cchar *) ;
+local int procopen(cchar *) ;
 
 
 /* exported subroutines */
@@ -38,14 +53,14 @@ static int procopen(cchar *) ;
 int main(int argc,cchar **argv,cchar **envv)
 {
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -53,9 +68,9 @@ int main(int argc,cchar **argv,cchar **envv)
 	        debugprintf("main: starting rs=%d\n",rs) ;
 	    }
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -67,7 +82,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	        cint	of = O_RDONLY ;
 	        cchar	*ps = argv[ai] ;
 		cchar		*sp = "hello world!\n" ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: ps=%s\n",ps) ;
 #endif
 		if ((rs = procopen(ps)) >= 0) {	
@@ -75,7 +90,7 @@ int main(int argc,cchar **argv,cchar **envv)
 		    cint	sfd = rs ;
 		    cint	sl = strlen(sp) ;
 		    int		sal = 0 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: procopen() rs=%d\n",rs) ;
 #endif
 		    while ((rs = uc_accepte(sfd,&sa,&sal,to)) >= 0) {
@@ -89,7 +104,7 @@ int main(int argc,cchar **argv,cchar **envv)
 		    } /* end while */
 		    u_close(sfd) ;
 		} /* end if (procopen) */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: procopen-out rs=%d\n",rs1) ;
 #endif
 	        if (rs < 0) break ;
@@ -99,11 +114,11 @@ int main(int argc,cchar **argv,cchar **envv)
 	if (rs < 0)
 	printf("failure (%d)\n",rs) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -112,18 +127,17 @@ int main(int argc,cchar **argv,cchar **envv)
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-static int procopen(cchar *ps) noex {
+local int procopen(cchar *ps) noex {
 	cint		alen = INETXADDRLEN ;
 	cint		af = AF_INET ;
 	cint		fl = 0 ;
@@ -153,7 +167,6 @@ static int procopen(cchar *ps) noex {
 	    } /* end if (sockaddress) */
 	} /* end if (getportnum) */
 	return (rs >= 0) ? fd : rs ;
-}
-/* end subroutine (procoptn) */
+} /* end subroutine (procoptn) */
 
 
