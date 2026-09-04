@@ -1,0 +1,135 @@
+/* mainprique SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++11 */
+
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	0		/* compile-time debugging */
+
+/* revision history:
+
+	= 2013-07-11, David A­D­ Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/types.h>
+#include	<cinttypes>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstdlib>
+#include	<cstring>
+#include	<new>
+#include	<initializer_list>
+#include	<utility>
+#include	<functional>
+#include	<algorithm>
+#include	<vector>
+#include	<queue>
+#include	<string>
+#include	<fstream>
+#include	<iostream>
+#include	<iomanip>
+#include	<usystem.h>
+#include	<localmisc.h>
+
+
+/* name-spaces */
+
+using namespace std ;
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures (and methods) */
+
+
+/* forward references */
+
+local int	printa(cint *,int) ;
+
+
+/* local variables */
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,mainv argv,mainv envv) {
+	priority_queue<int,vector<int>,greater<int>>	pq ;
+	string		s = "hello world!" ;
+	int		rs = SR_OK ;
+
+	cout << "orig order\n" ;
+	for (auto sch : s) {
+	   int	ch = MKCHAR(sch) ;
+	   cout << " " << ch ;
+	   pq.push(ch) ;
+	}
+	cout << endl ;
+
+	if (rs >= 0) {
+	    cout << "heap pre-order\n" ;
+	    while (! pq.empty()) {
+		cint ch = pq.top() ;
+	        cout << " " << ch ;
+		pq.pop() ;
+	    }
+	    cout << endl ;
+	}
+
+	if (rs < 0) cout << "error\n" ;
+
+/* largest three numbers */
+
+	if (rs >= 0) {
+	    priority_queue<int,vector<int>,greater<int>>	minheap ;
+	    cint	a[] = { 10, 3, 4, 5, 9, 11, 11, 21, 31 } ;
+	    cint	n = 3 ; /* how many largest numbers */
+	    int		ne ;
+	    int		c = 0 ;
+	    ne = nelem(a) ;
+	    for (auto v : a ) {
+		minheap.push(v) ;
+		if (c++ >= n) {
+		    minheap.pop() ;
+		}
+	    }
+	    cout << "source list\n" ;
+	    printa(a,ne) ;
+	    cout << "largest " << n << " numbers\n" ;
+	    while (! minheap.empty()) {
+		int v = minheap.top() ;
+	        cout << " " << v ;
+		minheap.pop() ;
+	    }
+	    cout << endl ;
+	}
+
+	return 0 ;
+}
+/* end subroutine (main) */
+
+
+/* local subroutines */
+
+local int printa(cint *a,int n) {
+	int		i ;
+	for (i = 0 ; i < n ; i += 1) {
+	    cout << " " << a[i] ;
+	}
+	cout << endl ;
+	return i ;
+} /* end subroutine (printa) */
+
+
