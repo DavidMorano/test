@@ -2,8 +2,11 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
+/* test program */
+/* version %I% last-modified %G% */
+
 #define	CF_DEBUG	0		/* run-time debugging */
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #define	CF_DEFENVV	1		/* establish a default environment */
 
@@ -53,19 +56,19 @@
 #endif
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
-static int	debugexit(int) ;
-#endif /* CF_DEBUGS */
+local int	debugexit(int) ;
+#endif /* CF_DEBUG */
 
 
 /* forward references */
 
-static int proglog(cchar *,bfile *,int) ;
+local int proglog(cchar *,bfile *,int) ;
 
 
 /* local variables */
@@ -98,7 +101,7 @@ int main(int argc,cchar **argv,cchar **envv)
 {
 	bfile		efile, *efp = &efile ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
@@ -108,14 +111,14 @@ int main(int argc,cchar **argv,cchar **envv)
 	cchar	*efname = NULL ;
 	cchar	*cp ;
 
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG || CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -145,19 +148,19 @@ int main(int argc,cchar **argv,cchar **envv)
 			rs = u_waitpid(pid,&cs,0) ;
 		    }
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: spawnproc() rs=%d\n",rs) ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	    } /* end if (non-zero arguments) */
 	    bclose(efp) ;
 	} /* end if (standard-error) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: exiting rs=%d\n",rs) ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -166,20 +169,17 @@ int main(int argc,cchar **argv,cchar **envv)
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-static int proglog(cchar *pn,bfile *efp,int cs)
-{
+local int proglog(cchar *pn,bfile *efp,int cs) {
 	int		rs = SR_OK ;
 
 	    if (WIFEXITED(cs)) {
@@ -199,13 +199,10 @@ static int proglog(cchar *pn,bfile *efp,int cs)
 	    }
 
 	return rs ;
-}
-/* end subroutine (proglog) */
+} /* end subroutine (proglog) */
 
-
-#if	CF_DEBUGS
-static int debugexit(int cs)
-{
+#if	CF_DEBUG
+local int debugexit(int cs) {
 	int	rs = SR_OK ;
 	    if (WIFEXITED(cs)) {
 		int	ex = WEXITSTATUS(cs) ;
@@ -223,8 +220,7 @@ static int debugexit(int cs)
 		debugprintf("main: program exited weirdly cs=\\x%08x\n",cs) ;
 	    }
 	return rs ;
-}
-/* end subroutine (debugexit) */
-#endif /* CF_DEBUGS */
+} /* end subroutine (debugexit) */
+#endif /* CF_DEBUG */
 
 
