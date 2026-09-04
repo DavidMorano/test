@@ -1,19 +1,20 @@
-/* testnetfile */
+/* testnetfile SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* test NETFILE object */
 /* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	1		/* non-switchable debug print-outs */
+#define	CF_DEBUG	1		/* non-switchable debug print-outs */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #define	CF_PRINTOUT	1		/* print out on STDOUT */
-
 
 /* revision history:
 
 	= 1999-08-17, David A­D­ Morano
-	This subroutine was partly taken from the LOGDIR-LOGNAME program (fist
-	written for the SunOS 4.xx environment in 1989).
+	This subroutine was partly taken from the LOGDIR-LOGNAME
+	program (fist written for the SunOS 4.xx environment in
+	1989).
 
 */
 
@@ -28,18 +29,18 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
+#include	<estrings.h>
 #include	<unistd.h>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
 #include	<netdb.h>
 #include	<cstdio>
-
-#include	<usystem.h>
-#include	<estrings.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<bits.h>
 #include	<bfile.h>
 #include	<getusername.h>
@@ -57,7 +58,7 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG || CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -85,7 +86,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 {
 	FILE		*ofp = stdout ;
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
@@ -93,14 +94,14 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	int		rs1 ;
 	cchar		*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -118,7 +119,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	    for (j = 0 ; netfile_get(&nfile,j,&nep) >= 0 ; j += 1) {
 	        if (nep != NULL) {
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("main: ent¬\n") ;
 		debugprintf("main: m=%s\n",nep->machine) ;
 		debugprintf("main: l=%s\n",nep->login) ;
@@ -145,7 +146,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	} /* end if (netfile) */
 	} /* end if (arg) */
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	{
 	    uint	mi[12] ;
 	    uint	mo ;
@@ -156,7 +157,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	    if (mdiff > 0) {
 	        UCMALLREG_CUR	cur ;
 	        UCMALLREG_REG	reg ;
-	        const int	size = (10*sizeof(uint)) ;
+	        cint	size = (10*sizeof(uint)) ;
 	        cchar		*ids = "main" ;
 	        uc_mallinfo(mi,size) ;
 	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
@@ -183,12 +184,11 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (testnetfile) */
+} /* end subroutine (testnetfile) */
 
 
