@@ -1,5 +1,12 @@
 /* testsendfile */
+/* charset=ISO8859-1 */
 /* lang=C89 */
+
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
+#define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
 /* revision history:
 
@@ -10,8 +17,6 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
-#define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
 #include	<usystem.h>
@@ -20,46 +25,46 @@
 
 #define	VARDEBUGFNAME	"TESTSENDFILE_DEBUGFILE"
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-static int procfile(int,const char *) ;
+local int procfile(int,cchar *) ;
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,cchar **argv,cchar **envv) {
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
-	const int	d = OPENDIAL_DTCPNLS ;
-	const int	opts = 0 ;
-	const int	to = -1 ;
-	const int	af = AF_UNSPEC ;
+	cint	d = OPENDIAL_DTCPNLS ;
+	cint	opts = 0 ;
+	cint	to = -1 ;
+	cint	af = AF_UNSPEC ;
 
 	int	rs ;
 	int	rs1 ;
 
-	const char	*hs = "localhost" ;
-	const char	*ps = NULL ;
-	const char	*svc = "dump" ;
-	const char	**av = NULL ;
-	const char	**ev = NULL ;
+	cchar	*hs = "localhost" ;
+	cchar	*ps = NULL ;
+	cchar	*svc = "dump" ;
+	cchar	**av = NULL ;
+	cchar	**ev = NULL ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -71,18 +76,18 @@ int main(int argc,const char **argv,const char **envv) {
 
 	    if (argv != NULL) {
 	        int	ai ;
-	        const char	*fn ;
+	        cchar	*fn ;
 	        for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
 	            fn = argv[ai] ;
 	            rs = procfile(fd,fn) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: procfile() rs=%d\n",rs) ;
 #endif
 	            if (rs < 0) break ;
 	        } /* end for */
 	    } /* end if */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: done rs=%d\n",rs) ;
 #endif
 
@@ -90,11 +95,11 @@ int main(int argc,const char **argv,const char **envv) {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (open-dial) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -103,23 +108,23 @@ int main(int argc,const char **argv,const char **envv) {
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
+
 
 /* local subroutines */
 
-static int procfile(int wfd,const char *fn)
+local int procfile(int wfd,cchar *fn)
 {
 	int	rs = SR_OK ;
 	int	wlen = 0 ;
 
 	if ((rs = uc_open(fn,O_RDONLY,0666)) >= 0) {
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    int		fd = rs ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    while ((rs = u_read(fd,lbuf,llen)) > 0) {
@@ -131,7 +136,6 @@ static int procfile(int wfd,const char *fn)
 	} /* end if (file-open) */
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
