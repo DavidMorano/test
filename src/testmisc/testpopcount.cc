@@ -40,7 +40,7 @@ using std::popcount ;
 
 local int sub(uint uv) noex {
     	return popcount(uv) ;
-}
+} /* end */
 
 constexpr int	vals[] = {
     	1, 3, 4, 9, -3
