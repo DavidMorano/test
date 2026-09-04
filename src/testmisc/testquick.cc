@@ -1,0 +1,499 @@
+/* mainquick SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++98 */
+
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
+#define	CF_PRINTA	1		/* define |printa()| */
+#define	CF_NTH		0		/* nth element */
+#define	CF_PAR1		0		/* partition */
+#define	CF_PAR2		0		/* partition */
+#define	CF_PARNTH	0		/* partition nth */
+#define	CF_SUBQUICK	0		/* quick sort */
+#define CF_SEL1		1		/* selection-1 */
+#define CF_SEL2		1		/* selection-2 */
+
+/* revision history:
+
+	= 2000-05-14, David A­D­ Morano
+	Originally written for Rightcore Network Services.
+
+	= 2017-09-15, David A­D­ Morano
+	Looking over again.  Added standard |quickselecti()| in the
+	form of the C++ STL |partial_sort()| function.
+
+*/
+
+/* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
+
+#include	<envstandards.h>	/* must be ordered first to configure */
+#include	<sys/types.h>
+#include	<climits>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
+#include	<cstring>
+#include	<new>
+#include	<utility>
+#include	<functional>
+#include	<algorithm>
+#include	<vector>
+#include	<list>
+#include	<iostream>
+#include	<iomanip>
+#include	<usystem.h>
+#include	<localmisc.h>
+
+
+/* local defines */
+
+#if	CF_NTH
+#if	(! CF_PARNTH)
+#undef	CF_PARNTH
+#define	CF_PARNTH	1
+#endif
+#endif
+
+#define	VARDEBUGFNAME	"QUICK_DEBUGFILE"
+
+
+/* name-spaces */
+
+using namespace	std ;
+
+
+/* type-defs */
+
+typedef	vector<int>::iterator		vit_t ;
+typedef	vector<int>::const_iterator	cvit_t ;
+
+
+/* external subroutines */
+
+typedef int	(*partpred_t)(int,int) ;
+
+extern "C" int	quickselecti(int *,int,int,int) ;
+extern "C" int	partitionai(int *,int,partpred_t,int) ;
+extern "C" int	nthai(int *,int,int,int) ;
+
+extern "C" void	arrswapi(int *,int,int) ;
+
+#if	CF_DEBUG
+extern "C" int	debugopen(cchar *) ;
+extern "C" int	debugprintf(cchar *,...) ;
+extern "C" int	debugclose() ;
+extern "C" int	strlinelen(cchar *,cchar *,int) ;
+#endif
+
+
+/* local structures */
+
+
+/* forward references */
+
+#if	CF_SUBQUICK
+local int	partpred1(int,int) ;
+local int	partpred2(int,int) ;
+local int	getpivot(cint *,int) ;
+#endif
+
+#if	CF_PAR1
+local int	subpar1(const vector<int> &,int,int) ;
+#endif
+
+#if	CF_PAR2
+local int	subpar2(const vector<int> &,int,int) ;
+#endif
+
+#if	CF_PARNTH || CF_NTH
+local int	subparnth(const vector<int> &,int,int) ;
+#endif
+
+#if	CF_SUBQUICK
+local int	subquick() ;
+#endif
+
+#if	CF_PAR1 || CF_PAR2 || CF_NTH || CF_SEL2
+local void	printv(const vector<int> &,int) ;
+#endif
+
+#if	CF_SEL1 || CF_SEL2 || CF_SUBQUICK
+#if	CF_SEL1 || CF_SUBQUICK
+local int	arr_load(int *,cint *,int) ;
+#endif
+#if	CF_SEL2
+local int	vec_load(vector<int> &,cint *,int) ;
+#endif
+#endif
+
+#if	CF_PRINTA
+local void	printa(cint *,int) ;
+#endif /* CF_PRINTA */
+
+#if	CF_DEBUG && CF_SUBQUICK
+local int	debugprinta(cint *,int) ;
+#endif
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int,mainv,mainv) {
+	int		rs = SR_OK ;
+	int		ex = 0 ;
+
+#if	CF_DEBUG
+	{
+	    cchar	*cp ;
+	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+	        rs = debugopen(cp) ;
+	        debugprintf("main: starting DFD=%d\n",rs) ;
+	    }
+	}
+#endif /* CF_DEBUG */
+
+#if	CF_PAR1 || CF_PAR2
+	if (rs >= 0) {
+	    vector<int>	a = { 10,0,1,10,9,8,7,6,5,4,3,2,1,0 } ;
+	    int		al ;
+
+	    al = a.size() ;
+
+	    for (int n = 0 ; n < al ; n += 1) {
+	        cout << "al=" << al << " n=" << n << " val=" << a[n] << endl ;
+	        printv(a,al) ;
+
+#if	CF_PAR1
+	        if (rs >= 0) {
+	           rs = subpar1(a,al,n) ;
+	        }
+#endif /* CF_PAR1 */
+
+#if	CF_PAR2
+	        if (rs >= 0) {
+	           rs = subpar2(a,al,n) ;
+	        }
+#endif /* CF_PAR2 */
+
+	        cout << endl ;
+	    } /* end for */
+
+	} /* end if (ok) */
+#endif /* CF_PAR1 || CF_PAR2 */
+
+#if	CF_NTH
+	if (rs >= 0) {
+	    const vector<int> a = { 10,10,20,7,3,3,6,5,6,9,8,7,6,5,4,3,2,1,0 } ;
+	    cint	algo[] = { 1, 2 } ;
+	    cint	nn = 21 ;
+	    int		al ;
+	    al = a.size() ;
+	    for (int n = 0 ; n < MIN(nn,al) ; n += 1) {
+		cout << "n=" << n << endl ;
+		printv(a,al) ;
+		for (auto g : algo) {
+		    switch (g) {
+		    case 1:
+			{
+			    vector<int>	aa = a ;
+	        	    vit_t	ib = aa.begin() ;
+	        	    vit_t 	ie = aa.end() ;
+	        	    nth_element<vit_t>(ib,(ib+n),ie) ;
+	        	    printv(aa,al) ;
+	        	    cout << "g=" << g << " nth=" << aa[n] << endl ;
+			}
+			break ;
+		    case 2:
+	   		rs = subparnth(a,al,n) ;
+	        	cout << "g=" << g << " nth=" << rs << endl ;
+			break ;
+		    } /* end switch */
+		} /* end for (algo) */
+		    cout << endl ;
+	    } /* end for (data) */
+	}
+#endif /* CF_NTH */
+
+#if	CF_SUBQUICK
+	if (rs >= 0) {
+	    rs = subquick() ;
+	}
+#endif /* CF_SUBQUICK */
+
+#if	CF_SEL1 || CF_SEL2
+	if (rs >= 0) {
+	    cint	a[] = { 10,9,8,7,6,5,4,3,2,1,0 } ;
+	    cint	k = 4 ; /* kth element (by index) */
+	    int		n ;
+	    n = nelem(a) ;
+
+	    printa(a,n) ;
+
+#if	CF_SEL1
+	if (rs >= 0) {
+	    vit_t	it, end ;
+	    vector<int>	va(n) ;
+	    less<int>	lcmp ;
+	    vec_load(va,a,n) ;
+	    it = va.begin() ;
+	    end = va.end() ;
+	    partial_sort(it,it+k,end,lcmp) ;
+	    cout << "qs> k=" << k << " kv=" << va[k] << endl ;
+	    printv(va,n) ;
+	}
+#endif /* CF_SEL1 */
+
+#if	CF_SEL2
+	if (rs >= 0) {
+	    int		*aa ;
+	    if ((aa = new(nothrow) int[n+1]) != NULL) {
+		arr_load(aa,a,n) ;
+	        quickselecti(aa,0,n,k) ;
+	        cout << "qs> k=" << k << " kv=" << aa[k] << endl ;
+	        printa(aa,n) ;
+		delete [] aa ;
+	    } /* end if (m-a-f) */
+	}
+#endif /* CF_SEL2 */
+
+	} /* end if (ok) */
+#endif /* CF_SEL1 || CF_SEL2 */
+
+	if (rs < 0) ex = 1 ;
+
+#if	CF_DEBUG
+	debugprintf("main: ret rs=%d\n",rs) ;
+	debugclose() ;
+#endif
+
+	return ex ;
+} /* end subroutine (main) */
+
+
+/* local subroutines */
+
+#if	CF_PAR1
+local int subpar1(const vector<int> &a,int al,int n) {
+	int		rs = SR_OK ;
+
+	if (n < al) {
+	vector<int>	aa = a ;
+	cint	pv = a[n] ;
+
+	auto pfunc = [pv] (int e) -> bool { 
+	    bool f = ( e < pv ) ; 
+	    /* cout << " " << e << ":" << f ; */
+	    return f ;
+        } ;
+
+	{
+	    vit_t	end = aa.end() ;
+	    vit_t	it = aa.begin() ;
+	    vit_t	it_res ;
+	    it_res = partition(it,end,pfunc) ;
+	    cout << endl ;
+	    if (it_res != end) {
+	        int d = distance(it,it_res) ;
+	        cout << "pv=" << pv << " is=" << d << endl ;
+	    } else {
+	        int d = distance(it,it_res) ;
+	        cout << "nval=" << "NA" << " is=" << d << endl ;
+	    }
+	}
+
+	printv(aa,al) ;
+	} else {
+	    rs = SR_DOM ;
+	}
+
+	return rs ;
+} /* end subroutine (subpar1) */
+#endif /* CF_PAR1 */
+
+#if	CF_PAR2
+local int partpred(int e,int p) {
+	return (e < p) ;
+}
+
+local int subpar2(const vector<int> &a,int al,int n) {
+	int		rs = SR_OK ;
+	int		sz ;
+
+	if (n < al) {
+	    cint	sz = ((al+1)*szof(int)) ;
+	    if (int *aa ; (rs = uc_malloc(sz,&aa)) >= 0) {
+	    cint	pv = a[n] ;
+	    int		is ;
+	    int		i ;
+
+	    for (i = 0 ; i < al ; i += 1) aa[i] = a[i] ;
+	    is = partitionai(aa,al,partpred,pv) ;
+	    if ((is >= 0) && (is < al)) {
+	        cout << "pv=" << pv << " is=" << is << endl ;
+	    } else {
+	        cout << "*RANGE* is=" << is << endl ;
+	    }
+	    printa(aa,al) ;
+
+	    uc_free(aa) ;
+	} /* end if (m-a-f) */
+	} else {
+	    rs = SR_DOM ;
+	}
+
+	return rs ;
+} /* end subroutine (subpar2) */
+#endif /* CF_PAR2 */
+
+#if	CF_PARNTH || CF_NTH
+local int subparnth(const vector<int> &a,int al,int n) {
+	int		rs ;
+	int		sz ;
+
+	sz = ((al+1)*sizeof(int)) ;
+	if (int *aa ; (rs = uc_malloc(size,&aa)) >= 0) {
+	    for (int i = 0 ; i < al ; i += 1) {
+		aa[i] = a[i] ;
+	    }
+	    rs = nthai(aa,0,al,n) ;
+	    printa(aa,al) ;
+	    uc_free(aa) ;
+	} /* end if (m-a-f) */
+
+	return rs ;
+} /* end subroutine (subparnth) */
+#endif /* CF_PARNTH */
+
+#if	CF_SUBQUICK
+
+local int oursort(int lvl,int *a,int first,int last) {
+	int		ff = FALSE ;
+#if	CF_DEBUG
+	debugprintf("oursort: ent lvl=%u f=%u l=%u\n",lvl,first,last) ;
+#endif
+	if ((last-first) == 2) {
+	    if (a[first] > a[last-1]) arrswapi(a,first,(last-1)) ;
+	    ff = TRUE ;
+	} else if ((last-first) > 2) {
+	    cint	pv = getpivot(a+first,(last-first)) ;
+	    int		m1, m2 ;
+	    ff = TRUE ;
+#if	CF_DEBUG
+	    debugprinta(a,6) ;
+#endif
+	    m1 = partitionai(a+first,(last-first),partpred1,pv) + first ;
+	    m2 = partitionai(a+m1,(last-m1),partpred2,pv) + m1 ;
+#if	CF_DEBUG
+	    debugprintf("oursort: pv=%u\n",pv) ;
+	    debugprinta(a,6) ;
+	    debugprintf("oursort: m1=%u m2=%u\n",m1,m2) ;
+#endif
+	    if ((m1-first) > 1) oursort(lvl+1,a,first,m1) ;
+	    if ((last-m2) > 1) oursort(lvl+1,a,m2,last) ;
+	}
+#if	CF_DEBUG
+	debugprintf("oursort: ret lvl=%u f=%u\n",lvl,ff) ;
+#endif
+	return ff ;
+} /* end subroutine (oursort) */
+
+local int subquick() {
+	cint	a[] = { 10,10,20,7,3,3,6,5,6,9,8,7,6,5,4,3,2,1,0 } ;
+	cint	nn = 21 ;
+	int		al = nelem(a) ;
+	int		rs ;
+	int		asize ;
+	asize = ((al+1)*szof(int)) ;
+	if (int *aa ; (rs = uc_malloc(asize,&aa)) >= 0) {
+	    for (int n = 1 ; n <= MIN(nn,al) ; n += 1) {
+		cout << "n=" << n << endl ;
+		printa(a,al) ;
+		memset(aa,0,asize) ;
+		arr_load(aa,a,n) ;
+		debugprinta(a,al) ;
+	        rs = oursort(0,aa,0,n) ;
+		debugprinta(a,al) ;
+	        printa(aa,al) ;
+		cout << endl ;
+		if (rs < 0) break ;
+	    } /* end for (data) */
+	    uc_free(aa) ;
+	} /* end if (m-a-f) */
+	return rs ;
+} /* end subroutine (subquick) */
+
+local int partpred1(int e,int pv) {
+	return (e < pv) ;
+}
+
+local int partpred2(int e,int pv) {
+	return (e <= pv) ;
+}
+
+local int getpivot(cint *a,int al) {
+	int	pvi = (al/2) ;
+	if (pvi == 0) {
+	    if (al > 1) pvi = 1 ;
+	}
+	return a[pvi] ;
+}
+
+#endif /* CF_SUBQUICK */
+
+#if	CF_SEL1 || CF_SEL2 || CF_SUBQUICK
+
+#if	CF_SEL1 || CF_SUBQUICK
+
+local int arr_load(int *aa,cint *a,int n) {
+	int	i ; /* used-afterwards */
+	for (i = 0 ; i < n ; i += 1) {
+	    aa[i] = a[i] ;
+	}
+	return i ;
+}
+#endif /* CF_SEL1 */
+
+#if	CF_SEL2
+local int vec_load(vector<int> &va,cint *a,int n) {
+	int	i ; /* used-afterwards */
+	for (i = 0 ; i < n ; i += 1) {
+	    va[i] = a[i] ;
+	}
+	return i ;
+}
+#endif /* CF_SEL2 */
+
+#endif /* CF_SEL1 || CF_SEL2 */
+
+#if	CF_PAR1 || CF_PAR2 || CF_NTH || CF_SEL2
+local void printv(const vector<int> &a,int al) {
+	for (int i = 0 ; i < al ; i += 1) {
+	    cout << " " << setw(2) << a[i] ;
+	}
+	cout << endl ;
+} /* end subroutine (printv) */
+#endif
+
+#if	CF_PRINTA
+local void printa(cint *a,int n) {
+	for (int i = 0 ; i < n ; i += 1) {
+	    cout << " " << setw(2) << a[i] ;
+	}
+	cout << endl ;
+} /* end subroutine (printa) */
+#endif /* CF_PRINTA */
+
+#if	CF_DEBUG && CF_SUBQUICK
+local int debugprinta(cint *a,int al) {
+	for (int i = 0 ; i < al ; i += 1) {
+	    debugprintf(" %2u\\",a[i]) ;
+	}
+	debugprintf("\n") ;
+	return 0 ;
+} /* end subroutine (debugprinta) */
+#endif /* CF_DEBUG */
+
+
