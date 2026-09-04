@@ -55,7 +55,7 @@ constexpr memtrack_ent	ents[] = {
 
 /* exported subroutines */
 
-int main(int,const char **,const char **) {
+int main(int,cchar **,cchar **) {
 	memtrack	t ;
 	int		rs ;
 	int		rs1 ;
@@ -102,8 +102,7 @@ int main(int,const char **,const char **) {
 	} /* end block */
 	cout << "exiting rs=" << rs << '\n' ;
 	return (rs >= 0) ? 1 : rs ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
