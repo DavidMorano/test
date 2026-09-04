@@ -5,7 +5,7 @@
 /* test */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUG	0		/* compile-time debugging */
 #define	CF_HELLO	0		/* hello */
 #define	CF_FILEHELLO	0		/* file-hello */
 #define	CF_TESTCON	0		/* test-con */
@@ -294,7 +294,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 #if	CF_DYMARRAY
 	{
-	    const int	n = 10 ;
+	    cint	n = 10 ;
 	    {
 	        int	a[n+1] ;
 	        int	i ;
@@ -336,7 +336,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 #if	CF_HASDUP
 	{
-	    const int	os[] = { 0, 1, 2, 1, 18, 27 } ;
+	    cint	os[] = { 0, 1, 2, 1, 18, 27 } ;
 	    {
 		int	sl = nelem(os) ;
 		bool	f = false ;
@@ -393,7 +393,7 @@ local int testio() {
 	    {
 	        ifstream	is(ifn) ;
 		if (is.good()) {
-		    const int	llen = LINEBUFLEN ;
+		    cint	llen = LINEBUFLEN ;
 		    char	lbuf[LINEBUFLEN+1] ;
 		    if ((rs = readline(is,lbuf,llen)) > 0) {
 		        cout << "read> " << lbuf << endl ;
@@ -439,7 +439,7 @@ local int testlambda(void) {
 #endif /* CF_LAMBDA */
 
 bool testcon::have() {
-	const int	ans = sisub(hello,-1,"hello") ;
+	cint	ans = sisub(hello,-1,"hello") ;
 	fprintf(stderr,"main/testconn::have: ans=%u\n",(ans >= 0)) ;
 	return (ans >= 0) ;
 } /* end */
