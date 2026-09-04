@@ -1,5 +1,9 @@
-/* main (test complex) */
+/* testcomplex SUPPORT (test complex) */
+/* charset=ISO8859-1 */
 /* lang=C++ */
+
+/* test program */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -11,9 +15,10 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
 #include	<new>
 #include	<initializer_list>
@@ -21,18 +26,19 @@
 #include	<functional>
 #include	<algorithm>
 #include	<complex>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 using namespace	std ;
 
-int main()
-{
+int main() {
 	complex<double>	a(1.0,2.0) ;
 	double		ar, ai ;
 	ar = a.real() ;
 	ai = a.imag() ;
 	printf("a.real=%f a.ima=%f\n",ar,ai) ;
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
