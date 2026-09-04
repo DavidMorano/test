@@ -1,4 +1,5 @@
 /* testobjaddr SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* show object addresses */
@@ -23,6 +24,8 @@
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
 #include	<climits>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<string>
 #include	<new>
 #include	<initializer_list>
@@ -30,9 +33,9 @@
 #include	<functional>
 #include	<algorithm>
 #include	<set>
-#include	<string>
 #include	<iostream>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
 
 
@@ -91,7 +94,7 @@ struct Derived : Inter, Base {
 
 /* forward references */
 
-static void sub1() ;
+local void sub1() ;
 
 
 /* local variables */
@@ -118,10 +121,9 @@ int main(int,con mainv,con mainv) {
 	sub1() ;
 	Derived *dp = static_cast<Derived *>(bp) ;
 	delete dp ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
-static void sub1() {
+local void sub1() {
 	Derived	*dp = new Derived("b") ;
 	cout << "sub1 " << dp << eol ;
 	{
