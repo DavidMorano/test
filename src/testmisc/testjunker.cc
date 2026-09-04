@@ -1,7 +1,11 @@
-/* testjunker */
-/* lang=C89 */
+/* testjunker SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
 
 /* revision history:
 
@@ -19,38 +23,37 @@
 #define	VARDEBUGFNAME	"TESTJUNKER_DEBUGFILE"
 
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-int main(int argc,const char **argv,const char **envv) {
-	const int	hlen = MAXPATHLEN ;
+int main(int argc,cchar **argv,cchar **envv) {
+	cint	hlen = MAXPATHLEN ;
 	int		rs ;
 	int		f ;
-	const char	*ans[3] = { "NO", "YES" } ;
-	const char	*sp = "this is ( a comment )" ;
-	const char	*cp ;
+	cchar	*ans[3] = { "NO", "YES" } ;
+	cchar	*sp = "this is ( a comment )" ;
+	cchar	*cp ;
 	char		rbuf[MAXPATHLEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	strwcpy(rbuf,sp,-1) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
