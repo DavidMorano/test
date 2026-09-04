@@ -1,9 +1,11 @@
-/* testsethand */
+/* testsethand SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++11 */
 
+/* test program */
+/* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
-
+#define	CF_DEBUG	0		/* compile-time debugging */
 
 /* revision history:
 
@@ -71,7 +73,7 @@ class ourobj : public sethandent {
 /* exported subroutines */
 
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 	sethand		s(5) ;
 	int		rs ;
@@ -97,8 +99,7 @@ int main(int argc,const char **argv,const char **envv)
 	} /* end if (sethand) */
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
