@@ -1,9 +1,24 @@
-/* testgrmems */
+/* testgrmems SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
@@ -19,18 +34,18 @@
 
 #define	NDEBFNAME	"testgrmems.deb"
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 int main(int,con mainv,con mainv) {
 	GRMEMS	grm ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
@@ -40,16 +55,16 @@ int main(int,con mainv,con mainv) {
 	int	ttl = (10*60) ;
 	int	opts = 0 ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getenv(VARDEBUGFNAME)) != NULL) {
 	    debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -60,7 +75,7 @@ int main(int,con mainv,con mainv) {
 		int	c = 0 ;
 		for (ai = 1 ; argv[ai] != NULL ; ai += 1) {
 		    GRMEMS_CUR	cur ;
-		    const char	*gn = argv[ai] ;
+		    cchar	*gn = argv[ai] ;
 #if	CF_PRINTBEF
 			      printf("before cursor gn=%s\n",gn) ;
 #endif
@@ -70,13 +85,13 @@ int main(int,con mainv,con mainv) {
 #endif
 			if ((rs1 = grmems_lookup(&grm,&cur,gn,-1)) >= 0) {
 			  char		ub[USERNAMELEN+1] ;
-			  const int	ul = USERNAMELEN ;
+			  cint	ul = USERNAMELEN ;
 #if	CF_PRINTBEF
 			      printf("before lookread gn=%s\n",gn) ;
 #endif
 			  while ((rs = grmems_lookread(&grm,&cur,ub,ul)) >= 0) {
 				c += 1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("main: grmems_lookread() rs=%d\n",rs) ;
 		debugprintf("main: ub=%s\n",ub) ;
 #endif
@@ -86,7 +101,7 @@ int main(int,con mainv,con mainv) {
 			  } /* end while */
 			  if (rs == SR_NOTFOUND) {
 				rs = SR_OK ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("main: while-out done c=%u\n",c) ;
 #endif
 			   }
@@ -101,13 +116,13 @@ int main(int,con mainv,con mainv) {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (grmems) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: grmems-out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
-	    const int	f_default = FALSE ;
+	    cint	f_default = FALSE ;
 	    uint	mi[12] ;
 	    uint	mo ;
 	    uint	mdiff ;
@@ -117,9 +132,9 @@ int main(int,con mainv,con mainv) {
 	    if ((mdiff > 0) || f_default) {
 		UCMALLREG_CUR	cur ;
 		UCMALLREG_REG	reg ;
-		const int	size = (10*sizeof(uint)) ;
+		cint	size = (10*sizeof(uint)) ;
 		int		rs1 ;
-		const char	*ids = "main" ;
+		cchar	*ids = "main" ;
 		uc_mallinfo(mi,size) ;
 	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
 	        debugprintf("main: MIoutnummax=%u\n",mi[ucmallreg_outnummax]) ;
@@ -144,12 +159,11 @@ int main(int,con mainv,con mainv) {
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
