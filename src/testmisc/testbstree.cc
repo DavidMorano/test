@@ -2,7 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C++11 */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGPL	0
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_DEBUGADD	1		/* debug adding */
@@ -72,7 +75,7 @@ using namespace std ;
 
 /* external subroutines */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugprinthexblock(cchar *,int,const void *,int) ;
@@ -88,7 +91,7 @@ extern "C" int	strlinelen(cchar *,cchar *,int) ;
 
 #if	CF_CLASSLESS
 struct intless {
-	bool operator () (const int &v1,const int &v2) const {
+	bool operator () (cint &v1,cint &v2) const {
 	    return (v1 < v2) ;
 	} ;
 	bool operator () (int &v1,int &v2) const {
@@ -96,25 +99,25 @@ struct intless {
 	} ;
 } ;
 #else /* CF_CLASSLESS */
-static bool intless(const int &v1,const int &v2) {
+static bool intless(cint &v1,cint &v2) {
 	return (v1 < v2) ;
 } ;
 #endif /* CF_CLASSLESS */
 
 typedef bstree<int,intless>	ourlist ;
 
-#if	CF_DEBUGS && CF_DEBUGPL
-static int	debugprintlist(ourlist &,cchar *) ;
+#if	CF_DEBUG && CF_DEBUGPL
+local int	debugprintlist(ourlist &,cchar *) ;
 #endif
 
-static int printwalk(ourlist &) ;
-static int printinter(ourlist &) ;
+local int printwalk(ourlist &) ;
+local int printinter(ourlist &) ;
 
 
 /* forward references */
 
 #if	CF_PRINTLIST
-static int	printlist(ourlist &,cchar *) ;
+local int	printlist(ourlist &,cchar *) ;
 #endif
 
 
@@ -127,20 +130,20 @@ static int	printlist(ourlist &,cchar *) ;
 /* exported subroutines */
 
 int main(int argc,con mainv,con mainv envv) {
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	uint		mo_start ;
 #endif
 	int		rs = SR_OK ;
 	cchar		*cp ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
 #else
 	(void) envv ;
-#endif /* CF_DEBUGS */
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#endif /* CF_DEBUG */
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -149,7 +152,7 @@ int main(int argc,con mainv,con mainv envv) {
 	    ourlist 	listsrc = { 4, 2, 6, 1, 7, 3 } ;
 	    ourlist 	lr ;
 
-#if	CF_DEBUGS && CF_DEBUGPL
+#if	CF_DEBUG && CF_DEBUGPL
 	debugprintlist(listsrc,"main-listsrc") ;
 #endif
 
@@ -163,7 +166,7 @@ int main(int argc,con mainv,con mainv envv) {
 #if	CF_DEBUGONE
 	    {
 	        lr.add(17) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: insert-print\n") ;
 #endif
 
@@ -190,7 +193,7 @@ int main(int argc,con mainv,con mainv envv) {
 
 #if	CF_DEBUGADD
 	{
-	    const int	n = 23 ;
+	    cint	n = 23 ;
 	    int		rc ;
 
 	    cout << "add-all-before\n" ;
@@ -208,7 +211,7 @@ int main(int argc,con mainv,con mainv envv) {
 	        bstree<int,intless>::iterator	it ;
 	        cout << "find-one-before" << endl ;
 	        if (it = lr.find(n)) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		    debugprintf("main: found\n") ;
 #endif
 	            cout << "found" << endl ;
@@ -224,7 +227,7 @@ int main(int argc,con mainv,con mainv envv) {
 
 	    cout << "delete-all-before\n" ;
 	    printinter(lr) ;
-	    for (const int &v : listsrc) {
+	    for (cint &v : listsrc) {
 		int	c ;
 		lr.delval(v) ;
 		c = lr.count() ;
@@ -242,7 +245,7 @@ int main(int argc,con mainv,con mainv envv) {
 
 	} /* end block (main) */
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	{
 	    uint	mi[12] ;
 	    uint	mo ;
@@ -253,8 +256,8 @@ int main(int argc,con mainv,con mainv envv) {
 	    if (mdiff > 0) {
 	        UCMALLREG_CUR	cur ;
 	        UCMALLREG_REG	reg ;
-	        const int	size = (10*sizeof(uint)) ;
-	        const char	*ids = "main" ;
+	        cint	size = (10*sizeof(uint)) ;
+	        cchar	*ids = "main" ;
 	        uc_mallinfo(mi,size) ;
 	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
 	        debugprintf("main: MIoutnummax=%u\n",mi[ucmallreg_outnummax]) ;
@@ -279,12 +282,11 @@ int main(int argc,con mainv,con mainv envv) {
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 /* for memory allocation tracking */
 void *operator new(size_t sz) {
@@ -314,7 +316,7 @@ void operator delete(void *p,const std::nothrow_t &nt) noexcept {
 /* local subroutines */
 
 #if	CF_PRINTLIST
-static int printlist(ourlist &l,cchar *s) {
+local int printlist(ourlist &l,cchar *s) {
 	int		c = 0 ;
 	cout << s << ">" ;
 	for (auto v : l) {
@@ -323,18 +325,17 @@ static int printlist(ourlist &l,cchar *s) {
 	}
 	cout << endl ;
 	return c ;
-}
-/* end subroutine (printlist) */
+} /* end subroutine (printlist) */
 #endif /* CF_PRINTLIST */
 
-#if	CF_DEBUGS && CF_DEBUGPL
-static int debugprintlist(ourlist &l,cchar *s) {
-	const int	plen = LINEBUFLEN ;
+#if	CF_DEBUG && CF_DEBUGPL
+local int debugprintlist(ourlist &l,cchar *s) {
+	cint	plen = LINEBUFLEN ;
 	int		rs = SR_OK ;
 	char		*pbuf ;
 	if ((pbuf = new(nothrow) char [plen+1]) >= 0) {
-	    const int	dlen = DIGBUFLEN ;
-	    const int	n = 28 ;
+	    cint	dlen = DIGBUFLEN ;
+	    cint	n = 28 ;
 	    int		i = 0 ;
 	    char	dbuf[DIGBUFLEN+1] ;
 	    char	*bp = pbuf ;
@@ -349,9 +350,9 @@ static int debugprintlist(ourlist &l,cchar *s) {
 	} /* end if (m-a-f) */
 	return rs ;
 }
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-static int printwalk(ourlist &l) {
+local int printwalk(ourlist &l) {
 	vector<int>		res ;
 	int	c = 0 ;
 	l.storevec(res) ;
@@ -364,7 +365,7 @@ static int printwalk(ourlist &l) {
 } 
 /* end suroutine (printwalk) */
 
-static int printinter(ourlist &l) {
+local int printinter(ourlist &l) {
 	ourlist::iterator	it = l.begin() ;
 	int	c = 0 ;
 	while (it) {
