@@ -1,5 +1,10 @@
 /* testmailmsghdrfold SUPPORT */
-/* lang=C89 */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test program */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -30,41 +35,41 @@
 #define	MSGCOLS		76
 #endif
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int procprinthdrline(FILER *,int,int,int,const char *,int) ;
-static int filer_hdrkey(FILER *,const char *) ;
-static int	filer_printcont(FILER *,int,const char *,int) ;
+local int procprinthdrline(FILER *,int,int,int,cchar *,int) ;
+local int filer_hdrkey(FILER *,cchar *) ;
+local int	filer_printcont(FILER *,int,cchar *,int) ;
 
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) {
 	filer		ofile, *ofp = &ofile  ;
-	const int	mcols = MSGCOLS ;
-	const int	hlen = MAXPATHLEN ;
+	cint	mcols = MSGCOLS ;
+	cint	hlen = MAXPATHLEN ;
 	int	rs ;
 	int	wlen = 0 ;
-	const char	*hdr = "references" ;
-	const char	*ifname = BFILE_STDIN ;
+	cchar	*hdr = "references" ;
+	cchar	*ifname = BFILE_STDIN ;
 
 	char	hbuf[MAXPATHLEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if ((rs = filer_start(ofp,1,0z,0,0)) >= 0) {
 	        bfile	ifile, *ifp = &ifile ;
@@ -75,7 +80,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 		    int		ll ;
 		    int		ln = 0 ;
 		    int		indent = 10 ;
-		    const char	*lp ;
+		    cchar	*lp ;
 	            char	lbuf[LINEBUFLEN+1] ;
 
 	            while ((rs = breadln(ifp,lbuf,llen)) > 0) {
@@ -85,7 +90,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	                if (lbuf[len-1] == '\n') len -= 1 ;
 	                lbuf[len] = '\0' ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: l=>%r<\n",
 		lbuf,strlinelen(lbuf,len,50)) ;
 #endif
@@ -93,7 +98,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 			wlen += rs ;
 			indent = rs ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: filer_hdrkey() rs=%d\n",rs) ;
 #endif
 
@@ -103,7 +108,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 			    rs = procprinthdrline(ofp,mcols,ln,indent,lp,ll) ;
 			    wlen += rs ;
 			    ln += 1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: procprinthdrline() rs=%d\n",rs) ;
 #endif
 
@@ -118,29 +123,27 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    filer_finish(ofp) ;
 	} /* end if (filer) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: done rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
 /* "indent" is initial indent only! */
-static int procprinthdrline(fbp,mcols,ln,indent,lp,ll)
+local int procprinthdrline(fbp,mcols,ln,indent,lp,ll)
 FILER		*fbp ;
 int		mcols ;
 int		ln ;
 int		indent ;
-const char	*lp ;
+cchar	*lp ;
 int		ll ;
 {
 	MAILMSGHDRFOLD	mf ;
@@ -153,7 +156,7 @@ int		ll ;
 	    int	nc = (indent + 1) ;
 	    int	leader ;
 	    int	sl ;
-	    const char	*sp ;
+	    cchar	*sp ;
 
 	    while ((sl = mailmsghdrfold_get(&mf,nc,&sp)) > 0) {
 	        leader = (i == 0) ? ' ' : '\t' ;
@@ -173,10 +176,9 @@ int		ll ;
 	} /* end if */
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (procprinthdrline) */
+} /* end subroutine (procprinthdrline) */
 
-static int filer_hdrkey(filer *fbp,cchar *kname) noex {
+local int filer_hdrkey(filer *fbp,cchar *kname) noex {
 	int	rs = SR_OK ;
 	int	wlen = 0 ;
 
@@ -205,14 +207,12 @@ static int filer_hdrkey(filer *fbp,cchar *kname) noex {
 	}
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (filer_hdrkey) */
+} /* end subroutine (filer_hdrkey) */
 
-
-static int filer_printcont(fbp,leader,sp,sl)
+local int filer_printcont(fbp,leader,sp,sl)
 FILER		*fbp ;
 int		leader ;
-const char	*sp ;
+cchar	*sp ;
 int		sl ;
 {
 	int	rs = SR_OK ;
@@ -250,7 +250,6 @@ int		sl ;
 	} /* end if (non-empty value) */
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (filer_printcont) */
+} /* end subroutine (filer_printcont) */
 
 
