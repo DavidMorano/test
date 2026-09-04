@@ -2,10 +2,24 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
@@ -23,7 +37,7 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -41,7 +55,7 @@ struct arginfo {
 
 /* forward references */
 
-static int procargs(struct ainfo *,SYSREALNAME *) ;
+local int procargs(struct ainfo *,SYSREALNAME *) ;
 
 
 /* exported variables */
@@ -53,7 +67,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	struct arginfo	ainfo ;
 	SYSREALNAME	grm ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
@@ -66,14 +80,14 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 	cchar	*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getenv(VARDEBUGFNAME)) != NULL) {
 	    debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -98,13 +112,13 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (sysrealname) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: sysrealname-out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
-	    const int	f_default = FALSE ;
+	    cint	f_default = FALSE ;
 	    uint	mi[12] ;
 	    uint	mo ;
 	    uint	mdiff ;
@@ -114,7 +128,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    if ((mdiff > 0) || f_default) {
 		UCMALLREG_CUR	cur ;
 		UCMALLREG_REG	reg ;
-		const int	size = (10*sizeof(uint)) ;
+		cint	size = (10*sizeof(uint)) ;
 		int		rs1 ;
 		cchar	*ids = "main" ;
 		uc_mallinfo(mi,size) ;
@@ -141,18 +155,17 @@ int main(int argc,con mainv argv,con mainv envv) {
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-static int procargs(struct ainfo *aip,SYSREALNAME *snp) {
+local int procargs(struct ainfo *aip,SYSREALNAME *snp) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ai ;
@@ -177,7 +190,7 @@ static int procargs(struct ainfo *aip,SYSREALNAME *snp) {
 #endif
 			  while ((rs = srn_lu(&grm,&cur,ub,ul)) >= 0) {
 				c += 1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("main: sysrealname_lookread() rs=%d\n",rs) ;
 		debugprintf("main: ub=%s\n",ub) ;
 #endif
@@ -187,7 +200,7 @@ static int procargs(struct ainfo *aip,SYSREALNAME *snp) {
 			  } /* end while */
 			  if (rs == SR_NOTFOUND) {
 				rs = SR_OK ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 		debugprintf("main: while-out done c=%u\n",c) ;
 #endif
 			   }
@@ -200,7 +213,6 @@ static int procargs(struct ainfo *aip,SYSREALNAME *snp) {
 		} /* end for */
 
 	return rs ;
-}
-/* end subroutine (procargs) */
+} /* end subroutine (procargs) */
 
 
