@@ -1,7 +1,11 @@
-/* testminmax */
-/* lang=C99 */
+/* testminmax SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
 
 /* revision history:
 
@@ -34,7 +38,7 @@ using std::min ;
 using std::max ;
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -43,19 +47,19 @@ extern int	strlinelen(cchar *,int,int) ;
 
 
 int main(int argc,cchar **argv,cchar **envv) {
-	const int	n = (100*1024*1024) ;
+	cint	n = (100*1024*1024) ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		i ;
 	int		prev = 0 ;
 	cchar		*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	for (i = 0 ; i < n ; i += 1) {
 	    int	v = random() ;
@@ -64,16 +68,15 @@ int main(int argc,cchar **argv,cchar **envv) {
 	    }
 	} /* end for */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: ret rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
