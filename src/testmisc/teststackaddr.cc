@@ -93,7 +93,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
