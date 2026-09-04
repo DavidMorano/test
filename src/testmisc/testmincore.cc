@@ -91,8 +91,7 @@ int main(int,con mainv,con mainv) {
 	mo.statcall(4) ;
 	rs = mo ;
 	printf("ret (%d)\n",rs) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
