@@ -78,8 +78,7 @@ int main(int,con mainv,con mainv) {
     	    cout << "\e[40C\e[" << i << "mblinking\e[m\n" ;
 	}
     	cout << "\e8" ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
