@@ -1,40 +1,62 @@
-/* main (C89) - testconseq */
+/* testconseq SUPPORT (testconseq) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
-#define	CF_DEBUGS	1		/* non-switchable debug print-outs */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* non-switchable debug print-outs */
 #define	CF_BLANKS	0
 #define	CF_SD		0		/* use status display */
 
-#define	DBUFLEN	200
-#define	NBUFLEN	40
+/* revision history:
 
-#include	<cstdlib>
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<usysrets.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 #include	<termstr.h>
 #include	<sbuf.h>
 #include	<localmisc.h>
 
 #include	"config.h"
 
+
+#define	DBUFLEN	200
+#define	NBUFLEN	40
+
 extern int	termconseq(char *,int,int,int,int,int,int) ;
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthexblock(const char *,int,const void *,int) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthexblock(cchar *,int,const void *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 
-int main(int argc,const char **argv,const char **envv)
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	SBUF	b ;
 
-	const int	dlen = DBUFLEN ;
-	const int	nlen = NBUFLEN ;
+	cint	dlen = DBUFLEN ;
+	cint	nlen = NBUFLEN ;
 	int	rs ;
 	int	dl ;
 	int	nl ;
@@ -42,9 +64,9 @@ int main(int argc,const char **argv,const char **envv)
 	char	nbuf[NBUFLEN+1] ;
 
 
-#if	CF_DEBUGS 
+#if	CF_DEBUG 
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getourenv(envv,VARDEBUGFD1)) == NULL)
 	        cp = getourenv(envv,VARDEBUGFD2) ;
@@ -53,7 +75,7 @@ int main(int argc,const char **argv,const char **envv)
 	    debugopen(cp) ;
 	debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 
 	if ((rs = sbuf_start(&b,dbuf,dlen)) >= 0) {
@@ -90,7 +112,7 @@ int main(int argc,const char **argv,const char **envv)
 	} /* end if */
 
 	fprintf(stderr,"main: sbuf rs=%d dl=%d\n",rs,dl) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprinthexblock("main",80,dbuf,dl) ;
 #endif
 
@@ -98,12 +120,11 @@ int main(int argc,const char **argv,const char **envv)
 	    rs = u_write(1,dbuf,dl) ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
