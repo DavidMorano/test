@@ -1,6 +1,11 @@
-/* testmemalloc (C89) */
+/* testmemalloc SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory allocations */
 
 /* revision history:
@@ -27,23 +32,23 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,cchar **argv,cchar **envv) {
 	uint		mo_start = 0 ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		size ;
-	const char	*cp ;
+	cchar	*cp ;
 	char		*p ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getourenv(envv,VARDEBUGFD1)) == NULL)
 	        cp = getourenv(envv,VARDEBUGFD2) ;
@@ -51,9 +56,9 @@ int main(int argc,const char **argv,const char **envv) {
 	if (cp != NULL)
 	    debugopen(cp) ;
 	debugprintf("main: starting\n") ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -67,11 +72,11 @@ int main(int argc,const char **argv,const char **envv) {
 
 	if (rs >= 0) rs = rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: exiting rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo_finish ;
 	    uc_mallout(&mo_finish) ;
@@ -79,12 +84,11 @@ int main(int argc,const char **argv,const char **envv) {
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
