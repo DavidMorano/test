@@ -5,7 +5,7 @@
 /* generic front-end for SHELL built-ins */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
+#define	CF_DEBUG	0		/* non-switchable debug print-outs */
 #define	CF_DEBUGN	0		/* special debugging */
 #define	CF_UTIL		0		/* run the utility worker */
 #define	CF_SIGHAND	1		/* install csignalandlers */
@@ -67,7 +67,7 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS || CF_DEBUGN
+#if	CF_DEBUG || CF_DEBUGN
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -92,11 +92,11 @@ struct sigcode {
 
 /* forward references */
 
-static int	maininfo_sigbegin(MAININFO *) ;
-static int	maininfo_sigend(MAININFO *) ;
+local int	maininfo_sigbegin(MAININFO *) ;
+local int	maininfo_sigend(MAININFO *) ;
 
-static void	main_sighand(int,siginfo_t *,void *) ;
-static int	main_sigdump(siginfo_t *) ;
+local void	main_sighand(int,siginfo_t *,void *) ;
+local int	main_sigdump(siginfo_t *) ;
 
 static cchar	*strsigcode(const struct sigcode *,int) ;
 
@@ -225,14 +225,13 @@ int main(int argc,mainv argv,mainv envv) {
 #endif
 
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
 #if	CF_SIGALTSTACK
-static int maininfo_sigbegin(MAININFO *mip) {
+local int maininfo_sigbegin(MAININFO *mip) {
 	size_t		ms ;
 	cint	ps = getpagesize() ;
 	cint	ss = (2*SIGSTKSZ) ;
@@ -264,10 +263,9 @@ static int maininfo_sigbegin(MAININFO *mip) {
 	nprintf(NDF,"main_sigbegin: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (maininfo_sigbegin) */
+} /* end subroutine (maininfo_sigbegin) */
 #else /* CF_SIGALTSTACK */
-static int maininfo_sigbegin(MAININFO *mip) {
+local int maininfo_sigbegin(MAININFO *mip) {
 	int		rs = SR_OK ;
 	void		(*sh)(int,siginfo_t *,void *) = main_sighand ;
 #if	CF_SIGHAND
@@ -277,11 +275,10 @@ static int maininfo_sigbegin(MAININFO *mip) {
 	nprintf(NDF,"main_sigbegin: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (maininfo_sigbegin) */
+} /* end subroutine (maininfo_sigbegin) */
 #endif /* CF_SIGALTSTACK */
 
-static int maininfo_sigend(MAININFO *mip) {
+local int maininfo_sigend(MAININFO *mip) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 
@@ -304,11 +301,10 @@ static int maininfo_sigend(MAININFO *mip) {
 #endif /* CF_SIGALTSTACK */
 
 	return rs ;
-}
-/* end subroutine (maininfo_sigend) */
+} /* end subroutine (maininfo_sigend) */
 
 /* ARGSUSED */
-static void main_sighand(int sn,siginfo_t *sip,void *ucp) {
+local void main_sighand(int sn,siginfo_t *sip,void *ucp) {
 #if	CF_DEBUGN
 	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
@@ -316,10 +312,9 @@ static void main_sighand(int sn,siginfo_t *sip,void *ucp) {
 	    main_sigdump(sip) ;
 	}
 	u_exit(EX_TERM) ;
-}
-/* end subroutine (main_sighand) */
+} /* end subroutine (main_sighand) */
 
-static int main_sigdump(siginfo_t *sip) {
+local int main_sigdump(siginfo_t *sip) {
 	cint	wlen = LINEBUFLEN ;
 	cint	si_signo = sip->si_signo ;
 	cint	si_code = sip->si_code ;
@@ -364,8 +359,7 @@ static int main_sigdump(siginfo_t *sip) {
 #endif
 	write(2,wbuf,wl) ;
 	return 0 ;
-}
-/* end subroutine (main_sigdump) */
+} /* end subroutine (main_sigdump) */
 
 static cchar *strsigcode(const struct sigcode *scp,int code) {
 	int		i ;
@@ -377,7 +371,6 @@ static cchar *strsigcode(const struct sigcode *scp,int code) {
 	}
 	if (f) sn = scp[i].name ;
 	return sn ;
-}
-/* end subroutine (strsigcode) */
+} /* end subroutine (strsigcode) */
 
 
