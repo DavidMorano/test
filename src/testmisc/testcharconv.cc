@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -79,7 +82,6 @@ int main(int,con mainv,con mainv) {
 	} /* end for */
 	if (rs < 0) ex = EXIT_FAILURE ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
