@@ -1,7 +1,11 @@
-/* testugetpid */
-/* lang=C99 */
+/* testugetpid SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #define	CF_DEBUGN	0		/* special debugging */
 
@@ -19,9 +23,12 @@
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdarg>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<ugetpid.h>
 #include	<localmisc.h>
 
@@ -34,7 +41,7 @@
 
 #define	NDF		"testugetpid.deb"
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -55,14 +62,14 @@ int main(int argc,cchar **argv,cchar **envv)
 {
 	FILE		*ofp = stdout ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -70,9 +77,9 @@ int main(int argc,cchar **argv,cchar **envv)
 	        debugprintf("main: starting fd=%d\n",rs) ;
 	    }
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -86,7 +93,7 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	fflush(ofp) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: fork()\n") ;
 #endif
 
@@ -105,7 +112,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	if (rs < 0)
 	fprintf(ofp,"failure (%d)\n",rs) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
@@ -113,7 +120,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	nprintf(NDF,"main: leaving\n") ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -122,13 +129,12 @@ int main(int argc,cchar **argv,cchar **envv)
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
