@@ -77,8 +77,7 @@ int main(int,con mainv,con mainv) {
 		cout << "ndigs=" << nd << " ndf=" << ndf << eol ;
 	    }
 	} /* end for */
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
