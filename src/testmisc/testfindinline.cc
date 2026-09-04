@@ -5,8 +5,18 @@
 /* test the |findinline(3dam)| subroutine */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
@@ -30,7 +40,7 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	cchar	*ifname = nullptr ;
 	cchar	*sp ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
@@ -38,16 +48,16 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	int	rs1 ;
 	int	sl ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != nullptr)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -63,7 +73,7 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != nullptr) ; ai += 1) {
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: findinline() rs=%d\n",rs) ;
 #endif
 
@@ -91,7 +101,7 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 		    bprintf(ofp,fmt,sl,fi.kp,fi.kl,fi.vp,fi.vl) ;
 		}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: findinline() rs=%d\n",sl) ;
 #endif
 
@@ -102,7 +112,7 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	    bclose(ofp) ;
 	} /* end if (outfile-open) */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -111,7 +121,7 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
