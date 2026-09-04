@@ -8,6 +8,16 @@
 #define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<cstddef>		/* CSTD */
@@ -81,7 +91,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	uint	mo_start = 0 ;
 #endif
 
-	const int	y = 2015 ;
+	cint	y = 2015 ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
@@ -109,17 +119,17 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 
 	if (argv != NULL) {
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    int		ai ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
 	        cchar	*qp = argv[ai] ;
-	        const int	of = O_RDONLY ;
+	        cint	of = O_RDONLY ;
 #if	CF_DEBUG
 	        DEBUGPRINTF("main: qp=%s\n",qp) ;
 #endif
 	        if ((rs = cvtdate(&defs,qp)) >= 0) {
-	            const int	to = -1 ;
+	            cint	to = -1 ;
 	            int		mjd = rs ;
 	            if ((rs1 = maintqotd(pr,mjd,of,to)) >= 0) {
 	                ustat	sb ;
@@ -170,8 +180,7 @@ done:
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -196,15 +205,14 @@ local int dumpfile(int fd,int of) noex {
 #endif
 
 	return rs ;
-}
-/* end subroutine (dumpfile) */
+} /* end subroutine (dumpfile) */
 
 
 local int dumpdir(int fd,int of)
 {
 	FSDIR		d ;
 	FSDIR_ENT	de ;
-	const int	dlen = MAXPATHLEN ;
+	cint	dlen = MAXPATHLEN ;
 	int	rs ;
 
 	char	dbuf[USERNAMELEN+1] ;
@@ -225,8 +233,7 @@ local int dumpdir(int fd,int of)
 	DEBUGPRINTF("main/dumpdir: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (dumpdir) */
+} /* end subroutine (dumpdir) */
 
 
 #ifdef	COMMENT
@@ -312,13 +319,10 @@ int		to ;
 #endif
 
 	return (rs >= 0) ? tlen : rs ;
-}
-/* end subroutine (filer_read) */
+} /* end subroutine (filer_read) */
 
-
-local int filer_refill(FILER *op,int to)
-{
-	const int	fmo = FM_TIMED ;
+local int filer_refill(FILER *op,int to) {
+	cint	fmo = FM_TIMED ;
 	int	rs = SR_OK ;
 	int	rc = 4 ;
 	int	tlen = 0 ;
@@ -393,7 +397,6 @@ local int cvtdate(dayspec *ddsp,cchar *qp) noex {
 	    }
 	}
 	return (rs >= 0) ? mjd : rs ;
-}
-/* end subroutine (cvtdate) */
+} /* end subroutine (cvtdate) */
 
 
