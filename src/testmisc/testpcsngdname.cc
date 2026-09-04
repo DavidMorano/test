@@ -1,5 +1,11 @@
 /* testpcsngdname */
+/* charset=ISO8859-1 */
 /* lang=C89 */
+
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
 
 /* revision history:
 
@@ -10,7 +16,6 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#define	CF_DEBUGS	1
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstdio>
 #include	<usystem.h>
@@ -25,61 +30,61 @@
 
 #define	VARDEBUGFNAME	"TESTPCSNGDNAME_DEBUGFILE"
 
-extern int	pcsngdname(const char *,char *,const char *,const char *) ;
+extern int	pcsngdname(cchar *,char *,cchar *,cchar *) ;
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-int main(int argc,const char **argv,const char **envv) {
-	const int	rlen = MAXPATHLEN ;
+int main(int argc,cchar **argv,cchar **envv) {
+	cint	rlen = MAXPATHLEN ;
 
 	int	rs = SR_OK ;
 	int	rs1 ;
 
-	const char	*pr = PCS ;
-	const char	*newsdname = BBNEWSDNAME ;
+	cchar	*pr = PCS ;
+	cchar	*newsdname = BBNEWSDNAME ;
 
 	char	rbuf[MAXPATHLEN+1] = { 0 } ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if (argv != NULL) {
 	    int	ai ;
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
-		const char	*np = argv[ai] ;
+		cchar	*np = argv[ai] ;
 
 	        rs = pcsngdname(pr,rbuf,newsdname,np) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: pcsngdname() rs=%d\n",rs) ;
 #endif
 
 		if (rs < 0) break ;
 	    } /* end for */
 	} /* end if (argv) */
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
 	printf("rs=%d ngdname=%s\n",rs,rbuf) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
+
 
