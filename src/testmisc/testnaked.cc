@@ -1,7 +1,11 @@
 /* testnaked SUPPORT */
-/* lang=C99 */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	0		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 #define	CF_DEBUGN	0		/* special debugging */
 #define	CF_UGETPID	1		/* |ugetpid(3uc)| */
@@ -40,7 +44,7 @@
 
 #define	NDF		"testnaked.deb"
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -60,15 +64,15 @@ extern int	nprintf(cchar *,cchar *,...) ;
 int main(int argc,con mainv argv,con mainv envv) {
 	FILE		*ofp = stdout ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
-	const int	ps = getpagesize() ;
+	cint	ps = getpagesize() ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -76,9 +80,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        debugprintf("main: starting fd=%d\n",rs) ;
 	    }
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -91,7 +95,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 #if	CF_UGETPID
 	{
-	    const int	pid = ugetpid() ;
+	    cint	pid = ugetpid() ;
 	    fprintf(ofp,"pid=%d\n",pid) ;
 	}
 #endif /* CF_UGETPID */
@@ -105,7 +109,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 	fflush(ofp) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
@@ -113,7 +117,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	nprintf(NDF,"main: leaving\n") ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -122,13 +126,12 @@ int main(int argc,con mainv argv,con mainv envv) {
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
