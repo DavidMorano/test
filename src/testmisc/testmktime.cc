@@ -7,6 +7,16 @@
 
 #define	CF_UCMKTIME	1		/* use 'uc_mktime(3uc)' */
 
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<ctime>			/* CSTD */
 #include	<cstddef>		/* CSTD */
@@ -17,6 +27,8 @@
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
+
+
 int main() {
 	TM tmval ;
 	time_t		t = 0 ;
