@@ -66,7 +66,7 @@ using std::cout ;			/* variable */
 
 /* forward references */
 
-static void encoding() ;
+local void encoding() ;
 
 
 /* local variables */
@@ -110,8 +110,7 @@ int main(int,con mainv,con mainv) {
 	    cout << ßg$str << eol ;
 	}
 	encoding() ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
