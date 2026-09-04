@@ -1,7 +1,11 @@
 /* testgetuserhome */
-/* lang=C89 */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
-#define	CF_DEBUGS	1
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
 
 /* revision history:
 
@@ -13,49 +17,52 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #define	VARDEBUGFNAME	"TESTGETUSERHOME_DEBUGFILE"
 
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-int main(int argc,const char **argv,const char **envv) {
-	const int	hlen = MAXPATHLEN ;
+int main(int argc,cchar **argv,cchar **envv) {
+	cint	hlen = MAXPATHLEN ;
 	int		rs ;
 	char		hbuf[MAXPATHLEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	    debugopen(cp) ;
 	debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if ((argv != NULL) && (argc > 1)) {
 	    int	ai ;
 	    for (ai = 1 ; argv[ai] != NULL ; ai += 1) {
-	        const char	*un = argv[ai] ;
+	        cchar	*un = argv[ai] ;
 	        rs = getuserhome(hbuf,hlen,un) ;
 	        printf("un=%s rs=%d hd=%s\n",un,rs,hbuf) ;
 	    } /* end for */
 	} /* end if */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
