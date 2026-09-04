@@ -2,6 +2,11 @@
 /* charset=ISO8859-1 */
 /* lang=C89 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
+#define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 
 /* revision history:
 
@@ -11,10 +16,6 @@
 */
 
 /* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
-
-
-#define	CF_DEBUGS	1		/* compile-time debugging */
-#define	CF_DEBUGMALL	1		/* debugging memory-allocations */
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
@@ -48,7 +49,7 @@
 
 #define	VARDEBUGFNAME	"TESTOPENDIRCACHE_DEBUGFILE"
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
@@ -58,31 +59,31 @@ extern int	strlinelen(cchar *,int,int) ;
 
 /* forward references */
 
-static int dumpfile(int,int) ;
-static int dumpdir(int,int) ;
+local int dumpfile(int,int) ;
+local int dumpdir(int,int) ;
 
 /* exported subroutines */
 
 int main(int argc,cchar **argv,cchar **envv) {
 	cchar	*pr = getourenv(envv,VARPRPCS) ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
 	int		rs = SR_OK ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -96,17 +97,17 @@ int main(int argc,cchar **argv,cchar **envv) {
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
 	        cchar	*fn = argv[ai] ;
 	        cint	of = O_RDONLY ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: fn=%s\n",fn) ;
 #endif
 	        if ((rs1 = pcsopendircache(pr,fn,of,om,to)) >= 0) {
 	            ustat	sb ;
 	            int		fd = rs1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: pcsopendircache() rs=%d\n",rs1) ;
 #endif
 	            if ((rs = u_fstat(fd,&sb)) >= 0) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main: mode=\\x%08x\n",sb.st_mode) ;
 #endif
 	                if (S_ISDIR(sb.st_mode)) {
@@ -120,18 +121,18 @@ int main(int argc,cchar **argv,cchar **envv) {
 	            rs = SR_OK ;
 	            printf("not_found fn=%s (%d)\n",fn,rs1) ;
 	        }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: uc_open-out rs=%d\n",rs1) ;
 #endif
 	        if (rs < 0) break ;
 	    } /* end for */
 	} /* end if (arguments) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -140,24 +141,21 @@ int main(int argc,cchar **argv,cchar **envv) {
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-static int dumpfile(int fd,int of)
-{
+local int dumpfile(int fd,int of) {
 	FILER		b ;
 	cint	fo = (of | O_NETWORK) ;
 	int		rs ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpfile: ent\n") ;
 #endif
 	if ((rs = filer_start(&b,fd,0z,0,fo)) >= 0) {
@@ -167,7 +165,7 @@ static int dumpfile(int fd,int of)
 	    char	lbuf[LINEBUFLEN+1] ;
 	    while ((rs = filer_readln(&b,lbuf,llen,to)) > 0) {
 	        int	len = rs ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main/dumpfile: readline() len=%d\n",len) ;
 #endif
 	        li = strlinelen(lbuf,len,70) ;
@@ -178,24 +176,21 @@ static int dumpfile(int fd,int of)
 	    filer_finish(&b) ;
 	} /* end if (filer) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpfile: rs=%d\n",rs) ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (dumpfile) */
+} /* end subroutine (dumpfile) */
 
-
-static int dumpdir(int fd,int of)
-{
+local int dumpdir(int fd,int of) {
 	FSDIR		d ;
 	FSDIR_ENT	de ;
 	cint	dlen = MAXPATHLEN ;
 	int		rs ;
 	char		dbuf[USERNAMELEN+1] ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpdir: ent\n") ;
 #endif
 	if ((rs = bufprintf(dbuf,dlen,"/dev/fd/%u",fd)) >= 0) {
@@ -207,11 +202,10 @@ static int dumpdir(int fd,int of)
 	    } /* end if (fsdir) */
 	} /* end if */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main/dumpdir: ret rs=%d\n",rs) ;
 #endif
 	return rs ;
-}
-/* end subroutine (dumpdir) */
+} /* end subroutine (dumpdir) */
 
 
