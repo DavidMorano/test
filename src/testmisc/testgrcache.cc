@@ -1,7 +1,11 @@
-/* testgrcache */
-/* lang=C89 */
+/* testgrcache SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
 /* revision history:
@@ -21,55 +25,55 @@
 
 #define	VARDEBUGFNAME	"TESTGRCACHE_DEBUGFILE"
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
-int main(int argc,const char **argv,const char **envv) {
+int main(int argc,cchar **argv,cchar **envv) {
 	GRCACHE		g ;
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 	int		rs ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
 
 	if ((rs = grcache_start(&g,4,4)) >= 0) {
 	    int			n = 0 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: grcache_start() rs=%d\n",rs) ;
 #endif
 
 	    if (argv != NULL) {
 	        struct group	gr ;
-	        const int	grlen = bufsizeget(bufsizeget_gr) ;
+	        cint	grlen = bufsizeget(bufsizeget_gr) ;
 	        char		*grbuf ;
 		if ((rs = uc_malloc((grlen+1),&grbuf)) >= 0) {
 	            int		ai ;
 		    cchar	**av = argv ;
-	            const char	*gn ;
+	            cchar	*gn ;
 	            for (ai = 1 ; (ai < argc) && (av[ai] != NULL) ; ai += 1) {
 	                n += 1 ;
 	                gn = argv[ai] ;
 	                rs = grcache_lookname(&g,&gr,grbuf,grlen,gn) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                debugprintf("main: grcache_lookname() rs=%d\n",rs) ;
 #endif
 		        if (rs >= 0) {
@@ -84,7 +88,7 @@ int main(int argc,const char **argv,const char **envv) {
 		} /* end if (memory-allocation) */
 	    } /* end if (non-null) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: out rs=%d\n",rs) ;
 #endif
 
@@ -99,7 +103,7 @@ int main(int argc,const char **argv,const char **envv) {
 	            printf("stats nhit=%u\n",s.nhits) ;
 	            printf("stats nmis=%u\n",s.nmisses) ;
 	        }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: ugetpw_stats() rs=%d\n",rs) ;
 #endif
 	    } /* end if */
@@ -108,7 +112,7 @@ int main(int argc,const char **argv,const char **envv) {
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (grcache) */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -117,12 +121,11 @@ int main(int argc,const char **argv,const char **envv) {
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
