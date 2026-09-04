@@ -5,7 +5,7 @@
 /* small test of the system random number generator */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUG	0		/* compile-time debugging */
 
 /* revision history:
 
@@ -80,8 +80,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    v = (rn % m) ;
 	    cout << v << endl ;
 	} /* end for */
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
