@@ -5,7 +5,7 @@
 /* this is a test POLLOBJ object for PCSPOLLS */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 
 /* revision history:
 
@@ -77,7 +77,7 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern int	debugprintf(cchar *,...) ;
 extern char	*timestr_log(time_t,char *) ;
 #endif
@@ -161,7 +161,7 @@ int testpollobj_start( TESTPOLLOBJ *op,cc *pr,cc *sn,
 
 	if (op == nullptr) return SR_FAULT ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj_start: entered\n") ;
 	debugprintf("testpollobj_start: pr=%s\n",pr) ;
 	debugprintf("testpollobj_start: sn=%s\n",sn) ;
@@ -182,7 +182,7 @@ int testpollobj_start( TESTPOLLOBJ *op,cc *pr,cc *sn,
 	    }
 	} /* end if (memory-allocation) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj_start: ret rs=%d\n",rs) ;
 #endif
 
@@ -198,7 +198,7 @@ int testpollobj_finish(TESTPOLLOBJ *op) noex {
 
 	if (op->magic != TESTPOLLOBJ_MAGIC) return SR_NOTOPEN ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj_finish: f_working=%d\n",op->fl.working) ;
 #endif
 
@@ -214,7 +214,7 @@ int testpollobj_finish(TESTPOLLOBJ *op) noex {
 	    op->wap = nullptr ;
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj_finish: ret rs=%d\n",rs) ;
 #endif
 
@@ -269,7 +269,7 @@ local int worker(THRBASE *tip) noex {
 	int		rs ;
 	int		ctime = 0 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/worker: started\n") ;
 #endif
 
@@ -282,13 +282,13 @@ local int worker(THRBASE *tip) noex {
 	        switch (cmd) {
 		case cmd_noop:
 		    ctime += 1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/worker: timed-poll\n") ;
 #endif
 		    break ;
 	        case cmd_exit:
 		    f_exit = true ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/worker: exit\n") ;
 #endif
 		    rs = work_term(&w) ;
@@ -302,7 +302,7 @@ local int worker(THRBASE *tip) noex {
 	    work_finish(&w) ;
 	} /* end if (work) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/worker: ret rs=%d ctime=%u\n",rs,ctime) ;
 #endif
 
@@ -324,7 +324,7 @@ local int work_start(WORK *wp,THRBASE *tip,WORKARGS *wap) noex {
 	pr = wap->pr ;
 	sn = wap->sn ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/work_start: pr=%s\n",pr) ;
 	debugprintf("testpollobj/work_start: sn=%s\n",sn) ;
 #endif
@@ -339,7 +339,7 @@ local int work_finish(WORK *wp) noex {
 
 	if (wp == nullptr) return SR_FAULT ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/work_finish: ret rs=%d\n",rs) ;
 #endif
 
@@ -349,11 +349,10 @@ local int work_finish(WORK *wp) noex {
 
 local int work_term(WORK *wp) noex {
 	if (wp == nullptr) return SR_FAULT ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testpollobj/work_term: entered\n") ;
 #endif
 	return SR_OK ;
-}
-/* end subroutine (work_term) */
+} /* end subroutine (work_term) */
 
 
