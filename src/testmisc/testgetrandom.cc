@@ -105,8 +105,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    } /* end if */
 	} /* end if (arguments) */
 	if (rs < 0) DPRINTF("failure (%d)\n",rs) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
