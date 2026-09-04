@@ -1,5 +1,9 @@
-/* testaccess */
-/* lang=C99 */
+/* testaccess SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
+
+/* test program */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -13,26 +17,27 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<climits>
 #include	<unistd.h>
+#include	<climits>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-#include	<usystem.h>
-#include	<localmisc.h>
 #include	<exitcodes.h>
+#include	<localmisc.h>
 
 
 /* ARGSUSED */
-int main(int argc,const char **argv,const char **envv)
-{
-	const int	am = R_OK ;
+int main(int argc,con mainv argv,con mainv envv) {
+	cint		am = R_OK ;
 	int		rs ;
-
+	(void) argc ;
+	(void) argv ;
+	(void) envv ;
 	rs = u_access("main.c",am) ;
 
 	printf("hooray! rs=%d\n",rs) ;
 
 	return EX_OK ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
