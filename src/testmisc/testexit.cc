@@ -2,6 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
+
 /* revision history:
 
 	= 1998-04-13, David A-D- Morano
@@ -30,7 +34,7 @@ $ gpp -o testexit.x testexit.cc
 using namespace std ;
 
 extern "C" {
-    static void efunc() noex ;
+    local void efunc() noex ;
 }
 
 struct obj {
@@ -48,7 +52,7 @@ struct obj {
 
 static const obj	obj_data ;
 
-int main(int,const char **,const char **) {
+int main(int,cchar **,cchar **) {
 	cout << "main.begin\n" ;
 	{
 	    atexit(efunc) ;
@@ -57,7 +61,7 @@ int main(int,const char **,const char **) {
 	exit(0) ;
 }
 
-static void efunc() noex {
+local void efunc() noex {
 	cchar	*sp = "main.efunc\n" ;
 	cint	sl = strlen(sp) ;
 	write(1,sp,sl) ;
