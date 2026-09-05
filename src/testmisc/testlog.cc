@@ -1,32 +1,118 @@
-/* testlog */
+/* mainlog SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++11 */
+
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 
 /* revision history:
 
-	= 2000-05-14, David A­D­ Morano
+	= 2013-07-11, David A­D­ Morano
 	Originally written for Rightcore Network Services.
 
 */
 
-/* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 2013 David A­D­ Morano.  All rights reserved. */
 
-#include	<math.h>
-#include	<cstdio>
-#include	<cerrno>
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/types.h>
+#include	<cmath>
+#include	<cinttypes>
+#include	<cstdlib>
+#include	<cstddef>		/* |nullptr_t| */
+#include	<cstring>
+#include	<new>
+#include	<initializer_list>
+#include	<utility>
+#include	<functional>
+#include	<algorithm>
+#include	<forward_list>
+#include	<vector>
+#include	<string>
+#include	<fstream>
+#include	<iostream>
+#include	<iomanip>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
+#include	<localmisc.h>
 
-int main()
-{
-	long double	x, y ;
 
-	x = pow(2.0,127.0) + 1.0 ;
+/* local defines */
 
-	y = log10(x) ;
-	if (errno != ERANGE) {
-	    printf("y=%Lf\n",y) ;
-	} else {
-	    printf("y=RANGE\n") ;
+#define	VARDEBUGFNAME	"LOG_DEBUGFILE"
+
+
+/* name-spaces */
+
+using namespace std ;
+
+
+/* external subroutines */
+
+extern "C" double	log2(double) ;
+
+#if	CF_DEBUG
+extern "C" int	debugopen(cchar *) ;
+extern "C" int	debugprintf(cchar *,...) ;
+extern "C" int	debugclose() ;
+extern "C" int	strlinelen(cchar *,cchar *,int) ;
+#endif
+
+
+/* external variables */
+
+
+/* local structures (and methods) */
+
+
+/* forward references */
+
+
+/* local variables */
+
+cbool		f_debug		= CF_DEBUG ;
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,mainv argv,mainv envv) {
+	int		rs = SR_OK ;
+	int		ex = 0 ;
+	cchar		*cp ;
+#if	CF_DEBUG
+	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+	    rs = debugopen(cp) ;
+	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-	return 0 ;
-}
-/* end subroutine (main) */
+#endif /* CF_DEBUG */
+	{
+	    cint	vals[] = { 1024, 100, 184 } ;
+	    double	d, r ;
+	    for (auto v : vals) {
+	        d = v ;
+		r = log2(d) ;
+		cout << r << endl ;
+	    }
+	} /* end block */
+
+#if	CF_DEBUG
+	debugprintf("main: ret rs=%d\n",rs) ;
+#endif
+
+#if	CF_DEBUG
+	debugclose() ;
+#endif
+	if (rs < 0) ex = 1 ;
+	return ex ;
+} /* end subroutine (main) */
+
+
+/* local subroutines */
 
 
