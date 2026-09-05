@@ -1,9 +1,11 @@
-/* testsetint */
-/* lang=C++11 */
+/* testsetint SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
+/* test program */
+/* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
-
+#define	CF_DEBUG	0		/* compile-time debugging */
 
 /* revision history:
 
@@ -62,7 +64,7 @@ extern "C" int	sisub(cchar *,int,cchar *) ;
 /* exported subroutines */
 
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 	setint		ints ;
 	setint_cur	cur ;
@@ -91,8 +93,7 @@ int main(int argc,const char **argv,const char **envv)
 	printf("main: ret rs=%d\n",rs) ;
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
