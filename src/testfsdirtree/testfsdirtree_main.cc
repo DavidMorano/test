@@ -16,39 +16,35 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/stat.h>		/* |stat(2)| */
-#include	<unistd.h>		/* |getpid(2)| */
-#include	<fcntl.h>
-#include	<libproc.h>
-#include	<cstddef>		/* |nullptr_t| */
+#include	<sys/stat.h>		/* POSIX® |stat(2)| */
+#include	<unistd.h>		/* POSIX® |getpid(2)| */
+#include	<fcntl.h>		/* POSIX® */
+#include	<libproc.h>		/* POSIX® */
+#include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
-#include	<cstdio>
-#include	<new>			/* |nothrow(3c++)| */
-#include	<iostream>		/* |cout| */
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-#include	<usyscalls.h>
-#include	<usupport.h>
-#include	<fsdirtree.h>
-#include	<localmisc.h>		/* |MAXNAMELEN| + |eol| */
+#include	<cstdio>		/* CSTD */
+#include	<new>			/* C++STD */
+#include	<iostream>		/* C__STD |cout| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
+#include	<fsdirtree.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU |MAXNAMELEN| + |eol| */
 
 import libutil ;
 
 using libu::umem ;			/* variable */
 using std::cout ;			/* variable */
-using std::nothrow ;			/* constant */
 
 local int dirlist(cchar *name) noex {
-    	cnullptr	np{} ;
+	cnothrow	nt{} ;
     	int		rs = SR_INVALID ;
 	int		rs1 ;
 	if (name[0]) {
 	    cint	nlen = MAXNAMELEN ;
 	    rs = SR_NOMEM ;
-	    if (char *nbuf ; (nbuf = new(nothrow) char[nlen + 1]) != np) {
+	    if (char *nbuf = new(nt) char[nlen + 1]) {
 	        if (fsdirtree dir ; (rs = dir.open(name)) >= 0) {
 		    for (ustat sb ; (rs = dir.read(&sb,nbuf,nlen)) > 0 ; ) {
 			cout << nbuf << eol ;
@@ -58,22 +54,24 @@ local int dirlist(cchar *name) noex {
 	        } /* end if (fsdirtree) */
 	        delete [] nbuf ;
 	    } /* end if (m-a-f) */
-	}
+	} /* end if (valid) */
 	return rs ;
 } /* end subroutine (dirlist) */
 
 int main(int argc,con mainv argv,con mainv) {
-    	int		ex = 0 ;
+    	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	for (int ai = 1 ; (rs >= 0) && (ai < argc) ; ai += 1) {
-	    if (argv[ai]) {
-		cchar	*dirname = argv[ai] ;
-		rs = dirlist(dirname) ;
+	    if (cchar *dirname = argv[ai]) {
+		if (dirname[0]) {
+		    rs = dirlist(dirname) ;
+		}
 	    }
 	} /* end for */
-	if (rs < 0) ex = 1 ;
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
