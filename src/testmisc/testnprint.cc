@@ -2,7 +2,21 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1
+
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* CSTD */
@@ -23,30 +37,29 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		rs ;
 	cchar		*msg = "here/nis/hello" ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	cchar		*cp ;
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	rs = nprintf(NDF,"main: msg=%s\n",msg) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: nprintf() rs=%d\n",rs) ;
 #endif
 
 	rs = nprinthexblock(NDF,"main: ",cols,msg,-1) ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main: nprinthexblock() rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
