@@ -19,8 +19,8 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<unistd.h>		/* |getpid(2)| */
 #include	<libproc.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
 #include	<iostream>
 #include	<syncstream>		/* |osyncstream(3c++)| */
@@ -56,19 +56,19 @@ std::ostream		sout(cout.rdbuf()) ;
 
 std::mutex		omx ;
 
-static int oncesub() noex {
+local int oncesub() noex {
     	osyncstream(cout) << "oncesub: sleeping\n" ;
     	sleep(4) ;
     	osyncstream(cout) << "oncesub: waking\n" ;
 	return 1 ;
 }
 
-static int oncer() noex {
+local int oncer() noex {
     	static cint	rso = oncesub() ;
 	return rso ;
 }
 
-static void tryer() noex {
+local void tryer() noex {
     	threadid	id = std::this_thread::get_id() ;
 	[[maybe_unused]] int		rso = 0 ;
 	osyncstream(cout) << "thread=" << id << " ent\n" ;
@@ -101,7 +101,6 @@ int main(int argc,con mainv argv,con mainv) {
     	osyncstream(cout) << "main: ret\n" ;
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
