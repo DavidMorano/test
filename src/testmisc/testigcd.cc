@@ -1,7 +1,11 @@
-/* main (testigcd) */
-/* lang=C99 */
+/* testigcd SUPPORT (testigcd) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 
 /* revision history:
 
@@ -39,11 +43,11 @@
 
 /* external subroutines */
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
@@ -53,7 +57,7 @@ extern int	strlinelen(const char *,int,int) ;
 /* exported subroutines */
 
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 	int		rs = SR_OK ;
 	int		ex = 0 ;
@@ -61,12 +65,12 @@ int main(int argc,const char **argv,const char **envv)
 	int		i, j ;
 	cchar		*cp ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if ((rs >= 0) && (argc > 1)) {
 	    if ((argv[1] != NULL) && (argv[1][0] != '\0')) {
@@ -76,30 +80,29 @@ int main(int argc,const char **argv,const char **envv)
 	    }
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: maxtry=%u\n",maxtry) ;
 #endif
 
 	if (rs >= 0) {
 	    for (i = 1 ; i < maxtry ; i += 1) {
 	        for (j = 1 ; j < maxtry ; j += 1) {
-		    const int	g = igcd(i,j) ;
+		    cint	g = igcd(i,j) ;
 		    printf("g(%2u,%2u)=%u\n",i,j,g) ;
 	        }
 	    }
 	}
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: done rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
