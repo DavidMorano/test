@@ -43,7 +43,6 @@ int main(int,con mainv,con mainv) {
 	e2 = pow(n49,n51) ;
 	printf("e1=%ld\n",e1) ;
 	printf("e2=%ld\n",e2) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
