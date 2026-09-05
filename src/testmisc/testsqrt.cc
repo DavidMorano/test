@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C99 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -37,8 +40,6 @@ int main(int argc,con mainv,con mainv) {
 
 	b = sqrt(a) ;
 	printf("sqrt(2)=%2.40f\n",b) ;
-
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
