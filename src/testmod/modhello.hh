@@ -23,6 +23,11 @@
 
 *******************************************************************************/
 
+#ifndef	MODHELLO_INCLUDE
+#define	MODHELLO_INCLUDE
+#ifdef	__cplusplus
+
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
@@ -60,5 +65,9 @@
 
 
 /* exported variables */
+
+
+#endif /* __cplusplus */
+#endif /* MODHELLO_INCLUDE */
 
 
