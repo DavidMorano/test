@@ -65,7 +65,6 @@ int main(int argc,con mainv argv,con mainv) {
 	    }
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
