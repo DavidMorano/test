@@ -1,4 +1,5 @@
 /* testourobj SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C++98 */
 
 /* test the SET object */
@@ -144,7 +145,6 @@ int main(int argc,cchar **argv,cchar **envv) {
 	c = os.size() ;
 	cout << "count " << c << endl ;
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
