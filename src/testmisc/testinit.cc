@@ -33,7 +33,7 @@ struct multi {
 	int	a ;
 	int	b ;
 	int	c ;
-} ;
+} ; /* end struct */
 
 local int	mkterms() noexcept ;
 
@@ -43,7 +43,7 @@ extern "C" {
     local void __attribute__ ((constructor)) init() noexcept {
 	printf("init\n") ;
     }
-}
+} /* end extern (C) */
 
 int main(int argc,con mainv argv,con mainv) {
 	static cint	srs = mkterms() ;
@@ -69,18 +69,17 @@ int main(int argc,con mainv argv,con mainv) {
 	} /* end if */
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 extern "C" {
     local void __attribute__ ((destructor)) fini() noexcept {
 	printf("fini\n") ;
     }
-}
+} /* end extern (C) */
 
 local int mkterms() noexcept {
     cout << "mkterms\n" ;
     return 0 ;
-}
+} /* end */
 
 
