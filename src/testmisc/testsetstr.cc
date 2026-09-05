@@ -1,13 +1,22 @@
-/* testsetstr */
+/* testsetstr SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* we test the SETSTR (a set of strings) object */
+/* I test the SETSTR (a set of strings) object */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	1		/* compile-time debugging */
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 
+/* revision history:
 
-#include	<envstandards.h>	/* ordered first to configure */
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -17,7 +26,8 @@
 #include	<cstdio>
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
@@ -41,14 +51,14 @@ int main(int argc,cchar **argv,cchar **envv) {
 	SETSTR		ss ;
 	FILE		*ofp = stdout ;
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	uint		mo_start = 0 ;
 #endif
 
 	int		rs ;
 	int		rs1 ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
 	    cchar		*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -56,9 +66,9 @@ int main(int argc,cchar **argv,cchar **envv) {
 	        debugprintf("main: starting DFD=%d\n",rs) ;
 	    }
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -66,7 +76,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 	if (argc > 1) {
 	    if ((rs = setstr_start(&ss)) >= 0) {
 	        int	i ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testsetstr: insert1\n") ;
 #endif
 		if (rs >= 0) {
@@ -75,7 +85,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 		        if (rs < 0) break ;
 		    }
 		}
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testsetstr: insert2\n") ;
 #endif
 		if (rs >= 0) {
@@ -84,7 +94,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 		        if (rs < 0) break ;
 		    }
 		}
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("testsetstr: retrieve\n") ;
 #endif
 		if (rs >= 0) {
@@ -93,7 +103,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 			cchar	*cp ;
 			while ((rs1 = setstr_curenum(&ss,&c,&cp)) >= 0) {
 	
-#if	CF_DEBUGS
+#if	CF_DEBUG
 			debugprintf("testsetstr: s=%s\n",cp) ;
 #endif
 	    		    fprintf(ofp,"main: s=%s\n",cp) ;
@@ -116,11 +126,11 @@ int main(int argc,cchar **argv,cchar **envv) {
 	    } /* end if (setstr) */
 	} /* end if (arguments) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: ret rs=%d\n",rs) ;
 #endif
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -129,12 +139,11 @@ int main(int argc,cchar **argv,cchar **envv) {
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	(CF_DEBUGS || CF_DEBUG)
+#if	(CF_DEBUG || CF_DEBUG)
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
