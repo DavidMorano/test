@@ -1,16 +1,33 @@
-/* testmsu */
+/* testmsu SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	0		/* compile-time */
 
 
-#define	CF_DEBUGS	0		/* compile-time */
+/* revision history:
 
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
 #include	<cstdio>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"msuclients.h"
 
@@ -34,15 +51,15 @@ int main()
 	FILE		*ofp = stdout ;
 	int		rs ;
 	int		to = TO_MSU ;
-	const char	*pr ;
+	cchar	*pr ;
 	cchar		*cp ;
 
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG || CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 	if ((pr = getenv(VARPRLOCAL)) == NULL)
 		pr = PRLOCAL ;
@@ -56,12 +73,11 @@ int main()
 	    msuclients_close(&mc) ;
 	} /* end if (msuclients) */
 
-#if	(CF_DEBUGS || CF_DEBUG)
+#if	(CF_DEBUG || CF_DEBUG)
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
