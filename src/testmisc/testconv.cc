@@ -66,8 +66,7 @@ int main(int,con mainv,con mainv) {
 	float	f = +42.1234 ;
 	size_t	s = f ;
 	cout << s << eol ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
