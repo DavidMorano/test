@@ -2,6 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
+
 /* revision history:
 
 	= 1998-04-13, David A-D- Morano
@@ -36,12 +40,12 @@ int thingx(cchar *,int,int,ccp,ccp,int) noex {
 }
 
 template<typename ... Args>
-static int magic(Args ... args) noex {
+local int magic(Args ... args) noex {
 	return (args && ...) ;
 }
 
 template<typename ... Args>
-static int thingw(char *dp,int dl,Args ... args,int other) noex {
+local int thingw(char *dp,int dl,Args ... args,int other) noex {
 	const nullptr_t	np{} ;
 	cint		na = npack(Args) ;
 	int		rs = SR_OK ;
@@ -88,7 +92,6 @@ int main(int,cchar **,cchar **) {
 		sncpyw(dbuf,dlen,s1,s2,other) ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
