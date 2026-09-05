@@ -5,7 +5,7 @@
 /* test operations */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUG	0		/* compile-time debugging */
 #define	CF_INIT		0
 #define	CF_TESTLAMBDA	0		/* test Lambda Functions */
 #define	CF_TESTIO	0		/* |testio()| */
@@ -343,8 +343,7 @@ int main(int argc,con mainv,con mainv) {
 
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
