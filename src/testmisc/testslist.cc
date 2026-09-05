@@ -5,7 +5,7 @@
 /* test of SLIST object */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUG	0		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_DEBUGADD	1		/* debug adding */
 #define	CF_DEBUGONE	0		/* debug one */
@@ -71,7 +71,7 @@ using namespace std ;
 
 /* external subroutines */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
 extern "C" int	debugprinthexblock(cchar *,int,const void *,int) ;
@@ -85,8 +85,8 @@ extern "C" int	strlinelen(cchar *,cchar *,int) ;
 
 /* local structures (and methods) */
 
-#if	CF_DEBUGS
-static int	debugprintlist(slist<int> &,cchar *) ;
+#if	CF_DEBUG
+local int	debugprintlist(slist<int> &,cchar *) ;
 #endif
 
 typedef slist<int>	ourlist ;
@@ -108,18 +108,18 @@ public:
 	    i2 = l2.begin() ;
 	    e1 = l1.end() ;
 	    e2 = l2.end() ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintlist(l1,"listadder::l1") ;
 	    debugprintlist(l2,"listadder::l2") ;
 #endif
 	    return addone(c) ;
 	} ;
 	int addone(int c) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main/listadder_addone: ent c=%d\n",c) ;
 #endif
 	    if (c >= 0) {
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main/listadder_addone: in c=%d\n",c) ;
 #endif
 	        if ((i1 != e1) || (i2 != e2)) {
@@ -127,37 +127,37 @@ public:
 	            c = 0 ;
 	            if (i1 != e1) {
 	                int	v = *i1 ; i1 += 1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                debugprintf("main/listadder_addone: l1=%d\n",v) ;
 #endif
 	                vr += v ;
 	            }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main/listadder_addone: 1 vr=%d\n",vr) ;
 #endif
 	            if (i2 != e2) {
 	                int	v = *i2 ; i2 += 1 ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	                debugprintf("main/listadder_addone: l2=%d\n",v) ;
 #endif
 	                vr += v ;
 	            }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main/listadder_addone: 2 vr=%d\n",vr) ;
 #endif
 	            if (vr >= 10) {
 	                vr %= 10 ;
 	                c = 1 ;
 	            }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main/listadder_addone: carrying c=%d\n",c) ;
 #endif
 	            lr.add(vr) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main/listadder_addone: inserting done\n") ;
 #endif
 	            c = addone(c) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	            debugprintf("main/listadder_addone: recurse done\n") ;
 #endif
 		} else {
@@ -167,7 +167,7 @@ public:
 	            c = -1 ;
 	        }
 	    }
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintf("main/listadder_addone: ret c=%d\n",c) ;
 #endif
 	    return c ;
@@ -177,7 +177,7 @@ public:
 
 /* forward references */
 
-static int	printlist(slist<int> &,cchar *) ;
+local int	printlist(slist<int> &,cchar *) ;
 
 
 /* local variables */
@@ -190,18 +190,18 @@ static int	printlist(slist<int> &,cchar *) ;
 
 int main(int argc,con mainv argv,con mainv) {
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint		mo_start ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -211,7 +211,7 @@ int main(int argc,con mainv argv,con mainv) {
 	    slist<int>	l2 = { 1, 5, 7, 2, 9 	} ;
 	    slist<int>	lr ;
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	    debugprintlist(l1,"main-l1") ;
 	    debugprintlist(l2,"main-l2") ;
 #endif
@@ -221,7 +221,7 @@ int main(int argc,con mainv argv,con mainv) {
 #if	CF_DEBUGONE
 	    {
 	        lr.add(17) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: insert-print\n") ;
 #endif
 	        printlist(lr,"lr-test") ;
@@ -233,15 +233,15 @@ int main(int argc,con mainv argv,con mainv) {
 #if	CF_DEBUGADD
 	    {
 	        listadder	a(lr,l1,l2) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: insert (%d)\n",CF_DEBUGADD) ;
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: addall()\n") ;
 #endif
 	        a.addall(0) ;
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: output()\n") ;
 	        debugprintlist(lr,"lr-final") ;
 #endif
@@ -251,7 +251,7 @@ int main(int argc,con mainv argv,con mainv) {
 
 	} /* end block (central) */
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	{
 	    uint	mi[12] ;
 	    uint	mo ;
@@ -263,7 +263,7 @@ int main(int argc,con mainv argv,con mainv) {
 	        UCMALLREG_CUR	cur ;
 	        UCMALLREG_REG	reg ;
 	        cint	size = (10*sizeof(uint)) ;
-	        const char	*ids = "main" ;
+	        cchar	*ids = "main" ;
 	        uc_mallinfo(mi,size) ;
 	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
 	        debugprintf("main: MIoutnummax=%u\n",mi[ucmallreg_outnummax]) ;
@@ -288,12 +288,11 @@ int main(int argc,con mainv argv,con mainv) {
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 /* for memory allocation tracking */
 void *operator new(size_t sz) {
@@ -322,7 +321,7 @@ void operator delete(void *p,const std::nothrow_t &nt) noexcept {
 
 /* local subroutines */
 
-static int printlist(slist<int> &l,cchar *s) {
+local int printlist(slist<int> &l,cchar *s) {
 	int		c = 0 ;
 	cout << s ;
 	for (auto v : l) {
@@ -331,11 +330,10 @@ static int printlist(slist<int> &l,cchar *s) {
 	}
 	cout << endl ;
 	return c ;
-}
-/* end subroutine (printlist) */
+} /* end subroutine (printlist) */
 
-#if	CF_DEBUGS
-static int debugprintlist(slist<int> &l,cchar *s) {
+#if	CF_DEBUG
+local int debugprintlist(slist<int> &l,cchar *s) {
 	cint	plen = LINEBUFLEN ;
 	int		rs = SR_OK ;
 	if (char *pbuf ; (pbuf = new(nothrow) char [plen+1]) >= 0) {
@@ -355,6 +353,6 @@ static int debugprintlist(slist<int> &l,cchar *s) {
 	} /* end if (m-a-f) */
 	return rs ;
 }
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
 
