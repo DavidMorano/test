@@ -9,11 +9,18 @@
 /* revision history:
 
 	= 1988-02-01, David A­D­ Morano
-
+	Originally written for Rightcore Network Services.
 
 */
 
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<ctime>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>
 #include	<clanguage.h>		/* LIBU */
 #include	<utypedefs.h>		/* LIBU */
 #include	<utypealiases.h>	/* LIBU */
@@ -21,10 +28,6 @@
 #include	<usysrets.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
-
-#include	<ctime>
-#include	<cstdio>
-
 #include	<termstr.h>
 
 
