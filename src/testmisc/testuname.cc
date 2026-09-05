@@ -31,7 +31,8 @@
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
 
 
@@ -66,8 +67,7 @@ using std::cout ;			/* variable */
 int main(int,con mainv,con mainv) {
     	struct utsname		ut ;
 	cout << szof(ut.nodename) << eol ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
