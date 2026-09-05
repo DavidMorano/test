@@ -2,10 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C++11 */
 
-/* test */
+/* test program */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debugging */
+#define	CF_DEBUG	0		/* compile-time debugging */
 #define	CF_COPY		1
 
 /* revision history:
@@ -181,7 +181,7 @@ static cchar	*hello = "hello world!" ;
 /* exported subroutines */
 
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 	FILE		*efp = stderr ;
 	fprintf(efp,"main: ent\n") ;
@@ -196,8 +196,7 @@ int main(int argc,const char **argv,const char **envv)
 	testio() ;
 	fprintf(efp,"main: ret\n") ;
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -220,7 +219,7 @@ local int testio() {
 	    {
 	        ifstream	is(ifn) ;
 		if (is.good()) {
-		    const int	llen = LINEBUFLEN ;
+		    cint	llen = LINEBUFLEN ;
 		    char	lbuf[LINEBUFLEN+1] ;
 		    if ((rs = readline(is,lbuf,llen)) > 0) {
 		        cout << "read> " << lbuf << endl ;
@@ -233,11 +232,10 @@ local int testio() {
 	    }
 	}
 	return rs ;
-}
-/* end subroutine (testio) */
+} /* end subroutine (testio) */
 
 bool testcon::have() {
-	const int	ans = sisub(hello,-1,"hello") ;
+	cint	ans = sisub(hello,-1,"hello") ;
 	fprintf(stderr,"ans=%u\n",(ans >= 0)) ;
 	return (ans >= 0) ;
 }
@@ -248,7 +246,6 @@ int readline(ifstream &is,char *lbuf,int llen) {
 	    rs = is.gcount() ;
 	}
 	return rs ;
-}
-/* end subroutine (readline) */
+} /* end subroutine (readline) */
 
 
