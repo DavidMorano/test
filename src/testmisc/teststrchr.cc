@@ -43,7 +43,6 @@ int main(int,con mainv,con mainv) {
 	    sp = (tp + 1) ;
 	} /* end for */
 	printf("n=%u\n",n) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
