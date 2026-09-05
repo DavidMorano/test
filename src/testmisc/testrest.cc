@@ -1,13 +1,31 @@
-/* testrest */
+/* testrest SUPPORT */
+/* charset=ISO8859-1 */
 /* lang=C89 */
 
-#define	CF_DEBUGS	1		/* compile-time debugging */
+/* test program */
+/* version %I% last-modified %G% */
+
+#define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_DEBUGMALL	1		/* debugging memory-allocations */
+
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdarg>
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -18,25 +36,25 @@
 #define	VARDEBUGFNAME	"TESTREST_DEBUGFILE"
 
 
-#if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+#if	CF_DEBUG
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int fileclear(int) ;
+local int fileclear(int) ;
 
 
 /* exported subroutines */
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
 
@@ -46,16 +64,16 @@ int main(int argc,const char **argv,const char **envv)
 	int	n = 1000 ;
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
 	}
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -65,8 +83,8 @@ int main(int argc,const char **argv,const char **envv)
 	    int		ai ;
 	    int		i ;
 	    int		ac = MIN(argc,2) ;
-	    const char	**av ;
-	    asize = ((ac+1)*sizeof(const char *)) ;
+	    cchar	**av ;
+	    asize = ((ac+1)*sizeof(cchar *)) ;
 	    if ((rs = uc_malloc(asize,&av)) >= 0) {
 
 		av[0] = "rest" ;
@@ -83,7 +101,7 @@ int main(int argc,const char **argv,const char **envv)
 		    if (ex != EX_OK) break ;
 	        } /* end for */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	        debugprintf("main: while-out rs=%d\n",rs1) ;
 #endif
 
@@ -91,11 +109,11 @@ int main(int argc,const char **argv,const char **envv)
 
 	} /* end if (argv) */
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugprintf("main: all-out rs=%d\n",rs) ;
 #endif
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
@@ -104,25 +122,22 @@ int main(int argc,const char **argv,const char **envv)
 	}
 #endif
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	debugclose() ;
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-static int fileclear(int fd) 
-{
+local int fileclear(int fd) {
 	int	rs ;
-	if ((rs = u_rewind(fd)) >= 0)
-	    rs = uc_ftruncate(fd,0L) ;
+	if ((rs = u_rewind(fd)) >= 0) {
+	    rs = uc_ftruncate(fd,0z) ;
+	}
 	return rs ;
-}
-/* end subroutine (fileclear) */
+} /* end subroutine (fileclear) */
 
 
