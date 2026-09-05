@@ -2,6 +2,9 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
+/* test program */
+/* version %I% last-modified %G% */
+
 
 /* revision history:
 
@@ -14,8 +17,11 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
 
 
@@ -24,7 +30,7 @@
 
 /* forward references */
 
-	static void hello() ;
+	local void hello() ;
 
 
 /* exported variables */
@@ -35,10 +41,9 @@
 int main() {
 	hello() ;
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
-static void hello() {
+local void hello() {
     	printf("Hello world!\n") ;
 }
 
