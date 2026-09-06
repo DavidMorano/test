@@ -1,275 +1,258 @@
-# MAKEFILE
+# MAKEFILE (testconfigvars)
 
 T= testconfigvars
 
-ALL= $(T)
-
-HELPFILE= $(T).help
-
-SRCROOT= $(LOCAL)
+ALL= $(T).x
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
-HELPDIR= $(SRCROOT)/share/help
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
 
-#LDCRTDIR= /opt/SUNWspro/WS6/lib
-#LDCRTDIR= /opt/SUNWspro/SC5.0/lib
-#LDCRTDIR= /opt/SUNWspro/SC4.0/lib
-#LDCRTDIR= /opt/SUNWspro/lib
-LDCRTDIR= $(SRCROOT)/lib
-
-
-CC= gcc
-
-#CCOPTS= -O3 -mcpu=ultrasparc # -fpic
-#CCOPTS= -g -O
-CCOPTS= -g
-#CCOPTS= -g -pg
-
-# HyperSPARC
-# regular
-CCOPTS= -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-# profiling 'prof(1)'
-#CCOPTS= -p -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-# profiling 'gprof(1)' 
-#CCOPTS= -xpg -xO5 -xtarget=ss20/hs22 -dalign -xdepend
-
-# UltraSPARC
-# regular
-#CCOPTS= -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
-# profiling 'prof(1)'
-#CCOPTS= -p -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
-# profiling 'gprof(1)' 
-#CCOPTS= -xpg -xO5 -xtarget=ultra -xsafe=mem -dalign -xdepend
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
-DEF0=
-DEF1=
-DEF2=
-DEF3=
-DEF4=
-DEF5=
-DEF6=
-DEF7= $(LF_DEFS)
+DEFS +=
 
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6) $(DEF7)
+INCS +=
+
+MODS +=
+
+LIBS += -luo -lf -lu
 
 
-INCDIRS= -I$(INCDIR)
+DEPS_MAIN += configvars.o
+DEPS_MAIN +=
+DEPS_MAIN += 
 
-CPPFLAGS= $(DEFS) $(INCDIRS)
+OBJ0= testconfigvars_main.o
+OBJ1= configvars.o
+OBJ2=
+OBJ3= 
+OBJ4=
+OBJ5=
+OBJ6=
+OBJ7=
 
-CFLAGS= $(CCOPTS)
+OBJA= obj0.o obj1.o
+OBJB= obj4.o 
+#OBJB= obj4.o obj5.o obj6.o obj7.o
 
-#LD= $(CC)
-#LD= cc
-LD= ld
-
-# regular
-LDFLAGS= -m -R$(LIBDIR)
-# for profiling
-LDFLAGS_P= -L/usr/lib/libp # -m -R$(LIBDIR)
-
-
-LIBDIRS= -L$(LIBDIR)
-
-LIB0=
-LIB1= -ldam -lb -luc
-LIB2=
-LIB3= -Bstatic -lu -Bdynamic
-LIB4= -L$(GNU)/lib -lgcc
-LIB5= 
-LIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-LIB7= -ldl -lc
-
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
+OBJ= obja.o
 
 
-CRTI= $(LDCRTDIR)/crti.o
-CRT1= $(LDCRTDIR)/crt1.o
-MCRT1= $(LDCRTDIR)/mcrt1.o
-GCRT1= $(LDCRTDIR)/gcrt1.o
-VALUES= $(LDCRTDIR)/values-xa.o
-CRTN= $(LDCRTDIR)/crtn.o
+INCDIRS=
+LIBDIRS= -L lib
 
-# for regular (no profiling)
-CRT0= $(CRTI) $(CRT1) $(VALUES)
-# for 'prof(1)'
-MCRT0= $(CRTI) $(MCRT1) $(VALUES)
-# for 'gprof(1)'
-GCRT0= $(CRTI) $(GCRT1) $(VALUES)
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
 
-CRTC= makedate.o
-
-LINT= lint
-LINTFLAGS= -uxn -Dlint
-
-NM= nm
-NMFLAGS= -xs -v
-
-CXREF= cxref
-CXREFFLAGS= -R -s
-
-CPP= cpp
-
-LORDER= lorder
-TSORT= tsort
-
-RM= rm -f
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS) -g
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
 
 
-INCS= config.h defs.h
-
-
-OBJ00= main.o whatinfo.o proginfo.o proginfo_setpiv.o
-OBJ01= 
-OBJ02= configvars.o
-OBJ03=
-OBJ04=
-OBJ05=
-OBJ06=
-OBJ07= printhelp.o
-OBJ08=
-OBJ09=
-OBJ10=
-OBJ11=
-OBJ12=
-OBJ13=
-OBJ14=
-OBJ15=
-
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07)
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-
-OBJ= $(OBJA) $(OBJB)
-
-# for regular (no profiling)
-OBJS= $(CRT0) $(OBJ) $(CRTC)
-# for 'prof(1)'
-MOBJS= $(MCRT0) $(OBJ) $(CRTC)
-# for 'gprof(1)'
-GOBJS= $(GCRT0) $(OBJ) $(CRTC)
-
-
-SRC= $(OBJ:.c=.o)
-
-
-.SUFFIXES:	.ls .i .cx .cs
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
 
 all:			$(ALL)
 
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
 
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
-.c.cx:
-	$(CXREF) -C $(CXREFFLAGS) $(CPPFLAGS) $<
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
 
-.c.cs:
-	$(CXREF) $(CXREFFLAGS) $(CPPFLAGS) -o $(*).cs $<
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
+.c.o:
+	$(COMPILE.c) $<
+
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
-$(T):			$(T).ee
-	cp -p $(T).ee $(T)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
-$(T).x:			$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c $(CFLAGS) makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).prof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS_P) $(MOBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).gprof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS_P) $(GOBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).$(OFF) $(OFF):	$(T).x
-	cp -p $(T).x $(T).$(OFF)
-
-$(T).nm nm:		$(T).x
+$(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
 
-$(T).cxref:
-	$(CXREF) -c $(CXREFFLAGS) $(SRC) > $(T).cxref
-
-strip:			$(T).x
-	strip $(T).x
-	rm -f $(T).$(OFF) $(T)
-
-install:		$(ALL)
-	makenewer -r $(ALL) $(BINDIR)
-
-install-raw:		$(T).x
-	rm -f $(T)
-	cp -p $(T).x $(T)
-	rm -f $(BINDIR)/$(T).$(OFF)
-	makenewer -r $(T) $(BINDIR)
-
-install-help:		$(T).help
-	-mkdir -p $(SRCROOT)/share/help 2> /dev/null
-	rm -f $(T)
-	cp -p $(T).help $(T)
-	makenewer $(T) $(SRCROOT)/share/help/
-
 again:
-	rm -f $(ALL) $(T).x
+	rm -f $(T).x
 
-clean:			again
-	rm -f *.o
+clean:
+	makeclean $(ALL)
 
 control:
-	uname -n > Control
-	date >> Control
+	(uname -n ; date) > Control
 
 
-main.o:			main.c $(INCS)
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-whatinfo.o:		whatinfo.c config.h
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-proginfo.o:		proginfo.c defs.h
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-proginfo_setpib.o:	proginfo_setpib.c defs.h
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-printhelp.o:		printhelp.c
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-userinfo.o:		userinfo.c userinfo.h
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-udomain.o:		udomain.c
-
-getutmpent.o:		getutmpent.c getutmpent.h
-
-
-vecstr_loadfile.o:	vecstr_loadfile.c
-
-vecstr_env.o:		vecstr_env.c
-
-configvars.o:		configvars.c configvars.h
-
-filemap.o:		filemap.c filemap.h
-
-realname.o:		realname.c realname.h
-
-ipasswd.o:		ipasswd.c ipasswd.h
-
-lastlogfile.o:		lastlogfile.c lastlogfile.h
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testconfigvars_main.o:	testconfigvars_main.cc $(DEPS_MAIN)	$(INCS)
+
+# USTREAM
+ustream.o:		ustream.dir
+ustream.dir:
+	makesubdir $@
+
+# CONFIGVARS
+configvars.o:		configvars.dir
+configvars.dir:
+	makesubdir $@
+
+# STRN
+strn.o:			strn.dir
+strn.dir:
+	makesubdir $@
+
+# SFX
+sfx.o:			sfx.dir
+sfx.dir:
+	makesubdir $@
+
+# SIX
+six.o:			six.dir
+six.dir:
+	makesubdir $@
+
+# RMX
+rmx.o:			rmx.dir
+rmx.dir:
+	makesubdir $@
+
+# HASX
+hasx.o:			hasx.dir
+hasx.dir:
+	makesubdir $@
+
+# ISX
+isx.o:			isx.dir
+isx.dir:
+	makesubdir $@
+
+# BUFOS
+bufos.o:		bufos.dir
+bufos.dir:
+	makesubdir $@
+
+# STRCPTX
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
+
+# STRWCPY
+strwcpy.o:		strwcpy.dir
+strwcpy.dir:
+	makesubdir $@
+
+# STRW
+strw.o:			strw.dir
+strw.dir:
+	makesubdir $@
+
+# STRX
+strx.o:			strx.dir
+strx.dir:
+	makesubdir $@
+
+# NLEADX
+nleadx.o:		nleadx.dir
+nleadx.dir:
+	makesubdir $@
+
+# MATXSTR
+matxstr.o:		matxstr.dir
+matxstr.dir:
+	makesubdir $@
+
+# STRNXCMP
+strnxcmp.o:		strnxcmp.dir
+strnxcmp.dir:
+	makesubdir $@
+
+# STRXCMP
+strxcmp.o:		strxcmp.dir
+strxcmp.dir:
+	makesubdir $@
+
+# VARITHMETIC
+varithmetic.o:		varithmetic.dir
+varithmetic.dir:
+	makesubdir $@
+
+# DIGTAB
+digtab.o:		digtab.dir
+digtab.dir:
+	makesubdir $@
 
