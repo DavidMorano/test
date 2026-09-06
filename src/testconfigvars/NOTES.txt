@@ -13,17 +13,17 @@ export variable list.
 We collect all 'set's and free variables similarly (but stored
 separately).  These will not be collapsed.
 
-When a variable is read by the program, the following will occur :
+When a variable is read by the program, the following will occur:
 
 1) all variables will be returned (in turn)
 
 2) each variable value will be processed to substitute in -
-	a) define'd variables ; file dependencies are recorded
+	a) define'd variables; file dependencies are recorded
 	b) environment variables in the current program space
 	c) the special escapes
 
-4) variable values are shell-parsed series of arguments ; no attempt
-   will be made to separate or process those arguments individually ;
+4) variable values are shell-parsed series of arguments; no attempt
+   will be made to separate or process those arguments individually;
    this is consistent with the handling of shell-parsed arguments in
    server table files
 
@@ -34,7 +34,7 @@ When a variable is read by the program, the following will occur :
    file is flushed from the post-processed cache
 
 
-The following keywords are recognized as special :
+The following keywords are recognized as special:
 
 root
 nodename
@@ -45,6 +45,5 @@ version
 Only the last of any of these is retained as the value.  They are
 substituted for from previous information at the time they are
 processed.  They are processed before all other variables.
-
 
 
