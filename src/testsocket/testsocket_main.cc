@@ -129,8 +129,7 @@ int main(int,con mainv,con mainv) {
 	    ex = mapex(mapexs,rs) ;
 	} /* end if */
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
