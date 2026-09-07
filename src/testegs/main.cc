@@ -1,68 +1,62 @@
-/* main */
+/* testegs_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* main subroutine for several programs */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1
 #define	CF_DEBUG	1
 #define	CF_SIGNAL	0
 
-
 /* revision history:
 
-	= 88/02/01, David A­D­ Morano
-
+	= 1988-02-01, David A­D­ Morano
 	This subroutine was originally written.
 
-
-	= 88/02/01, David A­D­ Morano
-
+	= 1988-02-01, David A­D­ Morano
 	This subroutine was modified to not write out anything
 	to standard output if the access time of the associated
 	terminal has not been changed in 10 minutes.
 
-
 */
 
+/* Copyright © 1988 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
-
-/************************************************************************
+/*******************************************************************************
 
 	This is a pretty much generic subroutine for several program.
 
+*******************************************************************************/
 
-*************************************************************************/
-
-
-
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/mkdev.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<netdb.h>
+#include	<libgen.h>
 #include	<ctime>
+#include	<csignal>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-#include	<libgen.h>
-#include	<csignal>
-#include	<netdb.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<userinfo.h>
 #include	<logfile.h>
-#include	<exitcodes.h>
+#include	<lfm.h>
 #include	<mallocstuff.h>
+#include	<exitcodes.h>
+#include	<localmisc.h>
 
-#include	"localmisc.h"
-#include	"lfm.h"
 #include	"config.h"
 #include	"defs.h"
-
 
 
 /* local defines */
@@ -287,10 +281,10 @@ char	*argv[] ;
 	                } else
 	                    avl = 0 ;
 
-/* do we have a keyword match or should we assume only key letters ? */
+/* do we have a keyword match or should we assume only key letters? */
 
 #if	CF_DEBUGS
-	                debugprintf("main: about to check for a key word match\n") ;
+	                debugprintf("main: check for a key-word match\n") ;
 #endif
 
 	                if ((kwi = matstr(argopts,aop,aol)) >= 0) {
