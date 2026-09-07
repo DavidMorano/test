@@ -1,4 +1,9 @@
-/* main (testfibo) */
+/* testfibo_main support (testfibo) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
+
+/* the some subroutine */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
@@ -12,43 +17,43 @@
 
 /*******************************************************************************
 
-        This program calculates and prints out the first few Finonacci numbers.
-
+  	Description:
+	This program calculates and prints out the first few Finonacci
+	numbers.
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<localmisc.h>
 
 
 /* local defines */
-
 
 #define	NN	20
 
 
 /* external subroutines */
 
-extern longlong_t	fibonacci(unsigned int) ;
+extern longlong_t	fibonacci(unsigned int) noex ;
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-int main()
-{
-	unsigned int	i ;
-
-	for (i = 0 ; i < NN ; i += 1) {
-		fprintf(stdout," %u", fibonacci(i)) ;
-	}
-
-	fprintf(stdout,"\n") ;
-
-	return 0 ;
+int main(int,con mainv,con mainv) {
+	for (int i = 0 ; i < NN ; i += 1) {
+	    culonglong	res = fibonacci(i) ;
+	    ulong pv = ulongconv(res) ;
+	    printf(" %lu",pv) ;
+	} /* end for */
 }
 /* end subroutine (main) */
 
