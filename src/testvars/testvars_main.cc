@@ -1189,14 +1189,10 @@ ret0:
 	u_sigprocmask(SIG_SETMASK,&oldsigmask,nullptr) ;
 
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
-
-/* LOCAL SUBROUTINES */
-
-
+/* local subroutines */
 
 static void sighand_int(sn)
 int	sn ;
@@ -1204,8 +1200,7 @@ int	sn ;
 
 
 	if_int = true ;
-}
-/* end subroutine (sighand_int) */
+} /* end subroutine (sighand_int) */
 
 
 local int usage(pip)
@@ -1227,8 +1222,7 @@ struct proginfo	*pip ;
 
 	wlen += rs ;
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (usage) */
+} /* end subroutine (usage) */
 
 
 local int locinfo_start(lip,pip)
@@ -1283,8 +1277,7 @@ bad1:
 
 bad0:
 	goto ret0 ;
-}
-/* end subroutine (locinfo_start) */
+} /* end subroutine (locinfo_start) */
 
 
 local int locinfo_finish(lip)
@@ -1315,8 +1308,7 @@ struct locinfo	*lip ;
 #endif /* CF_HDBSTR */
 
 	return rs ;
-}
-/* end subroutine (locinfo_finish) */
+} /* end subroutine (locinfo_finish) */
 
 
 local int locinfo_name(lip,fname)
@@ -1357,8 +1349,7 @@ bad1:
 
 bad0:
 	goto ret0 ;
-}
-/* end subroutine (locinfo_name) */
+} /* end subroutine (locinfo_name) */
 
 
 local int locinfo_fileload(lip,fmp)
@@ -1417,8 +1408,7 @@ ret1:
 
 ret0:
 	return rs ;
-}
-/* end subroutine (locinfo_fileload) */
+} /* end subroutine (locinfo_fileload) */
 
 
 local int locinfo_fileproc(lip,fmp)
@@ -1540,8 +1530,7 @@ struct filemap	*fmp ;
 #endif
 
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (locinfo_fileproc) */
+} /* end subroutine (locinfo_fileproc) */
 
 
 local int locinfo_varcount(lip)
@@ -1556,8 +1545,7 @@ struct locinfo	*lip ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (locinfo_varcount) */
+} /* end subroutine (locinfo_varcount) */
 
 
 local int locinfo_qkey(lip,qp,ql)
@@ -1591,8 +1579,7 @@ int		ql ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (locinfo_qkey) */
+} /* end subroutine (locinfo_qkey) */
 
 
 local int locinfo_addvar(lip,cp,cl)
@@ -1631,8 +1618,7 @@ int		cl ;
 	}
 
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (locinfo_addvar) */
+} /* end subroutine (locinfo_addvar) */
 
 
 /* process the program ako-options */
@@ -1760,8 +1746,7 @@ keyopt		*kop ;
 
 ret0:
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (procopts) */
+} /* end subroutine (procopts) */
 
 
 local int procname(pip,fname)
@@ -1788,8 +1773,7 @@ cchar	fname[] ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (procname) */
+} /* end subroutine (procname) */
 
 
 local int procload(pip,dbname)
@@ -1852,8 +1836,7 @@ ret1:
 
 ret0:
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (procload) */
+} /* end subroutine (procload) */
 
 
 local int process(pip,dbname,ofp,getfname)
@@ -1950,8 +1933,7 @@ cchar	getfname[] ;
 
 ret0:
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (process) */
+} /* end subroutine (process) */
 
 
 local int procaudit(pip,vlp)
@@ -2051,8 +2033,7 @@ vars	*vlp ;
 	hdb_curend(&lip->mvars,&cur) ;
 
 	return rs ;
-}
-/* end subroutine (procaudit) */
+} /* end subroutine (procaudit) */
 
 
 local int procgetfile(pip,ofp,vfp,getfname)
@@ -2125,8 +2106,7 @@ cchar	getfname[] ;
 
 ret0:
 	return (rs >= 0) ? n : rs ;
-}
-/* end subroutine (procgetfile) */
+} /* end subroutine (procgetfile) */
 
 
 local int procqkey(pip,ofp,vfp,kp,kl)
@@ -2194,8 +2174,7 @@ int		kl ;
 	} /* end if */
 
 	return (rs >= 0) ? n : rs ;
-}
-/* end subroutine (procqkey) */
+} /* end subroutine (procqkey) */
 
 local int hasweird(sp,sl)
 cchar	*sp ;
@@ -2208,8 +2187,7 @@ int		sl ;
 	    if (f) break ;
 	} /* end if */
 	return f ;
-}
-/* end subroutine (hasweird) */
+} /* end subroutine (hasweird) */
 
 local int filemap_free(fmp)
 struct filemap	*fmp ;
@@ -2224,8 +2202,7 @@ struct filemap	*fmp ;
 	    fmp->fname = nullptr ;
 	}
 	return SR_OK ;
-}
-/* end subroutine (filemap_free) */
+} /* end subroutine (filemap_free) */
 
 
 #ifdef	COMMENT
@@ -2249,8 +2226,7 @@ cchar	fname[] ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (procfile) */
+} /* end subroutine (procfile) */
 
 
 local int procsysdefs(pip)
@@ -2269,8 +2245,7 @@ struct proginfo	*pip ;
 	    rs = procsysdef(pip,DEFLOGFNAME) ;
 
 	return rs ;
-}
-/* end subroutine (procsysdefs) */
+} /* end subroutine (procsysdefs) */
 
 
 local int procsysdef(pip,fname)
@@ -2319,8 +2294,7 @@ ret1:
 
 ret0:
 	return rs ;
-}
-/* end subroutine (procsysdef) */
+} /* end subroutine (procsysdef) */
 
 
 local int procset(pip,dbname)
@@ -2380,8 +2354,7 @@ cchar	dbname[] ;
 
 ret0:
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (procset) */
+} /* end subroutine (procset) */
 
 local int procvarfile(pip,fname)
 struct proginfo	*pip ;
@@ -2506,8 +2479,7 @@ ret1:
 
 ret0:
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (procvarfile) */
+} /* end subroutine (procvarfile) */
 
 #endif /* COMMENT */
 
