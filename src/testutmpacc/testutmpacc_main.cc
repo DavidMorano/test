@@ -174,8 +174,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	debugclose() ;
 #endif
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
