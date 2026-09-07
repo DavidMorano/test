@@ -172,8 +172,7 @@ int main(int argc,con mainv argv,con ,mainv) {
 	    ex = EXIT_FAILURE ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -512,8 +511,7 @@ int maininfo::putout(bufos *bp,int ch) noex {
 	    }
 	}
 	return (rs >= 0) ? olen : rs ;
-}
-/* end method (maininfo::putout) */
+} /* end method (maininfo::putout) */
 
 /* write out in BASE128! */
 local int outbase128(MI *pip,cchar *sbuf,int slen) noex {
@@ -555,7 +553,6 @@ local int outbase128(MI *pip,cchar *sbuf,int slen) noex {
 	    if (rs < 0) break ;
 	} /* end for */
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (outbase128) */
+} /* end subroutine (outbase128) */
 
 
