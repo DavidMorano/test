@@ -113,8 +113,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 		}
 	    } /* end for */
 	}
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -122,7 +121,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 local int sub(int uiw) {
 	printf("subroutine	uiw=%08x\n",uiw) ;
 	return 0 ;
-}
-/* end subroutine (sub) */
+} /* end subroutine (sub) */
 
 
