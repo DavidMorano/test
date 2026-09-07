@@ -74,12 +74,13 @@ using namespace	std ;
 
 /* forward references */
 
-static int	mainfins(vecsorthand *) noex ;
-static int	mainadd(vecsorthand *,int) noex ;
+local int	mainfins(vecsorthand *) noex ;
+local int	mainadd(vecsorthand *,int) noex ;
 
 extern "C" {
-    static int	ourcmp(cvoid *,cvoid *) noex ;
-}
+    local int	ourcmp(cvoid *,cvoid *) noex ;
+} /* end */
+
 
 /* exported variables */
 
@@ -118,13 +119,12 @@ int main(int,mainv,mainv) {
 
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-static int mainadd(vecsorthand *vlp,int v) noex {
+local int mainadd(vecsorthand *vlp,int v) noex {
 	cint		esize = sizeof(int) ;
 	int		rs ;
 	int		*ip ;
@@ -133,25 +133,20 @@ static int mainadd(vecsorthand *vlp,int v) noex {
 	    rs = vecsorthand_add(vlp,ip) ;
 	}
 	return rs ;
-}
-/* end subroutine (mainadd) */
+} /* end subroutine (mainadd) */
 
-static int mainfins(vecsorthand *vlp) noex {
+local int mainfins(vecsorthand *vlp) noex {
 	int		rs = SR_OK ;
 	int		rs1 ;
-	int		i ;
 	int		*ep ;
-
-	for (i = 0 ; vecsorthand_get(vlp,i,&ep) >= 0 ; i += 1) {
+	for (int i = 0 ; vecsorthand_get(vlp,i,&ep) >= 0 ; i += 1) {
 	    rs1 = uc_free(ep) ;
 	    if (rs >= 0) rs = rs1 ;
 	}
-
 	return rs ;
-}
-/* end subroutine (mainfins) */
+} /* end subroutine (mainfins) */
 
-static int ourcmp(cvoid *a1p,cvoid *a2p) noex {
+local int ourcmp(cvoid *a1p,cvoid *a2p) noex {
 	int		**e1pp = (int **) a1p ;
 	int		**e2pp = (int **) a2p ;
 	int		rc = 0 ;
@@ -169,9 +164,8 @@ static int ourcmp(cvoid *a1p,cvoid *a2p) noex {
 		    rc = 1 ;
 		}
 	    }
-	} /* end block) */
+	} /* end block */
 	return rc ;
-}
-/* end subroutine (ourcmp) */
+} /* end subroutine (ourcmp) */
 
 
