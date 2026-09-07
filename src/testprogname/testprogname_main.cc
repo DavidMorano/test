@@ -55,7 +55,7 @@
 
 extern "C" {
     extern cchar *getexecname() noex ;
-}
+} /* end */
 
 
 /* external variables */
@@ -114,7 +114,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        delete [] pbuf ;
 	    } /* end if (new) */
 	} /* end if (usysflag.darwin) */
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
