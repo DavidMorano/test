@@ -41,7 +41,6 @@
 	(defined(OSNAME_SunOS) && (OSNAME_SunOS > 0))
 
 
-
 /* local structures */
 
 
@@ -114,7 +113,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 /* done */
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
