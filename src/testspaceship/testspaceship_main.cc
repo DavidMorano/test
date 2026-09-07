@@ -79,7 +79,7 @@ constexpr std::strong_ordering operator <=> (con thing &v1,con thing &v2) noex {
 	    cv = (v1.x > v2.x) ? cmpord_strong::greater : cmpord_strong::less ;
 	}
     	return cv ;
-}
+} /* end */
 constexpr bool operator == (con thing &v1,con thing &v2) noex {
     	return (v1.x == v2.x) ;
 } /* end subroutine (operator ==) */
