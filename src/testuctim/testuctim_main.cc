@@ -35,7 +35,7 @@
 
 extern "C" {
     typedef bool (*hasprintx_f)(cchar *,int) noex ;
-}
+} /* end */
 
 
 /* local structures */
@@ -43,12 +43,12 @@ extern "C" {
 enum result : bool {
     	resfail,
     	respass
-} ;
+} ; /* end */
 
 struct testent {
     	cchar	*addr ;
 	bool	fr ;
-} ;
+} ; /* end */
 
 
 /* forward references */
@@ -92,8 +92,7 @@ constexpr cpcchar	res[] = {
 int main(int,mainv,mainv) {
     	testsuite("bad",hasprintbad,testbads) ;
     	testsuite("cmd",hasprintcmd,testcmds) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
