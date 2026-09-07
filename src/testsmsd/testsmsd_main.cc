@@ -2112,14 +2112,10 @@ badret:
 	ex = EX_DATAERR ;
 	goto retearly ;
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
-
-/* LOCAL SUBROUTINES */
-
-
+/* local subroutines */
 
 local int usage(pip)
 struct proginfo	*pip ;
@@ -2142,8 +2138,7 @@ struct proginfo	*pip ;
 	}
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (usage) */
+} /* end subroutine (usage) */
 
 
 /* process the program ako-options */
@@ -2283,9 +2278,7 @@ keyopt		*kop ;
 
 ret0:
 	return (rs >= 0) ? c : rs ;
-}
-/* end subroutine (procopts) */
-
+} /* end subroutine (procopts) */
 
 local int progserial(pip)
 struct proginfo	*pip ;
@@ -2329,9 +2322,7 @@ struct proginfo	*pip ;
 
 	pip->serial = (rs1 >= 0) ? rs1 : pip->pid ;
 	return rs1 ;
-}
-/* end subroutine (progserial) */
-
+} /* end subroutine (progserial) */
 
 local int procfile(pip,func,pr,svp,fname,elp)
 struct proginfo	*pip ;
@@ -2385,9 +2376,7 @@ VECSTR		*elp ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (procfile) */
-
+} /* end subroutine (procfile) */
 
 /* check if a directory exists */
 local int checkdir(pip,dname,mode)
@@ -2446,9 +2435,7 @@ int		mode ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (checkdir) */
-
+} /* end subroutine (checkdir) */
 
 /* check if the directory of a file is present */
 local int checkfiledir(proginfo *pip,cchar *fname) noex {
@@ -2515,9 +2502,7 @@ local int checkfiledir(proginfo *pip,cchar *fname) noex {
 #endif
 
 	return rs ;
-}
-/* end subroutine (checkfiledir) */
-
+} /* end subroutine (checkfiledir) */
 
 local int caf(pip)
 struct proginfo	*pip ;
@@ -2544,9 +2529,7 @@ struct proginfo	*pip ;
 	}
 
 	return c ;
-}
-/* end subroutine (caf) */
-
+} /* end subroutine (caf) */
 
 local int svarsinit(pip,svp)
 struct proginfo	*pip ;
@@ -2575,9 +2558,7 @@ vecstr	*svp ;
 
 ret0:
 	return rs ;
-}
-/* end subroutine (svarsinit) */
-
+} /* end subroutine (svarsinit) */
 
 local int svarsfree(pip,svp)
 struct proginfo	*pip ;
@@ -2593,7 +2574,6 @@ vecstr	*svp ;
 	}
 
 	return rs ;
-}
-/* end subroutine (svarsfree) */
+} /* end subroutine (svarsfree) */
 
 
