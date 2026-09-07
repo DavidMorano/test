@@ -258,7 +258,6 @@ int main(int,con mainv,con mainv) {
 	date_free(&d) ;
 	bclose(ofp) ;
 	return EX_OK ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
