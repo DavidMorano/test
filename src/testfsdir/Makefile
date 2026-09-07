@@ -49,6 +49,8 @@ MODS +=
 LIBS += -luo -lu
 
 
+DEPS= fsdir.o
+
 OBJ0= testfsdir_main.o
 OBJ1= fsdir.o
 OBJ2=
@@ -58,15 +60,14 @@ OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o obj2.o obj3.o
+OBJA= obj0.o obj1.o
 OBJB= obj4.o obj5.o obj6.o obj7.o
 
-OBJ= $(OBJA) $(OBJB)
+OBJ= $(OBJA)
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -108,14 +109,14 @@ all:			$(ALL)
 	$(COMPILE.cc) $<
 
 .ccm.o:
-	makemodule $(*)
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
 $(T):			$(T).ee
 	cp -p $(T).ee $(T)
 
-$(T).x:			$(OBJ) Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(OBJ) $(LIBDIRS) $(LIBS)
+$(T).x:			$(OBJ)
+	$(CXX) -o $@ $(LDFLAGS) $^ $(LIBDIRS) $(LIBS)
 
 $(T).prof:		$(OBJ) Makefile
 	$(LD) -o $@ $(LDFLAGS) $(MOBJ) $(LIBDIRS) $(LIBS)
@@ -191,15 +192,10 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-testfsdir_main.o:	testfsdir_main.cc 			$(INCS) 
+testfsdir_main.o:	testfsdir_main.cc 		$(DEPS)	$(INCS)
 
 fsdir.o:		fsdir.dir
 fsdir.dir:
 	makesubdir $@
-
-libutil.ccm:
-	makemodcurrent $@
-
-libutil.o:		libutil.ccm
 
 
