@@ -836,14 +836,10 @@ badarg:
 
 	goto retearly ;
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
-
-/* LOCAL SUBROUTINES */
-
-
+/* local subroutines */
 
 static int usage(pip)
 struct proginfo	*pip ;
@@ -863,8 +859,7 @@ struct proginfo	*pip ;
 
 	wlen += rs ;
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (usage) */
+} /* end subroutine (usage) */
 
 
 static int procname(pip,ofp,name)
@@ -896,9 +891,7 @@ cchar	name[] ;
 	}
 
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (procname) */
-
+} /* end subroutine (procname) */
 
 #ifdef	COMMENT
 
@@ -942,13 +935,11 @@ cchar	dname[] ;
 	} /* end if */
 
 	return rs ;
-}
-/* end subroutine (dirok) */
+} /* end subroutine (dirok) */
 
 #endif /* COMMENT */
 
 static int ensuremode(cchar *tmpdname,mode_t m) noex {
-	ustat	sb ;
 	int	rs ;
 	int	fd ;
 	int	f = FALSE ;
@@ -959,24 +950,18 @@ static int ensuremode(cchar *tmpdname,mode_t m) noex {
 	if (tmpdname[0] == '\0')
 	    return SR_INVALID ;
 
-	rs = u_open(tmpdname,O_RDONLY,0666) ;
-
-	fd = rs ;
-	if ((rs >= 0) && ((rs = u_fstat(fd,&sb)) >= 0)) {
-
+	if ((rs = u_open(tmpdname,O_RDONLY,0666)) >= 0) {
+	    cint fd = rs ;
+	    if (ustat sb ; (rs = u_fstat(fd,&sb)) >= 0) {
 	    m = (m & (~ S_IFMT)) ;
 	    if ((sb.st_mode & m) != m) {
 		f = TRUE ;
 		rs = u_fchmod(fd,m) ;
 	    }
-
 	    u_close(fd) ;
-
 	} /* end if */
 
 	return (rs >= 0) ? f : rs ;
-}
-/* end subroutine (ensuremode) */
-
+} /* end subroutine (ensuremode) */
 
 
