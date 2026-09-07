@@ -1080,8 +1080,7 @@ badconnect:
 
 	goto ret2 ;
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -1230,8 +1229,6 @@ local int bprintmsg(bfile *ofp,char *buf,int buflen) noex {
 	} /* end switch */
 
 	return rs ;
-}
-/* end subroutine (bprintmsg) */
-
+} /* end subroutine (bprintmsg) */
 
 
