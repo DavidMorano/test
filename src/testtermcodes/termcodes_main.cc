@@ -105,7 +105,6 @@ int main(int argc,mainv argv,mainv) {
 
 	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
