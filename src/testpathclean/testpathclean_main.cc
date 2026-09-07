@@ -177,8 +177,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 #endif
 
 	return EX_OK ;
-}
-/* end subroutine (main) */
-
+} /* end subroutine (main) */
 
 
