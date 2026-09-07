@@ -497,8 +497,7 @@ badoutopen:
 
 	goto ret2 ;
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -520,8 +519,7 @@ PROGINFO	*pip ;
 
 	wlen += rs ;
 	return (rs >= 0) ? wlen : rs ;
-}
-/* end subroutine (usage) */
+} /* end subroutine (usage) */
 
 
 static int handlename(pip,ofp,name)
@@ -583,8 +581,7 @@ cchar	name[] ;
 	} /* end if (memory-allocation) */
 
 	return rs ;
-}
-/* end subroutine (handlename) */
+} /* end subroutine (handlename) */
 
 
 static int getkeyname(n,rpp)
@@ -604,8 +601,7 @@ char	**rpp ;
 	}
 
 	return len ;
-}
-/* end subroutine (getkeyname) */
+} /* end subroutine (getkeyname) */
 
 
 
