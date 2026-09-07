@@ -47,7 +47,6 @@ int main(int,mainv,mainv) {
 	    printf("%s\n",pbuf) ;
 	}
 	return (rs >= 0) ? EX_OK : EX_DATAERR ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
