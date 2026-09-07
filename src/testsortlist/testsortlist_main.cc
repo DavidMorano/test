@@ -188,12 +188,11 @@ badopen:
 
 	goto done ;
 
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 local int slcmp(cchar **app,cchar **bpp) noex {
 	return strcmp(*app,*bpp) ;
-}
+} /* end */
 
 
 
