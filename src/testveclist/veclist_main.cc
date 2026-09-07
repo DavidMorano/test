@@ -73,7 +73,7 @@
 
 extern "C" {
     extern int	printhelp(bfile *,cchar *,cchar *,cchar *) noex ;
-}
+} /* end */
 
 
 /* external variables */
@@ -785,8 +785,7 @@ badret:
 	bclose(pip->efp) ;
 
 	goto retearly ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -814,8 +813,7 @@ struct listentry	**e1p, **e2p ;
 #endif
 
 	return rc ;
-}
-/* end subroutine (sortheadcmp) */
+} /* end subroutine (sortheadcmp) */
 
 
 
