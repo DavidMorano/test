@@ -41,9 +41,8 @@
 #include	<intceil.h>
 #include	<sighand.h>
 #include	<strx.h>
-#include	<mapex.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"kshlib.h"
 #include	"maininfo.h"
@@ -99,7 +98,7 @@ static cchar	*strsigcode(const SIGCODE *,int) ;
 
 /* local variables */
 
-static const MAPEX	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -114,7 +113,7 @@ static const MAPEX	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const int	sigcatches[] = {
+constexpr int		sigcatches[] = {
 	SIGILL, 
 	SIGSEGV,
 	SIGBUS,
