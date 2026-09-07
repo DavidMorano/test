@@ -188,8 +188,7 @@ local int ents_have(addrset_ent *ents,addrset_ent *ep) noex {
 	} /* end for */
 	if (!f) rs = SR_NOTFOUND ;
 	return rs ;
-}
-/* end subroutine (ents_have) */
+} /* end subroutine (ents_have) */
 
 local int ents_rem(addrset_ent *ents,addrset *tp) noex {
 	int		rs = SR_OK ;
@@ -200,8 +199,7 @@ local int ents_rem(addrset_ent *ents,addrset *tp) noex {
 	} /* end for */
 	cerr << "ents_rem: ret rs=" << rs << eol ;
 	return rs ;
-}
-/* end subroutine (ents_get) */
+} /* end subroutine (ents_get) */
 
 local int ents_cents(addrset_ent *,addrset *tp) noex {
 	int		rs ;
