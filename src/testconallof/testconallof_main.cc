@@ -16,8 +16,8 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
 #include	<clanguage.h>
 #include	<usysbase.h>
@@ -27,24 +27,20 @@
 #include	"conallof.h"
 
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
 	int		rs ;
 	cchar		*ans[3] = { "NO", "YES" } ;
 	cchar		*sp = "this is ( a comment )" ;
-
 	if ((rs = conallof(sp,-1,"hn")) >= 0) {
 	    if (rs < 2) {
 	    printf("%s\n",ans[rs]) ;
 	    }
-	}
-
+	} /* end */
 	if ((rs = conallof(sp,-1,"hwn")) >= 0) {
 	    if (rs < 2) {
 	    printf("%s\n",ans[rs]) ;
 	    }
-	}
-
-}
-/* end subroutine (main) */
+	} /* end */
+} /* end subroutine (main) */
 
 
