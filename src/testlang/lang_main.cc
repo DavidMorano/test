@@ -98,8 +98,7 @@ int main(int argc,mainv argv,mainv) {
 	}
 	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -107,7 +106,7 @@ int main(int argc,mainv argv,mainv) {
 static int sub0() noex {
 	cout << "Hello world!" << eol ;
 	return SR_OK ;
-}
+} /* end */
  
 static int sub1() noex {
 	cint		a = ({ cint b = 1 ; cint c = 2 ; (b + c) ; }) ;
@@ -120,7 +119,7 @@ static int sub1() noex {
 	cout << a << eol ;
 	cout << lamb() << eol ;
 	return rs ;
-}
+} /* end */
 
 static int sub2() noex {
 	int		rs = SR_OK ;
@@ -129,7 +128,7 @@ static int sub2() noex {
 	    cout << i << *sp++ << eol ;
 	}
 	return rs ;
-}
+} /* end */
 
 static int sub3() noex {
 	int		rs = SR_OK ;
@@ -138,7 +137,7 @@ static int sub3() noex {
 	cvp = vp ;
 	(void) cvp ;
 	return rs ;
-}
+} /* end */
 
 static int sub4() noex {
 	int		rs = SR_OK ;
@@ -148,6 +147,6 @@ static int sub4() noex {
 	    cout << "false a=" << a << eol ;
 	}
 	return rs ;
-}
+} /* end */
 
 
