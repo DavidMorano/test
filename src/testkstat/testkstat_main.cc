@@ -355,8 +355,7 @@ badret:
 	bclose(efp) ;
 
 	return EX_DATAERR ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 void int_alarm(sig)
@@ -364,17 +363,14 @@ int	sig ;
 {
 
 	f_alarm = TRUE ;
-}
-
+} /* end */
 
 void int_signal(sig)
 int	sig ;
 {
 
 	f_signal = TRUE ;
-}
-
-
+} /* end */
 
 static int bprintla(ofp,ksn,s)
 bfile		*ofp ;
@@ -412,8 +408,6 @@ char		s[] ;
 	}
 
 	return rs ;
-}
-/* end subroutine (bprintla) */
-
+} /* end */
 
 
