@@ -125,8 +125,7 @@ int main(int argc,con mainv argv,con mainv) {
 	DEBPRINTF("ret rs=%d\n",rs) ;
 	DEBPRINTF("exit ex=%d\n",ex) ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
