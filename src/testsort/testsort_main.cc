@@ -74,18 +74,17 @@ local void	strload(cchar **,mainv) noex ;
 
 local int strcmpo(cchar *s1,cchar *s2) noex {
     	return strcmp(s1,s2) ;
-}
+} /* end */
 local int strcmpr(cchar *s1,cchar *s2) noex {
     	return strcmp(s2,s1) ;
-}
+} /* end */
 
 local bool strlesso(cchar *s1,cchar *s2) noex {
 	return (strcmpo(s1,s2) < 0) ;
-}
+} /* end */
 local bool strlessr(cchar *s1,cchar *s2) noex {
 	return (strcmpr(s1,s2) < 0) ;
-}
-
+} /* end */
 
 /* local variables */
 
@@ -147,8 +146,7 @@ int main(int,mainv,mainv) {
 	    ex = EXIT_FAILURE ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
