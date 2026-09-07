@@ -94,7 +94,7 @@ int testcon::a = 1 ;
 
 consteval int getval() noex {
     return ss.a ;
-}
+} /* end */
 
 constexpr int	c = getval() ;
 
@@ -120,11 +120,10 @@ int main(int,mainv,mainv) {
 	    ex = EXIT_FAILURE ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 thing::thing_co::operator int () noex {
 	return op->a ;
-}
+} /* end */
 
 
