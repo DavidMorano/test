@@ -112,15 +112,14 @@ int main(int,mainv,mainv) {
 	    fprintf(stderr,"ret ex=%d\n",ex) ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
 local int sub1(bfile *ofp) noex {
     	return ofp->printf("Hello world!\n") ;
-}
+} /* end */
 
 local int sub2(bfile *ofp) noex {
     	int		rs ;
@@ -235,7 +234,7 @@ local int sub5(bfile *ofp) noex {
 
 local int sub6(bfile *ofp) noex {
     	return ofp->printf("Goodbye.\n") ;
-}
+} /* end */
 
 
 #ifdef	COMMENT
