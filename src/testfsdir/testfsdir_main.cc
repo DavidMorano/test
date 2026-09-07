@@ -16,44 +16,41 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/stat.h>		/* |stat(2)| */
-#include	<unistd.h>		/* |getpid(2)| */
-#include	<fcntl.h>
-#include	<libproc.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
-#include	<cstdio>
-#include	<new>			/* |nothrow(3c++)| */
-#include	<iostream>		/* |cout| */
-#include	<thread>
-#include	<mutex>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-#include	<usyscalls.h>
-#include	<usupport.h>
-#include	<fsdir.h>
+#include	<sys/stat.h>		/* POSIX® |stat(2)| */
+#include	<unistd.h>		/* POSIX® |getpid(2)| */
+#include	<fcntl.h>		/* POSOX® */
+#include	<libproc.h>		/* ?? */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<new>			/* C++STD */
+#include	<iostream>		/* C++STD |cout| */
+#include	<thread>		/* C++STD */
+#include	<mutex>			/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
+#include	<fsdir.h>		/* LIBUC */
 #include	<localmisc.h>		/* |MAXNAMELEN| + |eol| */
 
 import libutil ;
 
 using libu::umem ;			/* variable */
 using std::cout ;			/* variable */
-using std::nothrow ;			/* constant */
 
 typedef fsdir_ent	ent ;
 
 local int dirlist(cchar *name) noex {
     	cnullptr	np{} ;
+	cnothrow	nt{} ;
     	int		rs = SR_INVALID ;
 	int		rs1 ;
 	if (name[0]) {
 	    cint	nlen = MAXNAMELEN ;
 	    rs = SR_NOMEM ;
-	    if (char *nbuf ; (nbuf = new(nothrow) char[nlen + 1]) != np) {
-	        if (fsdir dir ; (rs = dir.open(name)) >= 0) {
+	    if (char *nbuf = new(nt) char[nlen + 1]) ylikely {
+	        if (fsdir dir ; (rs = dir.open(name)) >= 0) ylikely {
 		    for (ent de ; (rs = dir.read(&de,nbuf,nlen)) > 0 ; ) {
 			cout << nbuf << eol ;
 		    } /* end while */
@@ -77,7 +74,6 @@ int main(int argc,con mainv argv,con mainv) {
 	} /* end for */
 	if (rs < 0) ex = 1 ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
