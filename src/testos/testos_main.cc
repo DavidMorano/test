@@ -83,7 +83,6 @@ int main(int argc,mainv,mainv) {
 	    ex = EX_DATAERR ;
 	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
