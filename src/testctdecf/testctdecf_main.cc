@@ -78,7 +78,7 @@ using libu::ctdec ;			/* subroutine */
 
 extern "C" {
     extern int	ctdecf(char *,int,double,int,int,int,int) noex ;
-}
+} /* end */
 
 
 /* external subroutines */
