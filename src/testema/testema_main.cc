@@ -64,10 +64,11 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		ex = EX_OK ;
 
 
-	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
+	if ((ex == EX_OK) && (rs < 0)) {
+	    ex = EX_DATAERR ;
+	}
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 
