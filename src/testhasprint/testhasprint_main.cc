@@ -37,7 +37,7 @@
 
 extern "C" {
     typedef bool (*hasprintx_f)(cchar *,int) noex ;
-}
+} /* end */
 
 
 /* local structures */
@@ -94,8 +94,7 @@ constexpr cpcchar	res[] = {
 int main(int,mainv,mainv) {
     	testsuite("bad",hasprintbad,testbads) ;
     	testsuite("cmd",hasprintcmd,testcmds) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
