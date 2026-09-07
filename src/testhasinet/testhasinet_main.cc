@@ -37,7 +37,7 @@
 
 extern "C" {
     typedef bool (*hasinetx_f)(cchar *,int) noex ;
-}
+} /* end */
 
 
 /* local structures */
@@ -118,8 +118,7 @@ constexpr cpcchar	res[] = {
 int main(int,mainv,mainv) {
     	testsuite("v4",hasinet4addrstr,inet4s) ;
     	testsuite("v6",hasinet6addrstr,inet6s) ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
