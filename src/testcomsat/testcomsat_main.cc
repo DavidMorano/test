@@ -1021,9 +1021,7 @@ local int locinfo_mkmsg(LI *lip) noex {
 #endif
 
 	return (rs >= 0) ? len : rs ;
-}
-/* end subroutine (locinfo_mkmsg) */
-
+} /* end subroutine (locinfo_mkmsg) */
 
 int locinfo_setentry(lip,epp,vp,vl)
 LI	*lip ;
@@ -1060,8 +1058,7 @@ int		vl ;
 	} /* end if */
 
 	return (rs >= 0) ? len : rs ;
-}
-/* end subroutine (locinfo_setentry) */
+} /* end subroutine (locinfo_setentry) */
 
 
 local int locinfo_sendmsg(lip,aip)
@@ -1099,8 +1096,7 @@ ADDRINFO	*aip ;
 #endif
 
 	return rs ;
-}
-/* end subroutine (locinfo_sendmsg) */
+} /* end subroutine (locinfo_sendmsg) */
 
 local int procname(PI *pip,bfile *ofp,cchar *hostname) noex {
 	LI	*lip = pip->lip ;
@@ -1190,9 +1186,7 @@ ret0:
 #endif
 
 	return rs ;
-}
-/* end subroutine (procname) */
-
+} /* end subroutine (procname) */
 
 #ifdef	COMMENT
 
@@ -1235,8 +1229,7 @@ cchar	name[] ;
 #endif
 
 	return (rs >= 0) ? f : rs ;
-}
-/* end if (prepname_start) */
+} /* end if (prepname_start) */
 
 local int prepname_finish(prepname *ep) noex {
 #if	CF_DEBUG
