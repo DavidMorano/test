@@ -61,7 +61,6 @@ int main(int,con mainv,con mainv) {
 	    }
 	} /* end block */
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
