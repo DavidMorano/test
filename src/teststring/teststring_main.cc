@@ -118,8 +118,7 @@ int main(int,mainv,mainv) {
 	} /* end block */
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
