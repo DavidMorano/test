@@ -684,8 +684,7 @@ badret:
 	bclose(efp) ;
 
 	goto earlyret ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
@@ -698,8 +697,7 @@ local void helpfile(cchar *f,bfile *ofp) noex {
 	        bclose(ifp) ;
 	    }
 	}
-}
-/* end subroutine (helpfile) */
+} /* end subroutine (helpfile) */
 
 
 
