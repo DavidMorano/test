@@ -22,7 +22,7 @@
 
 extern "C" {
     extern int uc_ftime(TIMEB *) noex ;
-}
+} /* end */
 
 int main(int,con mainv,con mainv) {
 	time_t	daytime = time(nullptr) ;
