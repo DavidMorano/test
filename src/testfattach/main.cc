@@ -1,4 +1,4 @@
-/* main */
+/* testfattach_main SUPPORT */
 
 
 #define	CF_SOCKETPAIR	0
@@ -10,7 +10,7 @@
 
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -174,18 +174,11 @@ int main()
 #endif /* CF_SLEEP */
 
 	    } /* end if (successful attach) */
-
-	    rs = uc_fdetach(LOCALMNT) ;
-
+	    rs = uc_detach(LOCALMNT) ;
 	} /* end if (mount point exists) */
-
 	ffclose(stdout) ;
 
-	fclose(stderr) ;
-
 	return 0 ;
-}
-/* end subroutine (main) */
-
+} /* end subroutine (main) */
 
 
