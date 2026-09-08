@@ -1,21 +1,22 @@
-/* main */
+/* testformat_main USPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* test 'format(3bfile)' */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUG	1		/* run-time debug print-outs */
 #define	CF_STDERR	1		/* use 'stdio(3s)' */
 #define	CF_BFILE	1		/* use 'bfile(3b)' */
 
-
 /* revision history:
 
 	= 2008-08-28, David A­D­ Morano
-        This is a complete rewrite of the previous program by the same name. We
-        perform the same function but have rewritten it completely from scratch
-        (that is the way life is sometimes!).
+	This is a complete rewrite of the previous program by the
+	same name.  We perform the same function but have rewritten
+	it completely from scratch (that is the way life is
+	sometimes!).
 
 */
 
@@ -24,33 +25,30 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testformat.x
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<cstddef>
 #include	<cstdlib>
-#include	<cstring>
 #include	<cstdarg>
 #include	<cstdio>
-
-#include	<usystem.h>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<vecstr.h>
 #include	<paramopt.h>
 #include	<format.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
@@ -68,7 +66,7 @@
 
 /* external subroutines */
 
-extern int	printhelp(void *,const char *,const char *,const char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 extern int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
 
 #if	CF_DEBUGS || CF_DEBUG
@@ -127,7 +125,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -140,11 +138,12 @@ static const struct mapex	mapexs[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	PROGINFO	pi, *pip = &pi ;
 	PARAMOPT	aparams ;
 	bfile		errfile ;
@@ -158,14 +157,14 @@ int main(int argc,cchar **argv,cchar **envv)
 	int		f_usage = FALSE ;
 	int		f_help = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
-	const char	*sn = NULL ;
-	const char	*pr = NULL ;
-	const char	*afname = NULL ;
-	const char	*efname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = NULL ;
+	cchar	*sn = NULL ;
+	cchar	*pr = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*efname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 	char		argpresent[MAXARGGROUPS] ;
 
 #if	CF_DEBUGS || CF_DEBUG
@@ -611,7 +610,7 @@ static int process(PROGINFO *pip,bfile *ofp)
 	int		rs = SR_OK ;
 	int		i ;
 	int		num ;
-	const char	*fmt ;
+	cchar	*fmt ;
 	char		fbuf[BUFLEN + 1] ;
 	char		lbuf[BUFLEN + 1] ;
 
@@ -624,7 +623,7 @@ static int process(PROGINFO *pip,bfile *ofp)
 	}
 
 	if (rs >= 0) {
-	    const char	*s = "hello world!" ;
+	    cchar	*s = "hello world!" ;
 	    i = 2 ;
 	    rs = bufprintf(fbuf,BUFLEN,"%t\n",s,-1) ;
 	    fprintf(stderr,"main: %u bufprintf() rs=%d b=>%s<\n",
