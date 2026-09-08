@@ -25,28 +25,25 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testmailalias.x
-
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<cstdlib>
-#include	<cstring>
+#include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<netdb.h>
-
-#include	<usystem.h>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<vecstr.h>
@@ -56,8 +53,8 @@
 #include	"svcfile.h"
 #include	"kvsfile.h"
 #include	"mailalias.h"
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
@@ -146,7 +143,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -154,7 +151,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -167,24 +164,17 @@ static const struct mapex	mapexs[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	ustat	sb ;
-
-	struct proginfo	pi, *pip = &pi ;
-
+	proginfo	pi, *pip = &pi ;
 	KVSFILE		aptab ;		/* alias-profile table */
-
 	SVCFILE		st ;
-
 	MAILALIAS	madb ;		/* selected MAILALIAS */
-
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
 
@@ -643,11 +633,11 @@ char	*envv[] ;
 
 	    while (TRUE) {
 
-	        rs1 = svcfile_enum(&st,&stcur,&ste,ebuf,EBUFLEN) ;
+	        rs1 = svcfile_curenum(&st,&stcur,&ste,ebuf,EBUFLEN) ;
 
 #if	CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
-	            debugprintf("main: svcfile_enum() rs=%d\n",rs1) ;
+	            debugprintf("main: svcfile_curenum() rs=%d\n",rs1) ;
 	            debugprintf("main: ste.nkeys=%u\n",ste.nkeys) ;
 	            debugprintf("main: ste.size=%u\n",ste.size) ;
 	        }
@@ -747,7 +737,7 @@ char	*envv[] ;
 
 	    while (TRUE) {
 
-	        rs1 = kvsfile_enum(&aptab,&apcur,keybuf,KEYBUFLEN,
+	        rs1 = kvsfile_curenum(&aptab,&apcur,keybuf,KEYBUFLEN,
 	            valbuf,VALBUFLEN) ;
 
 	        if (rs1 < 0)
@@ -824,9 +814,9 @@ char	*envv[] ;
 
 	    while (TRUE) {
 
-	        rs1 = mailalias_enum(&madb,&cur,abuf,ABUFLEN,vbuf,VBUFLEN) ;
+	        rs1 = mailalias_curenum(&madb,&cur,abuf,ABUFLEN,vbuf,VBUFLEN) ;
 
-	        debugprintf("main: mailalias_enum() rs=%d\n",rs1) ;
+	        debugprintf("main: mailalias_curenum() rs=%d\n",rs1) ;
 
 	        if (rs1 < 0)
 	            break ;
