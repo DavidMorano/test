@@ -62,7 +62,7 @@
 #include	<getxusername.h>
 #include	<userinfo.h>
 #include	<mallocstuff.h>
-#include	<vstrxcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -1340,7 +1340,7 @@ int main(int argc,mainv argv,mainv envv) {
 
 	} /* end if (help) */
 
-/* put the final value of the program root into the schedule search variables */
+/* put the value of the program-root into schedule search */
 
 	vecstr_envset(&svars,"p",pip->pr,-1) ;
 
