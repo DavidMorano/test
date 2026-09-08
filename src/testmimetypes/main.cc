@@ -103,13 +103,13 @@ int main()
 
 	    while (rs >= 0) {
 
-		vl = mimetypes_enum(&obj,&cur,keybuf,valuebuf) ;
+		vl = mimetypes_curenum(&obj,&cur,keybuf,valuebuf) ;
 		if (vl == SR_NOTFOUND) break ;
 
 		rs = vl ;
 
 #if	CF_DEBUGS
-	debugprintf("main: mimetypes_enum() rs=%d\n",rs) ;
+	debugprintf("main: mimetypes_curenum() rs=%d\n",rs) ;
 #endif
 
 		if (rs >= 0)
