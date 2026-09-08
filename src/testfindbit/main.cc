@@ -38,6 +38,10 @@
 #include	<random.h>
 #include	<localmisc.h>
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
+import libutil ;			/* |lenstr(3u)| */
+import findbit ;
 
 /* local defines */
 
@@ -98,8 +102,7 @@ local int testffbs(RANDOM *rp) {
 	    }
 	} /* end for */
 	return 0 ;
-}
-/* end subroutine (testffbs) */
+} /* end subroutine (testffbs) */
 
 local int testflbs(RANDOM *rp) {
 	uint	v ;
@@ -113,8 +116,7 @@ local int testflbs(RANDOM *rp) {
 	    }
 	} /* end for */
 	return 0 ;
-}
-/* end subroutine (testflbs) */
+} /* end subroutine (testflbs) */
 
 local int testffbc(RANDOM *rp) {
 	uint	v ;
@@ -128,8 +130,7 @@ local int testffbc(RANDOM *rp) {
 	    }
 	} /* end for */
 	return 0 ;
-}
-/* end subroutine (testffbc) */
+} /* end subroutine (testffbc) */
 
 local int testflbc(RANDOM *rp) {
 	uint	v ;
@@ -143,8 +144,6 @@ local int testflbc(RANDOM *rp) {
 	    }
 	} /* end for */
 	return 0 ;
-}
-/* end subroutine (testflbc) */
-
+} /* end subroutine (testflbc) */
 
 
