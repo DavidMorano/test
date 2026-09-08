@@ -2,30 +2,27 @@
 
 /* test for |mkpath(3dam)| */
 
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<climits>
+#include	<cstddef>
+#include	<cstdlib>
 #include	<cstdio>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<mkpathx.h>
 #include	<localmisc.h>		/* extra types */
 
 
 /* external subroutines */
-
-extern int	mkpath1(char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	mkpath4(char *,const char *,const char *,const char *,
-			const char *) ;
 
 
 /* exported subroutines */
 
 
 /* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	char	buf[MAXPATHLEN + 1] = { 0 } ;
 
 	if (argc > 1) {
