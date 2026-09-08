@@ -3,7 +3,6 @@
 /* front-end for the TESTMAILBOX program */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUG	1		/* run-time debug print-outs */
 #define	CF_CLEN		1		/* use 'content-length' */
@@ -13,15 +12,12 @@
 #define	CF_TESTHDRADD	1		/* test msg-hdr-add */
 #define	CF_MBCACHE	1		/* test MBCACHE object */
 
-
 /* revision history:
 
 	= 2008-01-16, David A­D­ Morano
-
 	Of course this was taken from previous programs.  I deleted
 	the list that was here and replaced it with this simple
 	admission. :-)
-
 
 */
 
@@ -30,15 +26,11 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testmailbox.x <mailbox>
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -47,17 +39,17 @@
 #include	<fcntl.h>
 #include	<netdb.h>
 #include	<ctime>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<dater.h>
 #include	<realname.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"mailbox.h"
 #include	"mbcache.h"
@@ -140,7 +132,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -148,7 +140,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -163,18 +155,14 @@ static const struct mapex	mapexs[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	PROGINFO	pi, *pip = &pi ;
-
 	MAILBOX		mb ;
-
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
 
@@ -833,7 +821,7 @@ ret0:
 
 	return rs ;
 }
-/* end subroutines (procmbcache) */
+/* end subroutine (procmbcache) */
 
 
 
