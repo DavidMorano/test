@@ -280,7 +280,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	    c = 0 ;
 	    hdb_curbegin(&ht,&cur) ;
 
-	    while (hdb_enum(&ht,&cur,&key,&data) >= 0) {
+	    while (hdb_curenum(&ht,&cur,&key,&data) >= 0) {
 
 	        sp = (const char *) key.buf ;
 	        sl = key.len ;
@@ -344,7 +344,7 @@ int main(int argc,cchar **argv,cchar **envv)
 	c = 0 ;
 	hdb_curbegin(&ht,&cur) ;
 
-	while (hdb_enum(&ht,&cur,&key,&data) >= 0) {
+	while (hdb_curenum(&ht,&cur,&key,&data) >= 0) {
 
 	    sp = (const char *) key.buf ;
 	    sl = key.len ;
