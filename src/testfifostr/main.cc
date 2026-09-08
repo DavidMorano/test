@@ -661,7 +661,7 @@ char	*envv[] ;
 
 	    for (j = 0 ; j < 10 ; j += 1) {
 
-	        rs1 = fifostr_enum(&fs,&cur,strbuf,BUFLEN) ;
+	        rs1 = fifostr_curenum(&fs,&cur,strbuf,BUFLEN) ;
 
 		len = rs1 ;
 		if (rs1 < 0)
