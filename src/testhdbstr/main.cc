@@ -19,7 +19,7 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 
 #include	<sys/types.h>
 #include	<sys/param.h>
@@ -240,7 +240,7 @@ int main(int argc, const char **argv,const char **envv)
 
 	if ((rs = hdbstr_curbegin(&ht,&c)) >= 0) {
 
-	    while (hdbstr_enum(&ht,&c,&keyp,&valp,&vlen) >= 0) {
+	    while (hdbstr_curenum(&ht,&c,&keyp,&valp,&vlen) >= 0) {
 
 	        bprintf(ofp,"key=%s data=%s vlen=%d\n",
 	            keyp,valp,vlen) ;
@@ -269,7 +269,7 @@ int main(int argc, const char **argv,const char **envv)
 
 #if	CF_SIMULATE
 	    if (f_next) {
-	        rs = hdbstr_enum(&ht,&c,&keyp,&valp,&vlen) ;
+	        rs = hdbstr_curenum(&ht,&c,&keyp,&valp,&vlen) ;
 	    } else
 	        rs = hdbstr_getrec(&ht,&c,&keyp,&valp,&vlen) ;
 #else
@@ -314,7 +314,7 @@ int main(int argc, const char **argv,const char **envv)
 
 	if ((rs = hdbstr_curbegin(&ht,&c)) >= 0) {
 
-	while (hdbstr_enum(&ht,&c,&keyp,&valp,&vlen) >= 0) {
+	while (hdbstr_curenum(&ht,&c,&keyp,&valp,&vlen) >= 0) {
 
 	    bprintf(ofp,"key=%s data=%s\n",
 	        keyp,valp) ;
