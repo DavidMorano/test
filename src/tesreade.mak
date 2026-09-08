@@ -44,11 +44,11 @@ DEPS_MAIN += ureade.o
 
 OBJ0= testreade_main.o
 OBJ1= ureade.o
-OBJ2= dictdiff.o strwcpy.o
+OBJ2= strwcpy.o
 OBJ3= strcpyx.o strx.o strn.o strw.o char.o
 OBJ4= sfx.o rmx.o isx.o nleadx.o
-OBJ5= matxstr.o inetconv.o six.o
-OBJ6= ucinetconv.o timeval.o
+OBJ5= matxstr.o inetaddrx.o six.o
+OBJ6= ucinet.o timeval.o
 OBJ7= strnxcmp.o strxcmp.o
 
 OBJA= obj0.o obj1.o obj2.o obj3.o
@@ -58,8 +58,7 @@ OBJ= obja.o objb.o
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
@@ -105,8 +104,8 @@ all:			$(ALL)
 	makemodule $(*)
 
 
-$(T).x:			obj.o Makefile
-	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
@@ -162,6 +161,11 @@ testreade_main.o:	testreade_main.cc $(DEPS_MAIN)	$(INCS)
 # USTREAM
 ustream.o:		ustream.dir
 ustream.dir:
+	makesubdir $@
+
+# UCINET
+ucinet.o:		ucinet.dir
+ucinet.dir:
 	makesubdir $@
 
 # STRN
@@ -239,17 +243,20 @@ strxcmp.o:		strxcmp.dir
 strxcmp.dir:
 	makesubdir $@
 
+# INETADDRX
+inetaddrx.o:		inetaddrx.dir
+inetaddrx.dir:
+	makesubdir $@
+
 char.o:			char.cc		char.h
 inetconv.o:		inetconv.cc	inetconv.h
 base64.o:		base64.cc	base64.h
 base128.o:		base128.cc	base128.h
-dictdiff.o:		dictdiff.cc	dictdiff.h
 
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
 
 ureade.o:		ureade.cc	ureade.h
-ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
 timeval.o:		timeval.cc	timeval.hh
 
