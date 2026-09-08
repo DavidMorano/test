@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++98 */
 
-/* test calling once */
+/* test the FSDIR object */
 /* version %I% last-modified %G% */
 
 
@@ -34,6 +34,8 @@
 #include	<fsdir.h>		/* LIBUC */
 #include	<localmisc.h>		/* |MAXNAMELEN| + |eol| */
 
+#pragma		GCC dependency		"mod/libutil.ccm"
+
 import libutil ;
 
 using libu::umem ;			/* variable */
@@ -42,7 +44,6 @@ using std::cout ;			/* variable */
 typedef fsdir_ent	ent ;
 
 local int dirlist(cchar *name) noex {
-    	cnullptr	np{} ;
 	cnothrow	nt{} ;
     	int		rs = SR_INVALID ;
 	int		rs1 ;
