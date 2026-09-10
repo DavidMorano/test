@@ -1,13 +1,13 @@
-/* main */
+/* testnodedb_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* program to test the NODEDB object */
 /* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	0		/* non-switchable debug print-outs */
+#define	CF_DEBUGS	0		/* non-switchable print-outs */
 #define	CF_DEBUG	1		/* switchable at invocation */
 #define	CF_GETEXECNAME	1		/* use 'getexecname(3c)' */
-
 
 /* revision history:
 
@@ -21,15 +21,11 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testnodedb.x -ROOT ${HOME}
-
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -99,7 +95,7 @@
 
 /* external subroutines */
 
-extern int	printhelp(bfile *,const char *,const char *,const char *) ;
+extern int	printhelp(bfile *,cchar *,cchar *,cchar *) ;
 
 
 /* external variables */
@@ -113,7 +109,7 @@ extern int	printhelp(bfile *,const char *,const char *,const char *) ;
 
 /* local variables */
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	    "VERSION",
 	    "VERBOSE",
 	    "HELP",
@@ -171,10 +167,10 @@ char	*envv[] ;
 	int	f_usage = FALSE ;
 	int	f_help = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*pr = NULL ;
-	const char	*ofname = NULL ;
-	const char	*sp, *cp, *cp2 ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*pr = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*sp, *cp, *cp2 ;
 	char	argpresent[MAXARGGROUPS] ;
 	char	buf[BUFLEN + 1], *bp ;
 	char	nodename[NODENAMELEN + 1] ;
@@ -543,15 +539,10 @@ char	*envv[] ;
 
 #if	CF_GETEXECNAME && defined(OSNAME_SunOS) && (OSNAME_SunOS > 0)
 	    if ((pr == NULL) && (pip->pr == NULL)) {
-
-	        const char	*pp ;
-
-
-	        pp = getexecname() ;
-
-	        if (pp != NULL)
+	        cchar	*pp = getexecname() ;
+	        if (pp) {
 	            proginfo_execname(pip,pp) ;
-
+		}
 	    }
 #endif /* SOLARIS */
 
@@ -651,11 +642,11 @@ char	*envv[] ;
 
 	    while (TRUE) {
 
-	        rs1 = nodedb_enum(&st,&stcur,&ste,ebuf,NODEDB_ENTLEN) ;
+	        rs1 = nodedb_curenum(&st,&stcur,&ste,ebuf,NODEDB_ENTLEN) ;
 
 #if	CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
-	            debugprintf("main: nodedb_enum() rs=%d\n",rs1) ;
+	            debugprintf("main: nodedb_curenum() rs=%d\n",rs1) ;
 	            debugprintf("main: ste.nkeys=%u\n",ste.nkeys) ;
 	            debugprintf("main: ste.size=%u\n",ste.size) ;
 	        }
