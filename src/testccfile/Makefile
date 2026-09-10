@@ -49,7 +49,7 @@ OBJ03= inetaddrx.o ustream.o
 OBJ04= strcpyx.o strx.o strw.o matxstr.o
 OBJ05= nleadx.o
 OBJ06= strnxcmp.o strxcmp.o
-OBJ07= ucinetconv.o ccfile.o readln.o
+OBJ07= ucinet.o ccfile.o readln.o
 
 OBJ08= fmtstr.o fmtflag.o 
 OBJ09=
@@ -187,6 +187,11 @@ ustream.o:		ustream.dir
 ustream.dir:
 	makesubdir $@
 
+# UCINET
+ucinet.o:		ucinet.dir
+ucinet.dir:
+	makesubdir $@
+
 # STRN
 strn.o:			strn.dir
 strn.dir:
@@ -278,7 +283,5 @@ base128.o:		base128.cc	base128.h
 
 ccfile.o:		ccfile.cc	ccfile.hh
 readln.o:		readln.cc	readln.hh
-
-ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 
 
