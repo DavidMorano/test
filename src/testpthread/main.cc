@@ -12,15 +12,17 @@
 /* revision history:
 
 	= 1989-03-01, David A­D­ Morano
-        This subroutine was originally written. This whole program, LOGDIR, is
-        needed for use on the Sun CAD machines because Sun doesn't support
-        LOGDIR or LOGNAME at this time. There was a previous program but it is
-        lost and not as good as this one anyway. This one handles NIS+ also.
-        (The previous one didn't.)
+	This subroutine was originally written. This whole program,
+	LOGDIR, is needed for use on the Sun CAD machines because
+	Sun doesn't support LOGDIR or LOGNAME at this time. There
+	was a previous program but it is lost and not as good as
+	this one anyway. This one handles NIS+ also.  (The previous
+	one didn't.)
 
 	= 1998-06-01, David A­D­ Morano
-	I enhanced the program a little to print out some other user
-	information besides the user's name and login home directory.
+	I enhanced the program a little to print out some other
+	user information besides the user's name and login home
+	directory.
 
 	= 1999-03-01, David A­D­ Morano
 	I enhanced the program to also print out effective UID and
@@ -33,15 +35,11 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testpthread.x
-
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
@@ -50,14 +48,15 @@
 #include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<ctime>
-#include	<cstdlib>
-#include	<cstring>
+#include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<netdb.h>
-
-#include	<usystem.h>
+#include	<ctime>
+#include	<cstddef>
+#include	<cstdlib>
+#include	<cstring>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<vecstr.h>
@@ -65,8 +64,8 @@
 #include	<sbuf.h>
 #include	<realname.h>
 #include	<mallocstuff.h>
-#include	"pwfile.h"
-#include	"ipasswd.h"
+#include	<pwfile.h>
+#include	<ipasswd.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -267,7 +266,7 @@ const char	*envv[] ;
 /* keyword match or only key letters ? */
 
 #if	CF_DEBUGS
-	                debugprintf("main: about to check for a key word match\n") ;
+	                debugprintf("main: check for key-word match\n") ;
 #endif
 
 	                if ((kwi = matstr(argopts,akp,akl)) >= 0) {
