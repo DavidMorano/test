@@ -38,8 +38,8 @@
 #include	<sbuf.h>
 #include	<ascii.h>
 #include	<strx.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
 
 #include	"sighand.h"
@@ -82,7 +82,7 @@ static cchar	*strsigcode(const struct sigcode *,int) ;
 
 /* local variables */
 
-constexpr mapex		mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
