@@ -39,15 +39,17 @@
 #include	<stropts.h>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<netdb.h>
+#include	<pwd.h>
+#include	<grp.h>
 #include	<ctime>
 #include	<climits>
 #include	<cstddef>		/* |nullptr_t| */
 #include	<cstdlib>
 #include	<cstring>
-#include	<pwd.h>
-#include	<grp.h>
-#include	<netdb.h>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<getax.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<vecpstr.h>
@@ -55,9 +57,8 @@
 #include	<logfile.h>
 #include	<msgbuf.h>
 #include	<sockaddress.h>
-#include	<getax.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
@@ -75,35 +76,6 @@
 
 
 /* external subroutines */
-
-extern int	sncpy3(char *,int,cchar *,cchar *,cchar *) ;
-extern int	mkpath2(char *,cchar *,cchar *) ;
-extern int	mkpath3(char *,cchar *,cchar *,cchar *) ;
-extern int	sfshrink(cchar *,int,char **) ;
-extern int	matstr(cchar **,cchar *,int) ;
-extern int	matostr(cchar **,int,cchar *,int) ;
-extern int	cfdeci(cchar *,int,int *) ;
-extern int	cfdecti(cchar *,int,int *) ;
-extern int	optbool(cchar *,int) ;
-extern int	optvalue(cchar *,int) ;
-extern int	vecpstr_adduniq(VECPSTR *,cchar *,int) ;
-extern int	getportnum(cchar *,cchar *) ;
-extern int	hasalldig(cchar *,int) ;
-
-extern int	proginfo_setpiv(struct proginfo *,cchar *,
-			const struct pivars *) ;
-extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
-extern int	logfile_userinfo(LOGFILE *,USERINFO *,time_t,
-			cchar *,cchar *) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-#endif
-
-extern char	*strdcpy1w(char *,int,cchar *,int) ;
-extern char	*strnchr(cchar *,int,int) ;
 
 
 /* external variables */
@@ -138,10 +110,10 @@ static int	process(struct proginfo *,cchar *,cchar *,
 
 /* local variables */
 
-static volatile int	if_exit ;
-static volatile int	if_int ;
+static sig_atomic_t	if_exit ;
+static sig_atomic_t	if_int ;
 
-static cchar *argopts[] = {
+constexpr cpcchar	argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -175,7 +147,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -183,7 +155,7 @@ static const struct pivars	initvars = {
 	VARPRNAME
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_PERM, EX_NOPERM },
 	{ SR_AGAIN, EX_TEMPFAIL },
@@ -198,7 +170,7 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const struct prototupple	socknames[] = {
+constexpr prototupple	socknames[] = {
 	{ PF_INET, SOCK_STREAM, IPPROTO_TCP, "tcp" },
 	{ PF_INET, SOCK_STREAM, 0, "tcp" },
 	{ PF_INET, SOCK_DGRAM, IPPROTO_UDP, "udp" },
@@ -212,7 +184,7 @@ static const struct prototupple	socknames[] = {
 	{ 0, 0, NULL }
 } ;
 
-static cchar	*defprotos[] = {
+constexpr cpcchar	defprotos[] = {
 	"tcp",
 	"udp",
 	"ddp",
@@ -220,22 +192,16 @@ static cchar	*defprotos[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-cchar	*argv[] ;
-cchar	*envv[] ;
-{
-	struct proginfo	pi, *pip = &pi ;
-
+int main(int argc,con mainv argv,con mainv envv) {
+	proginfo	pi, *pip = &pi ;
 	VECPSTR		al ;
-
 	USERINFO	u ;
-
 	bfile		errfile ;
-
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	pan = 0 ;
