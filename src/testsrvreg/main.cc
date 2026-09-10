@@ -1,14 +1,14 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* test template */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	1		/* switchable at invocation */
 #define	CF_GETEXECNAME	1		/* try to use 'getexecname(3c)' ? */
 #define	CF_PUTUTXLINE	0		/* call it anyway */
-
 
 /* revision history:
 
@@ -23,35 +23,32 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ testsrvreg.x
-
 
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/utsname.h>
 #include	<sys/wait.h>
-#include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<netdb.h>
 #include	<ctime>
+#include	<climits>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-#include	<netdb.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<vecstr.h>
 #include	<mallocstuff.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
@@ -72,8 +69,8 @@
 
 /* external subroutines */
 
-extern int	printhelp(bfile *,const char *,const char *,const char *) ;
-extern int	proginfo_setpiv(struct proginfo *,const char *,
+extern int	printhelp(bfile *,cchar *,cchar *,cchar *) ;
+extern int	proginfo_setpiv(struct proginfo *,cchar *,
 			const struct pivars *) ;
 
 
@@ -88,12 +85,12 @@ extern int	proginfo_setpiv(struct proginfo *,const char *,
 
 /* local variables */
 
-static const char *argopts[] = {
+constexpr cpcchar	argopts[] = {
 	"VERSION",
 	"VERBOSE",
 	"HELP",
 	"of",
-	NULL
+	nullptr
 } ;
 
 enum argopts {
@@ -104,7 +101,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -112,7 +109,7 @@ static const struct pivars	initvars = {
 	VARPRNAME
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -125,26 +122,19 @@ static const struct mapex	mapexs[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
-	struct proginfo	pi, *pip = &pi ;
-
+int main(int argc,con mainv argv,con mainv envv) {
+	proginfo	pi, *pip = &pi ;
 	bfile		errfile ;
 	bfile		outfile, *ofp = &outfile ;
 	bfile		nisfile, *nfp = &nisfile ;
-
 	time_t	daytime = 0 ;
-
 	uid_t	uid ;
-
 	pid_t	pid ;
-
 	int	argr, argl, aol, akl, avl ;
 	int	argvalue = -1 ;
 	int	maxai, pan, npa, kwi, ai, i, j, k ;
@@ -161,13 +151,13 @@ char	*envv[] ;
 	int	f_entok = FALSE ;
 	int	f_name = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*pr = NULL ;
-	const char	*ofname = NULL ;
-	const char	*srfname = NULL ;
-	const char	*svcname = NULL ;
-	const char	*un = NULL ;
-	const char	*cp, *cp2 ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*pr = nullptr ;
+	cchar	*ofname = nullptr ;
+	cchar	*srfname = nullptr ;
+	cchar	*svcname = nullptr ;
+	cchar	*un = nullptr ;
+	cchar	*cp, *cp2 ;
 	char	argpresent[MAXARGGROUPS] ;
 	char	buf[BUFLEN + 1], *bp ;
 	char	nodename[NODENAMELEN + 1] ;
@@ -175,7 +165,7 @@ char	*envv[] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
 
 #if	CF_DEBUGS || CF_DEBUG
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
+	if ((cp = getourenv(envv,VARDEBUGFNAME)) != nullptr) {
 	    rs = debugopen(cp) ;
 	    debugprintf("main: starting DFD=%d\n",rs) ;
 	}
@@ -187,7 +177,7 @@ char	*envv[] ;
 	    goto ret0 ;
 	}
 
-	if ((cp = getourenv(envv,VARBANNER)) == NULL) cp = BANNER ;
+	if ((cp = getourenv(envv,VARBANNER)) == nullptr) cp = BANNER ;
 	rs = proginfo_setbanner(pip,cp) ;
 
 	if (bopen(&errfile,BFILE_STDERR,"dwca",0666) >= 0) {
@@ -237,7 +227,7 @@ char	*envv[] ;
 	                aol = argl - 1 ;
 	                akp = aop ;
 	                f_optequal = FALSE ;
-	                if ((avp = strchr(aop,'=')) != NULL) {
+	                if ((avp = strchr(aop,'=')) != nullptr) {
 
 #if	CF_DEBUGS
 	                    debugprintf("main: got an option key w/ a value\n") ;
@@ -514,10 +504,10 @@ char	*envv[] ;
 
 /* other initialization */
 
-	if (pip->tmpdname == NULL)
+	if (pip->tmpdname == nullptr)
 	    pip->tmpdname = getenv("TMPDIR") ;
 
-	if (pip->tmpdname == NULL)
+	if (pip->tmpdname == nullptr)
 	    pip->tmpdname = TMPDNAME ;
 
 /* other intialization */
@@ -527,7 +517,7 @@ char	*envv[] ;
 
 /* open the output file */
 
-	if (ofname != NULL) {
+	if (ofname != nullptr) {
 	    rs = bopen(ofp,ofname,"wct",0666) ;
 	} else
 	    rs = bopen(ofp,BFILE_STDOUT,"dwct",0666) ;
@@ -579,7 +569,7 @@ char	*envv[] ;
 
 /* apply some defaults */
 
-	if ((srfname == NULL) || (srfname[0] == '\0'))
+	if ((srfname == nullptr) || (srfname[0] == '\0'))
 	    srfname = "sr" ;
 
 
@@ -636,7 +626,7 @@ char	*envv[] ;
 	    srvreg_curbegin(&sr,&cur) ;
 
 
-	    while (srvreg_enum(&sr,&cur,&e) >= 0) {
+	    while (srvreg_curenum(&sr,&cur,&e) >= 0) {
 
 	        bprintf(ofp,"s=%-8w ss=%-8w h=%-8w i=%u p=%6u %s\n",
 	            e.svc,strnlen(e.svc,MAXNAMELEN),
@@ -693,8 +683,7 @@ usage:
 
 /* print out some help */
 help:
-	printhelp(NULL,pip->pr,SEARCHNAME,HELPFNAME) ;
-
+	printhelp(nullptr,pip->pr,SEARCHNAME,HELPFNAME) ;
 	goto retearly ;
 
 /* the bad things */
