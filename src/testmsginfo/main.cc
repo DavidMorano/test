@@ -1,40 +1,51 @@
-/* main (testourmsginfo) */
+/* testmsginfo_main SUPPORT (testourmsginfo) */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
 /* program subroutine (main and all) */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time */
 
+/* revision history:
 
-/******************************************************************************
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
 
-	This little program provides a tiny test of the MAILMSG object.
+*/
 
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
-/******************************************************************************
+/*******************************************************************************
 
+	This little program provides a tiny test of the MAILMSG
+	object.
 
-#include	<envstandards.h>
+*******************************************************************************/
 
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<csignal>
 #include	<ctime>
+#include	<csignal>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bfile.h>
 #include	<baops.h>
 #include	<field.h>
 #include	<logfile.h>
 #include	<vechand.h>
 #include	<vecstr.h>
+#include	<cfdec.h>
 #include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<localmisc.h>		/* |LINEBUFLEN| */
 
 #include	"msg.h"
 #include	"msgheaders.h"
@@ -45,33 +56,19 @@
 
 /* local defines */
 
-#ifndef	LINEBUFLEN
-#define	LINEBUFLEN	2048
-#endif
-
 
 /* external subroutines */
-
-extern int	cfdeci(const char *,int,int *) ;
 
 
 /* exported subroutines */
 
-
-int main()
-{
+int main(int,con mainv,con mainv) {
 	struct ourmsginfo_env	*mep ;
-
 	struct ourmsginfo_header	*mhp ;
-
 	struct ourmsginfo_instance	*mip ;
-
 	struct ourmsginfo_line		*mlp ;
-
 	OURMSGINFO	tmpmsg, *msgp = &tmpmsg ;
-
 	MSGHEADERS	msghvalues ;
-
 	bfile		infile, *ifp = &infile ;
 	bfile		outfile, *ofp = &outfile ;
 
