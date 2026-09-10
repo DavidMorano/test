@@ -1,20 +1,19 @@
-/* main */
+/* main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* part of the TESTUSERINFO program */
-
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUG	1		/* run-time debug print-outs */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
-
 /* revision history:
 
 	= 1996-02-01, David A­D­ Morano
-
 	The program was written from scratch to do what the previous
 	program by the same name did.
-
 
 */
 
@@ -24,28 +23,26 @@
 
 	This is a fairly generic front-end subroutine for a program.
 
-
 *******************************************************************************/
 
-
-#include	<envstandards.h>
-
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<csignal>
 #include	<unistd.h>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<getxusername.h>
 #include	<paramopt.h>
 #include	<bits.h>
 #include	<bfile.h>
-#include	<getxusername.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>
 
 #include	"config.h"
 #include	"defs.h"
@@ -61,20 +58,13 @@
 
 /* external subroutines */
 
-extern int	printhelp(void *,const char *,const char *,const char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 extern int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
 
 
 /* forward references */
 
-static int	usage(PROGINFO *) ;
+local int	usage(PROGINFO *) ;
 
 
 /* external variables */
@@ -82,7 +72,7 @@ static int	usage(PROGINFO *) ;
 
 /* local variables */
 
-static const char	*argopts[] = {
+constexpr cpcchar	argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -116,7 +106,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -124,7 +114,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -136,7 +126,7 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const char	*progmodes[] = {
+constexpr cpcchar	progmodes[] = {
 	"testuserinfo",
 	NULL
 } ;
@@ -146,7 +136,7 @@ enum progmodes {
 	progmode_overlast
 } ;
 
-static const char	*progopts[] = {
+constexpr cpcchar	progopts[] = {
 	"follow",
 	"nofollow",
 	NULL
@@ -159,25 +149,18 @@ enum progopts {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	PROGINFO	pi, *pip = &pi ;
-
-	PARAMOPT	aparams ;
-
+	paramopt	aparams ;
 	BITS		pargs ;
-
 	bfile	errfile ;
 	bfile	outfile, *ofp = &outfile ;
-
 	uint	mo_start = 0 ;
-
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	pan = 0 ;
@@ -191,16 +174,16 @@ const char	*envv[] ;
 	int	f_help = FALSE ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = NULL ;
 	char	tmpfname[MAXPATHLEN + 1] ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*pmspec = NULL ;
-	const char	*afname = NULL ;
-	const char	*efname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*pr = NULL ;
+	cchar	*sn = NULL ;
+	cchar	*pmspec = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*efname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 
 
 #if	CF_DEBUGS || CF_DEBUG
@@ -400,7 +383,7 @@ const char	*envv[] ;
 	                    argr -= 1 ;
 	                    argl = strlen(argp) ;
 	                    if (argl) {
-				const char	*po = PO_OPTION ;
+				cchar	*po = PO_OPTION ;
 	                        rs = paramopt_loads(&aparams,po,argp,argl) ;
 			    }
 	                    break ;
@@ -564,7 +547,7 @@ const char	*envv[] ;
 	                    argr -= 1 ;
 	                    argl = strlen(argp) ;
 	                    if (argl) {
-	                        const char	*po = PO_OPTION ;
+	                        cchar	*po = PO_OPTION ;
 	                        rs = paramopt_loads(&aparams,po,argp,argl) ;
 			    }
 	                    break ;
@@ -683,7 +666,7 @@ const char	*envv[] ;
 	} /* end if */
 
 	if ((rs = paramopt_havekey(&aparams,PO_OPTION)) > 0) {
-	    PARAMOPT_CUR	cur ;
+	    paramopt_cur	cur ;
 
 	    paramopt_curbegin(&aparams,&cur) ;
 
@@ -841,14 +824,13 @@ badarg:
 
 /* local subroutines */
 
-
-static int usage(pip)
+local int usage(pip)
 PROGINFO	*pip ;
 {
 	int	rs ;
 	int	wlen = 0 ;
 
-	const char	*pn = pip->progname ;
+	cchar	*pn = pip->progname ;
 
 
 	rs = bprintf(pip->efp,
