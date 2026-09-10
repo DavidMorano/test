@@ -4,12 +4,10 @@
 /* this SHA1 object */
 /* version %I% last-modified %G% */
 
-
 #define	CF_DEBUGS	0		/* non-switchable debug print-outs */
 #define	CF_DEBUG	0		/* switchable at invocation */
 #define	CF_DEBUGMALL	1		/* debug memory allocation */
 #define	CF_LOCSETENT	0		/* |locinfo_setent()| */
-
 
 /* revision history:
 
@@ -23,36 +21,33 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ sha1 [<file(s)> ...]
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-
 #include	<new>
 #include	<algorithm>
 #include	<functional>
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bits.h>
 #include	<keyopt.h>
 #include	<bfile.h>
 #include	<sha1.h>
 #include	<vecstr.h>
 #include	<char.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG */
 
 #include	"config.h"
 #include	"defs.h"
@@ -60,8 +55,8 @@
 
 /* local defines */
 
-#define	LOCINFO		struct locinfo
-#define	LOCINFO_FL	struct locinfo_flags
+#define	LOCINFO		locinfo
+#define	LOCINFO_FL	locinfo_flags
 
 
 /* name spaces (default) */
@@ -73,14 +68,6 @@ using namespace	std ;
 
 extern "C" int	printhelp(void *,cchar *,cchar *,cchar *) ;
 extern "C" int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern "C" int	debugopen(cchar *) ;
-extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugprinthex(cchar *,int,cchar *,int) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(cchar *,int,int) ;
-#endif
 
 
 /* external variables */
@@ -112,7 +99,7 @@ struct locinfo {
 
 static int	usage(PROGINFO *) ;
 
-static int	procopts(PROGINFO *,KEYOPT *) ;
+static int	procopts(PROGINFO *,keyopt *) ;
 static int	procsetcase(PROGINFO *,cchar *,int) ;
 static int	procargs(PROGINFO *,ARGINFO *,BITS *,cchar *,cchar *) ;
 static int	procfile(PROGINFO *,bfile *,cchar *) ;
@@ -158,7 +145,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -166,7 +153,7 @@ static const struct pivars	initvars = {
 	VARPRNAME
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -180,7 +167,7 @@ static const struct mapex	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static cchar *akonames[] = {
+constexpr cpcchar	akonames[] = {
 	"cvtcase",
 	"cc",
 	"casecvt",
@@ -210,7 +197,7 @@ enum akonames {
 	akoname_overlast
 } ;
 
-static cchar	*cases[] = {
+constexpr cpcchar	cases[] = {
 	"upper",
 	"lower",
 	"fold",
@@ -218,17 +205,18 @@ static cchar	*cases[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
 /* ARGSUSED */
-int main(int argc,cchar *argv[],cchar *envv[])
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	PROGINFO	pi, *pip = &pi ;
 	LOCINFO		li, *lip = &li ;
 	ARGINFO		ainfo ;
 	BITS		pargs ;
-	KEYOPT		akopts ;
+	keyopt		akopts ;
 	bfile		errfile ;
 
 #if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
@@ -552,7 +540,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	                            argr -= 1 ;
 	                            argl = strlen(argp) ;
 	                            if (argl) {
-					KEYOPT	*kop = &akopts ;
+					keyopt	*kop = &akopts ;
 	                                rs = keyopt_loads(kop,argp,argl) ;
 	                            }
 	                        } else
@@ -581,7 +569,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	                    case 'u':
 	                        pip->have.bufnone = TRUE ;
 	                        pip->f.bufnone = TRUE ;
-	                        pip->final.bufnone = TRUE ;
+	                        pip->finval.bufnone = TRUE ;
 	                        break ;
 
 /* verbose mode */
@@ -849,7 +837,7 @@ static int usage(PROGINFO *pip)
 
 
 /* process the program ako-options */
-static int procopts(PROGINFO *pip,KEYOPT *kop)
+static int procopts(PROGINFO *pip,keyopt *kop)
 {
 	LOCINFO		*lip = (LOCINFO *) pip->lip ;
 	int		rs = SR_OK ;
@@ -861,13 +849,13 @@ static int procopts(PROGINFO *pip,KEYOPT *kop)
 	}
 
 	if (rs >= 0) {
-	    KEYOPT_CUR	kcur ;
+	    keyopt_cur	kcur ;
 	    if ((rs = keyopt_curbegin(kop,&kcur)) >= 0) {
 	        int	oi ;
 	        int	kl, vl ;
 	        cchar	*kp, *vp ;
 
-	        while ((kl = keyopt_enumkeys(kop,&kcur,&kp)) >= 0) {
+	        while ((kl = keyopt_curenumkeys(kop,&kcur,&kp)) >= 0) {
 
 	            if ((oi = matostr(akonames,2,kp,kl)) >= 0) {
 
@@ -877,9 +865,9 @@ static int procopts(PROGINFO *pip,KEYOPT *kop)
 	                case akoname_cvtcase:
 	                case akoname_casecvt:
 	                case akoname_cc:
-	                    if (! lip->final.cvtcase) {
+	                    if (! lip->finval.cvtcase) {
 	                        lip->have.cvtcase = TRUE ;
-	                        lip->final.cvtcase = TRUE ;
+	                        lip->finval.cvtcase = TRUE ;
 	                        lip->f.cvtcase = TRUE ;
 	                        if (vl > 0) {
 	                            rs = procsetcase(pip,vp,vl) ;
@@ -888,9 +876,9 @@ static int procopts(PROGINFO *pip,KEYOPT *kop)
 	                    break ;
 	                case akoname_bufwhole:
 	                case akoname_whole:
-	                    if (! pip->final.bufwhole) {
+	                    if (! pip->finval.bufwhole) {
 	                        pip->have.bufwhole = TRUE ;
-	                        pip->final.bufwhole = TRUE ;
+	                        pip->finval.bufwhole = TRUE ;
 	                        pip->f.bufwhole = TRUE ;
 	                        if (vl > 0) {
 	                            rs = optbool(vp,vl) ;
@@ -900,9 +888,9 @@ static int procopts(PROGINFO *pip,KEYOPT *kop)
 	                    break ;
 	                case akoname_bufline:
 	                case akoname_line:
-	                    if (! pip->final.bufline) {
+	                    if (! pip->finval.bufline) {
 	                        pip->have.bufline = TRUE ;
-	                        pip->final.bufline = TRUE ;
+	                        pip->finval.bufline = TRUE ;
 	                        pip->f.bufline = TRUE ;
 	                        if (vl > 0) {
 	                            rs = optbool(vp,vl) ;
@@ -913,9 +901,9 @@ static int procopts(PROGINFO *pip,KEYOPT *kop)
 	                case akoname_bufnone:
 	                case akoname_none:
 	                case akoname_un:
-	                    if (! pip->final.bufnone) {
+	                    if (! pip->finval.bufnone) {
 	                        pip->have.bufnone = TRUE ;
-	                        pip->final.bufnone = TRUE ;
+	                        pip->finval.bufnone = TRUE ;
 	                        pip->f.bufnone = TRUE ;
 	                        if (vl > 0) {
 	                            rs = optbool(vp,vl) ;
