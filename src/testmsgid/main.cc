@@ -664,7 +664,7 @@ char	*envv[] ;
 
 	        msgid_curbegin(&db,&cur) ;
 
-	        while (msgid_enum(&db,&cur,&e) >= 0) {
+	        while (msgid_curenum(&db,&cur,&e) >= 0) {
 
 #if	CF_DEBUG
 	            if (DEBUGLEVEL(4)) {
@@ -731,7 +731,7 @@ char	*envv[] ;
 
 	    msgid_curbegin(&db,&cur) ;
 
-	    while (msgid_enum(&db,&cur,&e) >= 0) {
+	    while (msgid_curenum(&db,&cur,&e) >= 0) {
 
 #if	CF_DEBUG
 	        if (DEBUGLEVEL(4)) {
