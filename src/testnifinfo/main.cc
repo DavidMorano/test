@@ -16,14 +16,16 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
-#include	<envstandards.h>
+#include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* |nullptr_t| */
+#include	<cstdlib>
 #include	<cstdio>
 #include	<iostream>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
+#include	<usyscalls.h>
 #include	<nifinfo.h>
 #include	<strwcpy.h>
-#include	<getourenv.h>
 #include	<localmisc.h>
 
 #define	VARDEBUGFNAME	"TESTNIFINFO_DEBUGFILE"
