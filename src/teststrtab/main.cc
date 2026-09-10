@@ -1,8 +1,9 @@
-/* main */
+/* teststrtab_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* test program */
+/* test the STRTAB object */
 /* version %I% last-modified %G% */
-
 
 #define	CF_DEBUGS	1		/* non-switchable debug print-outs */
 #define	CF_DEBUG	0		/* switchable at invocation */
@@ -26,14 +27,12 @@
 #define	CF_HASHSKIP	1		/* use hash-index skipping */
 #define	CF_HASHLINK	1		/* use hash-index linking */
 
-
 /* revision history:
 
 	= 1999-03-01, David A­D­ Morano
-
 	The base argument processing was grabbed from another program
-	(from way back).  The basic test is new for the STRTAB object.
-
+	(from way back).  The basic test is new for the STRTAB
+	object.
 
 */
 
@@ -42,32 +41,24 @@
 /*******************************************************************************
 
 	Synopsis:
-
 	$ teststrtab.x <infile>
-
 
 *******************************************************************************/
 
-
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<sys/time.h>		/* for 'gethrvtime(3c)' */
-#include	<climits>
 #include	<unistd.h>
 #include	<fcntl.h>
+#include	<math.h>
+#include	<climits>
+#include	<cstddef>
 #include	<cstdlib>
 #include	<cstring>
-#include	<ctype.h>
-#include	<math.h>
-
-#if	CF_LIBMALLOC
-#include	<malloc.h>
-#endif
-
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<usysbase.h>
 #include	<bits.h>
 #include	<filemap.h>
 #include	<bfile.h>
@@ -75,8 +66,8 @@
 #include	<vecstr.h>
 #include	<hdb.h>
 #include	<density.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"config.h"
 #include	"defs.h"
@@ -104,41 +95,11 @@
 
 /* external subroutines */
 
-extern uint	hash_elf(const char *,int) ;
-extern uint	hashagain(uint,int,int) ;
-
-extern int	sncpy3(char *,int,const char *,const char *,const char *) ;
-extern int	mkpath2(char *,const char *,const char *) ;
-extern int	mkpath3(char *,const char *,const char *,const char *) ;
-extern int	nleadstr(const char *,const char *,int) ;
-extern int	matstr(const char **,const char *,int) ;
-extern int	matostr(const char **,int,const char *,int) ;
-extern int	cfdeci(const char *,int,int *) ;
-extern int	cfdecui(const char *,int,uint *) ;
-extern int	optbool(cchar *,int) ;
-extern int	optvalue(cchar *,int) ;
-extern int	isprintlatin(int) ;
-extern int	randlc(int) ;
-
-extern int	field_word(FIELD *,const uchar *,const char **) ;
-
-extern int	printhelp(bfile *,const char *,const char *,const char *) ;
-extern int	proginfo_setpiv(struct proginfo *,const char *,
+extern int	printhelp(bfile *,cchar *,cchar *,cchar *) ;
+extern int	proginfo_setpiv(struct proginfo *,cchar *,
 			const struct pivars *) ;
 
-extern int	strtabfind(const char *,int (*)[3],int,int,const char *,int) ;
-
-#if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
-#endif
-
-extern char	*strwcpy(char *,const char *,int) ;
-extern char	*strnchr(const char *,int,int) ;
-extern char	*timestr_logz(time_t,char *) ;
-extern char	*timestr_elapsed(time_t,char *) ;
+extern int	strtabfind(cchar *,int (*)[3],int,int,cchar *,int) ;
 
 
 /* external variables */
@@ -160,27 +121,27 @@ struct mallstate {
 
 /* forward references */
 
-static int	usage(struct proginfo *) ;
-static int	process(struct proginfo *,bfile *,const char *) ;
-static int	mkindhdb(struct proginfo *,bfile *,const char *,
+local in	usage(struct proginfo *) ;
+local in	process(struct proginfo *,bfile *,cchar *) ;
+local in	mkindhdb(struct proginfo *,bfile *,cchar *,
 			int (*)[3],int,int,HDB *) ;
 
-static int	strtablook(struct proginfo *,bfile *,const char *,
+local in	strtablook(struct proginfo *,bfile *,cchar *,
 			int (*)[3],int,int,FILEMAP *) ;
 
-static int	isweirdo(const char *,int) ;
-static int	ismatkey(const char *,const char *,int) ;
+local in	isweirdo(cchar *,int) ;
+local in	ismatkey(cchar *,cchar *,int) ;
 
-static int	hashindex(uint,int) ;
+local in	hashindex(uint,int) ;
 
-static int	debugmallmark(struct mallstate *) ;
-static int	debugmallstat(struct mallstate *,const char *) ;
-static int	debugmallinfo(struct mallstate *,const char *) ;
+local in	debugmallmark(struct mallstate *) ;
+local in	debugmallstat(struct mallstate *,cchar *) ;
+local in	debugmallinfo(struct mallstate *,cchar *) ;
 
 
 /* local variables */
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -206,7 +167,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const struct pivars	initvars = {
+constexpr pivars	initvars = {
 	VARPROGRAMROOT1,
 	VARPROGRAMROOT2,
 	VARPROGRAMROOT3,
@@ -214,7 +175,7 @@ static const struct pivars	initvars = {
 	VARPRLOCAL
 } ;
 
-static const struct mapex	mapexs[] = {
+constexpr mapex_map	mapexs[] = {
 	{ SR_NOENT, EX_NOUSER },
 	{ SR_AGAIN, EX_TEMPFAIL },
 	{ SR_DEADLK, EX_TEMPFAIL },
@@ -227,25 +188,18 @@ static const struct mapex	mapexs[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
-{
-	struct mallstate	ms_prog ;
-
-	struct proginfo	pi, *pip = &pi ;
-
+int main(int argc,con mainv argv,con mainv envv) {
+	mallstate	ms_prog ;
+	proginfo	pi, *pip = &pi ;
 	BITS		pargs ;
-
 	bfile	errfile ;
 	bfile	outfile, *ofp = &outfile ;
-
 	uint	mo_start = 0 ;
-
 	int	argr, argl, aol, akl, avl, kwi ;
 	int	ai, ai_max, ai_pos ;
 	int	pan = 0 ;
@@ -258,14 +212,14 @@ const char	*envv[] ;
 	int	f_help = FALSE ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
-	const char	*pr = NULL ;
-	const char	*sn = NULL ;
-	const char	*afname = NULL ;
-	const char	*efname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = NULL ;
+	cchar	*pr = NULL ;
+	cchar	*sn = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*efname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 
 
 #if	CF_DEBUGS || CF_DEBUG
@@ -791,13 +745,13 @@ badarg:
 /* local subroutines */
 
 
-static int usage(pip)
+local in usage(pip)
 struct proginfo	*pip ;
 {
 	int	rs ;
 	int	wlen = 0 ;
 
-	const char	*pn = pip->progname ;
+	cchar	*pn = pip->progname ;
 
 
 	wlen = 0 ;
@@ -816,10 +770,10 @@ struct proginfo	*pip ;
 /* end subroutine (usage) */
 
 
-static int process(pip,ofp,ifname)
+local in process(pip,ofp,ifname)
 struct proginfo	*pip ;
 bfile		*ofp ;
-const char	ifname[] ;
+cchar	ifname[] ;
 {
 	struct stats	s ;
 
@@ -845,8 +799,8 @@ const char	ifname[] ;
 	int	size, stsize, itsize, itlen ;
 	int	nskip = NSKIP ;
 
-	const char	*lp, *fp ;
-	const char	*sp, *cp ;
+	cchar	*lp, *fp ;
+	cchar	*sp, *cp ;
 
 	char	*tab = NULL ;
 
@@ -1243,7 +1197,7 @@ const char	ifname[] ;
 	            c = 0 ;
 	            hdb_curbegin(&strs,&cur) ;
 
-	            while (hdb_enum(&strs,&cur,&key,&value) >= 0) {
+	            while (hdb_curenum(&strs,&cur,&key,&value) >= 0) {
 
 	                sp = (char *) key.buf ;
 	                sl = key.len ;
@@ -1699,10 +1653,10 @@ ret0:
 
 #if	CF_HDB
 
-static int mkindhdb(pip,ofp,tab,it,itlen,nskip,strp)
+local in mkindhdb(pip,ofp,tab,it,itlen,nskip,strp)
 struct proginfo	*pip ;
 bfile		*ofp ;
-const char	*tab ;
+cchar	*tab ;
 int		(*it)[3] ;
 int		itlen ;
 int		nskip ;
@@ -1723,7 +1677,7 @@ HDB		*strp ;
 	int	sl ;
 	int	sc = 0 ;
 
-	const char	*sp ;
+	cchar	*sp ;
 
 	char	timebuf[TIMEBUFLEN + 1] ;
 
@@ -1740,7 +1694,7 @@ HDB		*strp ;
 
 	hdb_curbegin(strp,&cur) ;
 
-	while (hdb_enum(strp,&cur,&key,&value) >= 0) {
+	while (hdb_curenum(strp,&cur,&key,&value) >= 0) {
 
 	    sp = (char *) key.buf ;
 	    sl = key.len ;
@@ -1809,10 +1763,10 @@ ret0:
 
 #if	CF_STRTABLOOK
 
-static int strtablook(pip,ofp,tab,it,itlen,nskip,fbp)
+local in strtablook(pip,ofp,tab,it,itlen,nskip,fbp)
 struct proginfo	*pip ;
 bfile		*ofp ;
-const char	*tab ;
+cchar	*tab ;
 int		(*it)[3] ;
 int		itlen ;
 int		nskip ;
@@ -1827,7 +1781,7 @@ FILEMAP		*fbp ;
 	int	j ;
 	int	sc = 0 ;
 
-	const char	*lp, *fp ;
+	cchar	*lp, *fp ;
 
 
 	if (pip == NULL) return SR_FAULT ;
@@ -1905,12 +1859,12 @@ ret0:
 
 #else /* CF_HASHLINK */
 
-static int strtabfind(tab,it,itlen,nskip,sp,sl)
-const char	tab[] ;
+local in strtabfind(tab,it,itlen,nskip,sp,sl)
+cchar	tab[] ;
 int		(*it)[3] ;
 int		itlen ;
 int		nskip ;
-const char	*sp ;
+cchar	*sp ;
 int		sl ;
 {
 	uint	khash, nhash ;
@@ -1922,7 +1876,7 @@ int		sl ;
 	int	j = 0 ;
 	int	f = FALSE ;
 
-	const char	*cp ;
+	cchar	*cp ;
 
 
 	if (pip == NULL) return SR_FAULT ;
@@ -1984,7 +1938,7 @@ int		sl ;
 
 
 /* calculate the next hash from a given one */
-static int hashindex(i,n)
+local in hashindex(i,n)
 uint	i ;
 int	n ;
 {
@@ -2002,8 +1956,8 @@ int	n ;
 
 
 /* check for weirdoness */
-static int isweirdo(s,slen)
-const char	s[] ;
+local in isweirdo(s,slen)
+cchar	s[] ;
 int		slen ;
 {
 	int		i ;
@@ -2020,9 +1974,9 @@ int		slen ;
 /* end subroutine (isweirdo) */
 
 
-static int ismatkey(key,kp,kl)
-const char	key[] ;
-const char	kp[] ;
+local in ismatkey(key,kp,kl)
+cchar	key[] ;
+cchar	kp[] ;
 int		kl ;
 {
 	int	m ;
@@ -2040,9 +1994,9 @@ int		kl ;
 /* end subroutine (ismatkey) */
 
 
-static int debugmallinfo(msp,name)
+local in debugmallinfo(msp,name)
 struct mallstate	*msp ;
-const char		name[] ;
+cchar		name[] ;
 {
 
 
@@ -2092,7 +2046,7 @@ const char		name[] ;
 /* end subroutine (debugmallinfo) */
 
 
-static int debugmallmark(msp)
+local in debugmallmark(msp)
 struct mallstate	*msp ;
 {
 
@@ -2114,9 +2068,9 @@ struct mallstate	*msp ;
 /* end subroutine (debugmallmark) */
 
 
-static int debugmallstat(msp,name)
+local in debugmallstat(msp,name)
 struct mallstate	*msp ;
-const char		name[] ;
+cchar		name[] ;
 {
 	uint	ts, te ;
 
