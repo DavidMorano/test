@@ -39,7 +39,6 @@
 #include	<usyscalls.h>		/* LIBU */
 #include	<usupport.h>		/* LIBU */
 #include	<umem.hh>		/* LIBU */
-#include	<ustream.hh>		/* LIBU */
 #include	<ulogerror.h>		/* LIBU */
 #include	<ascii.h>		/* LIBU */
 #include	<ccfile.hh>		/* LIBU */
@@ -57,6 +56,7 @@
 
 import libutil ;			/* |lenstr(3u)| */
 import ucstream ;
+import ustream ;
 
 /* local defines */
 
@@ -73,7 +73,6 @@ import ucstream ;
 /* imported namespaces */
 
 using libu::umem ;			/* variable */
-using std::nothrow ;			/* constant */
 
 
 /* local typedefs */
@@ -173,11 +172,12 @@ int main(int argc,con mainv argv,con mainv) {
 /* local subroutines */
 
 int maininfo::start() noex {
+    	cnothrow	nt{} ;
     	int		rs = SR_NOMEM ;
 	inlen = LINELEN ;
-	if (inbuf = new(nothrow) char [inlen + 1] ; inbuf) {
+	if (inbuf = new(nt) char [inlen + 1] ; inbuf) {
 	    flen = BUFLEN ;
-	    if (fbuf = new(nothrow) char [flen + 1] ; fbuf) {
+	    if (fbuf = new(nt) char [flen + 1] ; fbuf) {
 	        rs = SR_OK ;
 	    } /* end if (new-char) */
 	    if (rs < 0) {
