@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -luo -ldebug -lf -lu
+LIBS += -luo -ldebug -lu -lf
 
 
 DEPS_MAIN += 
