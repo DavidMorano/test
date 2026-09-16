@@ -34,23 +34,23 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<climits>		/* |CHAR_BIT| */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
-#include	<cstdio>
-#include	<new>			/* |nothrow| */
-#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<iostream>
-#include	<iomanip>
-#include	<syncstream>		/* |osyncstream(3c++)| */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<usupport.h>		/* |getustime(3u)| */
-#include	<usysutility.hh>	/* |snprintf(3u)| */
-#include	<strx.h>		/* |stræbbrerr(3uc)| */
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<new>			/* C++STD |nothrow| */
+#include	<algorithm>		/* C++STD |min(3c++)| + |max(3c++)| */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<syncstream>		/* C++STD |osyncstream(3c++)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU |getustime(3u)| */
+#include	<usysutility.hh>	/* LIBU |snprintf(3u)| */
+#include	<strx.h>		/* LIBUC |stræbbrerr(3uc)| */
+#include	<localmisc.h>		/* LIBU */
+#include	<dprint.hh>		/* LIBU debugging */
 #include	<libf.h>		/* LIBF */
-#include	<dprint.hh>		/* debugging */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
