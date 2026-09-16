@@ -16,17 +16,17 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<unistd.h>		/* |getpid(2)| */
-#include	<libproc.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
-#include	<cstdio>
-#include	<iostream>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<localmisc.h>
+#include	<unistd.h>		/* POSIX® |getpid(2)| */
+#include	<libproc.h>		/* POSIX® */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 
 #ifndef	eol
