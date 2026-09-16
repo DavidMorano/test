@@ -29,17 +29,17 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<sys/sysctl.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |geprogname(3c)| */
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<usysflag.h>		/* |usysflag(3u)| */
-#include	<prognamevar.hh>
-#include	<shellunder.h>
-#include	<localmisc.h>		/* |MAXPATHLEN| */
+#include	<sys/sysctl.h>		/* ?? */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usysflag.h>		/* LIBU |usysflag(3u)| */
+#include	<prognamevar.hh>	/* LIBU */
+#include	<shellunder.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU |MAXPATHLEN| */
 
 
 /* local defines */
