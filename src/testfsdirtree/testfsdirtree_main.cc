@@ -21,10 +21,10 @@
 #include	<fcntl.h>		/* POSIX® */
 #include	<libproc.h>		/* POSIX® */
 #include	<cstddef>		/* CSTD */
-#include	<cstdlib>		/* |getenv(3c)| + |getprogname(3c)| */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD */
 #include	<new>			/* C++STD */
-#include	<iostream>		/* C__STD |cout| */
+#include	<iostream>		/* C++STD |cout| */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
