@@ -17,10 +17,10 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<ctime>
+#include	<ctime>			/* CSTD */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>
+#include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<utypedefs.h>		/* LIBU */
 #include	<utypealiases.h>	/* LIBU */
@@ -31,22 +31,23 @@
 #include	<termstr.h>
 
 
+/* local defines */
+
 #define		TIME_ON		2
 #define		TIME_OFF	2
 
 
+/* exported variables */
 
-int main()
-{
+
+/* exported subroutines */
+
+int main(int,con mainv,con mainv) {
 	long	clock ;
-
-	int	len, i, j ;
-
+	int	len, j ;
 	char	*bp, dbuf[1000] ;
 
-
 	printf("%s",TERMSTR_NORM) ;
-
 	fflush(stdout) ;
 
 	sleep(TIME_OFF) ;
@@ -94,10 +95,9 @@ int main()
 		j = 0 ;
 		while (j < (bp - dbuf)) {
 
-		for (i = 0 ; i < 16 ; i += 1) {
-
+		for (int i = 0 ; i < 16 ; i += 1) {
 			printf(" %02X",dbuf[j++] & 0xFF) ;
-		} ;
+		} /* end for */
 
 		printf("\n") ;
 
@@ -109,9 +109,7 @@ int main()
 		write(1L,dbuf,bp - dbuf) ;
 
 		sleep(TIME_ON) ;
-
-	}
-
+	} /* end while */
 } /* end subrutine (main) */
 
 
