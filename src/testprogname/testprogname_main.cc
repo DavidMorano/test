@@ -29,7 +29,6 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<sys/sysctl.h>		/* ?? */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD */
@@ -69,7 +68,8 @@ extern "C" {
 
 /* local variables */
 
-cint		maxpath = MAXPATHLEN ;
+cint		elen		= MAXPATHLEN ;
+cint		maxpath		= MAXPATHLEN ;
 
 
 /* exported variables */
@@ -82,6 +82,7 @@ int main(int argc,con mainv argv,con mainv envv) {
     	cnothrow	nt{} ;
 	cnullptr	np{} ;
 	con pid_t	ppid = getppid() ;
+	int		rs = SR_OK ;
 	cchar		*cp = getenv("_") ;
 	printf("ppid=%u\n",ppid) ;
 	if (argc > 0) {
@@ -96,16 +97,24 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    }
 	}
 	{
-	    cchar *execname = getexecname() ;
-	    printf("execname=%s\n",execname) ;
-	}
-	{
 	    printf("prognamevar=%s\n",ccp(progname)) ;
 	}
 	{
 	    cp = getprogname() ;
 	    printf("getprogname=%s\n", ((cp != nullptr) ? cp : "")) ;
 	}
+	{
+	    cchar *getcp = getexecname() ;
+	    printf("getexecname=%s\n",getcp) ;
+	}
+	{
+	    if (char *ebuf = new(nt) char[elen + 1]) {
+	        if ((rs = u_execname(ebuf,elen)) >= 0) {
+		    printf("execname=%s\n",ebuf) ;
+	        }
+		delete [] ebuf ;
+	    } /* end if (new-char) */
+	} /* end block */
 	if (usysflag.darwin) {
 	    if (char *pbuf ; (pbuf = new(nt) char[maxpath + 1]) != np) {
 	        size_t	psize = size_t(maxpath) ;
