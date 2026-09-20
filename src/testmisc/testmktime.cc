@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-/* test TM */
+/* test TM |mktime(3c)| */
 /* version %I% last-modified %G% */
 
 #define	CF_UCMKTIME	1		/* use 'uc_mktime(3uc)' */
@@ -29,19 +29,19 @@
 #include	<localmisc.h>		/* LIBU */
 
 
-int main() {
-	TM tmval ;
+int main(int,con mainv,con mainv) {
+	TM tmval{} ;
 	time_t		t = 0 ;
 	cint	year = 2014 ;
 	cint	m = 2 ; /* March */
-	int	rs = 0 ;
+	int		ex = EXIT_SUCCESS ;
+	int		rs = SR_OK ;
 
-	memset(&tms,0,sizeof(TM)) ;
-	tms.tm_isdst = -1 ;
-	tms.tm_year = (year - TM_YEAR_BASE) ;
-	tms.tm_mon = m ;
-	tms.tm_sec = 0 ;
-	tms.tm_mday = 1 ;
+	tmval.tm_isdst = -1 ;
+	tmval.tm_year = (year - TM_YEAR_BASE) ;
+	tmval.tm_mon = m ;
+	tmval.tm_sec = 0 ;
+	tmval.tm_mday = 1 ;
 
 #if	CF_UCMKTIME
 	rs = uc_mktime(&tms,&t) ; /* always in current time zone! */
@@ -50,9 +50,12 @@ int main() {
 #endif
 
 	printf("main: uc_mktime() rs=%d\n",rs) ;
-	printf("main: tms.wday=%u\n",tms.tm_wday) ;
-	printf("main: tms.isdst=%u\n",tms.tm_isdst) ;
+	printf("main: tmval.wday=%u\n",tmval.tm_wday) ;
+	printf("main: tmval.isdst=%u\n",tmval.tm_isdst) ;
 
-	return rs ;
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
+	return ex ;
 /* end subroutine (main) */
 
