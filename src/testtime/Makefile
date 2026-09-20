@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -ldebug -lu -lf
 
 
 DEPS_MAIN += 
@@ -168,6 +168,11 @@ ustream.o:		ustream.dir
 ustream.dir:
 	makesubdir $@
 
+# UCSYSMISC
+ucsysmisc.o:		ucsysmisc.dir
+ucsysmisc.dir:
+	makesubdir $@
+
 # STRN
 strn.o:			strn.dir
 strn.dir:
@@ -292,8 +297,5 @@ xxtostr.o:		xxtostr.cc	xxtostr.h
 strkeycmp.o:		strkeycmp.cc	strkeycmp.h
 matkeystr.o:		matkeystr.cc	matkeystr.h
 getenver.o:		getenver.cc	getenver.h
-
-# LIBUC
-ucsysisc.o:		ucsysmisc.cc	ucsysmisc.h
 
 
