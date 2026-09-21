@@ -150,7 +150,7 @@ local int process() noex {
 		    } /* end if (u_sigwait) */
 	        } /* end if (u_alarm) */
 	    } /* end for */
-	   delete [] tbuf ;
+	    delete [] tbuf ;
 	} /* end if (new-char) */
 	DEBUGPRINTF("ret rs=%d\n",rs) ;
     	return rs ;
