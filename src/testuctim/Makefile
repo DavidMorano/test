@@ -37,13 +37,13 @@ INCS +=
 
 MODS +=
 
-LIBS += -luo -lu
+LIBS += -ldebug -luo -lu -lf
 
 
-DEPS_MAIN += dupstr.o six.o hasx.o isx.o
+DEPS_MAIN +=
 
 OBJ0= testuctim_main.o
-OBJ1= uctim.o
+OBJ1= uctimx.o
 OBJ2=
 OBJ3= 
 
@@ -169,6 +169,7 @@ isx.dir:
 
 
 uctim.o:		uctim.cc	uctim.h			$(INCS)
+uctimx.o:		uctimx.cc	uctimx.h		$(INCS)
 
 progsig.o:		progsig.cc	progsig.h
 
