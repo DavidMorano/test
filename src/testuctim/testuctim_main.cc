@@ -2,86 +2,91 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the |uctim(3uc)| subroutines */
+/* main subroutine for several programs */
 /* version %I% last-modified %G% */
 
+#define	CF_DEBUG	1		/* debugging */
+#define	CF_SIGNAL	0
 
 /* revision history:
 
-	= 2000-05-14, David A­D­ Morano
-	Originally written for Rightcore Network Services.
+	= 1988-02-01, David A­D­ Morano
+	This subroutine was originally written.
+
+	= 1988-02-01, David A­D­ Morano
+	This subroutine was modified to not write out anything
+	to standard output if the access time of the associated
+	terminal has not been changed in 10 minutes.
 
 */
 
-/* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+
+/*******************************************************************************
+
+  	Description:
+	This is a pretty much generic subroutine for several program.
+
+*******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<ctime>			/* CSTD */
+#include	<csignal>		/* CSTD */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
+#include	<uctimx.h>		/* LIBUC */
+#include	<psem.h>		/* LIBUC */
+#include	<timestr.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
-#include	<libdebug.h>		/* LIBDEBUG |DEUGPRINTF(3debug)| */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
+import usigsets ;			/* |usigset(3u)| */
 
 /* local defines */
 
+#define	DEBUGFNVAR	"TESTUCTIM_DEBUGFN"
+#define	NLOOPS		5
 
-/* imported namespaces */
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* debugging */
+#endif
+#ifndef	CF_SIGNAL
+#define	CF_SIGNAL	0
+#endif
 
 
-/* local typedefs */
+/* external subroutines */
 
-extern "C" {
-    typedef bool (*hasprintx_f)(cchar *,int) noex ;
-} /* end */
+
+/* external variables */
 
 
 /* local structures */
 
-enum result : bool {
-    	resfail,
-    	respass
-} ; /* end */
-
-struct testent {
-    	cchar	*addr ;
-	bool	fr ;
-} ; /* end */
-
 
 /* forward references */
 
-local void testsuite(cc *,hasprintx_f,const testent *) noex ;
+[[maybe_unused]]
+local void	int_all(int)	noex ;
+local int	loop(int)	noex ;
+local uctimx_t	fun ;
 
 
 /* local variables */
 
-constexpr testent	testbads[] = {
-    	{ "127", 		resfail },
-    	{ "\001:127", 		respass	},
-    	{ "129.0.00.216", 	resfail	},
-    	{ "0.0.00.216", 	resfail	},
-    	{ ".0.00.216", 		resfail	},
-    	{ "0.00.216", 		resfail	},
-    	{ "0.0w.00.216", 	resfail	},
-    	{ "0.0.00.", 		resfail	},
-    	{ nullptr,		resfail	}
-} ; /* end array (testbads) */
-
-constexpr testent	testcmds[] = {
-    	{ "127", 		resfail },
-    	{ "\033[C:127",		respass	},
-    	{ "bad-to-regular",	resfail	},
-    	{ nullptr,		resfail	}
-} ; /* end array (testcmds) */
-
-constexpr cpcchar	res[] = {
-    	"fail",
-	"pass",
-	nullptr
-} ; /* end array (res) */
+cint		tlen		= TIMEBUFLEN ;
+cbool		f_debug		= CF_DEBUG ;
+sig_atomic_t	fsig		= 0 ;
 
 
 /* exported variables */
@@ -89,22 +94,91 @@ constexpr cpcchar	res[] = {
 
 /* exported subroutines */
 
-int main(int,mainv,mainv) {
-    	testsuite("bad",hasprintbad,testbads) ;
-    	testsuite("cmd",hasprintcmd,testcmds) ;
+int main(int argc,con mainv argv,con mainv envv) {
+    	int		ex = EXIT_SUCCESS ;
+	int		rs = SR_OK ;
+	int		rs1 ;
+	(void) argc ;
+	(void) argv ;
+	(void) envv ;
+	if (char *cp = getenv(DEBUGFNVAR)) {
+	    debugopen(cp) ;
+	    DEBUGPRINTF("starting\n") ;
+	}
+	if (rs >= 0) {
+	    custime dt = getustime ;
+	    if (psem sph ; (rs = sem.create) >= 0) {
+	        uctimxnote note{} ;
+	        notes.notf = fun ;	/* notification function */
+	        if ((rs = uc_timxcreate(&note)) >= 0) {
+		    cint tid = rs ;
+		    {
+	    	        DEBUGPRINTF("-> loop\n") ;
+	    	        rs = loop(tid) ;
+	    	        DEBUGPRINTF("loop() rs=%d\n",rs) ;
+		    }
+		    rs1 = uc_timxdestroy(tid) ;
+		    if (rs >= 0) rs = rs1 ;
+	        } /* end if (uc_timx) */
+	        rs1 = sph.destroy ;
+	        if (rs >= 0) rs = rs1 ;
+	    } /* end if (psem) */
+	} /* end block */
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
+	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
+	DEBUGCLOSE ;
+	return ex ;
 } /* end subroutine (main) */
 
 
 /* local subroutines */
 
-local void testsuite(cc *af,hasprintx_f hasx,const testent *suite) noex {
-    	cchar		*fmt = "%s %s %c %s\n" ;
-	bool		fpass{} ;
-	for (const testent *ep = suite ; ep->addr ; ep += 1) {
-	    cbool f = hasx(ep->addr,-1) ;
-	    fpass = (f == ep->fr) ;
-	    printf(fmt,res[fpass],af,((f) ? 't' : 'f'),ep->addr) ;
-	} /* end for */
-} /* end subroutine (testsuite) */
+local void int_all(int signum) noex {
+    	(void) signum ;
+    	fsig = signum ;
+} /* end subroutine (intall) */
+
+local int loop(int tid) noex {
+    	FILE		*ofp = stdout ;
+	cnullptr	np{} ;
+	cnothrow	nt{} ;
+	cint		tint = 2 ;
+    	int		rs = SR_NOMEM ;
+	DEBUGPRINTF("ent\n") ;
+	if (char *tbuf = new(nt) char[tlen + 1]) {
+	    custime	dt = getustime ;
+    	    cint	n = NLOOPS ;
+	    rs = SR_OK ;
+	    for (int i = 0 ; i < n ; i += 1) {
+	        if ((rs = uc_timxset(tid,(dt + tint),np)) >= 0) {
+		    dt = getustime ;
+	        } /* end if (uc_timexset) */
+		if (rs < 0) break ;
+	    } /* end for */
+	    delete [] tbuf ;
+	} /* end if (new-char) */
+	DEBUGPRINTF("ret rs=%d\n",rs) ;
+    	return rs ;
+} /* end subroutine (process) */
+
+local int fun(void *objp,int id,int ag) noex {
+    	FILE		*ofp = stdout ;
+	cnullptr	np{} ;
+	cnothrow	nt{} ;
+	custime dt = getustime ;
+	int		rs = SR_OK ;
+    	(void) objp ;
+	(void) id ;
+	(void) ag ;
+	if (char *tbuf = new(nt) char[tlen + 1]) {
+	    timestr_log(dt,tbuf) ;
+	    fprintf(ofp,"%s\n",tbuf) ;
+	    fflush(ofp) ;
+	    delete [] tbuf ;
+	} /* end if (new-char) */
+	return rs ;
+} /* end subroutine (fun) */
 
 
