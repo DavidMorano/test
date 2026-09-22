@@ -35,7 +35,6 @@
 #include	<sys/stat.h>		/* POSIX® */
 #include	<unistd.h>		/* POSIX® */
 #include	<fcntl.h>		/* POSIX® */
-#include	<netdb.h>		/* POSIX® */
 #include	<ctime>			/* CSTD */
 #include	<csignal>		/* CSTD */
 #include	<cstddef>		/* CSTD */
@@ -144,11 +143,13 @@ local int process() noex {
 	        if ((rs = u_alarm(2)) >= 0) {
 		    if ((rs = u_sigwait(&wsm)) >= 0) {
 			custime dt = getustime ;
+			DEBUGPRINTF("signo=%d\n",rs) ;
 			timestr_log(dt,tbuf) ;
 			fprintf(ofp,"%s\n",tbuf) ;
 			fflush(ofp) ;
 		    } /* end if (u_sigwait) */
 	        } /* end if (u_alarm) */
+		if (rs < 0) break ;
 	    } /* end for */
 	    delete [] tbuf ;
 	} /* end if (new-char) */
