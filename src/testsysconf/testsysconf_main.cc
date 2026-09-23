@@ -54,6 +54,8 @@ constexpr cmdpair	pairs[] = {
 	{ _SC_LINE_MAX,		"LINEMAX" },
 	{ _SC_LINK_MAX,		"LINKMAX" },
 	{ _SC_SYMLOOP_MAX,	"SYMLOOPMAX" },
+	{ _SC_NAME_MAX,		"MAXNAMELEN" },
+	{ _SC_PATH_MAX,		"MAXPATHLEN" },
 	{ _SC_TZNAME_MAX,	"TZNAMEMAX" },
 	{ _SC_TZABBR_MAX,	"TZABBRMAX" },
 	{ _SC_ZONEINFO_MAX,	"ZONEINFOMAX" },
