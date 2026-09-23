@@ -44,11 +44,10 @@ DEPS_MAIN +=
 
 OBJ0= testuctim_main.o
 OBJ1= uctimx.o
-OBJ2=
-OBJ3= 
+OBJ2= semx.o
+OBJ3= ptx.o
 
-OBJ= obj0.o obj1.o
-#OBJ= obj0.o obj1.o obj2.o obj3.o
+OBJ= obj0.o obj1.o obj2.o obj3.o
 
 
 INCDIRS=
@@ -152,6 +151,21 @@ obj.o:			$(OBJ)
 
 testuctim_main.o:	testuctim_main.cc $(DEPS_MAIN)	$(INCS)
 
+uctim.o:		uctim.cc	uctim.h			$(INCS)
+uctimx.o:		uctimx.cc	uctimx.h		$(INCS)
+
+progsig.o:		progsig.cc	progsig.h
+
+# PTX
+ptx.o:			ptx.dir
+ptx.dir:
+	makesubdir $@
+
+# SEMX
+semx.o:			semx.dir
+semx.dir:
+	makesubdir $@
+
 # SIX
 six.o:			six.dir
 six.dir:
@@ -166,11 +180,5 @@ hasx.dir:
 isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
-
-
-uctim.o:		uctim.cc	uctim.h			$(INCS)
-uctimx.o:		uctimx.cc	uctimx.h		$(INCS)
-
-progsig.o:		progsig.cc	progsig.h
 
 
