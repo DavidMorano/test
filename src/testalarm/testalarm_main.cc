@@ -80,8 +80,8 @@ local int	process()	noex ;
 
 /* local variables */
 
-cbool		f_debug		= CF_DEBUG ;
-sig_atomic_t	fsig		= 0 ;
+local sig_atomic_t	fsig		= 0 ;
+cbool			f_debug		= CF_DEBUG ;
 
 
 /* exported variables */
