@@ -77,9 +77,11 @@ import usigsets ;			/* |usigset(3u)| */
 /* forward references */
 
 [[maybe_unused]]
-local void	int_all(int)	noex ;
-local int	loop(int)	noex ;
-local uctimx_t	fun ;
+local void	int_all(int)		noex ;
+local int	loop(psem *,int)	noex ;
+extern "C" {
+    local int	fun(void *,int,int) noex ;
+} /* end extern (C) */
 
 
 /* local variables */
@@ -106,23 +108,25 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    DEBUGPRINTF("starting\n") ;
 	}
 	if (rs >= 0) {
-	    custime dt = getustime ;
-	    if (psem sph ; (rs = sem.create) >= 0) {
+	    if (psem nsem ; (rs = nsem.create) >= 0) {
 	        uctimxnote note{} ;
-	        notes.notf = fun ;	/* notification function */
+		note.psemp = &nsem ;
+	        note.notf = fun ;	/* notification function */
 	        if ((rs = uc_timxcreate(&note)) >= 0) {
 		    cint tid = rs ;
 		    {
 	    	        DEBUGPRINTF("-> loop\n") ;
-	    	        rs = loop(tid) ;
+	    	        rs = loop(&nsem,tid) ;
 	    	        DEBUGPRINTF("loop() rs=%d\n",rs) ;
 		    }
 		    rs1 = uc_timxdestroy(tid) ;
 		    if (rs >= 0) rs = rs1 ;
 	        } /* end if (uc_timx) */
-	        rs1 = sph.destroy ;
+	        DEBUGPRINTF("uctimx-out rs=%d\n",rs) ;
+	        rs1 = nsem.destroy ;
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (psem) */
+	    DEBUGPRINTF("psem-out rs=%d\n",rs) ;
 	} /* end block */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
@@ -140,7 +144,7 @@ local void int_all(int signum) noex {
     	fsig = signum ;
 } /* end subroutine (intall) */
 
-local int loop(int tid) noex {
+local int loop(psem *psemp,int tid) noex {
     	FILE		*ofp = stdout ;
 	cnullptr	np{} ;
 	cnothrow	nt{} ;
@@ -148,12 +152,17 @@ local int loop(int tid) noex {
     	int		rs = SR_NOMEM ;
 	DEBUGPRINTF("ent\n") ;
 	if (char *tbuf = new(nt) char[tlen + 1]) {
-	    custime	dt = getustime ;
+	    ustime	dt = getustime ;
     	    cint	n = NLOOPS ;
 	    rs = SR_OK ;
 	    for (int i = 0 ; i < n ; i += 1) {
-	        if ((rs = uc_timxset(tid,(dt + tint),np)) >= 0) {
+	DEBUGPRINTF("-> uctimerset\n") ;
+	        if ((rs = uc_timxset(tid,np,(dt + tint))) >= 0) {
 		    dt = getustime ;
+	DEBUGPRINTF("-> psemwait\n") ;
+		    rs = psemp->wait ;
+		    fprintf(ofp,"wake-up\n") ;
+	    	    fflush(ofp) ;
 	        } /* end if (uc_timexset) */
 		if (rs < 0) break ;
 	    } /* end for */
@@ -165,7 +174,6 @@ local int loop(int tid) noex {
 
 local int fun(void *objp,int id,int ag) noex {
     	FILE		*ofp = stdout ;
-	cnullptr	np{} ;
 	cnothrow	nt{} ;
 	custime dt = getustime ;
 	int		rs = SR_OK ;
