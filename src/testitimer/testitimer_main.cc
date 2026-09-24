@@ -106,14 +106,15 @@ int main(int argc,con mainv argv,con mainv envv) {
 	(void) argc ;
 	(void) argv ;
 	(void) envv ;
-	fprintf(ofp,"main\n") ;
 	if (char *cp = getenv(DEBUGFNVAR)) {
-	    debugopen(cp) ;
-	    DEBUGPRINTF("starting\n") ;
-	}
+	    if ((rs = debugopen(cp)) >= 0) {
+	        DEBUGPRINTF("starting\n") ;
+	    } else if (rs == SR_NOENT) {
+		rs = SR_OK ;
+	    }
+	} /* end if (debugging) */
 	if (rs >= 0) {
-	    cint how = SIG_UNBLOCK ;
-	fprintf(ofp,"mainer\n") ;
+	    cint how = SIG_BLOCK ;
 	    if (con usigset nsm(SIGALARM) ; (rs = u_sigmask(how,&nsm)) >= 0) {
 		SIGACTION nsa{} ;
 		con sigset_t signalmask = 0 ;
@@ -122,7 +123,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 		nsa.sa_mask = signalmask ;
 		nsa.sa_flags = 0 ;
 		if ((rs = u_sigaction(sig,&nsa)) >= 0) {
-	fprintf(ofp,"process\n") ;
 	    	    rs = process(ofp) ;
 		} /* end if */
 	    } /* end if (u_sigmask) */
@@ -149,7 +149,6 @@ local int process(FILE *ofp) noex {
 	cint		tlen = TIMEBUFLEN ;
     	int		rs = SR_NOMEM ;
 	DEBUGPRINTF("ent\n") ;
-	fprintf(ofp,"proc-alloc\n") ;
 	if (char *tbuf = new(nt) char[tlen + 1]) {
     	    [[maybe_unused]] usigset	wsm(SIGALARM) ;
 	    ITIMERVAL	trv ;
