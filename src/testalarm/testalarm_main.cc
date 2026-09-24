@@ -1,4 +1,4 @@
-/* testalarm_main SUPPORT */
+//** testalarm_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -96,11 +96,14 @@ int main(int argc,con mainv argv,con mainv envv) {
 	(void) argv ;
 	(void) envv ;
 	if (char *cp = getenv(DEBUGFNVAR)) {
-	    debugopen(cp) ;
-	    DEBUGPRINTF("starting\n") ;
-	}
+	    if ((rs = debugopen(cp)) >= 0) {
+	        DEBUGPRINTF("starting\n") ;
+	    } else if (rs == SR_NOENT) {
+		rs = SR_OK ;
+	    }
+	} /* end if (debugging) */
 	if (rs >= 0) {
-	    cint how = SIG_UNBLOCK ;
+	    cint how = SIG_BLOCK ;
 	    if (con usigset nsm(SIGALARM) ; (rs = u_sigmask(how,&nsm)) >= 0) {
 		SIGACTION nsa{} ;
 		con sigset_t signalmask = 0 ;
