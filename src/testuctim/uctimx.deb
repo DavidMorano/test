@@ -1,0 +1,319 @@
+pinitx: start fd=4
+cmdsub: init() rs=1
+cmdsub: capbeg() rs=0
+workbegin: ent
+workbegin: -> ents.start
+workbegin: -> priqbeg
+workbegin: -> sigbeg
+workbegin: -> timerbeg
+workbegin: -> pass.start
+workbegin: -> thrsbeg
+thrsbegin: ent
+sigerbeg: ent
+sigerbeg: -> ta.setscope
+sigerbeg: -> uptcreate
+sigerbeg: uptcreate() rs=96989184
+sigerbeg: uptcreate-out rs=96989184
+sigerbeg: ta.setscope-out rs=96989184
+sigerbeg: ret rs=0 f=1
+thrsbegin: ret rs=1
+workbegin: thrsbeg-out rs=1
+workbegin: ciq_start-out rs=1
+workbegin: ret rs=1
+cmdsub: workbeg() rs=1
+sigerwait: ent
+dispworker: ent
+cmd_create: ent
+disprecv: ent
+cmd_create: ret rs=0
+disprecv: fcmd=0
+cmdsub: switch-out rs=0
+disprecv: -> condition-wait
+cmdsub: ret rs=0 rv=0
+disprecv: -> condition-wait
+uc_timxset: ent dt=1790222377 ntim=1790222379
+uc_timxset: valid
+cmdsub: ent
+cmdsub: init() rs=0
+cmdsub: capbeg() rs=0
+cmdsub: workbeg() rs=0
+cmd_set: ent val=1790222379
+cmd_set: ei=0
+cmd_set: -> priqins
+priqins: ent
+priqins: cnt=0
+priqins: vecsorthand_add() rs=0
+timerset: ent ival=2
+timerset: -> itimerval_load
+timerset: -> uitimer_set
+timerset: ret rs=0
+priqins: timerset() rs=0
+priqins: ret rs=0 pi=0
+cmd_set: ret rs=0
+cmdsub: switch-out rs=0
+cmdsub: ret rs=0 rv=0
+uc_timxset: ret rs=0
+disprecv: -> condition-wait
+sigerwait: timeout
+sigerwait: ret rs=14 cmd=1
+sigerserve: ent
+sigerserve: dt=1790222379
+sigerserve: cnt=1
+sigerserve: ei=0 val=1790222379
+sigerserve: -> sigertrans
+sigertrans: -> pass.ins
+pcapsignal: ent
+pcapsignal: ret rs=0
+sigerserve: sigertrans() rs=0
+sigerserve: while-out rs=0
+disprecv: while-out rs=0
+disprecv: while-out fcmd=1
+disprecv: freqexit=0
+disprecv: waiters=1
+disprecv: ret rs=0 cmd=2
+dispworker: disprecv() rs=2
+disphandle: ent
+sigerserve: ret rs=0
+sigerwait: ent
+disphandle: got one
+dispdeliver: ent
+deliversem: ent
+deliversem: psem_post() rs=0
+deliversem: ret rs=0
+dispdeliver: ret rs=0
+disphandle: while-out rs=0 rs1=-2
+disphandle: ret rs=0
+disprecv: ent
+disprecv: fcmd=0
+disprecv: -> condition-wait
+uc_timxset: ent dt=1790222379 ntim=1790222381
+uc_timxset: valid
+cmdsub: ent
+cmdsub: init() rs=0
+cmdsub: capbeg() rs=0
+cmdsub: workbeg() rs=0
+cmd_set: ent val=1790222381
+cmd_set: ei=0
+cmd_set: -> priqins
+priqins: ent
+priqins: cnt=0
+priqins: vecsorthand_add() rs=0
+timerset: ent ival=2
+timerset: -> itimerval_load
+timerset: -> uitimer_set
+timerset: ret rs=0
+priqins: timerset() rs=0
+priqins: ret rs=0 pi=0
+cmd_set: ret rs=0
+cmdsub: switch-out rs=0
+cmdsub: ret rs=0 rv=0
+uc_timxset: ret rs=0
+disprecv: -> condition-wait
+sigerwait: timeout
+sigerwait: ret rs=14 cmd=1
+sigerserve: ent
+sigerserve: dt=1790222381
+sigerserve: cnt=1
+sigerserve: ei=0 val=1790222381
+sigerserve: -> sigertrans
+sigertrans: -> pass.ins
+pcapsignal: ent
+pcapsignal: ret rs=0
+sigerserve: sigertrans() rs=0
+sigerserve: while-out rs=0
+disprecv: while-out rs=0
+disprecv: while-out fcmd=1
+disprecv: freqexit=0
+disprecv: waiters=1
+disprecv: ret rs=0 cmd=2
+dispworker: disprecv() rs=2
+disphandle: ent
+disphandle: got one
+dispdeliver: ent
+sigerserve: ret rs=0
+deliversem: ent
+sigerwait: ent
+deliversem: psem_post() rs=0
+deliversem: ret rs=0
+dispdeliver: ret rs=0
+disphandle: while-out rs=0 rs1=-2
+disphandle: ret rs=0
+disprecv: ent
+disprecv: fcmd=0
+disprecv: -> condition-wait
+uc_timxset: ent dt=1790222381 ntim=1790222383
+uc_timxset: valid
+cmdsub: ent
+cmdsub: init() rs=0
+cmdsub: capbeg() rs=0
+cmdsub: workbeg() rs=0
+cmd_set: ent val=1790222383
+cmd_set: ei=0
+cmd_set: -> priqins
+priqins: ent
+priqins: cnt=0
+priqins: vecsorthand_add() rs=0
+timerset: ent ival=2
+timerset: -> itimerval_load
+timerset: -> uitimer_set
+timerset: ret rs=0
+priqins: timerset() rs=0
+priqins: ret rs=0 pi=0
+cmd_set: ret rs=0
+cmdsub: switch-out rs=0
+cmdsub: ret rs=0 rv=0
+uc_timxset: ret rs=0
+disprecv: -> condition-wait
+sigerwait: timeout
+sigerwait: ret rs=14 cmd=1
+sigerserve: ent
+sigerserve: dt=1790222383
+sigerserve: cnt=1
+sigerserve: ei=0 val=1790222383
+sigerserve: -> sigertrans
+sigertrans: -> pass.ins
+pcapsignal: ent
+pcapsignal: ret rs=0
+sigerserve: sigertrans() rs=0
+sigerserve: while-out rs=0
+disprecv: while-out rs=0
+disprecv: while-out fcmd=1
+disprecv: freqexit=0
+disprecv: waiters=1
+disprecv: ret rs=0 cmd=2
+dispworker: disprecv() rs=2
+disphandle: ent
+disphandle: got one
+dispdeliver: ent
+sigerserve: ret rs=0
+deliversem: ent
+deliversem: psem_post() rs=0
+deliversem: ret rs=0
+dispdeliver: ret rs=0
+sigerwait: ent
+disphandle: while-out rs=0 rs1=-2
+disphandle: ret rs=0
+disprecv: ent
+disprecv: fcmd=0
+disprecv: -> condition-wait
+uc_timxset: ent dt=1790222383 ntim=1790222385
+uc_timxset: valid
+cmdsub: ent
+cmdsub: init() rs=0
+cmdsub: capbeg() rs=0
+cmdsub: workbeg() rs=0
+cmd_set: ent val=1790222385
+cmd_set: ei=0
+cmd_set: -> priqins
+priqins: ent
+priqins: cnt=0
+priqins: vecsorthand_add() rs=0
+timerset: ent ival=2
+timerset: -> itimerval_load
+timerset: -> uitimer_set
+timerset: ret rs=0
+priqins: timerset() rs=0
+priqins: ret rs=0 pi=0
+cmd_set: ret rs=0
+cmdsub: switch-out rs=0
+cmdsub: ret rs=0 rv=0
+uc_timxset: ret rs=0
+disprecv: -> condition-wait
+sigerwait: timeout
+sigerwait: ret rs=14 cmd=1
+sigerserve: ent
+sigerserve: dt=1790222385
+sigerserve: cnt=1
+sigerserve: ei=0 val=1790222385
+sigerserve: -> sigertrans
+sigertrans: -> pass.ins
+pcapsignal: ent
+pcapsignal: ret rs=0
+sigerserve: sigertrans() rs=0
+sigerserve: while-out rs=0
+disprecv: while-out rs=0
+disprecv: while-out fcmd=1
+disprecv: freqexit=0
+disprecv: waiters=1
+disprecv: ret rs=0 cmd=2
+dispworker: disprecv() rs=2
+disphandle: ent
+disphandle: got one
+dispdeliver: ent
+sigerserve: ret rs=0
+deliversem: ent
+sigerwait: ent
+deliversem: psem_post() rs=0
+deliversem: ret rs=0
+dispdeliver: ret rs=0
+disphandle: while-out rs=0 rs1=-2
+disphandle: ret rs=0
+disprecv: ent
+disprecv: fcmd=0
+disprecv: -> condition-wait
+uc_timxset: ent dt=1790222385 ntim=1790222387
+uc_timxset: valid
+cmdsub: ent
+cmdsub: init() rs=0
+cmdsub: capbeg() rs=0
+cmdsub: workbeg() rs=0
+cmd_set: ent val=1790222387
+cmd_set: ei=0
+cmd_set: -> priqins
+priqins: ent
+priqins: cnt=0
+priqins: vecsorthand_add() rs=0
+timerset: ent ival=2
+timerset: -> itimerval_load
+timerset: -> uitimer_set
+timerset: ret rs=0
+priqins: timerset() rs=0
+priqins: ret rs=0 pi=0
+cmd_set: ret rs=0
+cmdsub: switch-out rs=0
+cmdsub: ret rs=0 rv=0
+uc_timxset: ret rs=0
+disprecv: -> condition-wait
+sigerwait: timeout
+sigerwait: ret rs=14 cmd=1
+sigerserve: ent
+sigerserve: dt=1790222387
+sigerserve: cnt=1
+sigerserve: ei=0 val=1790222387
+sigerserve: -> sigertrans
+sigertrans: -> pass.ins
+pcapsignal: ent
+pcapsignal: ret rs=0
+sigerserve: sigertrans() rs=0
+sigerserve: while-out rs=0
+disprecv: while-out rs=0
+disprecv: while-out fcmd=1
+disprecv: freqexit=0
+disprecv: waiters=1
+disprecv: ret rs=0 cmd=2
+dispworker: disprecv() rs=2
+disphandle: ent
+disphandle: got one
+sigerserve: ret rs=0
+dispdeliver: ent
+sigerwait: ent
+deliversem: ent
+deliversem: psem_post() rs=0
+deliversem: ret rs=0
+dispdeliver: ret rs=0
+disphandle: while-out rs=0 rs1=-2
+disphandle: ret rs=0
+disprecv: ent
+disprecv: fcmd=0
+disprecv: -> condition-wait
+uc_timxdestroy: ent
+cmdsub: ent
+cmdsub: init() rs=0
+cmdsub: capbeg() rs=0
+cmdsub: workbeg() rs=0
+cmd_destroy: ent
+cmd_destroy: ret rs=0
+cmdsub: switch-out rs=0
+cmdsub: ret rs=0 rv=0
+disprecv: -> condition-wait
+it
