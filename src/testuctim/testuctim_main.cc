@@ -156,14 +156,17 @@ local int loop(psem *psemp,int tid) noex {
     	    cint	n = NLOOPS ;
 	    rs = SR_OK ;
 	    for (int i = 0 ; i < n ; i += 1) {
-	DEBUGPRINTF("-> uctimerset\n") ;
+	DEBUGPRINTF("-> uc_timxset\n") ;
 	        if ((rs = uc_timxset(tid,np,(dt + tint))) >= 0) {
-		    dt = getustime ;
 	DEBUGPRINTF("-> psemwait\n") ;
 		    rs = psemp->wait ;
-		    fprintf(ofp,"wake-up\n") ;
+	DEBUGPRINTF("psemwait() rs=%d\n",rs) ;
+		    dt = getustime ;
+		    timestr_log(dt,tbuf) ;
+		    fprintf(ofp,"wake-up %s\n",tbuf) ;
 	    	    fflush(ofp) ;
 	        } /* end if (uc_timexset) */
+	DEBUGPRINTF("uctimerset-out rs=%d\n",rs) ;
 		if (rs < 0) break ;
 	    } /* end for */
 	    delete [] tbuf ;
