@@ -44,7 +44,7 @@ DEPS_MAIN +=
 
 OBJ0= testuctim_main.o
 OBJ1= uctimx.o
-OBJ2= semx.o
+OBJ2= semx.o vec.o queue.o
 OBJ3= ptx.o
 
 OBJ= obj0.o obj1.o obj2.o obj3.o
@@ -164,6 +164,16 @@ ptx.dir:
 # SEMX
 semx.o:			semx.dir
 semx.dir:
+	makesubdir $@
+
+# VEC
+vec.o:			vec.dir
+vec.dir:
+	makesubdir $@
+
+# QUEUE
+queue.o:		queue.dir
+queue.dir:
 	makesubdir $@
 
 # SIX
