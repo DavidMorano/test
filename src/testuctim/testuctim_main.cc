@@ -39,7 +39,11 @@
 #include	<csignal>		/* CSTD */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
 #include	<cstring>		/* CSTD */
+#include	<mutex>			/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<syncstream>		/* C++STD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
@@ -65,6 +69,16 @@ import usigsets ;			/* |usigset(3u)| */
 #endif
 
 
+/* imported namespaces */
+
+using std::mutex ;			/* type */
+using std::cout ;			/* variable */
+
+
+/* local typedefs */
+
+
+
 /* external subroutines */
 
 
@@ -86,9 +100,11 @@ extern "C" {
 
 /* local variables */
 
-cint		tlen		= TIMEBUFLEN ;
-cbool		f_debug		= CF_DEBUG ;
-sig_atomic_t	fsig		= 0 ;
+std::osyncstream	sout(std::cout) ;
+sig_atomic_t		fsig		= 0 ;
+mutex			omtx ;
+cint			tlen		= TIMEBUFLEN ;
+cbool			f_debug		= CF_DEBUG ;
 
 
 /* exported variables */
@@ -111,7 +127,8 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    if (psem nsem ; (rs = nsem.create) >= 0) {
 	        uctimxnote note{} ;
 		note.psemp = &nsem ;
-	        note.notf = fun ;	/* notification function */
+	        note.notfun = fun ;	/* notification function pointer */
+	        note.notarg = 42 ;	/* notification function argument */
 	        if ((rs = uc_timxcreate(&note)) >= 0) {
 		    cint tid = rs ;
 		    {
@@ -145,7 +162,6 @@ local void int_all(int signum) noex {
 } /* end subroutine (intall) */
 
 local int loop(psem *psemp,int tid) noex {
-    	FILE		*ofp = stdout ;
 	cnullptr	np{} ;
 	cnothrow	nt{} ;
 	cint		tint = 2 ;
@@ -163,8 +179,10 @@ local int loop(psem *psemp,int tid) noex {
 	DEBUGPRINTF("psemwait() rs=%d\n",rs) ;
 		    dt = getustime ;
 		    timestr_log(dt,tbuf) ;
-		    fprintf(ofp,"wake-up %s\n",tbuf) ;
-	    	    fflush(ofp) ;
+		    omtx.lock() ;
+		    cout << "wake-up " << tbuf << eol ;
+		    cout.flush() ;
+	    	    omtx.unlock() ;
 	        } /* end if (uc_timexset) */
 	DEBUGPRINTF("uctimerset-out rs=%d\n",rs) ;
 		if (rs < 0) break ;
@@ -176,17 +194,18 @@ local int loop(psem *psemp,int tid) noex {
 } /* end subroutine (process) */
 
 local int fun(void *objp,int id,int ag) noex {
-    	FILE		*ofp = stdout ;
 	cnothrow	nt{} ;
-	custime dt = getustime ;
+	custime		dt = getustime ;
 	int		rs = SR_OK ;
     	(void) objp ;
 	(void) id ;
 	(void) ag ;
 	if (char *tbuf = new(nt) char[tlen + 1]) {
 	    timestr_log(dt,tbuf) ;
-	    fprintf(ofp,"%s\n",tbuf) ;
-	    fflush(ofp) ;
+	    omtx.lock() ;
+	    cout << "    fun " << tbuf << " a=" << ag << eol ;
+	    cout.flush() ;
+	    omtx.unlock() ;
 	    delete [] tbuf ;
 	} /* end if (new-char) */
 	return rs ;
