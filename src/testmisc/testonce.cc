@@ -17,28 +17,24 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<unistd.h>		/* |getpid(2)| */
-#include	<libproc.h>
+#include	<unistd.h>		/* POSIX® |getpid(2)| */
+#include	<libproc.h>		/* ?? */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>
-#include	<iostream>
-#include	<syncstream>		/* |osyncstream(3c++)| */
-#include	<thread>
-#include	<mutex>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-#include	<localmisc.h>
+#include	<cstdio>		/* CSTD */
+#include	<iostream>		/* C++STD */
+#include	<syncstream>		/* C++STD |osyncstream(3c++)| */
+#include	<thread>		/* C++STD */
+#include	<mutex>			/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<usysrets.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 
-#define	NTHREADS	6
-
-#ifndef	eol
-#define	eol	'\n'
-#endif
+#define	NTHREADS	4		/* number of threads */
 
 typedef std::thread::id		threadid ;
 
@@ -61,12 +57,12 @@ local int oncesub() noex {
     	sleep(4) ;
     	osyncstream(cout) << "oncesub: waking\n" ;
 	return 1 ;
-}
+} /* end subroutine */
 
 local int oncer() noex {
     	static cint	rso = oncesub() ;
 	return rso ;
-}
+} /* end subroutine */
 
 local void tryer() noex {
     	threadid	id = std::this_thread::get_id() ;
@@ -78,9 +74,9 @@ local void tryer() noex {
 	    rso = oncer() ;
 	    osyncstream(cout) << id << " rso=" << rso << eol ;
 	    sleep(1) ;
-	}
+	} /* end for */
 	    osyncstream(sout) << "thread=" << id << " ret\n" ;
-}
+} /* end subroutine */
 
 int main(int argc,con mainv argv,con mainv) {
     	int		ex = 0 ;
@@ -89,7 +85,7 @@ int main(int argc,con mainv argv,con mainv) {
     	osyncstream(cout) << "main: call\n" ;
 	for (int i = 0 ; i < NTHREADS ; i += 1) {
 	    ts[i] = thread(tryer) ;
-	}
+	} /* end for */
 	{
 	    sleep(1) ;
 	    tryer() ;
@@ -97,7 +93,7 @@ int main(int argc,con mainv argv,con mainv) {
 	}
 	for (int i = 0 ; i < NTHREADS ; i += 1) {
 	    ts[i].join() ;
-	}
+	} /* end for */
     	osyncstream(cout) << "main: ret\n" ;
 	if (rs < 0) ex = 1 ;
 	return ex ;
