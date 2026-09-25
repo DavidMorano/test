@@ -22,7 +22,7 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>
+#include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<utypedefs.h>		/* LIBU */
 #include	<utypealiases.h>	/* LIBU */
@@ -30,9 +30,10 @@
 #include	<usysrets.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
-#include	<termstr.h>
-#include	<sbuf.h>
-#include	<localmisc.h>
+#include	<termstr.h>		/* LIBUC */
+#include	<sbuf.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"config.h"
 
@@ -42,19 +43,13 @@
 
 extern int	termconseq(char *,int,int,int,int,int,int) ;
 
-#if	CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugprinthexblock(cchar *,int,const void *,int) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
+
+/* exported variables */
 
 
+/* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) {
-	SBUF	b ;
-
 	cint	dlen = DBUFLEN ;
 	cint	nlen = NBUFLEN ;
 	int	rs ;
@@ -78,7 +73,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 #endif /* CF_DEBUG */
 
 
-	if ((rs = sbuf_start(&b,dbuf,dlen)) >= 0) {
+	if (sbuf b ; (rs = sbuf_start(&b,dbuf,dlen)) >= 0) {
 
 	sbuf_strw(&b,TERMSTR_VCURS,-1) ; /* save cursor */
 
