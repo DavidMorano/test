@@ -52,10 +52,19 @@ int main(int argc,con mainv argv,con mainv) {
 	if (argc > 1) {
 	    for (int ai = 1 ; (ai < argc) && argv[ai] ; ai += 1) {
 		if (cchar *ap = argv[ai] ; ap[0]) {
-		    if (int v ; (rs = cfdec(ap,-1,&v)) >= 0) {
-			printf("libuc s=>%s< v=%d\n",ap,v) ;
-		        if ((rs = libu::cfdec(ap,-1,&v)) >= 0) {
-			   printf("libu  s=>%s< v=%d\n",ap,v) ;
+		    cint al = -1 ;
+		    if (int v ; (rs = cfdec(ap,al,&v)) >= 0) {
+			printf("libuc s=>%s<  v=%d\n",ap,v) ;
+		        if ((rs = libu::cfdec(ap,al,&v)) >= 0) {
+			    printf("libu  s=>%s<  v=%d\n",ap,v) ;
+			    if (longlong vv ; (rs = cfdec(ap,al,&vv)) >= 0) {
+			        long lv = conv<long>(vv) ;
+			        printf("libuc s=>%s< lv=%ld\n",ap,lv) ;
+		                if ((rs = libu::cfdec(ap,al,&vv)) >= 0) {
+			            lv = conv<long>(vv) ;
+			            printf("libu  s=>%s< lv=%ld\n",ap,lv) ;
+			        } /* end if (libu::cfdec) */
+			    } /* end if (cfdec) */
 			} /* end if (libu::cfdec) */
 		    } /* end if (libuc::cfdec) */
 		} /* end if (non-empty) */
@@ -65,7 +74,7 @@ int main(int argc,con mainv argv,con mainv) {
 	} /* end if (arguments) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(np,rs) ;
-	}
+	} /* end if (error) */
     	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
