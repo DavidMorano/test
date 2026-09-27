@@ -1,0 +1,3 @@
+main: ent
+main: loop rs=2
+main: ret ex=0 rs=2
