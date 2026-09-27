@@ -60,7 +60,7 @@ int main(int argc,con mainv argv,con mainv) {
 	} /* end if (arguments) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(np,rs) ;
-	}
+	} /* end if (error) */
     	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
