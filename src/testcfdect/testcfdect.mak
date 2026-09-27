@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -luo -lf -lu -lf -lut -lsecdb -lnss
+LIBS += -luo -lu -lf -lut -lsecdb -lnss
 
 
 DEPS_MAIN += 
