@@ -31,18 +31,19 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cerrno>
-#include	<climits>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdio>
-#include	<algorithm>		/* |min(3c++)| + |max(3c++)| */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usupport.h>		/* |ctdec(3u)| */
-#include	<ctdecf.h>
-#include	<xxtostr.h>		/* |uitostr(3u)| */
-#include	<localmisc.h>		/* |DECBUFLEN| */
+#include	<cerrno>		/* CSTD */
+#include	<climits>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<algorithm>		/* C++STD |min(3c++)| + |max(3c++)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU |ctdec(3u)| */
+#include	<xxtostr.h>		/* LIBU |uitostr(3u)| */
+#include	<ctdec.h>		/* LIBUC */
+#include	<ctdecf.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU |DECBUFLEN| */
 
 #pragma		GCC dependency		"mod/ulibvals.ccm"
 
@@ -75,10 +76,6 @@ using libu::ctdec ;			/* subroutine */
 
 
 /* external subroutines */
-
-extern "C" {
-    extern int	ctdecf(char *,int,double,int,int,int,int) noex ;
-} /* end */
 
 
 /* external subroutines */
@@ -132,7 +129,7 @@ int main(int,mainv,mainv) {
 	    char dbuf[decbuflen+1] ;
 	    errno = 0 ;
 	    char *bp = uitostr(uv,(dbuf+dlen)) ;
-	    rs = (- errno) ;
+	    rs = (neg errno) ;
 	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
 	} /* end if */
 	if (rs >= 0) {
@@ -140,13 +137,13 @@ int main(int,mainv,mainv) {
 	    cint dlen = decbuflen ;
 	    char dbuf[decbuflen+1] ;
 	    errno = 0 ;
-	    char *bp = itostr(v,(dbuf+dlen)) ;
-	    rs = (- errno) ;
+	    char *bp = sitostr(v,(dbuf+dlen)) ;
+	    rs = (neg errno) ;
 	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
 	} /* end if */
 	if ((rs == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
