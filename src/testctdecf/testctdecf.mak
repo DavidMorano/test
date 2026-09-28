@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -lu -lf
 
 
 DEPS_MAIN += 
@@ -250,7 +250,6 @@ varithmetic.dir:
 digtab.o:		digtab.dir
 digtab.dir:
 	makesubdir $@
-
 
 char.o:			char.cc		char.h
 inetconv.o:		inetconv.cc	inetconv.h
