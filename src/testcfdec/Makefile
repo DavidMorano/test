@@ -255,11 +255,6 @@ digtab.o:		digtab.dir
 digtab.dir:
 	makesubdir $@
 
-# LIBUO
-libuo.o:		libuo.dir
-libuo.dir:
-	makesubdir $@
-
 bufsizeget.o:		bufsizeget.cc	bufsizeget.h
 bufsizevar.o:		bufsizevar.cc	bufsizevar.hh
 
