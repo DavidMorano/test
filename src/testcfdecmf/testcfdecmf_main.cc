@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the |cfdecmf(3uc)| sunroutine */
+/* test the |cfdecmf(3uc)| subroutine */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
