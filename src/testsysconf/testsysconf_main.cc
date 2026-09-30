@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the |sysconf(2)| standard C-library sunroutine */
+/* test the |sysconf(2)| standard C-library subroutine */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
