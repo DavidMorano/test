@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the |cfhex(3uc)| sunroutine */
+/* test the |cfhex(3uc)| subroutine */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
@@ -68,7 +68,6 @@ int main(int argc,con mainv argv,con mainv) {
 			} /* end if (libu::cfhex) */
 		    } /* end if (libuc::cfhex) */
 		} /* end if (non-empty) */
-		DPRINTF("loop rs=%d\n",rs) ;
 		if (rs < 0) break ;
 	    } /* end for */
 	} /* end if (arguments) */
