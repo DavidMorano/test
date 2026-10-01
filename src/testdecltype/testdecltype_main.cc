@@ -61,7 +61,7 @@ using std::string_view ;		/* type */
 using libu::cfdec ;			/* subroutine */
 
 
-/* typ-defs */
+/* type-defs */
 
 typedef string_view	strview ;
 
