@@ -59,7 +59,7 @@
 using libu::cfdec ;			/* subroutine */
 
 
-/* typ-defs */
+/* type-defs */
 
 
 /* external subroutines */
