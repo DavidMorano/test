@@ -1,4 +1,4 @@
-/* main SUPPORT (liblkcmd) */
+/* testlock_main SUPPORT (testlock) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -21,26 +21,28 @@
 
 /*******************************************************************************
 
+  	Description:
 	This is the front-end to make the various SHELL (KSH)
 	built-in commands into stand-alone programs.
 
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<climits>
-#include	<unistd.h>
-#include	<ucontext.h>
-#include	<dlfcn.h>
-#include	<csignal>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstring>
-#include	<usystem.h>
-#include	<intceil.h>
-#include	<sighand.h>
-#include	<strx.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
+#include	<ucontext.h>		/* POSIX® */
+#include	<dlfcn.h>		/* POSIX® */
+#include	<climits>		/* CSTD */
+#include	<csignal>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<intceil.h>		/* LIBU */
+#include	<sighand.h>		/* LIBUC */
+#include	<strx.h>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 
@@ -61,7 +63,10 @@
 #define	NDF		"main.deb"
 
 
-/* typ-defs */
+/* imported namespaces */
+
+
+/* type-defs */
 
 
 /* external subroutines */
@@ -80,15 +85,15 @@ extern int	strlinelen(cchar *,int,int) ;
 struct sigcode {
 	int	code ;
 	cchar	*name ;
-} ;
+} ; /* end struct */
 
 
 /* forward references */
 
-static void	main_sighand(int,siginfo_t *,void *) ;
-static int	main_sigdump(siginfo_t *) ;
+local void	main_sighand(int,siginfo_t *,void *) ;
+local int	main_sigdump(siginfo_t *) ;
 
-static cchar	*strsigcode(const SIGCODE *,int) ;
+local cchar	*strsigcode(const SIGCODE *,int) ;
 
 
 /* local variables */
@@ -106,7 +111,7 @@ constexpr mapex_map	mapexs[] = {
 	{ SR_EXIT, EX_TERM },
 	{ SR_DOM, EX_NOPROG },
 	{ 0, 0 }
-} ;
+} ; /* end array */
 
 constexpr int		sigcatches[] = {
 	SIGILL, 
@@ -115,9 +120,9 @@ constexpr int		sigcatches[] = {
 	SIGQUIT,
 	SIGABRT,
 	0
-} ;
+} /* end array */
 
-static const SIGCODE	sigcode_ill[] = {
+constexpr SIGCODE	sigcode_ill[] = {
 	{ ILL_ILLOPC, "ILLOPC" },
 	{ ILL_ILLOPN, "ILLOPN" },
 	{ ILL_ILLADR, "ILLADR" },
@@ -126,30 +131,32 @@ static const SIGCODE	sigcode_ill[] = {
 	{ ILL_PRVREG, "PRVREG" },
 	{ ILL_COPROC, "COPROC" },
 	{ ILL_BADSTK, "BADSTK" },
-	{ 0, NULL }
-} ;
+	{ 0, nullptr }
+} ; /* end array */
 
-static const SIGCODE	sigcode_segv[] = {
+constexpr SIGCODE	sigcode_segv[] = {
 	{ SEGV_MAPERR, "MAPERR" },
 	{ SEGV_ACCERR, "ACCERR" },
-	{ 0, NULL }
-} ;
+	{ 0, nullptr }
+} ; /* end array */
 
-static const SIGCODE	sigcode_bus[] = {
+constexpr SIGCODE	sigcode_bus[] = {
 	{ BUS_ADRALN, "ADRALN" },
 	{ BUS_ADRERR, "ADRERR" },
 	{ BUS_OBJERR, "OBJERR" },
-	{ 0, NULL }
-} ;
+	{ 0, nullptr }
+} ; /* end array */
+
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
 int main(int argc,cchar *argv[],cchar *envv[])
 {
-	const int	f_lockmemalloc = CF_LOCKMEMALLOC ;
-	const int	f_util = CF_UTIL ;
+	cint	f_lockmemalloc = CF_LOCKMEMALLOC ;
+	cint	f_util = CF_UTIL ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ex = EX_INFO ;
@@ -158,7 +165,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	nprintf(NDF,"main: ent\n") ;
 #endif
 
-	if (argv != NULL) {
+	if (argv != nullptr) {
 	    MAININFO	mi, *mip = &mi ;
 	    if ((rs = maininfo_start(mip,argc,argv)) >= 0) {
 		maininfohand_t	sh = main_sighand ;
@@ -167,7 +174,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	            nprintf(NDF,"main: sig-begin\n") ;
 #endif
 	            if ((rs = lib_initmemalloc(f_lockmemalloc)) >= 0) {
-	                if ((rs = lib_mainbegin(envv,NULL)) >= 0) {
+	                if ((rs = lib_mainbegin(envv,nullptr)) >= 0) {
 	                    if ((rs = maininfo_utilbegin(mip,f_util)) >= 0) {
 	                        cchar	*srch ;
 
@@ -179,7 +186,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 #if	CF_DEBUGN
 	                            nprintf(NDF,"main: srch=%s\n",srch) ;
 #endif
-	                            ex = lib_callcmd(srch,argc,argv,envv,NULL) ;
+	                            ex = lib_callcmd(srch,argc,argv,envv,nullptr) ;
 #if	CF_DEBUGN
 	                            nprintf(NDF,"main: lib_callcmd() ex=%u\n",
 	                                ex) ;
@@ -223,26 +230,23 @@ int main(int argc,cchar *argv[],cchar *envv[])
 #endif
 
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
 /* ARGSUSED */
-static void main_sighand(int sn,siginfo_t *sip,void *vcp)
-{
+local void main_sighand(int sn,siginfo_t *sip,void *vcp) noex {
 #if	CF_DEBUGN
 	nprintf(NDF,"main_sighand: sn=%d(%s)\n",sn,strabbrsig(sn)) ;
 #endif
 
-	if (vcp != NULL) {
+	if (vcp != nullptr) {
 	    Dl_info	dl ;
 	    long	ra ;
 	    ucontext_t	*ucp = (ucontext_t *) vcp ;
 	    void	*rtn ;
-	    const int	wlen = LINEBUFLEN ;
+	    cint	wlen = LINEBUFLEN ;
 	    int		wl ;
 	    cchar	*fmt ;
 	    char	wbuf[LINEBUFLEN+1] ;
@@ -254,25 +258,21 @@ static void main_sighand(int sn,siginfo_t *sip,void *vcp)
 	        wl = bufprintf(wbuf,wlen,fmt,ra,dl.dli_fname,dl.dli_sname) ;
 	        write(2,wbuf,wl) ;
 	    }
-	}
-
-	if (sip != NULL) {
+	} /* end if */
+	if (sip != nullptr) {
 	    main_sigdump(sip) ;
 	}
 	u_exit(EX_TERM) ;
-}
-/* end subroutine (main_sighand) */
+} /* end subroutine (main_sighand) */
 
-
-static int main_sigdump(siginfo_t *sip)
-{
-	const int	wlen = LINEBUFLEN ;
-	const int	si_signo = sip->si_signo ;
-	const int	si_code = sip->si_code ;
+local int main_sigdump(siginfo_t *sip) noex {
+	cint	wlen = LINEBUFLEN ;
+	cint	si_signo = sip->si_signo ;
+	cint	si_code = sip->si_code ;
 	int		wl ;
 	cchar	*sn = strabbrsig(sip->si_signo) ;
 	cchar	*as = "*na*" ;
-	cchar	*scs = NULL ;
+	cchar	*scs = nullptr ;
 	cchar	*fmt ;
 	char		wbuf[LINEBUFLEN+1] ;
 	char		abuf[16+1] ;
@@ -310,22 +310,18 @@ static int main_sigdump(siginfo_t *sip)
 #endif
 	write(2,wbuf,wl) ;
 	return 0 ;
-}
-/* end subroutine (main_sigdump) */
+} /* end subroutine (main_sigdump) */
 
-
-static cchar *strsigcode(const SIGCODE *scp,int code)
-{
-	int		i ;
-	int		f = FALSE ;
+local cchar *strsigcode(const SIGCODE *scp,int code) noex {
+	int		i ; /* used-afterwards */
+	int		f = false ;
 	cchar		*sn = "UNKNOWN" ;
 	for (i = 0 ; scp[i].code != 0 ; i += 1) {
 	    f = (scp[i].code == code) ;
 	    if (f) break ;
-	}
+	} /* end for */
 	if (f) sn = scp[i].name ;
 	return sn ;
-}
-/* end subroutine (strsigcode) */
+} /* end subroutine (strsigcode) */
 
 
