@@ -43,9 +43,9 @@ LIBS += -ldebug -luo -lu -lf
 DEPS_MAIN +=
 
 OBJ0= testuctim_main.o
-OBJ1= uctimx.o
+OBJ1= uctimx.o strtime.o
 OBJ2= semx.o vec.o queue.o
-OBJ3= ptx.o
+OBJ3= ptx.o itimerval.o
 
 OBJ= obj0.o obj1.o obj2.o obj3.o
 
@@ -190,5 +190,12 @@ hasx.dir:
 isx.o:			isx.dir
 isx.dir:
 	makesubdir $@
+
+# STRTIME
+strtime.o:		strtime.dir
+strtime.dir:
+	makesubdir $@
+
+itinmrval.o:		itimerval.cc	itimerval.h
 
 
