@@ -61,7 +61,7 @@
 #define	NDF		"main.deb"
 
 
-/* typ-defs */
+/* type-defs */
 
 #ifndef	TYPEDEF_CCHAR
 #define	TYPEDEF_CCHAR	1
