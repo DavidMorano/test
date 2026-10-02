@@ -43,6 +43,7 @@
 #include	<clanguage.h>
 #include	<usysbase.h>
 #include	<logfile.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>
 
 #include	"config.h"
@@ -88,8 +89,6 @@ extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 extern char	*strwcpy(char *,cchar *,int) ;
-extern char	*timestr_log(time_t,char *) ;
-extern char	*timestr_logz(time_t,char *) ;
 
 
 /* external variables */
@@ -259,7 +258,7 @@ int		mxu ;
 	        debugprintf("transfer: back from POLL w/ rs=%d\n",rs) ;
 		uc_gettimeofday(&tv,NULL) ;
 	        debugprintf("transfer: %s.%ld\n",
-			timestr_log(((time_t) tv.tv_sec),timebuf),
+			strtime_log(((time_t) tv.tv_sec),timebuf),
 			(tv.tv_usec/1000)) ;
 	}
 #endif /* CF_DEBUG */
