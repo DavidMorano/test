@@ -25,7 +25,7 @@
 
 
 struct mailmsg_envstr {
-	const char	*ep ;
+	cchar	*ep ;
 	int		el ;
 } ;
 
