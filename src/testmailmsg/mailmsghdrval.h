@@ -45,9 +45,9 @@ struct mailmsghdrval_head {
 extern "C" {
 #endif
 
-extern int mailmsghdrval_start(MAILMSGHDRVAL *,int,const char *,int) ;
-extern int mailmsghdrval_add(MAILMSGHDRVAL *,const char *,int) ;
-extern int mailmsghdrval_get(MAILMSGHDRVAL *,const char **,int *) ;
+extern int mailmsghdrval_start(MAILMSGHDRVAL *,int,cchar *,int) ;
+extern int mailmsghdrval_add(MAILMSGHDRVAL *,cchar *,int) ;
+extern int mailmsghdrval_get(MAILMSGHDRVAL *,cchar **,int *) ;
 extern int mailmsghdrval_finish(MAILMSGHDRVAL *) ;
 
 #ifdef	__cplusplus
