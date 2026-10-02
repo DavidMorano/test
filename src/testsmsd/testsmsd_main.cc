@@ -54,26 +54,27 @@
 #include	<climits>
 #include	<cstdlib>
 #include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<bfile.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<baops.h>		/* LIBU */
 #include	<keyopt.h>
 #include	<field.h>
 #include	<logfile.h>
 #include	<vecstr.h>
-#include	<baops.h>
 #include	<userinfo.h>
 #include	<lfm.h>
 #include	<varsub.h>
-#include	<exitcodes.h>
 #include	<mallocstuff.h>
 #include	<pwfile.h>
 #include	<getax.h>
 #include	<srvtab.h>
 #include	<acctab.h>
 #include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
-#include	<nistinfo.h>
-#include	<localmisc.h>
+#include	<nistinfo.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<bfile.h>		/* LIBB */
 
 #include	"builtin.h"
 #include	"config.h"
@@ -1618,7 +1619,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        bprintf(&pidfile,"%s!%s\n",pip->nodename,pip->username) ;
 
 	        bprintf(&pidfile,"%s %s\n",
-	            timestr_logz(pip->daytime,timebuf),pip->banner) ;
+	            strtime_logz(pip->daytime,timebuf),pip->banner) ;
 
 	        if (userbuf[0] != '\0')
 	            bprintf(&pidfile,"host=%s.%s user=%s pid=%d\n",
@@ -1877,7 +1878,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    pip->daytime = time(NULL) ;
 
 	    logfile_printf(&pip->lh,"%s finished initializing\n",
-	        timestr_logz(pip->daytime,timebuf)) ;
+	        strtime_logz(pip->daytime,timebuf)) ;
 
 	    logfile_flush(&pip->lh) ;
 
