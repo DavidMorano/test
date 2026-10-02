@@ -57,7 +57,7 @@ using namespace	std ;
 
 typedef	vector<int>::iterator		vit ;
 typedef	vector<int>::const_iterator	cvit ;
-typedef int	(*sortcmp_t)(const void *,const void *) ;
+typedef int	(*sortcmp_t)(cvoid *,cvoid *) ;
 
 
 /* external subroutines */
@@ -75,7 +75,7 @@ extern "C" int	strlinelen(cchar *,cchar *,int) ;
 
 /* forward references */
 
-local int	ourcmp(const void *,const void *) ;
+local int	ourcmp(cvoid *,cvoid *) ;
 
 local void	arrload(int *,const vector<int> &,int) ;
 local void	printa(cint *,int) ;
@@ -160,7 +160,7 @@ local void arrload(int *aa,const vector<int> &a,int al) {
 	}
 }
 
-local int ourcmp(const void *v1p,const void *v2p) {
+local int ourcmp(cvoid *v1p,cvoid *v2p) {
 	int		*i1p = (int *) v1p ;
 	int		*i2p = (int *) v2p ;
 	return (*i1p - *i2p) ;
