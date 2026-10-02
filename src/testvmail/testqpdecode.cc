@@ -55,18 +55,18 @@
 /* external subroutines */
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int	procfile(PROGINFO *,QPDECODER *,bfile *,cchar *) ;
-static int	procout(PROGINFO *,bfile *,QPDECODER *) ;
+local int	procfile(PROGINFO *,QPDECODER *,bfile *,cchar *) ;
+local int	procout(PROGINFO *,bfile *,QPDECODER *) ;
 
 
 /* exported subroutines */
@@ -81,12 +81,12 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	uint		mo_start = 0 ;
 #endif
 
-	const int	f_space = TRUE ;
+	cint	f_space = TRUE ;
 
 	int		rs = SR_OK ;
 	int		rs1 ;
-	const char	*pr = PCS ;
-	const char	*cp ;
+	cchar	*pr = PCS ;
+	cchar	*cp ;
 
 #if	CF_DEBUGS
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -110,8 +110,8 @@ int main(int argc,cchar *argv[],cchar *envv[])
 
 	        if (argv != NULL) {
 	            bfile	of ;
-	            const char	*ofname = BFILE_STDOUT ;
-	            const char	*ifname ;
+	            cchar	*ofname = BFILE_STDOUT ;
+	            cchar	*ifname ;
 	            if ((rs = bopen(&of,ofname,"wct",0666)) >= 0) {
 	                int	ai ;
 	                for (ai = 1 ; ai < argc ; ai += 1) {
@@ -152,7 +152,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 /* local subroutines */
 
 
-static int procfile(PROGINFO *pip,QPDECODER *qp,bfile *ofp,cchar *ifname)
+local int procfile(PROGINFO *pip,QPDECODER *qp,bfile *ofp,cchar *ifname)
 {
 	bfile		ifile, *ifp = &ifile ;
 	int		rs ;
@@ -169,7 +169,7 @@ static int procfile(PROGINFO *pip,QPDECODER *qp,bfile *ofp,cchar *ifname)
 	    ifname = BFILE_STDIN ;
 
 	if ((rs = bopen(ifp,ifname,"r",0666)) >= 0) {
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    char	lbuf[LINEBUFLEN+1] ;
 
 	    while ((rs = breadln(ifp,lbuf,llen)) > 0) {
@@ -200,9 +200,9 @@ static int procfile(PROGINFO *pip,QPDECODER *qp,bfile *ofp,cchar *ifname)
 /* end subroutine (procfile) */
 
 
-static int procout(PROGINFO *pip,bfile *ofp,QPDECODER *qp)
+local int procout(PROGINFO *pip,bfile *ofp,QPDECODER *qp)
 {
-	const int	llen = LINEBUFLEN ;
+	cint	llen = LINEBUFLEN ;
 	int		rs ;
 	int		wlen = 0 ;
 	char	lbuf[LINEBUFLEN+1] ;
