@@ -131,12 +131,12 @@ struct termstr_head {
 extern "C" {
 #endif
 
-extern int termstr_start(TERMSTR *,const char *) ;
+extern int termstr_start(TERMSTR *,cchar *) ;
 extern int termstr_clean(TERMSTR *) ;
 extern int termstr_char(TERMSTR *,int) ;
-extern int termstr_write(TERMSTR *,const char *,int) ;
-extern int termstr_writegr(TERMSTR *,int,const char *,int) ;
-extern int termstr_get(TERMSTR *,const char **) ;
+extern int termstr_write(TERMSTR *,cchar *,int) ;
+extern int termstr_writegr(TERMSTR *,int,cchar *,int) ;
+extern int termstr_get(TERMSTR *,cchar **) ;
 extern int termstr_ed(TERMSTR *,int) ;
 extern int termstr_el(TERMSTR *,int) ;
 extern int termstr_ec(TERMSTR *,int) ;
