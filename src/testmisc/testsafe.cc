@@ -86,6 +86,7 @@
 #include	<spawnproc.h>
 #include	<opentmp.h>
 #include	<upt.h>			/* LIBU */
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
@@ -1612,11 +1613,11 @@ local int proctouchfile(PROGINFO *pip,cchar touchfname[])
 
 #if	CF_ALWAYS
 	    bprintf(&touchfile,"%s\n",
-	        timestr_logz(pip->daytime,timebuf)) ;
+	        strtime_logz(pip->daytime,timebuf)) ;
 #else
 	    if (f_write || (lip->c_updated > 0))
 	        bprintf(&touchfile,"%s\n",
-	            timestr_logz(pip->daytime,timebuf)) ;
+	            strtime_logz(pip->daytime,timebuf)) ;
 #endif /* CF_ALWAYS */
 
 	    bclose(&touchfile) ;
@@ -2098,7 +2099,7 @@ local int locinfo_tmpmaint(LI *lip) noex {
 	                if (f_need) {
 	                    int		tl ;
 	                    char	timebuf[TIMEBUFLEN + 3] ;
-	                    timestr_log(dt,timebuf) ;
+	                    strtime_log(dt,timebuf) ;
 	                    tl = strlen(timebuf) ;
 	                    timebuf[tl++] = '\n' ;
 	                    rs = u_write(fd,timebuf,tl) ;
