@@ -21,9 +21,9 @@ extern "C" {
 #endif
 
 extern char	*mallocbuf(void *,int) ;
-extern char	*mallocstr(const char *) ;
-extern char	*mallocstrw(const char *,int) ;
-extern char	*mallocstrw(const char *,int) ;
+extern char	*mallocstr(cchar *) ;
+extern char	*mallocstrw(cchar *,int) ;
+extern char	*mallocstrw(cchar *,int) ;
 extern char	*mallocint(int) ;
 
 #ifdef	__cplusplus
