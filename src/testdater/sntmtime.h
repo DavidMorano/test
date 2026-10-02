@@ -24,7 +24,7 @@
 extern "C" {
 #endif
 
-extern int sntmtime(char *,int,TMTIME *,const char *) ;
+extern int sntmtime(char *,int,TMTIME *,cchar *) ;
 
 #ifdef	__cplusplus
 }
