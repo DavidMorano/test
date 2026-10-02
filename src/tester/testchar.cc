@@ -3,10 +3,10 @@
 #include	<iostream>
 #include	<cstdio>
 
-static const char	a[] = "hello world!" ;
+static cchar	a[] = "hello world!" ;
 
 int main() {
-	const int	sz = sizeof(a) ;
+	cint	sz = sizeof(a) ;
 	printf("a=%s sz=%u\n",a,sz) ;
 }
 
