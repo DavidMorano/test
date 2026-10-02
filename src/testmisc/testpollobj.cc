@@ -79,7 +79,6 @@
 
 #if	CF_DEBUG
 extern int	debugprintf(cchar *,...) ;
-extern char	*timestr_log(time_t,char *) ;
 #endif
 
 
