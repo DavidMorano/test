@@ -11,17 +11,17 @@
 extern "C" {
 #endif
 
-extern int proginfo_start(struct proginfo *,const char **,const char *,
-			const char *) ;
-extern int proginfo_setprogroot(struct proginfo *,const char *,int) ;
+extern int proginfo_start(struct proginfo *,cchar **,cchar *,
+			cchar *) ;
+extern int proginfo_setprogroot(struct proginfo *,cchar *,int) ;
 extern int proginfo_rootprogdname(struct proginfo *) ;
-extern int proginfo_rootexecname(struct proginfo *,const char *) ;
-extern int proginfo_setentry(struct proginfo *,const char **,const char *,int) ;
-extern int proginfo_setversion(struct proginfo *,const char *) ;
-extern int proginfo_setbanner(struct proginfo *,const char *) ;
-extern int proginfo_setsearchname(struct proginfo *,const char *,const char *) ;
-extern int proginfo_setprogname(struct proginfo *,const char *) ;
-extern int proginfo_setexecname(struct proginfo *,const char *) ;
+extern int proginfo_rootexecname(struct proginfo *,cchar *) ;
+extern int proginfo_setentry(struct proginfo *,cchar **,cchar *,int) ;
+extern int proginfo_setversion(struct proginfo *,cchar *) ;
+extern int proginfo_setbanner(struct proginfo *,cchar *) ;
+extern int proginfo_setsearchname(struct proginfo *,cchar *,cchar *) ;
+extern int proginfo_setprogname(struct proginfo *,cchar *) ;
+extern int proginfo_setexecname(struct proginfo *,cchar *) ;
 extern int proginfo_pwd(struct proginfo *) ;
 extern int proginfo_getpwd(struct proginfo *,char *,int) ;
 extern int proginfo_getename(struct proginfo *,char *,int) ;
