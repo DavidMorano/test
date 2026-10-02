@@ -91,11 +91,11 @@ using namespace	std ;
 /* external subroutines */
 
 #if	CF_DEBUG
-extern "C" int	debugopen(const char *) ;
-extern "C" int	debugprintf(const char *,...) ;
-extern "C" int	debugprinthex(const char *,int,const char *,int) ;
+extern "C" int	debugopen(cchar *) ;
+extern "C" int	debugprintf(cchar *,...) ;
+extern "C" int	debugprinthex(cchar *,int,cchar *,int) ;
 extern "C" int	debugclose() ;
-extern "C" int	strlinelen(const char *,int,int) ;
+extern "C" int	strlinelen(cchar *,int,int) ;
 #endif
 
 
@@ -108,7 +108,7 @@ local int	debugprintchars(cchar *,const wchar_t *,int) ;
 
 /* local variables */
 
-static const int 	values[] = {
+static cint 	values[] = {
 	1,3,5,7, -1
 } ;
 
@@ -127,8 +127,8 @@ int main(int argc,cchar *argv[],cchar *envv[])
 
 	int		rs = SR_OK ;
 	int		ex = 0 ;
-	const char	*pr = PCS ;
-	const char	*cp ;
+	cchar	*pr = PCS ;
+	cchar	*cp ;
 
 #if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -148,7 +148,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 /* go */
 
 	if (rs >= 0) {
-	    const int	svals[] = { 3, 0, 1, 9, 7, 5, 10 } ;
+	    cint	svals[] = { 3, 0, 1, 9, 7, 5, 10 } ;
 	    cout << "the values are:\n" ;
 	    for (auto v : values) {
 		cout << " " << v ;
@@ -225,7 +225,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 #if	CF_DEBUG
 local int debugprintchars(cchar *id,const wchar_t *wbuf,int wlen) noex {
 	for (int i = 0 ; i < wlen ; i += 1) {
-	    const int	ch = wbuf[i] ;
+	    cint	ch = wbuf[i] ;
 	    debugprintf("main/%s: wc[%02u]=%08x\n",id,i,ch) ;
 	}
 	return 0 ;
