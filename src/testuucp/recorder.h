@@ -73,11 +73,11 @@ extern int	recorder_rtlen(RECORDER *) ;
 extern int	recorder_count(RECORDER *) ;
 extern int	recorder_indlen(RECORDER *) ;
 extern int	recorder_indsize(RECORDER *) ;
-extern int	recorder_mkindun(RECORDER *,const char *,uint (*)[2],int) ;
-extern int	recorder_mkindl1(RECORDER *,const char *,uint [][2],int) ;
-extern int	recorder_mkindl3(RECORDER *,const char *,uint [][2],int) ;
-extern int	recorder_mkindf(RECORDER *,const char *,uint [][2],int) ;
-extern int	recorder_mkindfl3(RECORDER *,const char *,uint [][2],int) ;
+extern int	recorder_mkindun(RECORDER *,cchar *,uint (*)[2],int) ;
+extern int	recorder_mkindl1(RECORDER *,cchar *,uint [][2],int) ;
+extern int	recorder_mkindl3(RECORDER *,cchar *,uint [][2],int) ;
+extern int	recorder_mkindf(RECORDER *,cchar *,uint [][2],int) ;
+extern int	recorder_mkindfl3(RECORDER *,cchar *,uint [][2],int) ;
 extern int	recorder_info(RECORDER *,RECORDER_INFO *) ;
 
 #endif /* RECORDER_MASTER */
