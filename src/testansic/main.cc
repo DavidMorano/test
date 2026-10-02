@@ -32,7 +32,7 @@
 int main(int,mainv,mainv) {
 	int		iw = -1 ;
 	unsigned short	us = 1 ;
-	const char	*fmt ;
+	cchar	*fmt ;
 	if (us < iw) {
 	    fmt = "you have the correct K&R compiler\n" ;
 	    printf(fmt) ;
