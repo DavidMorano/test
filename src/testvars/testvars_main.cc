@@ -204,7 +204,7 @@ local int	filemap_free(struct filemap *) ;
 
 local int	hasweird(cchar *,int) ;
 
-static void	sighand_int(int) ;
+local void	sighand_int(int) ;
 
 
 /* local variables */
@@ -1194,7 +1194,7 @@ ret0:
 
 /* local subroutines */
 
-static void sighand_int(sn)
+local void sighand_int(sn)
 int	sn ;
 {
 
@@ -2182,7 +2182,7 @@ int		sl ;
 {
 	int		f = false ;
 	for (int i = 0 ; (i != sl) && (sp[i] != '\0') ; i += 1) {
-	    const int	ch = MKCHAR(sp[i]) ;
+	    cint	ch = MKCHAR(sp[i]) ;
 	    f = ((! isalnumlatin(ch)) && (ch != '_')) ;
 	    if (f) break ;
 	} /* end if */
