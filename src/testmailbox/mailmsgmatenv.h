@@ -35,7 +35,7 @@ struct mailmsgmatenv_flags {
 } ;
 
 struct mailmsgmatenv_elem {
-	const char	*ep ;
+	cchar	*ep ;
 	int		el ;
 } ;
 
@@ -54,7 +54,7 @@ struct mailmsgmatenv_head {
 extern "C" {
 #endif
 
-extern int mailmsgmatenv(MAILMSGMATENV *,const char *,int) ;
+extern int mailmsgmatenv(MAILMSGMATENV *,cchar *,int) ;
 
 #ifdef	__cplusplus
 }
