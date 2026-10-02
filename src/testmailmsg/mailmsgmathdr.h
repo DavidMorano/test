@@ -25,7 +25,7 @@
 extern "C" {
 #endif
 
-extern int mailmsgmathdr(const char *,int,int *) ;
+extern int mailmsgmathdr(cchar *,int,int *) ;
 
 #ifdef	__cplusplus
 }
