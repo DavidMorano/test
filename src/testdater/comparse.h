@@ -47,7 +47,7 @@
 
 
 struct comparse_str {
-	const char	*sp ;
+	cchar	*sp ;
 	int		sl ;
 } ;
 
@@ -63,9 +63,9 @@ struct comparse_head {
 extern "C" {
 #endif
 
-extern int comparse_start(COMPARSE *,const char *,int) ;
-extern int comparse_getval(COMPARSE *,const char **) ;
-extern int comparse_getcom(COMPARSE *,const char **) ;
+extern int comparse_start(COMPARSE *,cchar *,int) ;
+extern int comparse_getval(COMPARSE *,cchar **) ;
+extern int comparse_getcom(COMPARSE *,cchar **) ;
 extern int comparse_finish(COMPARSE *) ;
 
 #ifdef	__cplusplus
