@@ -27,7 +27,7 @@
 #include	<usyscalls.h>		/* LIBU */
 #include	<tmtime.hh>		/* LIBUC */
 #include	<sntmtime.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
@@ -127,7 +127,7 @@ local int procvals() noex {
     	int		rs = SR_OK ;
 	char		tbuf[TIMEBUFLEN + 1] ;
 	printf(" dt=%ld\n",dt) ;
-	printf("time-loc » %s «\n",timestr_edate(dt,tbuf)) ;
+	printf("time-loc » %s «\n",strtime_edate(dt,tbuf)) ;
 	if (tmtime tmd ; (rs = tmd.timelocal(dt)) >= 0) {
 	    printf("loc-off           isdst=%d\n",tmd.isdst) ;
 	    printf("loc-off (secs west GMT)=%d\n",tmd.gmtoff) ;
@@ -135,14 +135,14 @@ local int procvals() noex {
 	    if ((rs = sntmtime(tbuf,tlen,&tmd,fmt)) >= 0) {
 	        if (time_t ntv ; (rs = tmd.mktime(&ntv)) >= 0) {
 		    printf("ntv=%ld\n",ntv) ;
-	            printf("time-loc » %s «\n",timestr_edate(ntv,tbuf)) ;
+	            printf("time-loc » %s «\n",strtime_edate(ntv,tbuf)) ;
 		    ntv += (3600) ;
-	            printf("time-rem » %s «\n",timestr_edate(ntv,tbuf)) ;
+	            printf("time-rem » %s «\n",strtime_edate(ntv,tbuf)) ;
 		    {
 			tmd.gmtoff += (1 * 3600) ;
 	        	if (time_t rtv ; (rs = tmd.mktime(&rtv)) >= 0) {
 	            	    printf("time-rem » %s «\n",
-				   timestr_edate(rtv,tbuf)) ;
+				   strtime_edate(rtv,tbuf)) ;
 			} /* end if (tmtime_mktime) */
 		    } /* end block */
 	        } /* end if (tmtime_mktime) */
