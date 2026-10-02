@@ -58,16 +58,16 @@ extern "C" {
 #endif
 
 extern int mailmsg_start(MAILMSG *) ;
-extern int mailmsg_loadline(MAILMSG *,const char *,int) ;
+extern int mailmsg_loadline(MAILMSG *,cchar *,int) ;
 extern int mailmsg_envcount(MAILMSG *) ;
-extern int mailmsg_envaddress(MAILMSG *,int,const char **) ;
-extern int mailmsg_envdate(MAILMSG *,int,const char **) ;
-extern int mailmsg_envremote(MAILMSG *,int,const char **) ;
-extern int mailmsg_hdrcount(MAILMSG *,const char *) ;
-extern int mailmsg_hdrikey(MAILMSG *,int,const char **) ;
-extern int mailmsg_hdriline(MAILMSG *,const char *,int,int,const char **) ;
-extern int mailmsg_hdrival(MAILMSG *,const char *,int,const char **) ;
-extern int mailmsg_hdrval(MAILMSG *,const char *,const char **) ;
+extern int mailmsg_envaddress(MAILMSG *,int,cchar **) ;
+extern int mailmsg_envdate(MAILMSG *,int,cchar **) ;
+extern int mailmsg_envremote(MAILMSG *,int,cchar **) ;
+extern int mailmsg_hdrcount(MAILMSG *,cchar *) ;
+extern int mailmsg_hdrikey(MAILMSG *,int,cchar **) ;
+extern int mailmsg_hdriline(MAILMSG *,cchar *,int,int,cchar **) ;
+extern int mailmsg_hdrival(MAILMSG *,cchar *,int,cchar **) ;
+extern int mailmsg_hdrval(MAILMSG *,cchar *,cchar **) ;
 extern int mailmsg_finish(MAILMSG *) ;
 
 #ifdef	__cplusplus
