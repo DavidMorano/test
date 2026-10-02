@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 extern int zos_set(char *,int,int) ;
-extern int zos_get(const char *,int,int *) ;
+extern int zos_get(cchar *,int,int *) ;
 
 #ifdef	__cplusplus
 }
