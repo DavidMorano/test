@@ -27,7 +27,7 @@
 #include	<ucmem.h>		/* LIBUC */
 #include	<utmpacc.h>		/* LIBUC */
 #include	<filer.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<rmx.h>			/* LIBUC */
 #include	<localmisc.h>		/* LIBU |TIMEBUFLEN| */
 #include	<libdebug.h>		/* LIBDEBUG */
@@ -121,7 +121,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if (rs >= 0) {
 	    if (time_t bt ; (rs = utmpacc_boottime(&bt)) >= 0) {
 	        char	timebuf[TIMEBUFLEN+1] ;
-	        timestr_logz(bt,timebuf) ;
+	        strtime_logz(bt,timebuf) ;
 	        printf("bt=%s\n",timebuf) ;
 	    }
 	}
