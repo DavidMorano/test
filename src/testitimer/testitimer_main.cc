@@ -43,7 +43,7 @@
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
@@ -165,7 +165,7 @@ local int process(FILE *ofp) noex {
 		            if ((rs = u_sigwait(&wsm)) >= 0) {
 			        dt = getustime ;
 			        DEBUGPRINTF("signo=%d\n",rs) ;
-			        timestr_log(dt,tbuf) ;
+			        strtime_log(dt,tbuf) ;
 			        fprintf(ofp,"%s\n",tbuf) ;
 			        fflush(ofp) ;
 			    } /* end if (u_sigwait) */
