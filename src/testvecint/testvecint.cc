@@ -62,7 +62,7 @@ using std::cout ;			/* variable */
 
 /* local variables */
 
-static const int	vals[] = { 3, 7, 19, 12, 43 } ;
+static cint	vals[] = { 3, 7, 19, 12, 43 } ;
 
 
 /* exported variables */
