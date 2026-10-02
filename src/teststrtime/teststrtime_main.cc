@@ -24,7 +24,7 @@
 	teststrtime
 
 	Description:
-	This is a small test of retrieving environment variables.
+	This is a small test of the |strtime{x}(3uc)| subroutines.
 
 *******************************************************************************/
 
