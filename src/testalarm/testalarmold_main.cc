@@ -47,6 +47,7 @@
 #include	<baops.h>		/* LIBU */
 #include	<userinfo.h>		/* LIBUC */
 #include	<logfile.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
 
 
@@ -83,10 +84,10 @@
 
 /* forward references */
 
-static int	anyformat() ;
+local int	anyformat() ;
 
-static void	helpfile(const char *,bfile *) ;
-static void	int_all() ;
+local void	helpfile(cchar *,bfile *) ;
+local void	int_all() ;
 
 
 /* global data */
@@ -601,7 +602,7 @@ int main(int argc,con mainv argv,con mainv envv)
 #endif
 
 	    logfile_printf(&g.lh,"%s %-14s %s/%s\n",
-	        timestr_log(daytime,timebuf),
+	        strtime_log(daytime,timebuf),
 	        g.progname,
 	        VERSION,(u.f.sysv_ct ? "SYSV" : "BSD")) ;
 
@@ -786,8 +787,8 @@ badret:
 
 
 
-static void helpfile(f,ofp)
-const char	f[] ;
+local void helpfile(f,ofp)
+cchar	f[] ;
 bfile		*ofp ;
 {
 	bfile	file, *ifp = &file ;
@@ -819,9 +820,9 @@ int	signum ;
 }
 
 
-static int anyformat(ofp,s)
+local int anyformat(ofp,s)
 bfile		*ofp ;
-const int	s ;
+cint	s ;
 {
 	int	rs ;
 	int	rlen ;
