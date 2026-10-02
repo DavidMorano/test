@@ -35,9 +35,9 @@
 extern "C" {
 #endif
 
-extern int addressparse(const char *,int,char *,char *) ;
-extern int addressjoin(char *,int,const char *,const char *,int) ;
-extern int addressarpa(char *,int,const char *,const char *,int) ;
+extern int addressparse(cchar *,int,char *,char *) ;
+extern int addressjoin(char *,int,cchar *,cchar *,int) ;
+extern int addressarpa(char *,int,cchar *,cchar *,int) ;
 
 #ifdef	__cplusplus
 }
