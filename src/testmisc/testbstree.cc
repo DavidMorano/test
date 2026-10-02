@@ -78,7 +78,7 @@ using namespace std ;
 #if	CF_DEBUG
 extern "C" int	debugopen(cchar *) ;
 extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugprinthexblock(cchar *,int,const void *,int) ;
+extern "C" int	debugprinthexblock(cchar *,int,cvoid *,int) ;
 extern "C" int	debugclose() ;
 extern "C" int	strlinelen(cchar *,cchar *,int) ;
 #endif
