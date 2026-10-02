@@ -66,7 +66,7 @@ constexpr cpcchar	s[] = {
 
 */
 
-static const char	*s_extra[] = {
+static cchar	*s_extra[] = {
 	"\033P1!uA\033\\",	/* designate ISO Latin-1 as supplimental */
 	"\033(B",		/* map ASCII to G0 */
 	"\033)0",		/* DEC special graphic as G1 */
