@@ -31,18 +31,19 @@
 #include	<sys/socket.h>
 #include	<sys/time.h>
 #include	<netinet/in.h>
-#include	<ctime>
-#include	<csignal>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<baops.h>
-#include	<bfile.h>
+#include	<ctime>			/* CSTD */
+#include	<csignal>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<baops.h>		/* LIBU */
 #include	<sockaddress.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>		/* |TIMEBUFLEN| */
+#include	<strtime.h>		/* LIBUC */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |TIMEBUFLEN| */
 #include	<libdebug.h>		/* LIBDEBUG */
+#include	<bfile.h>		/* LIBB */
 
 #include	"sysmisc.h"
 #include	"defs.h"
@@ -819,7 +820,7 @@ int main(int argc,con mainv argv,con mainb envv) {
 /* listen on a local UDP port */
 
 	{
-	    const int	af = AF_INET ;
+	    cint	af = AF_INET ;
 	    rs = listenudp(af,"anyhost",nullptr,0) ;
 	    fd_listen = rs ;
 	}
@@ -1139,7 +1140,7 @@ local int bprintmsg(bfile *ofp,char *buf,int buflen) noex {
 		bprintf(ofp,"rc=%d\n",m1.rc) ;
 
 		bprintf(ofp,"timestamp=%s\n",
-			timestr_log(m1.timestamp,timebuf)) ;
+			strtime_log(m1.timestamp,timebuf)) ;
 
 		bprintf(ofp,"providerid=%d\n",m1.providerid) ;
 
@@ -1165,7 +1166,7 @@ local int bprintmsg(bfile *ofp,char *buf,int buflen) noex {
 		bprintf(ofp,"rc=%d\n",m2.rc) ;
 
 		bprintf(ofp,"timestamp=%s\n",
-			timestr_log(m2.timestamp,timebuf)) ;
+			strtime_log(m2.timestamp,timebuf)) ;
 
 		bprintf(ofp,"providerid=%d\n",m2.providerid) ;
 
@@ -1178,7 +1179,7 @@ local int bprintmsg(bfile *ofp,char *buf,int buflen) noex {
 		bprintf(ofp,"la_15min=%d\n",m2.la_15min) ;
 
 		bprintf(ofp,"boottime=%s\n",
-			timestr_log(m2.boottime,timebuf)) ;
+			strtime_log(m2.boottime,timebuf)) ;
 
 		bprintf(ofp,"nproc=%d\n",m2.nproc) ;
 
@@ -1196,7 +1197,7 @@ local int bprintmsg(bfile *ofp,char *buf,int buflen) noex {
 		bprintf(ofp,"rc=%d\n",m3.rc) ;
 
 		bprintf(ofp,"timestamp=%s\n",
-			timestr_log(m3.timestamp,timebuf)) ;
+			strtime_log(m3.timestamp,timebuf)) ;
 
 		bprintf(ofp,"providerid=%d\n",m3.providerid) ;
 
@@ -1209,7 +1210,7 @@ local int bprintmsg(bfile *ofp,char *buf,int buflen) noex {
 		bprintf(ofp,"la_15min=%d\n",m3.la_15min) ;
 
 		bprintf(ofp,"boottime=%s\n",
-			timestr_log(m3.boottime,timebuf)) ;
+			strtime_log(m3.boottime,timebuf)) ;
 
 		bprintf(ofp,"nproc=%d\n",m3.nproc) ;
 
