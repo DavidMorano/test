@@ -23,9 +23,9 @@
 extern "C" {
 #endif
 
-extern int tmstrsday(const char *,int) ;
-extern int tmstrsmonth(const char *,int) ;
-extern int tmstrsyear(const char *,int) ;
+extern int tmstrsday(cchar *,int) ;
+extern int tmstrsmonth(cchar *,int) ;
+extern int tmstrsyear(cchar *,int) ;
 
 #ifdef	__cplusplus
 }
