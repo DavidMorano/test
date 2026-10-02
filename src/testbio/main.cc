@@ -57,11 +57,11 @@
 /* external subroutines */
 
 #if	CF_DEBUGS || CF_DEBUG
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
@@ -70,7 +70,7 @@ extern int	strlinelen(const char *,int,int) ;
 
 /* forward references */
 
-static int procfile(struct proginfo *,bfile *,const char *) ;
+local int procfile(struct proginfo *,bfile *,cchar *) ;
 
 
 /* exported subroutines */
@@ -78,8 +78,8 @@ static int procfile(struct proginfo *,bfile *,const char *) ;
 
 int main(argc,argv,envv)
 int		argc ;
-const char	*argv[] ;
-const char	*envv[] ;
+cchar	*argv[] ;
+cchar	*envv[] ;
 {
 	struct proginfo	pi, *pip = &pi ;
 
@@ -97,10 +97,10 @@ const char	*envv[] ;
 	int	ex = EX_INFO ;
 	int	f_usage = FALSE ;
 
-	const char	*progname, *argp, *aop ;
-	const char	*efname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*progname, *argp, *aop ;
+	cchar	*efname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 
 
 #if	CF_DEBUGS || CF_DEBUG
@@ -130,7 +130,7 @@ const char	*envv[] ;
 
 	if ((rs = bopen(ofp,ofname,"wct",0666)) >= 0) {
 	    int		ai = 1 ;
-	    const char	*fname ;
+	    cchar	*fname ;
 
 	    if (argc > 1) {
 		for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
@@ -180,9 +180,9 @@ ret0:
 /* local subroutines */
 
 
-static int procfile(struct proginfo *pip,bfile *ofp,const char *fname)
+local int procfile(struct proginfo *pip,bfile *ofp,cchar *fname)
 {
-	const int	of = O_RDONLY ;
+	cint	of = O_RDONLY ;
 	int	rs ;
 	int	wlen = 0 ;
 
@@ -194,9 +194,9 @@ static int procfile(struct proginfo *pip,bfile *ofp,const char *fname)
 	    fname = "/dev/stdin" ;
 
 	if ((rs = uc_open(fname,of,0666)) >= 0) {
-	    const int	to = -1 ;
-	    const int	ro = 0 ;
-	    const int	llen = LINEBUFLEN ;
+	    cint	to = -1 ;
+	    cint	ro = 0 ;
+	    cint	llen = LINEBUFLEN ;
 	    int		len ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    int	fd = rs ;
