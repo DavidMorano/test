@@ -26,7 +26,7 @@
 
 
 struct zdb_e {
-	const char	*name ;
+	cchar	*name ;
 	short		off ;		/* minutes west of GMT */
 	short		isdst ;
 } ;
@@ -38,8 +38,8 @@ struct zdb_e {
 extern "C" {
 #endif
 
-extern int	zdb_nameoff(ZDB *,const char *,int,int) ;
-extern int	zdb_name(ZDB *,const char *,int) ;
+extern int	zdb_nameoff(ZDB *,cchar *,int,int) ;
+extern int	zdb_name(ZDB *,cchar *,int) ;
 extern int	zdb_off(ZDB *,int) ;
 extern int	zdb_offisdst(ZDB *,int,int) ;
 extern int	zdb_count(ZDB *) ;
