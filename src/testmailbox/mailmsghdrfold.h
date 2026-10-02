@@ -43,7 +43,7 @@ struct mailmsghdrfold_flags {
 struct mailmsghdrfold_head {
 	uint		magic ;
 	MAILMSGHDRFOLD_FL	f ;
-	const char	*sp ;
+	cchar	*sp ;
 	int		sl ;
 	int		mcols ;		/* message columns (usually 76) */
 	int		ln ;		/* line within header instance */
@@ -56,8 +56,8 @@ struct mailmsghdrfold_head {
 extern "C" {
 #endif
 
-extern int mailmsghdrfold_start(MAILMSGHDRFOLD *,int,int,const char *,int) ;
-extern int mailmsghdrfold_get(MAILMSGHDRFOLD *,int,const char **) ;
+extern int mailmsghdrfold_start(MAILMSGHDRFOLD *,int,int,cchar *,int) ;
+extern int mailmsghdrfold_get(MAILMSGHDRFOLD *,int,cchar **) ;
 extern int mailmsghdrfold_finish(MAILMSGHDRFOLD *) ;
 
 #ifdef	__cplusplus
