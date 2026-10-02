@@ -34,7 +34,7 @@
 #include	<ucsysmisc.h>		/* LIBU */
 #include	<ucnprocs.h>		/* LIBU */
 #include	<loadave.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
@@ -84,7 +84,7 @@ int main(int,con mainv,con mainv) {
 	    loadave_mid	mid ;
 	    if ((rs = loadave_readmid(&la,&mid)) >= 0) {
 		char timebuf[TIMEBUFLEN + 1] ;
-	        timestr_log(mid.tim_read,timebuf) ;
+	        strtime_log(mid.tim_read,timebuf) ;
 	        printf("mid_time> %s\n",timebuf) ;
 	        printf("provider> %s\n",mid.provider) ;
 	        printf("serial>   %s\n",mid.serial) ;
@@ -97,7 +97,7 @@ int main(int,con mainv,con mainv) {
 	                } /* end if */
 	                DEBUGPRINTF("loadave_read() rs=%d\n",rs) ;
 	                if (rs >= 0) {
-	                    timestr_log(lav.tim_la,timebuf) ;
+	                    strtime_log(lav.tim_la,timebuf) ;
 	                    printf("la_time> %s\n",timebuf) ;
 	                    printf("nproc=%d\n",lav.nprocs) ;
 	                    printf("ncpu=%d\n",lav.ncpu) ;
