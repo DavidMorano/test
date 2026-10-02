@@ -111,7 +111,7 @@ local int procval(longlong vv) noex {
 	cint		dlen = digbuflen ;
 	char		dbuf[digbuflen+1] ;
 	if (rs >= 0) {
-	    const int v = conv<int>(vv) ;
+	    cint v = conv<int>(vv) ;
 	    errno = 0 ;
 	    char *bp = sitostr(v,(dbuf+dlen)) ;
 	    rs = (neg errno) ;
