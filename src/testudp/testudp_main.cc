@@ -96,10 +96,10 @@ int main(int argc,cchar *argv,cchar *envv)
 	int		fd = -1 ;
 	int		fd_debug = -1 ;
 
-	const char	*progname ;
-	const char	*rhost = NULL ;
-	const char	*rport = NULL ;
-	const char	*cp ;
+	cchar	*progname ;
+	cchar	*rhost = NULL ;
+	cchar	*rport = NULL ;
+	cchar	*cp ;
 
 
 #if	CF_DEBUGS || CF_DEBUG
