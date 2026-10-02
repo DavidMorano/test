@@ -1,8 +1,8 @@
-/* testuctim_main SUPPORT */
+/* testuctimx_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* main subroutine for several programs */
+/* test program */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
@@ -13,11 +13,6 @@
 	= 1988-02-01, David A­D­ Morano
 	This subroutine was originally written.
 
-	= 1988-02-01, David A­D­ Morano
-	This subroutine was modified to not write out anything
-	to standard output if the access time of the associated
-	terminal has not been changed in 10 minutes.
-
 */
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
@@ -25,7 +20,7 @@
 /*******************************************************************************
 
   	Description:
-	This is a pretty much generic subroutine for several program.
+	This is a small test of the |uc_tim{x}(3uc)| subroutines.
 
 *******************************************************************************/
 
@@ -50,7 +45,7 @@
 #include	<usupport.h>		/* LIBU */
 #include	<uctimx.h>		/* LIBUC */
 #include	<psem.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
@@ -122,7 +117,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if (char *cp = getenv(DEBUGFNVAR)) {
 	    debugopen(cp) ;
 	    DEBUGPRINTF("starting\n") ;
-	}
+	} /* end */
 	if (rs >= 0) {
 	    if (psem nsem ; (rs = nsem.create) >= 0) {
 	        uctimxnote note{} ;
@@ -144,7 +139,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (psem) */
 	    DEBUGPRINTF("psem-out rs=%d\n",rs) ;
-	} /* end block */
+	} /* end if (ok) */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (error) */
@@ -178,7 +173,7 @@ local int loop(psem *psemp,int tid) noex {
 		    rs = psemp->wait ;
 	DEBUGPRINTF("psemwait() rs=%d\n",rs) ;
 		    dt = getustime ;
-		    timestr_log(dt,tbuf) ;
+		    strtime_log(dt,tbuf) ;
 		    omtx.lock() ;
 		    cout << "wake-up " << tbuf << eol ;
 		    cout.flush() ;
@@ -201,7 +196,7 @@ local int fun(void *objp,int id,int ag) noex {
 	(void) id ;
 	(void) ag ;
 	if (char *tbuf = new(nt) char[tlen + 1]) {
-	    timestr_log(dt,tbuf) ;
+	    strtime_log(dt,tbuf) ;
 	    omtx.lock() ;
 	    cout << "    fun " << tbuf << " a=" << ag << eol ;
 	    cout.flush() ;
