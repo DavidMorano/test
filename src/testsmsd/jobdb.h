@@ -28,7 +28,7 @@
 
 
 struct jobdb_ent {
-	const char	*name ;
+	cchar	*name ;
 	char		*ofname ;
 	char		*efname ;
 	time_t		atime ;			/* job arrival time */
@@ -38,7 +38,7 @@ struct jobdb_ent {
 } ;
 
 struct jobdb_head {
-	const char	*tmpdname ;
+	cchar	*tmpdname ;
 	VECITEM		db ;
 	time_t		ti_jobdir ;
 } ;
