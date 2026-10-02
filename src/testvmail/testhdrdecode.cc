@@ -66,21 +66,21 @@
 /* external subroutines */
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
-extern int	debugprinthex(const char *,int,const char *,int) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
+extern int	debugprinthex(cchar *,int,cchar *,int) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int	procfile(PROGINFO *,HDRDECODE *,bfile *,cchar *) ;
-static int	procline(PROGINFO *,bfile *,HDRDECODE *,cchar *,int) ;
+local int	procfile(PROGINFO *,HDRDECODE *,bfile *,cchar *) ;
+local int	procline(PROGINFO *,bfile *,HDRDECODE *,cchar *,int) ;
 
 #if	CF_DEBUGS
-static int debugprintchars(cchar *,const wchar_t *,int) ;
+local int debugprintchars(cchar *,const wchar_t *,int) ;
 #endif
 
 
@@ -102,8 +102,8 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	int		rs = SR_OK ;
 	int		ex = 0 ;
 	int		rs1 ;
-	const char	*pr = PCS ;
-	const char	*cp ;
+	cchar	*pr = PCS ;
+	cchar	*cp ;
 
 #if	CF_DEBUGS
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
@@ -173,7 +173,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 /* local subroutines */
 
 
-static int procfile(PROGINFO *pip,HDRDECODE *qp,bfile *ofp,cchar *ifn)
+local int procfile(PROGINFO *pip,HDRDECODE *qp,bfile *ofp,cchar *ifn)
 {
 	bfile		ifile, *ifp = &ifile ;
 	int		rs ;
@@ -190,7 +190,7 @@ static int procfile(PROGINFO *pip,HDRDECODE *qp,bfile *ofp,cchar *ifn)
 	    ifn = BFILE_STDIN ;
 
 	if ((rs = bopen(ifp,ifn,"r",0666)) >= 0) {
-	    const int	llen = LINEBUFLEN ;
+	    cint	llen = LINEBUFLEN ;
 	    char	lbuf[LINEBUFLEN+1] ;
 
 	    while ((rs = breadln(ifp,lbuf,llen)) > 0) {
@@ -216,9 +216,9 @@ static int procfile(PROGINFO *pip,HDRDECODE *qp,bfile *ofp,cchar *ifn)
 /* end subroutine (procfile) */
 
 
-static int procline(PROGINFO *pip,bfile *ofp,HDRDECODE *qp,cchar *sp,int sl)
+local int procline(PROGINFO *pip,bfile *ofp,HDRDECODE *qp,cchar *sp,int sl)
 {
-	const int	wlen = LINEBUFLEN ;
+	cint	wlen = LINEBUFLEN ;
 	int		rs = SR_OK ;
 	int		tlen = 0 ;
 	wchar_t		wbuf[LINEBUFLEN+1] ;
@@ -229,8 +229,8 @@ static int procline(PROGINFO *pip,bfile *ofp,HDRDECODE *qp,cchar *sp,int sl)
 #endif
 	if (sl > 0) {
 	    if ((rs = hdrdecode_proc(qp,wbuf,wlen,sp,sl)) >= 0) {
-	        const int	olen = OBUFLEN ;
-	        const int	wl = rs ;
+	        cint	olen = OBUFLEN ;
+	        cint	wl = rs ;
 	        char		obuf[OBUFLEN+1] ;
 #if	CF_DEBUGS
 	        debugprintf("main/procline: hdrdecode_proc() rs=%d\n",rs) ;
@@ -251,11 +251,11 @@ static int procline(PROGINFO *pip,bfile *ofp,HDRDECODE *qp,cchar *sp,int sl)
 
 
 #if	CF_DEBUGS
-static int debugprintchars(cchar *id,const wchar_t *wbuf,int wlen)
+local int debugprintchars(cchar *id,const wchar_t *wbuf,int wlen)
 {
 	int	i ;
 	for (i = 0 ; i < wlen ; i += 1) {
-	    const int	ch = wbuf[i] ;
+	    cint	ch = wbuf[i] ;
 	    debugprintf("main/%s: wc[%02u]=%08x\n",id,i,ch) ;
 	}
 	return 0 ;
