@@ -46,7 +46,7 @@
 
 #define	VARDEBUGFNAME	"TESTUCOPEN_DEBUGFILE"
 
-extern int	fbwrite(FILE *,const void *,int) ;
+extern int	fbwrite(FILE *,cvoid *,int) ;
 
 #if	CF_DEBUG
 extern int	debugopen(cchar *) ;
