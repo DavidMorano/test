@@ -50,9 +50,9 @@ struct linefold_head {
 extern "C" {
 #endif
 
-extern int linefold_start(LINEFOLD *,int,int,const char *,int) ;
-extern int linefold_get(LINEFOLD *,int,const char **) ;
-extern int linefold_getline(LINEFOLD *,int,const char **) ;
+extern int linefold_start(LINEFOLD *,int,int,cchar *,int) ;
+extern int linefold_get(LINEFOLD *,int,cchar **) ;
+extern int linefold_getline(LINEFOLD *,int,cchar **) ;
 extern int linefold_finish(LINEFOLD *) ;
 
 #ifdef	__cplusplus
