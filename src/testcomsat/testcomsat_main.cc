@@ -55,7 +55,7 @@
 #include	<hostaddr.h>		/* LIBUC */
 #include	<sockaddress.h>		/* LIBUC */
 #include	<inetaddrx.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 
