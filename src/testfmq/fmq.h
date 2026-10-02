@@ -80,7 +80,7 @@ struct fmq_flags {
 
 struct fmq_head {
 	uint		magic ;
-	const char	*fname ;
+	cchar	*fname ;
 	FMQ_FL		f ;
 	FMQ_FM		m ;
 	FMQ_FH		h ;
@@ -104,7 +104,7 @@ struct fmq_head {
 extern "C" {
 #endif
 
-extern int	fmq_open(FMQ *,const char *,int,mode_t,int) ;
+extern int	fmq_open(FMQ *,cchar *,int,mode_t,int) ;
 extern int	fmq_close(FMQ *) ;
 extern int	fmq_send(FMQ *,const void *,int) ;
 extern int	fmq_sende(FMQ *,const void *,int,int,int) ;
