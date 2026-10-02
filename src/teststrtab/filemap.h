@@ -41,7 +41,7 @@
 
 
 struct filemap_head {
-	const char	*bp ;
+	cchar	*bp ;
 	const void	*mapdata ;
 	ustat	sb ;		/* requires 'usystem.h' */
 	size_t		mapsize ;
@@ -55,10 +55,10 @@ struct filemap_head {
 extern "C" {
 #endif
 
-extern int	filemap_open(FILEMAP *,const char *,int,size_t) ;
+extern int	filemap_open(FILEMAP *,cchar *,int,size_t) ;
 extern int	filemap_stat(FILEMAP *,ustat *) ;
 extern int	filemap_read(FILEMAP *,int,void *) ;
-extern int	filemap_getline(FILEMAP *,const char **) ;
+extern int	filemap_getline(FILEMAP *,cchar **) ;
 extern int	filemap_seek(FILEMAP *,offset_t,int) ;
 extern int	filemap_tell(FILEMAP *,offset_t *) ;
 extern int	filemap_rewind(FILEMAP *) ;
