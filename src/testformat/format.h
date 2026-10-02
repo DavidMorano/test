@@ -31,7 +31,7 @@
 extern "C" {
 #endif
 
-extern int	format(char *,int,int,const char *,va_list) ;
+extern int	format(char *,int,int,cchar *,va_list) ;
 
 #ifdef	__cplusplus
 }
