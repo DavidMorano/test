@@ -40,7 +40,7 @@
 #include	<field.h>
 #include	<paramfile.h>
 #include	<sfx.h>
-#include	<timestr.h>
+#include	<strtime.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
