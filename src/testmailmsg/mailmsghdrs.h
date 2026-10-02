@@ -229,7 +229,7 @@
 
 struct mailmsghdrs_head {
 	uint		magic ;
-	const char	**v ;
+	cchar	**v ;
 } ;
 
 
@@ -237,7 +237,7 @@ struct mailmsghdrs_head {
 extern "C" {
 #endif
 
-extern const char	*mailmsghdrs_names[] ;
+extern cchar	*mailmsghdrs_names[] ;
 
 #ifdef	__cplusplus
 }
