@@ -37,8 +37,8 @@ struct dbi {
 extern "C" {
 #endif
 
-extern int dbi_open(DBI *,IDS *,const char *) ;
-extern int dbi_getclusters(DBI *,vecstr *,const char *) ;
+extern int dbi_open(DBI *,IDS *,cchar *) ;
+extern int dbi_getclusters(DBI *,vecstr *,cchar *) ;
 extern int dbi_getnodes(DBI *,vecstr *,vecstr *) ;
 extern int dbi_close(DBI *) ;
 
