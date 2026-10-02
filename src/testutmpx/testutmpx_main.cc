@@ -47,6 +47,7 @@
 #include	<paramopt.h>
 #include	<mapstrint.h>
 #include	<strn.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
@@ -448,7 +449,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	            } else {
 
 	                while (akl--) {
-			    const int	kc = MKCHAR(*akp) ;
+			    cint	kc = MKCHAR(*akp) ;
 
 	                    switch (kc) {
 
@@ -798,7 +799,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    if (strcmp(afname,"-") == 0) afname = BFILE_STDIN ;
 
 	    if ((rs = bopen(afp,afname,"r",0666)) >= 0) {
-		const int	llen = LINEBUFLEN ;
+		cint	llen = LINEBUFLEN ;
 	        int		len ;
 	        char		lbuf[LINEBUFLEN + 1] ;
 
@@ -1091,7 +1092,7 @@ local int proclist(PI *pip,bfile *ofp,cchar *dbfname) noex {
 	            up->ut_line,lenstr(up->ut_line,TMPX_LLINE),
 	            up->ut_pid,
 	            up->ut_exit.e_exit,
-		    timestr_logz(up->ut_tv.tv_sec,timebuf)) ;
+		    strtime_logz(up->ut_tv.tv_sec,timebuf)) ;
 
 #if	CF_SYSLEN
 	            bprintf(ofp, "sl=%u host=%t\n",
