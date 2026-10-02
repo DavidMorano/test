@@ -82,12 +82,12 @@ extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 /* forward references */
 
-static int	usage(struct proginfo *) ;
-static int	procname(struct proginfo *,bfile *,cchar *) ;
-static int	ensuremode(cchar *,mode_t) ;
+local int	usage(struct proginfo *) ;
+local int	procname(struct proginfo *,bfile *,cchar *) ;
+local int	ensuremode(cchar *,mode_t) ;
 
 #ifdef	COMMENT
-static int	dirok(cchar *) ;
+local int	dirok(cchar *) ;
 #endif
 
 
@@ -841,7 +841,7 @@ badarg:
 
 /* local subroutines */
 
-static int usage(pip)
+local int usage(pip)
 struct proginfo	*pip ;
 {
 	int	rs ;
@@ -862,7 +862,7 @@ struct proginfo	*pip ;
 } /* end subroutine (usage) */
 
 
-static int procname(pip,ofp,name)
+local int procname(pip,ofp,name)
 struct proginfo	*pip ;
 bfile		*ofp ;
 cchar	name[] ;
@@ -895,7 +895,7 @@ cchar	name[] ;
 
 #ifdef	COMMENT
 
-static int dirok(dname)
+local int dirok(dname)
 cchar	dname[] ;
 {
 	ustat	sb ;
@@ -939,7 +939,7 @@ cchar	dname[] ;
 
 #endif /* COMMENT */
 
-static int ensuremode(cchar *tmpdname,mode_t m) noex {
+local int ensuremode(cchar *tmpdname,mode_t m) noex {
 	int	rs ;
 	int	fd ;
 	int	f = FALSE ;
