@@ -39,7 +39,7 @@ module ;
 
 #include	"modhello.hh"
 
-static const char	headstr[] = "header" ;
+static cchar	headstr[] = "header" ;
 
 void header(cchar *s) noex {
     std::cout << headstr << " - " << s << eol ;
