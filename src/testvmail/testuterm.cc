@@ -66,7 +66,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	int		len, c ;
 	int		sl ;
 	int		ex = EX_INFO ;
-	const char	*cp ;
+	cchar	*cp ;
 	char		lbuf[LINEBUFLEN + 1] ;
 
 #if	CF_DEBUGS || CF_DEBUG
