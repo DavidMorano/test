@@ -33,36 +33,36 @@ struct userinfo_flags {
 
 struct userinfo {
 	uint		magic ;
-	const char	*sysname ;	/* UNAME OS system-name */
-	const char	*release ;	/* UNAME OS release */
-	const char	*version ;	/* UNAME OS version */
-	const char	*machine ;	/* UNAME machine */
-	const char	*nodename ;	/* OS nodename (no domain) */
-	const char	*domainname ;	/* INET domain */
-	const char	*username ;	/* PASSWD username */
-	const char	*password ;	/* PASSWD password */
-	const char	*gecos ;	/* PASSWD GECOS field */
-	const char	*homedname ;	/* PASSWD (home) directory */
-	const char	*shell ;	/* PASSWD SHELL */
-	const char	*organization ;	/* GECOS organization */
-	const char	*gecosname ;	/* GECOS name */
-	const char	*account ;	/* GECOS account */
-	const char	*bin ;		/* GECOS printer-bin */
-	const char	*office ;	/* GECOS office */
-	const char	*wphone ;	/* GECOS work-phone */
-	const char	*hphone ;	/* GECOS home-phone */
-	const char	*printer ;	/* GECOS printer */
-	const char	*realname ;	/* processed GECOS-name */
-	const char	*mailname ;	/* best compacted mail-name */
-	const char	*fullname ;	/* best fullname */
-	const char	*name ;		/* best compacted name */
-	const char	*groupname ;	/* login groupname */
-	const char	*project ;	/* user project name */
-	const char	*tz ;		/* user time-zone */
-	const char	*md ;		/* mail-spool directory */
-	const char	*wstation ;	/* user weather-station */
-	const char	*logid ;	/* suggested ID for logging */
-	const char	*a ;		/* memory allocation */
+	cchar	*sysname ;	/* UNAME OS system-name */
+	cchar	*release ;	/* UNAME OS release */
+	cchar	*version ;	/* UNAME OS version */
+	cchar	*machine ;	/* UNAME machine */
+	cchar	*nodename ;	/* OS nodename (no domain) */
+	cchar	*domainname ;	/* INET domain */
+	cchar	*username ;	/* PASSWD username */
+	cchar	*password ;	/* PASSWD password */
+	cchar	*gecos ;	/* PASSWD GECOS field */
+	cchar	*homedname ;	/* PASSWD (home) directory */
+	cchar	*shell ;	/* PASSWD SHELL */
+	cchar	*organization ;	/* GECOS organization */
+	cchar	*gecosname ;	/* GECOS name */
+	cchar	*account ;	/* GECOS account */
+	cchar	*bin ;		/* GECOS printer-bin */
+	cchar	*office ;	/* GECOS office */
+	cchar	*wphone ;	/* GECOS work-phone */
+	cchar	*hphone ;	/* GECOS home-phone */
+	cchar	*printer ;	/* GECOS printer */
+	cchar	*realname ;	/* processed GECOS-name */
+	cchar	*mailname ;	/* best compacted mail-name */
+	cchar	*fullname ;	/* best fullname */
+	cchar	*name ;		/* best compacted name */
+	cchar	*groupname ;	/* login groupname */
+	cchar	*project ;	/* user project name */
+	cchar	*tz ;		/* user time-zone */
+	cchar	*md ;		/* mail-spool directory */
+	cchar	*wstation ;	/* user weather-station */
+	cchar	*logid ;	/* suggested ID for logging */
+	cchar	*a ;		/* memory allocation */
 	USERINFO_FL	f ;
 	pid_t		pid ;
 	uid_t		uid, euid ;
@@ -74,9 +74,9 @@ struct userinfo {
 extern "C" {
 #endif
 
-extern int userinfo_start(USERINFO *,const char *) ;
+extern int userinfo_start(USERINFO *,cchar *) ;
 extern int userinfo_finish(USERINFO *) ;
-extern int userinfo(USERINFO *,char *,int,const char *) ;
+extern int userinfo(USERINFO *,char *,int,cchar *) ;
 
 #ifdef	__cplusplus
 }
