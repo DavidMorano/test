@@ -43,11 +43,11 @@ LIBS += -ldebug -luo -lu -lf
 DEPS_MAIN +=
 
 OBJ0= testuctim_main.o
-OBJ1= uctimx.o strtime.o
-OBJ2= semx.o vec.o queue.o
-OBJ3= ptx.o itimerval.o
+OBJ1= uctim.o strtime.o
+OBJ2=
+OBJ3=
 
-OBJ= obj0.o obj1.o obj2.o obj3.o
+OBJ= obj0.o obj1.o
 
 
 INCDIRS=
@@ -149,10 +149,9 @@ obj.o:			$(OBJ)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-testuctim_main.o:	testuctim_main.cc $(DEPS_MAIN)	$(INCS)
+testuctim_main.o:	testuctim_main.cc $(DEPS_MAIN)		$(INCS)
 
 uctim.o:		uctim.cc	uctim.h			$(INCS)
-uctimx.o:		uctimx.cc	uctimx.h		$(INCS)
 
 progsig.o:		progsig.cc	progsig.h
 
