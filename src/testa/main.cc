@@ -18,7 +18,7 @@
 
 /* forward references */
 
-static int sub(int (*)[NJ],int,int) ;
+local int sub(int (*)[NJ],int,int) ;
 
 /* local variables */
 
@@ -84,7 +84,7 @@ int main() {
 }
 /* end subroutine (main) */
 
-static int sub(int (*a)[2],int ni,int nj) {
+local int sub(int (*a)[2],int ni,int nj) {
 	for (int i = 0 ; i < ni ; i += 1) {
 	    for (int j = 0 ; j < nj ; j += 1) {
 		printf("sub [%2d,%2d]=%d\n",i,j,a[i][j]) ;
