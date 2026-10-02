@@ -41,7 +41,7 @@ extern int	strlinelen(cchar *,int,int) ;
 
 /* forward references */
 
-static int showpending() ;
+local int showpending() ;
 
 
 /* exported subroutines */
@@ -73,7 +73,7 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	{
 	    sigset_t	nsm, osm ;
-	    const int	sig = SIGINT ;
+	    cint	sig = SIGINT ;
 	    uc_sigsetempty(&nsm) ;
 	    if ((rs = uc_sigsetadd(&nsm,sig)) >= 0) {
 	        if ((rs = u_sigprocmask(SIG_BLOCK,&nsm,&osm)) >= 0) {
@@ -121,7 +121,7 @@ int main(int argc,cchar **argv,cchar **envv)
 /* local subroutines */
 
 
-static int showpending()
+local int showpending()
 {
 	sigset_t	psm ;
 	int		rs ;
