@@ -36,7 +36,7 @@
 #include	<bfile.h>
 #include	<field.h>
 #include	<char.h>
-#include	<timestr.h>
+#include	<strtime.h>
 #include	<exitcodes.h>
 #include	<localmisc.h>
 
@@ -150,7 +150,7 @@ int main(int,con mainv,con mainv) {
 	    rs = uc_mktime(tsp,&t) ;
 	    bprintf(ofp,"mktime() rs=%d\n",rs) ;
 	    bprintf(ofp,"made time=%s\n",
-	        timestr_log(t,timebuf)) ;
+	        strtime_log(t,timebuf)) ;
 	} /* end block */
 #endif /* CF_MKTIME */
 
@@ -234,7 +234,7 @@ int main(int,con mainv,con mainv) {
 	            bprintf(ofp,"dstflag=%d\n",
 	                d.b.dstflag) ;
 	            bprintf(ofp,"local %s\n",
-	                timestr_logz(d.b.time,timebuf)) ;
+	                strtime_logz(d.b.time,timebuf)) ;
 	            for (int i = 0 ; i < xx_DTSEND ; i += 1) {
 	                sl = date_mkdatestr(&d,i,lineout,LINEBUFLEN) ;
 
