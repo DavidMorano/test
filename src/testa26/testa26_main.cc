@@ -63,14 +63,14 @@
 /* external subroutines */
 
 extern int	proginfo_setpiv(PROGINFO *,cchar *,const struct pivars *) ;
-extern int	printhelp(void *,const char *,const char *,const char *) ;
+extern int	printhelp(void *,cchar *,cchar *,cchar *) ;
 
 
 /* forward references */
 
-static int	usage(PROGINFO *) ;
-static int	procnums(PROGINFO *,bfile *) ;
-static int	procnumsone(PROGINFO *,bfile *,const char *) ;
+local int	usage(PROGINFO *) ;
+local int	procnums(PROGINFO *,bfile *) ;
+local int	procnumsone(PROGINFO *,bfile *,cchar *) ;
 
 
 /* external variables */
@@ -78,7 +78,7 @@ static int	procnumsone(PROGINFO *,bfile *,const char *) ;
 
 /* local variables */
 
-static const char	*argopts[] = {
+static cchar	*argopts[] = {
 	"ROOT",
 	"VERSION",
 	"VERBOSE",
@@ -130,7 +130,7 @@ constexpr mapex_map	mapexs[] = {
 	{ 0, 0 }
 } ;
 
-static const char	*progmodes[] = {
+static cchar	*progmodes[] = {
 	"testb26",
 	NULL
 } ;
@@ -140,7 +140,7 @@ enum progmodes {
 	progmode_overlast
 } ;
 
-static const char	*progopts[] = {
+static cchar	*progopts[] = {
 	"follow",
 	"nofollow",
 	NULL
@@ -182,13 +182,13 @@ char	*envv[] ;
 	int	f_help = FALSE ;
 	int	f ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*pr = NULL ;
-	const char	*pmspec = NULL ;
-	const char	*searchname = NULL ;
-	const char	*afname = NULL ;
-	const char	*ofname = NULL ;
-	const char	*cp ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*pr = NULL ;
+	cchar	*pmspec = NULL ;
+	cchar	*searchname = NULL ;
+	cchar	*afname = NULL ;
+	cchar	*ofname = NULL ;
+	cchar	*cp ;
 	char	argpresent[MAXARGGROUPS] ;
 	char	tmpfname[MAXPATHLEN + 1] ;
 
@@ -452,7 +452,7 @@ char	*envv[] ;
 	            } else {
 
 	                while (akl--) {
-			    const int	kc = MKCHAR(*akp) ;
+			    cint	kc = MKCHAR(*akp) ;
 
 	                    switch (kc) {
 
@@ -801,7 +801,7 @@ badarg:
 
 /* local subroutines */
 
-static int usage(pip)
+local int usage(pip)
 PROGINFO	*pip ;
 {
 	int	rs ;
@@ -823,7 +823,7 @@ PROGINFO	*pip ;
 /* end subroutine (usage) */
 
 
-static int procnums(pip,ofp)
+local int procnums(pip,ofp)
 PROGINFO	*pip ;
 bfile		*ofp ;
 {
@@ -881,10 +881,10 @@ ret0:
 /* end subroutine (procnums) */
 
 
-static int procnumsone(pip,ofp,str)
+local int procnumsone(pip,ofp,str)
 PROGINFO	*pip ;
 bfile		*ofp ;
-const char	*str ;
+cchar	*str ;
 {
 	int		rs = SR_OK ;
 	int		iw = 0 ;
