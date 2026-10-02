@@ -28,7 +28,7 @@
 #include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU |TIMEBUFLEN| */
 
 extern "C" {
@@ -45,7 +45,7 @@ int main(int,con mainv,con mainv) {
 	    a[1] = INT_MAX ;
 	    for (int i = 0 ; (rs >= 0) && (i < 2) ; i += 1) {
 	        printf("time=\\x%08lx (%s)\n",
-		    a[i],timestr_log(a[i],timebuf)) ;
+		    a[i],strtime_log(a[i],timebuf)) ;
 	    } /* end for */
 	} /* end if (ok) */
 	/* |gettimeofday(3c)| */
@@ -53,7 +53,7 @@ int main(int,con mainv,con mainv) {
 	    TIMEVAL tv ;
 	    gettimeofday(&tv,nullptr) ;
 	    printf("time=\\x%08lx (%s)\n",
-		tv.tv_sec,timestr_log(tv.tv_sec,timebuf)) ;
+		tv.tv_sec,strtime_log(tv.tv_sec,timebuf)) ;
 	    printf("usec=%d\n",
 		tv.tv_usec) ;
 	} /* end for */
@@ -61,7 +61,7 @@ int main(int,con mainv,con mainv) {
 	if (rs >= 0) {
 	    if (TIMEB b ; (rs = uc_ftime(&b)) >= 0) {
 	        printf("time=\\x%08lx (%s)\n",
-		    b.time,timestr_log(b.time,timebuf)) ;
+		    b.time,strtime_log(b.time,timebuf)) ;
 	        printf("milli=\\x%08x (%d)\n",
 		    b.millitm,b.millitm) ;
 	        printf("timezone=%d\n",
