@@ -49,6 +49,7 @@
 #include	<tmctime>
 #include	<sntmctime>
 #include	<char.h>
+#include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
@@ -289,7 +290,7 @@ local int process(PI *pip,dater *dp,cchar *ofn) noex {
 #endif
 
 	    bprintf(ofp,"current time=%s\n",
-	        timestr_logz(pip->daytime,tbuf)) ;
+	        strtime_logz(pip->daytime,tbuf)) ;
 
 /* initial stuff */
 
@@ -454,9 +455,9 @@ local int procline(PI *pip,dater *dp,bfile *ofp,cchar *lbuf,int llen) noex {
 	                    dp->b.dstflag) ;
 
 	                bprintf(ofp,"loctime=%s\n",
-	                    timestr_log(dp->b.time,tbuf)) ;
+	                    strtime_log(dp->b.time,tbuf)) ;
 	                bprintf(ofp,"gmttime=%s\n",
-	                    timestr_gmlog(dp->b.time,tbuf)) ;
+	                    strtime_gmlog(dp->b.time,tbuf)) ;
 
 	                for (int i = 0 ; i < daterdt_overlast ; i += 1) {
 	                    sl = dater_mkdatestr(dp,i,obuf,olen) ;
