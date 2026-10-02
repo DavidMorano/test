@@ -91,25 +91,25 @@
 
 /* external subroutines */
 
-extern int	cfdeci(const char *,int,int *) ;
-extern int	matstr(const char **,const char *,int) ;
+extern int	cfdeci(cchar *,int,int *) ;
+extern int	matstr(cchar **,cchar *,int) ;
 extern int	isasocket(int) ;
-extern int	inetping(const char *,int) ;
-extern int	opentmpfile(const char *,int,mode_t,char *) ;
-extern int	opentmpusd(const char *,int,mode_t,char *) ;
+extern int	inetping(cchar *,int) ;
+extern int	opentmpfile(cchar *,int,mode_t,char *) ;
+extern int	opentmpusd(cchar *,int,mode_t,char *) ;
 extern int	dialudp(char *,char *,int,int,int) ;
-extern int	dialtcp(const char *,const char *,int,int,int) ;
+extern int	dialtcp(cchar *,cchar *,int,int,int) ;
 extern int	dialtcpnls(char *,char *,int,char *,int,int) ;
 extern int	dialtcpmux(char *,char *,int,char *,char **,int,int) ;
-extern int	dialuss(const char *,int,int) ;
-extern int	dialusd(const char *,int,int) ;
-extern int	dialticotsordnls(const char *,int,const char *,int,int) ;
-extern int	dialprog(const char *,int,char **,char **,int *) ;
-extern int	dialcprog(const char *,const char *,const char *,
+extern int	dialuss(cchar *,int,int) ;
+extern int	dialusd(cchar *,int,int) ;
+extern int	dialticotsordnls(cchar *,int,cchar *,int,int) ;
+extern int	dialprog(cchar *,int,char **,char **,int *) ;
+extern int	dialcprog(cchar *,cchar *,cchar *,
 			char **,char **,int,int,int *) ;
-extern int	rcmdr(const char *,const char *,const char *,int *) ;
+extern int	rcmdr(cchar *,cchar *,cchar *,int *) ;
 
-extern char	*strwcpy(char *,const char *,int) ;
+extern char	*strwcpy(char *,cchar *,int) ;
 extern char	*strbasename(char *) ;
 
 
@@ -128,13 +128,13 @@ struct fpstat {
 
 /* forward references */
 
-static int	transfer(PROGINFO *,const char *,
+local int	transfer(PROGINFO *,cchar *,
 			int,int,int,int,int,int) ;
 
 
 /* local variables */
 
-static const char *argopts[] = {
+static cchar *argopts[] = {
 	"ROOT",
 	"ni",
 	"no",
@@ -150,7 +150,7 @@ enum argopts {
 	argopt_overlast
 } ;
 
-static const char	*dialers[] = {
+static cchar	*dialers[] = {
 	"tcp",
 	"tcpmux",
 	"tcpnls",
@@ -210,21 +210,21 @@ int main(int argc,cchar **argv,cchar **envv)
 	int	f_log = FALSE ;
 	int	f_shutdown = FALSE ;
 
-	const char	*argp, *aop, *akp, *avp ;
-	const char	*argval = NULL ;
+	cchar	*argp, *aop, *akp, *avp ;
+	cchar	*argval = NULL ;
 	char	argpresent[MAXARGGROUPS + 1] ;
 	char	buf[BUFLEN + 1] ;
 	char	srcpath[MAXPATHLEN + 1] ;
 	char	hostnamebuf[MAXHOSTNAMELEN + 1] ;
 	char	dialspecbuf[MAXHOSTNAMELEN + 1] ;
 	char	userinfobuf[USERINFO_LEN + 1] ;
-	const char	*logfname = NULL ;
-	const char	*dialspec = NULL ;
-	const char	*hostname = NULL ;
-	const char	*portspec = NULL ;
-	const char	*svcspec = NULL ;
-	const char	*template ;
-	const char	*cp ;
+	cchar	*logfname = NULL ;
+	cchar	*dialspec = NULL ;
+	cchar	*hostname = NULL ;
+	cchar	*portspec = NULL ;
+	cchar	*svcspec = NULL ;
+	cchar	*template ;
+	cchar	*cp ;
 
 
 	if ((cp = getenv(VARDEBUGFD1)) == NULL)
@@ -919,7 +919,7 @@ int main(int argc,cchar **argv,cchar **envv)
 
 	        size = (an + 2) * sizeof(char *) ;
 	        if ((uc_malloc(size,&av)) >= 0) {
-		    const int	of = O_NOCTTY ;
+		    cint	of = O_NOCTTY ;
 
 	        av[0] = strbasename(portspec) ;
 
@@ -1129,9 +1129,9 @@ badconnect:
 /* local subroutines */
 
 
-static int transfer(pip,hostname,rfd,r2fd,ifd,ofd,efd,mxu)
+local int transfer(pip,hostname,rfd,r2fd,ifd,ofd,efd,mxu)
 PROGINFO	*pip ;
-const char	hostname[] ;
+cchar	hostname[] ;
 int	rfd, r2fd ;
 int	ifd, ofd, efd ;
 int	mxu ;
