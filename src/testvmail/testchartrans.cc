@@ -58,11 +58,11 @@ extern int	strlinelen(cchar *,int,int) ;
 
 /* forward references */
 
-static int	procfile(PROGINFO *,CHARTRANS *,TERMTRANS *,bfile *,
+local int	procfile(PROGINFO *,CHARTRANS *,TERMTRANS *,bfile *,
 			cchar *) ;
-static int	procoutlines(PROGINFO *,bfile *,TERMTRANS *,
+local int	procoutlines(PROGINFO *,bfile *,TERMTRANS *,
 			const wchar_t *,int) ;
-static int	procoutline(PROGINFO *,bfile *,int,int,cchar *,int) ;
+local int	procoutline(PROGINFO *,bfile *,int,int,cchar *,int) ;
 
 
 /* exported subroutines */
@@ -167,7 +167,7 @@ int main(int argc,cchar *argv[],cchar *envv[])
 /* local subroutines */
 
 
-static int procfile(pip,op,ttp,ofp,ifname)
+local int procfile(pip,op,ttp,ofp,ifname)
 PROGINFO	*pip ;
 CHARTRANS	*op ;
 TERMTRANS	*ttp ;
@@ -263,7 +263,7 @@ cchar	*ifname ;
 /* end subroutine (procfile) */
 
 
-static int procoutlines(pip,ofp,ttp,wcbuf,wclen)
+local int procoutlines(pip,ofp,ttp,wcbuf,wclen)
 PROGINFO	*pip ;
 bfile		*ofp ;
 TERMTRANS	*ttp ;
@@ -308,7 +308,7 @@ int		wclen ;
 /* end subroutine (procoutlines) */
 
 
-static int procoutline(pip,ofp,lw,li,lp,ll)
+local int procoutline(pip,ofp,lw,li,lp,ll)
 PROGINFO	*pip ;
 bfile		*ofp ;
 int		lw ;
