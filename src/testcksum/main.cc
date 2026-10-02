@@ -61,7 +61,7 @@
 #if	CF_DEBUGS || CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
-extern int	debugprinthexblock(cchar *,int,const void *,int) ;
+extern int	debugprinthexblock(cchar *,int,cvoid *,int) ;
 extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 extern int	nprintf(cchar *,cchar *,...) ;
@@ -109,7 +109,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 
 	    if ((rs = uc_open(ifname,O_RDONLY,0666)) >= 0) {
 	        CKSUM		sum ;
-	        const int	fd = rs ;
+	        cint	fd = rs ;
 
 #if	CF_DEBUGS
 		debugprintf("main: cksum_start()\n") ;
@@ -119,7 +119,7 @@ int main(int argc,cchar **argv,cchar **envv) {
 		    int		tlen = 0 ;
 
 	            if ((rs = cksum_begin(&sum)) >= 0) {
-	                const int	rlen = RBUFLEN ;
+	                cint	rlen = RBUFLEN ;
 			int		len ;
 	                char		rbuf[RBUFLEN+ 1] ;
 
