@@ -37,7 +37,7 @@ struct streamsync_head {
 extern "C" {
 #endif
 
-extern int streamsync_start(STREAMSYNC *,const char *,int) ;
+extern int streamsync_start(STREAMSYNC *,cchar *,int) ;
 extern int streamsync_test(STREAMSYNC *,int) ;
 extern int streamsync_finish(STREAMSYNC *) ;
 
