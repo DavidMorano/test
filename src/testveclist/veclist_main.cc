@@ -88,7 +88,7 @@ struct listentry {
 
 /* forward references */
 
-static int	sortheadcmp() ;
+local int	sortheadcmp() ;
 
 
 /* local variables */
@@ -790,7 +790,7 @@ badret:
 
 /* local subroutines */
 
-static int sortheadcmp(e1p,e2p)
+local int sortheadcmp(e1p,e2p)
 struct listentry	**e1p, **e2p ;
 {
 	int	rc ;
