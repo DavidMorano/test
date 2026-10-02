@@ -56,11 +56,11 @@ typedef int (*sub_f)() noex ;
 
 /* forward references */
 
-static int	sub0() noex ;
-static int	sub1() noex ;
-static int	sub2() noex ;
-static int	sub3() noex ;
-static int	sub4() noex ;
+local int	sub0() noex ;
+local int	sub1() noex ;
+local int	sub2() noex ;
+local int	sub3() noex ;
+local int	sub4() noex ;
 
 
 /* local variables */
@@ -103,12 +103,12 @@ int main(int argc,mainv argv,mainv) {
 
 /* local subroutines */
 
-static int sub0() noex {
+local int sub0() noex {
 	cout << "Hello world!" << eol ;
 	return SR_OK ;
 } /* end */
  
-static int sub1() noex {
+local int sub1() noex {
 	cint		a = ({ cint b = 1 ; cint c = 2 ; (b + c) ; }) ;
 	int		rs = SR_OK ;
 	auto lamb = [] () -> int {
@@ -121,7 +121,7 @@ static int sub1() noex {
 	return rs ;
 } /* end */
 
-static int sub2() noex {
+local int sub2() noex {
 	int		rs = SR_OK ;
 	cchar		*sp = "hello\n" ;
 	for (int i = 0 ; *sp ; i += 1) {
@@ -130,7 +130,7 @@ static int sub2() noex {
 	return rs ;
 } /* end */
 
-static int sub3() noex {
+local int sub3() noex {
 	int		rs = SR_OK ;
 	cvoid		*cvp = nullptr ;
 	void		*vp{} ;
@@ -139,7 +139,7 @@ static int sub3() noex {
 	return rs ;
 } /* end */
 
-static int sub4() noex {
+local int sub4() noex {
 	int		rs = SR_OK ;
 	if (int	a = sub3()) {
 	    cout << "true a=" << a << eol ;
