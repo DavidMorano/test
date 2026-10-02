@@ -93,9 +93,9 @@ struct keynum {
 
 /* forward references */
 
-static int	usage(PROGINFO *) ;
-static int	handlename(PROGINFO *,bfile *,cchar *) ;
-static int	getkeyname(int,char **) ;
+local int	usage(PROGINFO *) ;
+local int	handlename(PROGINFO *,bfile *,cchar *) ;
+local int	getkeyname(int,char **) ;
 
 
 /* define command option words */
@@ -503,7 +503,7 @@ badoutopen:
 /* local subroutines */
 
 
-static int usage(pip)
+local int usage(pip)
 PROGINFO	*pip ;
 {
 	int		rs = SR_OK ;
@@ -522,7 +522,7 @@ PROGINFO	*pip ;
 } /* end subroutine (usage) */
 
 
-static int handlename(pip,ofp,name)
+local int handlename(pip,ofp,name)
 PROGINFO	*pip ;
 bfile		*ofp ;
 cchar	name[] ;
@@ -584,7 +584,7 @@ cchar	name[] ;
 } /* end subroutine (handlename) */
 
 
-static int getkeyname(n,rpp)
+local int getkeyname(n,rpp)
 int	n ;
 char	**rpp ;
 {
