@@ -48,7 +48,7 @@
 #define	AMOUNT	100
 
 
-int main(int,const char **,const char **) {
+int main(int,cchar **,cchar **) {
 	char	*p = (char *) malloc(AMOUNT) ;
 	free(p) ;
 	return 0 ;
