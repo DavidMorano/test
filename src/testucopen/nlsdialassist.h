@@ -37,7 +37,7 @@
 extern "C" {
 #endif
 
-extern int	mknlsreq(char *,int,const char *,int) ;
+extern int	mknlsreq(char *,int,cchar *,int) ;
 extern int	readnlsresp(int,char *,int,int) ;
 
 #ifdef	__cplusplus
