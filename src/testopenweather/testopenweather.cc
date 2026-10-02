@@ -38,16 +38,16 @@
 /* external subroutines */
 
 #if	CF_DEBUGS
-extern int	debugopen(const char *) ;
-extern int	debugprintf(const char *,...) ;
+extern int	debugopen(cchar *) ;
+extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	strlinelen(const char *,int,int) ;
+extern int	strlinelen(cchar *,int,int) ;
 #endif
 
 
 /* forward references */
 
-static int procweather(int,int) ;
+local int procweather(int,int) ;
 
 
 /* exported variables */
@@ -55,9 +55,9 @@ static int procweather(int,int) ;
 
 /* exported subroutines */
 
-int main(int argc,const char **argv,const char **envv)
+int main(int argc,cchar **argv,cchar **envv)
 {
-	const char	*pr = getourenv(envv,VARPRLOCAL) ;
+	cchar	*pr = getourenv(envv,VARPRLOCAL) ;
 
 #if	CF_DEBUGS && CF_DEBUGMALL
 	uint	mo_start = 0 ;
@@ -69,7 +69,7 @@ int main(int argc,const char **argv,const char **envv)
 
 #if	CF_DEBUGS
 	{
-	    const char	*cp ;
+	    cchar	*cp ;
 	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL)
 	        debugopen(cp) ;
 	    debugprintf("main: starting\n") ;
@@ -87,13 +87,13 @@ int main(int argc,const char **argv,const char **envv)
 
 	if (argv != NULL) {
 	    const mode_t	om = 0666 ;
-	    const int	of = O_RDONLY ;
-	    const int	to = -1 ;
-	    const int	llen = LINEBUFLEN ;
+	    cint	of = O_RDONLY ;
+	    cint	to = -1 ;
+	    cint	llen = LINEBUFLEN ;
 	    int		ai ;
 	    char	lbuf[LINEBUFLEN+1] ;
 	    for (ai = 1 ; (ai < argc) && (argv[ai] != NULL) ; ai += 1) {
-	        const char	*ws = argv[ai] ;
+	        cchar	*ws = argv[ai] ;
 #if	CF_DEBUGS
 	        debugprintf("main: ws=%s\n",ws) ;
 #endif
@@ -147,7 +147,7 @@ int main(int argc,const char **argv,const char **envv)
 
 /* local subroutines */
 
-static int procweather(int fd,int of) noex {
+local int procweather(int fd,int of) noex {
 	cint		fo = (of | O_NETWORK) ;
 	int		rs ;
 	if (filer b ; (rs = filer_start(&b,fd,0z,0,fo)) >= 0) {
