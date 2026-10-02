@@ -46,7 +46,7 @@ enum gecosvals {
 } ;
 
 struct gecos_value {
-	const char	*vp ;
+	cchar	*vp ;
 	int		vl ;
 } ;
 
@@ -61,9 +61,9 @@ struct gecos_head {
 extern "C" {
 #endif
 
-extern int	gecos_start(GECOS *,const char *,int) ;
+extern int	gecos_start(GECOS *,cchar *,int) ;
 extern int	gecos_compose(GECOS *,char *,int) ;
-extern int	gecos_getval(GECOS *,int,const char **) ;
+extern int	gecos_getval(GECOS *,int,cchar **) ;
 extern int	gecos_finish(GECOS *) ;
 
 #ifdef	__cplusplus
