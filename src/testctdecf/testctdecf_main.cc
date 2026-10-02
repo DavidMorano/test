@@ -133,7 +133,7 @@ int main(int,mainv,mainv) {
 	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
 	} /* end if */
 	if (rs >= 0) {
-	    const int v = -1234567 ;
+	    cint v = -1234567 ;
 	    cint dlen = decbuflen ;
 	    char dbuf[decbuflen+1] ;
 	    errno = 0 ;
