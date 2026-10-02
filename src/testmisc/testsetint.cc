@@ -44,7 +44,7 @@ using namespace std ;
 
 /* external subroutines */
 
-extern "C" uint	elfhash(const void *,int) ;
+extern "C" uint	elfhash(cvoid *,int) ;
 
 extern "C" int	sisub(cchar *,int,cchar *) ;
 
