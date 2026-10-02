@@ -1,4 +1,4 @@
-/* testtimestr_main SUPPORT (testdate) */
+/* teststrtime_main SUPPORT (testdate) */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -34,7 +34,7 @@
 #include	<baops.h>		/* LIBU */
 #include	<field.h>		/* LIBUC */
 #include	<logfile.h>		/* LIBUC */
-#include	<timestr.h>		/* LIBUC */
+#include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU |TIMEBUFLEN| */
 #include	<bfile.h>		/* LIBB */
 
@@ -58,11 +58,11 @@ int main(int,con mainv,con mainv) {
     	custime		dt = time(nullptr) ;
 	char		timebuf[TIMEBUFLEN + 1] ;
 	printf("tzname 1 » %s %s «\n",tzname[0],tzname[1]) ;
-	printf("edate » %s «\n",timestr_edate(dt,timebuf)) ;
+	printf("edate » %s «\n",strtime_edate(dt,timebuf)) ;
 	printf("tzname 2 » %s %s «\n",tzname[0],tzname[1]) ;
 	tzset() ;
 	printf("tzname 3 » %s %s «\n",tzname[0],tzname[1]) ;
-	printf("edate » %s «\n",timestr_edate(dt,timebuf)) ;
+	printf("edate » %s «\n",strtime_edate(dt,timebuf)) ;
 } /* end subroutine (main) */
 
 
