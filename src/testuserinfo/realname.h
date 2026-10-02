@@ -54,11 +54,11 @@ struct realname_len {
 } ;
 
 struct realname_head {
-	const char	*first ;
-	const char	*m1 ;
-	const char	*m2 ;
-	const char	*m3 ;
-	const char	*last ;
+	cchar	*first ;
+	cchar	*m1 ;
+	cchar	*m2 ;
+	cchar	*m3 ;
+	cchar	*last ;
 	struct realname_len	len ;
 	struct realname_abv	abv ;
 	char		store[REALNAME_STORELEN + 1] ;
@@ -74,16 +74,16 @@ typedef struct realname_head	realname ;
 extern "C" {
 #endif
 
-extern int	realname_start(REALNAME *,const char *,int) ;
+extern int	realname_start(REALNAME *,cchar *,int) ;
 extern int	realname_startparts(REALNAME *,DSTR *) ;
-extern int	realname_startpieces(REALNAME *,const char **,int) ;
-extern int	realname_startparse(REALNAME *,const char *,int) ;
-extern int	realname_getlast(REALNAME *,const char **) ;
-extern int	realname_getfirst(REALNAME *,const char **) ;
-extern int	realname_getm1(REALNAME *,const char **) ;
-extern int	realname_getm2(REALNAME *,const char **) ;
-extern int	realname_getm3(REALNAME *,const char **) ;
-extern int	realname_getpieces(REALNAME *,const char **) ;
+extern int	realname_startpieces(REALNAME *,cchar **,int) ;
+extern int	realname_startparse(REALNAME *,cchar *,int) ;
+extern int	realname_getlast(REALNAME *,cchar **) ;
+extern int	realname_getfirst(REALNAME *,cchar **) ;
+extern int	realname_getm1(REALNAME *,cchar **) ;
+extern int	realname_getm2(REALNAME *,cchar **) ;
+extern int	realname_getm3(REALNAME *,cchar **) ;
+extern int	realname_getpieces(REALNAME *,cchar **) ;
 extern int	realname_fullname(REALNAME *,char *,int) ;
 extern int	realname_name(REALNAME *,char *,int) ;
 extern int	realname_mailname(REALNAME *,char *,int) ;
