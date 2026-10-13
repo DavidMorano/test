@@ -1,0 +1,4 @@
+main: ent slen=4
+main: 00000000
+main: 31323334
+main: ret rs=30 ex=0
