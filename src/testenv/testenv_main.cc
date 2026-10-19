@@ -10,9 +10,8 @@
 /* revision history:
 
 	= 2001-11-01, David A­D­ Morano
-	This subroutine was written for use as a front-end for Korn
-	Shell (KSH) commands that are compiled as stand-alone
-	programs.
+	This subroutine was originally written to facilitate
+	testing of software writen for RightCore Network Services.
 
 */
 
@@ -150,7 +149,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	} /* end block */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
-	}
+	} /* end if (error) */
 	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
 	return ex ;
 } /* end subroutine (main) */
