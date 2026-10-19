@@ -89,8 +89,6 @@ using libu::ctdec ;			/* subroutine */
 
 /* local variables */
 
-static cint	decbuflen = ulibval.decbuflen ;
-
 cbool		f_debug		= CF_DEBUG ;
 cbool		f_ctdecf	= CF_CTDECF ;
 cbool		f_ctdec		= CF_CTDEC ;
@@ -104,43 +102,45 @@ cbool		f_xxtostr	= CF_XXTOSTR ;
 
 int main(int,mainv,mainv) {
     	int	ex = EXIT_SUCCESS ;
-	int	rs = SR_OK ;
-	if_constexpr (f_ctdecf) if (rs >= 0) {
-	    double	v = 1.62 ;
-	    cint	dlen = DBUFLEN ;
-	    cint	fcode = 'f' ;
-	    cint	w = -1 ;
-	    cint	p = 3 ;
-	    cint	fill = -1 ;
-	    char	dbuf[DBUFLEN+1] ;
-	    rs = ctdecf(dbuf,dlen,v,fcode,w,p,fill) ;
-	    printf("rs=%d s=>%s<\n",rs,dbuf) ;
-	} /* end if */
-	if_constexpr (f_ctdec) if (rs >= 0) {
-	    cint dlen = decbuflen ;
-	    cint v = 1234567 ;
-	    char dbuf[decbuflen+1] ;
-	    rs = ctdec(dbuf,dlen,v) ;
-	    printf("ctdec rs=%d dbuf=>%s<\n",rs,dbuf) ;
-	} /* end if */
-	if_constexpr (f_xxtostr) if (rs >= 0) {
-	    const uint uv = 1234567 ;
-	    cint dlen = decbuflen ;
-	    char dbuf[decbuflen+1] ;
-	    errno = 0 ;
-	    char *bp = uitostr(uv,(dbuf+dlen)) ;
-	    rs = (neg errno) ;
-	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
-	} /* end if */
-	if (rs >= 0) {
-	    cint v = -1234567 ;
-	    cint dlen = decbuflen ;
-	    char dbuf[decbuflen+1] ;
-	    errno = 0 ;
-	    char *bp = sitostr(v,(dbuf+dlen)) ;
-	    rs = (neg errno) ;
-	    printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
-	} /* end if */
+	int	rs ;
+	if (static cint	decbuflen = ulibval.decbuflen ; (rs = decbuflen) >= 0) {
+	    if_constexpr (f_ctdecf) if (rs >= 0) {
+	        double	v = 1.62 ;
+	        cint	dlen = DBUFLEN ;
+	        cint	fcode = 'f' ;
+	        cint	w = -1 ;
+	        cint	p = 3 ;
+	        cint	fill = -1 ;
+	        char	dbuf[DBUFLEN+1] ;
+	        rs = ctdecf(dbuf,dlen,v,fcode,w,p,fill) ;
+	        printf("rs=%d s=>%s<\n",rs,dbuf) ;
+	    } /* end if */
+	    if_constexpr (f_ctdec) if (rs >= 0) {
+	        cint dlen = decbuflen ;
+	        cint v = 1234567 ;
+	        char dbuf[decbuflen+1] ;
+	        rs = ctdec(dbuf,dlen,v) ;
+	        printf("ctdec rs=%d dbuf=>%s<\n",rs,dbuf) ;
+	    } /* end if */
+	    if_constexpr (f_xxtostr) if (rs >= 0) {
+	        const uint uv = 1234567 ;
+	        cint dlen = decbuflen ;
+	        char dbuf[decbuflen+1] ;
+	        errno = 0 ;
+	        char *bp = uitostr(uv,(dbuf+dlen)) ;
+	        rs = (neg errno) ;
+	        printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
+	    } /* end if */
+	    if (rs >= 0) {
+	        cint v = -1234567 ;
+	        cint dlen = decbuflen ;
+	        char dbuf[decbuflen+1] ;
+	        errno = 0 ;
+	        char *bp = sitostr(v,(dbuf+dlen)) ;
+	        rs = (neg errno) ;
+	        printf("uitostr rs=%d bp=>%s<\n",rs,bp) ;
+	    } /* end if */
+	} /* end if (ulibval) */
 	if ((rs == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (error) */
