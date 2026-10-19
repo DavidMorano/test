@@ -92,7 +92,7 @@ void exit(int ex) {
 	std::unreachable() ;
 }
 
-static void efunc() noex {
+local void efunc() noex {
 	cchar	*sp = "libtest.efunc\n" ;
 	cint	sl = strlen(sp) ;
 	write(1,sp,sl) ;
