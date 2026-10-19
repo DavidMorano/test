@@ -1,4 +1,4 @@
-//** testalarm_main SUPPORT */
+/* testalarm_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -12,11 +12,6 @@
 
 	= 1988-02-01, David A­D­ Morano
 	This subroutine was originally written.
-
-	= 1988-02-01, David A­D­ Morano
-	This subroutine was modified to not write out anything
-	to standard output if the access time of the associated
-	terminal has not been changed in 10 minutes.
 
 */
 
@@ -73,8 +68,10 @@ import usigsets ;			/* |usigset(3u)| */
 
 /* forward references */
 
-[[maybe_unused]]
-local void	int_all(int)	noex ;
+extern "C" {
+    local void	int_all(int)	noex ;
+} /* end extern (C) */
+
 local int	process()	noex ;
 
 
