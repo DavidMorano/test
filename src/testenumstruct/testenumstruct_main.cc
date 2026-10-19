@@ -31,7 +31,7 @@ import testenumstruct_mod ;
 /* local defines */
 
 #ifndef	CF_DEBUG
-#define	CF_DEBUG	1		/* debugging */
+#define	CF_DEBUG	0		/* debugging */
 #endif
 
 
@@ -75,21 +75,20 @@ cbool		f_debug		= CF_DEBUG ;
 int main(int,con mainv,con mainv) {
 	keys		a = key_one ;
 	DPRINTF("ent szof=%d\n",szof(keys)) ;
-
 	{
 	    cint k = int(a) ;
 	    printf("key_zero=%d\n",k) ;
-	}
+	} /* end */
 	{
 	    cint i = int(key_two) ;
 	    printf("i=%d\n",i) ;
-	}
+	} /* end */
 	sub(key_two) ;
 	{
 	    using enum vals ;
 	    cint v = int(val0) ;
 	    printf("v=%d\n",v) ;
-	}
+	} /* end */
 	DPRINTF("ret\n") ;
 } /* end subroutine (main) */
 
