@@ -75,20 +75,22 @@ int main(int argc,con mainv argv,con mainv) {
 	return ex ;
 } /* end subroutine (main) */
 
-
-local int procval(int b ,cchar *ap,int al) noex {
-    	int		rs = SR_INVALID ;
-	if ((b >= 0) && (b <= ulibval.maxbase)) {
-            if (int v ; (rs = cfxxx(ap,al,b,&v)) >= 0) {
-                printf("libuc I  s=>%s<  v=%d\n",ap,v) ;
+local int procval(int b,cchar *ap,int al) noex {
+    	int		rs ;
+	if ((rs = ulibval.maxbase) >= 0) ylikely {
+	    cint maxbase = rs ;
+    	    rs = SR_INVALID ;
+	    if ((b >= 0) && (b <= maxbase)) {
+                if (int v ; (rs = cfxxx(ap,al,b,&v)) >= 0) {
+                    printf("libuc I  s=>%s<  v=%d\n",ap,v) ;
                     if (longlong vv ; (rs = cfxxx(ap,al,b,&vv)) >= 0) {
                         long lv = conv<long>(vv) ;
                         printf("libuc LL s=>%s< lv=%ld\n",ap,lv) ;
                     } /* end if (cfxxx) */
-            } /* end if (libuc::cfxxx) */
-	} /* end if (valid base) */
+                } /* end if (libuc::cfxxx) */
+	    } /* end if (valid base) */
+	} /* end if (ulibval) */
 	return rs ;
 } /* end subroutine (procval) */
-
 
 
