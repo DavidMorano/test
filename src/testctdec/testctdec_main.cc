@@ -77,8 +77,6 @@ local int	procval(longlong) noex ;
 
 /* local variables */
 
-static cint	digbuflen = ulibval.digbuflen ;
-
 
 /* exported variables */
 
@@ -107,38 +105,39 @@ int main(int argc,con mainv argv,con mainv) {
 /* local subroutines */
 
 local int procval(longlong vv) noex {
-    	int		rs = SR_OK ;
-	cint		dlen = digbuflen ;
-	char		dbuf[digbuflen+1] ;
-	if (rs >= 0) {
-	    cint v = conv<int>(vv) ;
-	    errno = 0 ;
-	    char *bp = sitostr(v,(dbuf+dlen)) ;
-	    rs = (neg errno) ;
-	    printf("sitostr S rs=%d bp=>%s<\n",rs,bp) ;
-	} /* end if */
-	if (rs >= 0) {
-	    const uint uv = conv<uint>(vv) ;
-	    errno = 0 ;
-	    char *bp = uitostr(uv,(dbuf+dlen)) ;
-	    rs = (neg errno) ;
-	    printf("uitostr U rs=%d bp=>%s<\n",rs,bp) ;
-	} /* end if */
-	if (rs >= 0) {
-	    errno = 0 ;
-	    char *bp = xtostr(vv,(dbuf+dlen)) ;
-	    rs = (neg errno) ;
-	    printf("xtostr  S rs=%d bp=>%s<\n",rs,bp) ;
-	} /* end if (ok) */
-	if (rs >= 0) {
-	    rs = ctdec(dbuf,dlen,vv) ;
-	    printf("ctdec   S rs=%d dbuf=>%s<\n",rs,dbuf) ;
-	} /* end if (ok) */
-	if (rs >= 0) {
-	    ulonglong uvv = conv<ulonglong>(vv) ;
-	    rs = ctdec(dbuf,dlen,uvv) ;
-	    printf("ctdec   U rs=%d dbuf=>%s<\n",rs,dbuf) ;
-	} /* end if (ok) */
+    	int		rs ;
+	if (static cint	dlen = ulibval.digbuflen ; (rs = dlen) >= 0) {
+	    char	dbuf[dlen +1] ;
+	    if (rs >= 0) {
+	        cint v = conv<int>(vv) ;
+	        errno = 0 ;
+	        char *bp = sitostr(v,(dbuf+dlen)) ;
+	        rs = (neg errno) ;
+	        printf("sitostr S rs=%d bp=>%s<\n",rs,bp) ;
+	    } /* end if */
+	    if (rs >= 0) {
+	        const uint uv = conv<uint>(vv) ;
+	        errno = 0 ;
+	        char *bp = uitostr(uv,(dbuf+dlen)) ;
+	        rs = (neg errno) ;
+	        printf("uitostr U rs=%d bp=>%s<\n",rs,bp) ;
+	    } /* end if */
+	    if (rs >= 0) {
+	        errno = 0 ;
+	        char *bp = xtostr(vv,(dbuf+dlen)) ;
+	        rs = (neg errno) ;
+	        printf("xtostr  S rs=%d bp=>%s<\n",rs,bp) ;
+	    } /* end if (ok) */
+	    if (rs >= 0) {
+	        rs = ctdec(dbuf,dlen,vv) ;
+	        printf("ctdec   S rs=%d dbuf=>%s<\n",rs,dbuf) ;
+	    } /* end if (ok) */
+	    if (rs >= 0) {
+	        ulonglong uvv = conv<ulonglong>(vv) ;
+	        rs = ctdec(dbuf,dlen,uvv) ;
+	        printf("ctdec   U rs=%d dbuf=>%s<\n",rs,dbuf) ;
+	    } /* end if (ok) */
+	} /* end if (ulibval) */
 	return rs ;
 } /* end subroutine (procval) */
 
