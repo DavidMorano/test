@@ -73,13 +73,13 @@
 void		int_alarm() ;
 void		int_signal() ;
 
-static int	bprintla() ;
+local int	bprintla() ;
 
 
 /* gloabal variables */
 
-static volatile int		f_alarm ;
-static volatile int		f_signal ;
+local volatile int		f_alarm ;
+local volatile int		f_signal ;
 
 
 /* exported variables */
@@ -372,7 +372,7 @@ int	sig ;
 	f_signal = TRUE ;
 } /* end */
 
-static int bprintla(ofp,ksn,s)
+local int bprintla(ofp,ksn,s)
 bfile		*ofp ;
 kstat_named_t	*ksn ;
 char		s[] ;
