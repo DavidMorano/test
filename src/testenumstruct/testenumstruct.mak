@@ -281,7 +281,7 @@ xxtostr.o:		xxtostr.cc	xxtostr.h
 strkeycmp.o:		strkeycmp.cc	strkeycmp.h
 matkeystr.o:		matkeystr.cc	matkeystr.h
 
-
+# TESTENUMMOD
 testenumstruct_mod.o:	testenumstruct_mod0.o testenumstruct_mod1.o
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
