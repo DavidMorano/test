@@ -64,7 +64,7 @@ int main(int argc,con mainv argv,con mainv) {
 			base = atoi(ap) ;
 		    } else {
 		        rs = procval(base,ap,al) ;
-		    }
+		    } /* end if */
 		} /* end if (non-empty) */
 		if (rs < 0) break ;
 	    } /* end for */
@@ -76,20 +76,22 @@ int main(int argc,con mainv argv,con mainv) {
 	return ex ;
 } /* end subroutine (main) */
 
-
 local int procval(int b ,cchar *ap,int al) noex {
-    	int		rs = SR_INVALID ;
-	if ((b >= 0) && (b <= ulibval.maxbase)) {
-            if (int v ; (rs = cfdig(ap,al,b,&v)) >= 0) {
-                printf("libuc I  s=>%s<  v=%d\n",ap,v) ;
+    	int		rs ;
+	if ((rs =  ulibval.maxbase) >= 0) {
+	    cint maxbase = rs ;
+    	    rs = SR_INVALID ;
+	    if ((b >= 0) && (b <= maxbase)) {
+                if (int v ; (rs = cfdig(ap,al,b,&v)) >= 0) {
+                    printf("libuc I  s=>%s<  v=%d\n",ap,v) ;
                     if (longlong vv ; (rs = cfdig(ap,al,b,&vv)) >= 0) {
                         long lv = conv<long>(vv) ;
                         printf("libuc LL s=>%s< lv=%ld\n",ap,lv) ;
                     } /* end if (cfdig) */
-            } /* end if (libuc::cfdig) */
-	} /* end if (valid base) */
+                } /* end if (libuc::cfdig) */
+	    } /* end if (valid base) */
+	} /* end if (ulibval) */
 	return rs ;
 } /* end subroutine (procval) */
-
 
 
