@@ -13,11 +13,6 @@
 	= 1988-02-01, David A­D­ Morano
 	This subroutine was originally written.
 
-	= 1988-02-01, David A­D­ Morano
-	This subroutine was modified to not write out anything
-	to standard output if the access time of the associated
-	terminal has not been changed in 10 minutes.
-
 */
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
@@ -82,8 +77,10 @@ using libu::uitimer_set ;		/* subroutine */
 
 /* forward references */
 
-[[maybe_unused]]
-local void	int_all(int)	noex ;
+extern "C" {
+    local void	int_all(int)	noex ;
+} /* end extern (C) */
+
 local int	process(FILE *)	noex ;
 
 
