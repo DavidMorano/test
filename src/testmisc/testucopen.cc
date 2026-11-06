@@ -40,10 +40,6 @@
 #define	FILER_RCNET	4		/* read-count for network */
 #endif
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
 #define	VARDEBUGFNAME	"TESTUCOPEN_DEBUGFILE"
 
 extern int	fbwrite(FILE *,cvoid *,int) ;
