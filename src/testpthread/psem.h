@@ -24,7 +24,7 @@
 extern "C" {
 #endif
 
-extern int	uc_openpsem(const char *,int,mode_t,uint,PSEM **) ;
+extern int	uc_openpsem(cchar *,int,mode_t,uint,PSEM **) ;
 
 extern int	psem_close(PSEM *) ;
 
