@@ -36,10 +36,6 @@
 #include	<localmisc.h>
 
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
 #define	VARDEBUGFNAME	"TESTNAKED_DEBUGFILE"
 
 #define	NDF		"testnaked.deb"
