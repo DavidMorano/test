@@ -19,7 +19,7 @@
 	(|std::getline|) reads the charaters into a |string(3c++)|
 	object and then the data needs to be copied to the
 	caller-supplied buffer.  Using |std::istream::getline(3c++)|
-	reads the data intocaller-supplied buffer directly.
+	reads the data into the caller-supplied buffer directly.
 
 	= 2026-03-17, David A­D­ Morano
 	I changed this again (rather radically) to read my own
@@ -27,7 +27,7 @@
 	Switching to |std::istream::getline(3c+)| was a mistake
 	because it does not handle reading lines the way that we
 	always had in the past (for 40+ years).  Some notes below
-	may be outdates now.
+	may be outdated now.
 
 */
 
@@ -87,7 +87,7 @@
 	With this in mind, the various "failures" (of which there
 	are three principal ones) need to be checked in the following
 	order:
-		EOF		(represented by the EOL bit)
+		EOF		(represented by the EOF bit)
 		BAD		(represented by the BAD bit)
 		FAIL		(represented by the FAIL bit)
 	Thank for your attention to this matter.
@@ -160,14 +160,14 @@ int readln(istream *isp,char *ibuf,int ilen,int dch) noex {
 		    rs = reader(isp,ibuf,ilen,dch) ;
 		    len = rs ;
 		} /* end if (non-zero positive) */
-		ibuf[len] = '\0' ;
+		ibuf[len] = eos ;
 	    } /* end if (valid) */
 	} /* end if (non-null) */
 	DPRINTF("ret rs=%d len=%d\n",rs,len) ;
 	return (rs >= 0) ? len : rs ;
 } /* end subroutine (readln) */
 
-extern int istr_readln(istream *isp,char *ibuf,int ilen,int dch) noex {
+int istr_readln(istream *isp,char *ibuf,int ilen,int dch) noex {
 	return readln(isp,ibuf,ilen,dch) ;
 } /* end subroutine */
 
@@ -177,6 +177,7 @@ extern int istr_readln(istream *isp,char *ibuf,int ilen,int dch) noex {
 local int reader(istream *isp,char *rbuf,int rlen,int delim) noex {
     	int		rs = SR_OK ;
 	int		len = 0 ; /* return-value */
+	DPRINTF("ent rlen=%d delim=%02x\n",rlen,delim) ;
 	try {
 	    char	c{} ;
 	    bool	feof = false ;
@@ -190,10 +191,11 @@ local int reader(istream *isp,char *rbuf,int rlen,int delim) noex {
 	    } /* end for */
 	    if (ffail) {
 	        rs = SR_IO ;
-	    }
+	    } /* end if (error) */
 	} catch (...) {
 	    rs = SR_NOMEM ;
 	} /* end if (error) */
+	DPRINTF("ret rs=%d len=%d\n",rs,len) ;
 	return (rs >= 0) ? len : rs ;
 } /* end subroutine (reader) */
 
