@@ -44,6 +44,7 @@
 #include	<ctdec.h>		/* LIBUC */
 #include	<ctdecf.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU |DECBUFLEN| */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #pragma		GCC dependency		"mod/ulibvals.ccm"
 
