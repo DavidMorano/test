@@ -16,16 +16,15 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/time.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstdio>
-#include	<cstring>		/* |strncmp(3c)| */
-#include	<cthex.h>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/time.h>		/* POSIX® */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD |strncmp(3c)| */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #pragma		GCC dependency		"mod/libutil.ccm"
 
@@ -54,7 +53,7 @@ int main(int argc,con mainv,con mainv) {
 	} /* end block */
 	if ((rs < 0) && (ex == EXIT_SUCCESS)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
