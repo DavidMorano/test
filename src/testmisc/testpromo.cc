@@ -5,6 +5,8 @@
 /* test integer promotion */
 /* version %I% last-modified %G% */
 
+#define	CF_EXTERN	0		/* try an external subroutine */
+#define	CF_DOWNSIZE	0		/* test type-down-sizing */
 
 /* revision history:
 
@@ -27,14 +29,28 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstdio>
-#include	<bit>			/* |popcount(3c++)| */
-#include	<iostream>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<bit>			/* C++STD |popcount(3c++)| */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+
+#ifndef	CF_DOWNSIZE
+#define	CF_DOWNSIZE	0		/* test type-down-sizing */
+#endif
+
+#if	CF_EXTERN
+extern void exsub(int) noex ;
+#endif /* CF_EXTERN */
+
+local void promosub(int v) noex {
+	printf("v=%d\n",v) ;
+} /* end subroutine */
+
+cbool		f_downsize		= CF_DOWNSIZE ;
 
 int main(int,con mainv,con mainv) {
     	uint	uv ;
@@ -42,25 +58,35 @@ int main(int,con mainv,con mainv) {
 	    schar a = -3 ;
 	    uv = a ;
 	    printf("uv=%08X\n",uv) ;
-	}
+	} /* end */
 	{
 	    short a = -3 ;
 	    uv = a ;
 	    printf("uv=%08X\n",uv) ;
-	}
+	} /* end */
 	{
 	    int a = -3 ;
 	    {
 		ulong uv = a ;
 	        printf("uv=%016lX\n",uv) ;
 	    }
-	}
+	} /* end */
 	{
 	    cbool f1 = bool(4) ;
 	    cbool f2 = bool(-5) ;
 	    printf("f1=%u\n",uint(f1)) ;
 	    printf("f2=%u\n",uint(f2)) ;
 	}
+	if_constexpr (f_downsize) {
+	    size_t dsize = 42 ;
+	    promosub(dsize) ;		/* <- should give compiler warning! */
+	} /* end block */
+#if	CF_EXTERN
+	{
+	    size_t dsize = 42 ;
+	    exsub(dsize) ;		/* <- should give compiler warning! */
+	} /* end */
+#endif /* CF_EXTERN */
 } /* end subroutine (main) */
 
 
