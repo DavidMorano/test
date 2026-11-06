@@ -69,6 +69,7 @@ extern "C" {
 /* local variables */
 
 cint		elen		= MAXPATHLEN ;
+cint		plen		= MAXPATHLEN ;
 cint		maxpath		= MAXPATHLEN ;
 
 
@@ -87,13 +88,15 @@ int main(int argc,con mainv argv,con mainv envv) {
 	printf("ppid=%u\n",ppid) ;
 	if (argc > 0) {
 	    printf("argname=%s\n", ((argc > 0) ? argv[0] : "")) ;
-	}
+	} else {
+	    printf("argname=**NA**\n") ;
+	} /* end if (arg-name) */
 	{
-	    shellunder_data sd ;
 	    printf("shellunder=%s\n", ((cp != nullptr) ? cp : "")) ;
 	    if (cp) {
-	        shellunder_load(&sd,cp) ;
-	        printf("shellname=%s\n",sd.execname) ;
+	        if (shellunder sd ; 
+		rs = shellunder_load(&sd,cp) ;
+	        printf("shellunder rs=%d name=%s\n",rs,sd.execname) ;
 	    }
 	}
 	{
@@ -108,15 +111,23 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    printf("getexecname=%s\n",getcp) ;
 	}
 	{
+	    if (char *pbuf = new(nt) char[plen + 1]) {
+	        if ((rs = u_progname(pbuf,plen)) >= 0) {
+		    printf("uprogname=%s\n",pbuf) ;
+	        }
+		delete [] pbuf ;
+	    } /* end if (new-char) */
+	} /* end block */
+	{
 	    if (char *ebuf = new(nt) char[elen + 1]) {
 	        if ((rs = u_execname(ebuf,elen)) >= 0) {
-		    printf("execname=%s\n",ebuf) ;
+		    printf("uexecname=%s\n",ebuf) ;
 	        }
 		delete [] ebuf ;
 	    } /* end if (new-char) */
 	} /* end block */
 	if (usysflag.darwin) {
-	    if (char *pbuf ; (pbuf = new(nt) char[maxpath + 1]) != np) {
+	    if (char *pbuf = new(nt) char[maxpath + 1]) {
 	        size_t	psize = size_t(maxpath) ;
 	        sysctlbyname("kern.procname",pbuf,&psize,np,0uz) ;
 	        printf("procname=%s\n",pbuf) ;
