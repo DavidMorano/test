@@ -110,7 +110,7 @@ cbool			f_debug = CF_DEBUG ;
 int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = EX_OK ;
-	int		len = (COLUMNS - 40) ;
+	int		len = (COLUMNS - 20) ;
 	DPRINTF("ent\n") ;
 	if (argc > 1) {
 	    if (cchar *ap = argv[1] ; ap) {
@@ -124,7 +124,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    for (cauto &e : tests) {
 		if (cint ei = matkeystr(envv,e,-1) ; ei >= 0) {
 		    cchar *valp = envv[ei] ;
-		    if (cchar *tp = strchr(envv[ei],'=') ; tp) {
+		    if (cchar *tp = strochr(envv[ei],'=') ; tp) {
 			valp = (tp+1) ;
 		    } /* end if */
 		    {
