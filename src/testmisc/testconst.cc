@@ -17,13 +17,16 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
+#include	<sys/types.h>		/* POSIX® */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>
+#include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<localmisc.h>
+#include	<localmisc.h>		/* LIBU */
+
+
+/* local defines */
 
 #if	defined(_WCHAR_T)
 #define	WCHAR	1
@@ -32,13 +35,17 @@
 #endif
 
 
+/* exported variables */
+
+
+/* exported subroutines */
+
 int main(int argc,con mainv argv,con mainv *envv) {
-	cint64_t	a = 0 ;
+	con int64_t	a = 0 ;
 	(void) argc ;
 	(void) argv ;
 	(void) envv ;
 	printf("%lld wchar=%u\n",a,WCHAR) ;
-
 	return 0 ;
 } /* end subroutine (main) */
 
