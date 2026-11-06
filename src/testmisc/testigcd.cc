@@ -25,16 +25,16 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>
+#include	<csysbase.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 
 /* local defines */
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40
-#endif
 
 #define	MAXTRY		20		/* maximum value for each element */
 
@@ -43,22 +43,16 @@
 
 /* external subroutines */
 
-#if	CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
-
 
 /* local variables */
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = 0 ;
 	int		maxtry = MAXTRY ;
