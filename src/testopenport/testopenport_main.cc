@@ -763,7 +763,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    pip->open.logfile = TRUE ;
 
 	    if (pip->logsize > 0)
-	        logfile_checksize(&pip->lh,pip->logsize) ;
+	        logfile_cksize(&pip->lh,pip->logsize) ;
 
 	    logfile_userinfo(&pip->lh,&u,
 	        pip->daytime,pip->searchname,pip->version) ;
