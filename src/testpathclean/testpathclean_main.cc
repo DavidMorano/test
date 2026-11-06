@@ -1,10 +1,11 @@
 /* testpathclean_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 */
 
-/* test the |pathclean(3)| subroutine */
+/* test the |pathclean(3uc)| subroutine */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS		1	/* non-switchable debug print-outs */
-#define	CF_DMALLOCSHUTDOWN	0	/* already handled by 'exit(3c)' */
+#define	CF_DEBUG	1		/* debugging */
 
 /* revision history:
 
@@ -24,34 +25,26 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<ctime>
-#include	<csignal>
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<bfile.h>
-#include	<field.h>
-#include	<paramfile.h>
-#include	<sfx.h>
-#include	<strtime.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
-
-#include	"config.h"
-#include	"defs.h"
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<path.h>		/* LIBUC */
+#include	<cfdec.h>		/* LIBUC */
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 
 /* local defines */
 
-#ifndef	LINEBUFLEN
-#define	LINEBUFLEN	2048
+#define	TESTPATHCLEAN_DFN		"testpathclean.deb"
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	0		/* debugging */
 #endif
 
 
@@ -63,27 +56,9 @@
 
 /* local variables */
 
-constexpr char		tterms[] = {
-	        0x00, 0x1B, 0x00, 0x00,
-	        0x01, 0x10, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00
-} ; /* end array */
-
-constexpr char		dterms[] = {
-	        0x00, 0x1B, 0x00, 0x00,
-	        0x01, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00,
-	        0x00, 0x00, 0x00, 0x00
-} ; /* end array */
+cint			maxpathlen	= MAXPATHLEN ;
+cchar			dfn[]		= TESTPATHCLEAN_DFN ;
+cbool			f_debug		= CF_DEBUG ;
 
 
 /* exported variables */
@@ -92,91 +67,32 @@ constexpr char		dterms[] = {
 /* exported subrouines */
 
 int main(int argc,con mainv argv,con mainv envv) {
-	paramfile	params ;
-	bfile	infile, *ifp = &infile ;
-	bfile	outfile, *ofp = &outfile ;
-	time_t	daytime ;
-	int	rs, i, n ;
-	int	len, sl, cl ;
-	int	fd_debug = -1 ;
-	char	linebuf[LINEBUFLEN + 1] ;
-	char	pathbuf[MAXPATHLEN + 1] ;
-	char	timebuf[TIMEBUFLEN + 1] ;
-	char	*sp, *cp, *vp ;
-
-	if ((cp = getenv(VARDEBUGFD1)) == nullptr) {
-	    cp = getenv(VARDEBUGFD2) ;
+    	cnullptr	np{} ;
+	cint		plen = maxpathlen ;
+	int		rs = SR_OK ;
+	int		ex = EXIT_SUCCESS ;
+	(void) envv ;
+	if (debugopen(dfn) >= 0) {
+	    DEBUGPRINTF("ent\n") ;
 	}
-
-	if ((cp != nullptr) &&
-	    (cfdeci(cp,-1,&fd_debug) >= 0))
-	    debugsetfd(fd_debug) ;
-
-
-#if	CF_DEBUGS
-	debugprintf("main: program entered\n") ;
-#endif
-
-	bopen(ofp,BFILE_STDOUT,"dwct",0666) ;
-
-	bopen(ifp,BFILE_STDIN,"dr",0666) ;
-
-	bprintf(ofp,"CLEANPATH subroutine test program\n") ;
-
-/* loop stuff */
-
-	forever {
-	    daytime = time(nullptr) ;
-
-	    bprintf(ofp,"path> ") ;
-
-	    bflush(ofp) ;
-
-	    rs = breadln(ifp,linebuf,LINEBUFLEN) ;
-
-	    len = rs ;
-	    if (rs <= 0)
-	        break ;
-
-	    if (linebuf[len - 1] == '\n')
-	        len -= 1 ;
-
-	    linebuf[len] = '\0' ;
-	    sl = sfshrink(linebuf,len,&sp) ;
-
-	    sp[sl] = '\0' ;
-
-	bprintf(ofp,"before> %s\n",sp) ;
-
-		rs = pathclean(pathbuf,sp,sl) ;
-
-#if	CF_DEBUGS
-	debugprintf("main: pathclean() rs=%d pathbuf=%t\n",rs,pathbuf,rs) ;
-#endif
-
-	bprintf(ofp,"after rs=%d> %s\n",rs,pathbuf) ;
-
-		if (rs < 0)
-			break ;
-
-	} /* end while */
-
-	bprintf(ofp,"\n") ;
-
-	bclose(ifp) ;
-
-	bclose(ofp) ;
-
-#if	CF_DEBUGS
-	            debugprintf("main: ret\n") ;
-#endif
-
-#if	defined(DMALLOC) && CF_DMALLOCSHUTDOWN
-	debugprintf("main: dmalloc_shutdown()\n") ;
-	dmalloc_shutdown() ;
-#endif
-
-	return EX_OK ;
+	if (argc > 1) {
+	    char	pbuf[plen + 1] ;
+	    DEBUGPRINTF("args\n") ;
+	    for (int ai = 1 ; (ai < argc) && argv[ai] ; ai += 1) {
+		if (cchar *ap = argv[ai] ; ap[0]) {
+	    	    DEBUGPRINTF("path> %s\n",ap) ;
+	            printf("path> %s\n",ap) ;
+		    rs = pathclean(pbuf,ap) ;
+		    printf("rs=%d pbuf=>%s<\n",rs,pbuf) ;
+		} /* end if (non-empty) */
+		if (rs < 0) break ;
+	    } /* end for */
+	} /* end if (arguments) */
+	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
+	if ((ex == EX_OK) && (rs < 0)) {
+	    ex = mapex(np,rs) ;
+	} /* end if (error) */
+	return ex ;
 } /* end subroutine (main) */
 
 
