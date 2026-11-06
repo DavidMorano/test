@@ -33,8 +33,8 @@
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<cinttypes>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstring>
 #include	<new>
 #include	<initializer_list>
@@ -55,15 +55,12 @@
 #include	<ctdec.h>
 #include	<strwcpy.h>
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"bstree.hh"
 
 
 /* local defines */
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
 
 #define	VARDEBUGFNAME	"BSTREE_DEBUGFILE"
 
@@ -74,14 +71,6 @@ using namespace std ;
 
 
 /* external subroutines */
-
-#if	CF_DEBUG
-extern "C" int	debugopen(cchar *) ;
-extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugprinthexblock(cchar *,int,cvoid *,int) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(cchar *,cchar *,int) ;
-#endif
 
 
 /* external variables */
