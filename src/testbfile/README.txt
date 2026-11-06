@@ -1,7 +1,5 @@
-LIBB
+TESTBFILE
 
-To make:
-
-$ makeit install
+This is a littleprogram to test the whole BFILE object.
 
 
