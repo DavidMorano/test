@@ -1,16 +1,30 @@
-/* config */
+/* testprgetprogpath_config HEADER */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
+
+/* test program */
+/* version %I% last-modified %G% */
 
 
 /* revision history:
 
 	= 2000-05-14, David A­D­ Morano
-
 	Originally written for Rightcore Network Services.
-
 
 */
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
+
+#ifndef	TESTPRGETPROGPATHCONFIG_INCLUE
+#define	TESTPRGETPROGPATHCONFIG_INCLUE
+
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+
 
 
 #define	VERSION		"0"
@@ -91,6 +105,7 @@
 #define	MSFNAME		"ms"
 
 #define	LOGSIZE		(80*1024)
+#define	USAGECOLS	4
 
 #define	DEFRUNINT	60
 #define	DEFPOLLINT	8
@@ -99,7 +114,7 @@
 #define	TO_CACHE	2
 #define	TO_LOADAVG	1
 
-#define	USAGECOLS	4
 
+#endif /* TESTPRGETPROGPATHCONFIG_INCLUE */
 
 
