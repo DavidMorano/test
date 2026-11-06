@@ -95,16 +95,12 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    } /* end if (envmk) */
 	    DEBUGPRINTF("envmk-out rs=%d\n",rs) ;
 	} /* end if (ok) */
-
-	DEBUGPRINTF("ret rs=%d\n",rs) ;
-
-	DEBUGCLOSE() ;
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = EX_DATAERR ;
-	}
-	fprintf(stderr,"main: ret ex=%d rs=%d\n",ex,rs) ;
+	} /* end if (error) */
+	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
+	DEBUGCLOSE ;
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
