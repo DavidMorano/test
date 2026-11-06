@@ -89,7 +89,7 @@ int main(int argc,con mainv argv,con mainv) {
 	errno = 0 ;
 	for (int ai = 1 ; (ai < argc) && argv[ai] ; ai += 1) {
 	    if (cchar *ap = argv[ai] ; ap[0]) {
-		if (longlong vv = atosll(ap) ; iszval(errno)) {
+		if (longlong vv = atosll(ap) ; isvalzero(errno)) {
 		    rs = procval(vv) ;
 		} /* end if (atosll) */
 	    } /* end if (non-empty) */
