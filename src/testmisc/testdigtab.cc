@@ -33,14 +33,24 @@ import digtab ;				/* |getdig(3u)| */
 
 using std::cout ;
 
+cint cols = 16 ;
+
 int main(int,con mainv,con mainv) {
+    int c = 0 ;
     for (int i = 0 ; i < 64 ; i += 1) {
 	if (uchar uch = getdig(i) ; (uch >= '0') && (uch <= uchar('ÿ'))) {
-	    cout << "dig[" << i << "]=" << uch << eol ;
+	    cout << " " << uch ;
 	} else {
-	    cout << "dig[" << i << "]=" << "invalid" << eol ;
-	}
+	    cout << " " << '¿' ;
+	} /* end */
+	if (++c == cols) {
+	    cout << eol ;
+	    c = 0 ;
+	} /* end if */
     } /* end for */
+    if (c) {
+	cout << eol ;
+    }
 } /* end subroutine (main) */
 
 
