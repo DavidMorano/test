@@ -65,7 +65,7 @@
 #define	DEBUGLEVEL(n)	(pip->debuglevel >= (n))
 #endif
 
-#define	O_FLAGS		(O_RDWR | O_CREAT)
+#define	OX_FL		(O_RDWR | O_CREAT)
 
 
 /* external subroutines */
@@ -631,7 +631,7 @@ char	*envv[] ;
 	    char	recipient[MSGIDE_LRECIPIENT + 1] ;
 
 
-	    rs = msgid_open(&db,srfname,O_FLAGS,0666,4) ;
+	    rs = msgid_open(&db,srfname,OX_FL,0666,4) ;
 
 #if	CF_DEBUG
 	    if (DEBUGLEVEL(4))
