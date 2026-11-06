@@ -30,14 +30,16 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/types.h>		/* POSIX® */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstring>		/* CSTD |strchr(3c)| */
-#include	<string_view>		/* C++STD */
-#include	<type_traits>		/* C++STD */
+#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<typetraits>		/* C++STD */
+#include	<iostream>		/* C++STD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<usupport.h>		/* LIBU |cfdec(3u)| */
+#include	<usupport.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
 #include	<intceil.h>		/* LIBU */
 #include	<strkeycmp.h>		/* LIBU */
@@ -57,13 +59,10 @@
 
 /* imported namespaces */
 
-using std::string_view ;		/* type */
-using libu::cfdec ;			/* subroutine */
+using std::cout ;			/* variable */
 
 
 /* type-defs */
-
-typedef string_view	strview ;
 
 
 /* external subroutines */
@@ -113,11 +112,14 @@ int main(int,con mainv,con mainv) {
 	int		ex = EX_OK ;
 	DPRINTF("ent\n") ;
 	if (rs >= 0) {
+	    cout << "pid_t " << bool(std::is_same_v<pid_t,int>) << eol ;
+	} /* end if (ok) */
+	if (rs >= 0) {
 	    cauto val = retval() ;
 	    (void) val ;
 	    assert_static(std::is_same_v<typeof(val),cint>) ;
 	} /* end if (ok) */
-	{
+	if (rs >= 0) {
 	    int *ap = nullptr ;
 	    {
 		decltype(*ap) v = rs ;
@@ -126,7 +128,7 @@ int main(int,con mainv,con mainv) {
 	} /* end if (ok) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
-	}
+	} /* end if (error) */
 	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
 	return ex ;
 } /* end subroutine (main) */
