@@ -1,4 +1,4 @@
-/* main (testgetsystypenum) */
+/* getsystypenum_main (testgetsystypenum) */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -27,6 +27,7 @@
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"defs.h"
 #include	"config.h"
@@ -34,46 +35,24 @@
 
 /* local defines */
 
-#ifndef	MKCHAR
-#define	MKCHAR(ch)	((ch) & UCHAR_MAX)
-#endif
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40
-#endif
-
 
 /* external subroutines */
 
 extern int	sfcookkey(cchar *,int,cchar **) ;
 
-#if	CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugprinthex(cchar *,int,cchar *,int) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
+
+/* exported variables */
 
 
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-cchar	*argv[] ;
-cchar	*envv[] ;
-{
-	struct utsname		u ;
-
+int main(argc,con mainv argv,con mainv envv) {
+	UTSNAME		u ;
 #if	CF_DEBUG && CF_DEBUGMALL
 	uint	mo_start = 0 ;
 #endif
-
 	int	rs ;
-
 	cchar	*cp ;
-
 
 #if	CF_DEBUG
 	if ((cp = getenv(VARDEBUGFNAME)) == NULL) {
