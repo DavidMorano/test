@@ -30,10 +30,10 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* must be ordered first to configure */
-#include	<cinttypes>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
+#include	<cinttypes>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
 #include	<new>
 #include	<initializer_list>
 #include	<utility>
@@ -45,21 +45,18 @@
 #include	<fstream>
 #include	<iostream>
 #include	<iomanip>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
 #include	<ctdec.h>
 #include	<strwcpy.h>
-#include	<localmisc.h>
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"slist.h"
 
 
 /* local defines */
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
 
 #define	VARDEBUGFNAME	"LISTER_DEBUGFILE"
 
@@ -70,14 +67,6 @@ using namespace std ;
 
 
 /* external subroutines */
-
-#if	CF_DEBUG
-extern "C" int	debugopen(cchar *) ;
-extern "C" int	debugprintf(cchar *,...) ;
-extern "C" int	debugprinthexblock(cchar *,int,cvoid *,int) ;
-extern "C" int	debugclose() ;
-extern "C" int	strlinelen(cchar *,cchar *,int) ;
-#endif
 
 
 /* external variables */
