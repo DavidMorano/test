@@ -25,15 +25,15 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/mman.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstdarg>
-#include	<cstdio>
-#include	<usystem.h>
+#include	<sys/mman.h>		/* POSIX® */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdarg>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>		/* TIMEBUFLEN */
 
-#pragma		GCC dependency		"mod/libutil.ccm"
 #pragma		GCC dependency		"mod/ulibvals.ccm"
 
 import ulibvals ;			/* |ulibval(3u)| */
@@ -45,7 +45,7 @@ import ulibvals ;			/* |ulibval(3u)| */
 
 /* imported namespaces */
 
-using libu::um ;			/* variable */
+using libu::umem ;			/* variable */
 
 
 /* external subroutines */
@@ -85,21 +85,32 @@ namespace {
 /* exported subroutines */
 
 int main(int,con mainv,con mainv) {
-    	mgr		mo ;
-	int		rs ;
-	mo(3) ;
-	mo.statcall(4) ;
-	rs = mo ;
-	printf("ret (%d)\n",rs) ;
+	int		ex = EXIT_SUCCESS ;
+	int		rs = SR_OK ;
+	if (rs >= 0) {
+    	    mgr		mo ;
+	    mo(3) ;
+	    mo.statcall(4) ;
+	    rs = mo ;
+	    printf("ret (%d)\n",rs) ;
+	} /* end if (ok) */
+	if (ex == EXIT_SUCCESS) && (rs < 0) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
+	return ex ;
 } /* end subroutine (main) */
 
 
 /* local subroutines */
 
 mgr::operator int () noex {
-    	ps = ulibval.pagesz ;
-	return setup() ;
-}
+    	int		rs ;
+    	if ((rs = ulibval.pagesz) >= 0) {
+	    ps = rs ;
+	    rs = setup() ;
+	} /* end if */
+	return rs ;
+} /* end if */
 
 int mgr::setup() noex {
     	cnullptr	np{} ;
@@ -130,7 +141,7 @@ int mgr::check(void *md,size_t ms) noex {
     	(void) md ;
 	{
     	    cint sz = iceil(msi,ps) ;
-	    if (char *va ; (rs = um.mall((sz + 1),&va)) >= 0) {
+	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
 		csize psize = size_t(ps) ;
 		int i = 0 ;
 	        for (caddr_t ai = ma ; ai < (ma + ms) ; ai += ps) {
@@ -138,8 +149,9 @@ int mgr::check(void *md,size_t ms) noex {
 		    rs = u_mincore(ai,psize,(va+i)) ;
 		    printf("va[%d]=%02X\n",i,va[i]) ;
 		    i += 1 ;
+		    if (rs < 0) break ;
 	        } /* end for */
-	        rs1 = um.free(va) ;
+	        rs1 = umem.free(va) ;
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (m-a-f) */
 	} /* end block */
@@ -155,13 +167,13 @@ int mgr::checker(void *md,size_t) noex {
 	(void) md ;
 	{
 	    cint sz = n ;
-	    if (char *va ; (rs = um.mall((sz + 1),&va)) >= 0) {
+	    if (char *va ; (rs = umem.mall((sz + 1),&va)) >= 0) {
 	        for (int i = 0 ; i < n ; i += 1) {
 	            rs1 = u_mincore(ma,psize,va) ;
 		    printf("ma=%p rs=%d va=%02X\n",ma,rs1,va[0])  ;
 	            ma += (i * ps) ;
 	        } /* end for */
-	        rs1 = um.free(va) ;
+	        rs1 = umem.free(va) ;
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (m-a-f) */
 	} /* end block */
