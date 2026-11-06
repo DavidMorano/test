@@ -38,10 +38,6 @@
 
 /* local defines */
 
-#ifndef	LOGNAMELEN
-#define	LOGNAMELEN	32
-#endif
-
 
 /* external subroutines */
 
