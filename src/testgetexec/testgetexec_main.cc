@@ -22,7 +22,7 @@
 #include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
-#include	<usysbase.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU |getexecname(3usys)| */
 #include	<localmisc.h>		/* LIBU */
 
 
