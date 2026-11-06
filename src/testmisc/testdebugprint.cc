@@ -29,11 +29,14 @@
 
 #define	VARDEBUGFNAME	"TESTDEBUGPRINT_DEBUGFILE"
 
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* debugging */
+#endif
 
 int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = EXIT_SUCCESS ;
-	cchar		*msg = "here\nis\033" ;
+	cchar		*msg = "here\nis\033[B" ;
 
 #if	CF_DEBUG
 	if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
@@ -54,7 +57,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
