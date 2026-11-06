@@ -20,7 +20,7 @@
 /*******************************************************************************
 
   	Description:
-	This is a test program for the 'uc_open(3uc)' subroutine.
+	This is a test program for the BFILE object.
 
 *******************************************************************************/
 
@@ -49,7 +49,7 @@
 #define	VARDEBUGFNAME	"TESTBFILE_DEBUGFILE"
 
 #ifndef	CF_DEBUG
-#define	CF_DEBUG	1		/* run-time debugging */
+#define	CF_DEBUG	0		/* run-time debugging */
 #endif
 
 
@@ -109,11 +109,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	(void) envv ;
 	if_constexpr (f_debug) {
 	    if (cchar *cp = getourenv(envv,VARDEBUGFNAME) ; cp) {
-		fprintf(stderr,"debugfile=%s\n",cp) ;
 	        if ((rs = debugopen(cp)) >= 0) {
 	        DEBUGPRINTF("starting\n") ;
 		}
-		fprintf(stderr,"debugging=%d\n",rs) ;
 	    } /* end if (getoutenv) */
 	} /* end if_constexpr (f_debug) */
 	DEBUGPRINTF("start rs=%d argc=%d\n",rs,argc) ;
@@ -121,14 +119,14 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    if (procer po(argc,argv) ; (rs = po) >= 0) {
 		DEBUGPRINTF("procer rs=%d\n",rs) ;
 		ex = EX_OK ;
-	    }
+	    } /* end */
 	} /* end if (arguments) */
 	if (((ex == EX_OK) || (ex == EX_INFO)) && (rs < 0)) {
 	    DEBUGPRINTF("-> mapex rs=%d\n",rs) ;
 	    ex = mapex(np,rs) ;
-	} /* end if */
+	} /* end if (error) */
 	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
-	DEBUGCLOSE() ;
+	DEBUGCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
 
