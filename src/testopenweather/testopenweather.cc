@@ -29,10 +29,6 @@
 #define	FILER_RCNET	4		/* read-count for network */
 #endif
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
 #define	VARDEBUGFNAME	"TESTOPENWEATHER_DEBUGFILE"
 
 /* external subroutines */
