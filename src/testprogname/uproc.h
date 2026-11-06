@@ -35,9 +35,11 @@
 
 #include	<uexec.h>
 #include	<uexecname.h>
+#include	<uforkat.h>
 #include	<unanosleep.h>
 #include	<uprocess.h>
-#include	<usig.h>
+#include	<uprogname.h>
+#include	<usigx.h>
 
 
 #endif /* UPROC_INCLUDE */
