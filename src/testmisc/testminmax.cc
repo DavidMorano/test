@@ -2,10 +2,10 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-/* test program */
+/* test program (TESTMINMAX) */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUG	1
+#define	CF_DEBUG	1		/* debugging */
 
 /* revision history:
 
@@ -17,65 +17,61 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstdio>
-#include	<cstring>
-#include	<algorithm>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<vecpstr.h>
-#include	<cthex.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<climits>		/* CSTD |INT_MAX| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<algorithm>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	0		/* debugging */
 #endif
 
-#define	VARDEBUGFNAME	"TESTISHEX_DEBUGFILE"
+#define	VARDFN	"TESTMINMAX_DFN"
 
-using std::min ;
-using std::max ;
-
-
-#if	CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
+using std::min ;			/* subroutine */
+using std::max ;			/* subroutine */
 
 
-int main(int argc,cchar **argv,cchar **envv) {
-	cint	n = (100*1024*1024) ;
+/* local variables */
+
+cbool		f_debug		= CF_DEBUG ;
+
+
+/* exported variables */
+
+
+/* exported subroutines */
+
+int main(int argc,con mainv argv,con mainv envv) {
+	cint		n = (100*1024*1024) ;
 	int		rs = SR_OK ;
 	int		rs1 ;
-	int		i ;
-	int		prev = 0 ;
-	cchar		*cp ;
+	int		valmin = INT_MAX ;
+	int		valmax = 0 ;
 
-#if	CF_DEBUG
-	if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
-	    rs = debugopen(cp) ;
-	    debugprintf("main: starting DFD=%d\n",rs) ;
+	if (cchar *cp = getourenv(envv,VARDFN)) {
+	    rs = DEBUGOPEN(cp) ;
+	    DEBUGPRINTF("starting DFD=%d\n",rs) ;
 	}
-#endif /* CF_DEBUG */
 
-	for (i = 0 ; i < n ; i += 1) {
-	    int	v = random() ;
-	    if (min(prev,v)) {
-		rs = 1 ;
-	    }
+	for (int i = 0 ; i < n ; i += 1) {
+	    int v = random() ;
+	    valmin = min(valmin,v) ;
+	    valmax = max(valmax,v) ;
 	} /* end for */
+	printf("min=%d max=%d\n",valmin,valmax) ;
 
-#if	CF_DEBUG
-	debugprintf("main: ret rs=%d\n",rs) ;
-#endif
-
-#if	CF_DEBUG
-	debugclose() ;
-#endif
-
+	DEBUGPRINTF("ret rs=%d\n",rs) ;
+	DEBUGCLOSE ;
 	return 0 ;
 } /* end subroutine (main) */
 
