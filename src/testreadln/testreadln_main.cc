@@ -27,18 +27,19 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |atoi(3c)| */
-#include	<cstdio>
-#include	<new>			/* |nothrow(3c++)| */
-#include	<string_view>
-#include	<iostream>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<readln.hh>
-#include	<exitcodes.h>
-#include	<localmisc.h>		/* |eol| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<new>			/* C++STD placement-new */
+#include	<algorithm>		/* C++STD |min(3c++)| + |max(3c++)| */
+#include	<string_view>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<readln.hh>		/* LIBU */
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |eol| */
 
 #pragma		GCC dependency		"mod/deb.ccm"
 
@@ -59,10 +60,11 @@ import deb ;
 
 using std::istream ;			/* type */
 using std::string_view ;		/* type */
+using std::min ;			/* subroutine */
+using std::max ;			/* subroutine */
 using std::cin ;			/* variable */
 using std::cout ;			/* variable */
 using std::cerr ;			/* variable */
-using std::nothrow ;			/* constant */
 
 
 /* local typedefs */
@@ -82,7 +84,8 @@ using std::nothrow ;			/* constant */
 
 /* local variables */
 
-cbool		f_debug = CF_DEBUG ;
+cint		rlen		= LINEBUFLEN ;
+cbool		f_debug		= CF_DEBUG ;
 
 
 /* exported variables */
@@ -93,28 +96,29 @@ cbool		f_debug = CF_DEBUG ;
 int main(int argc,mainv,mainv) {
     	constexpr int	dfd = (f_debug) ? FD_STDERR : -1 ;
     	cnullptr	np{} ;
-	cint		rlen = 4 ;
+	cnothrow	nt{} ;
 	int		ex = EX_OK ;
 	int		rs = SR_OK ;
 	debfd(dfd) ;
 	if (argc > 0) {
 	    istream	*isp = &cin ;
 	    cint	llen = LINEBUFLEN ;
-	    if (char *lbuf ; (lbuf = new(nothrow) char[llen + 1]) != np) {
-	        while ((rs = readln(isp,lbuf,rlen)) > 0) {
+	    if (char *lbuf ; (lbuf = new(nt) char[llen + 1]) != np) {
+		cint ll = min(llen,rlen) ;
+	        while ((rs = readln(isp,lbuf,ll)) > 0) {
 		    string_view	s(lbuf,rs) ;
-		    cout << rs << " " << s << eol ;
+		    cout << "rs=" << rs << " " << s ;
 		    if (rs < 0) break ;
 		} /* end while */
 		if (rs < 0) {
 		    cerr << "error (" << rs << ")" << eol ;
-		}
+		} /* end if (error) */
 		delete [] lbuf ;
 	    } /* end if (m-a-f) */
 	} /* end if */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = EX_DATAERR ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
