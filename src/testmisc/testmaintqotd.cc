@@ -39,10 +39,6 @@
 #define	FILER_RCNET	4		/* read-count for network */
 #endif
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
-#endif
-
 #define	VARDEBUGFNAME	"TESTMAINTQOTD_DEBUGFILE"
 
 
