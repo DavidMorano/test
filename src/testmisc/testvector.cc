@@ -17,27 +17,27 @@
 /* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<vector>
-#include	<iostream>
-#include	<clanguage.h>
-#include	<utypedefs.h>
-#include	<utypealiases.h>
-#include	<usysdefs.h>
-#include	<usysrets.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<vector>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<utypedefs.h>		/* LIBU */
+#include	<utypealiases.h>	/* LIBU */
+#include	<usysdefs.h>		/* LIBU */
+#include	<usysrets.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 using std::vector ;			/* type */
 using std::cout ;			/* variable */
 
 int main(int,con mainv,con mainv) {
-    	vector<int>	l ;
-	l.push_back(2) ;
-	l.push_back(3) ;
-	for (cauto &m : l) {
+    	vector<int>	lvec ;
+	lvec.push_back(2) ;
+	lvec.push_back(3) ;
+	for (cauto &m : lvec) {
 	    cout << ' ' << m ;
-	}
+	} /* end for */
 	cout << eol ;
 } /* end subroutine (main) */
 
