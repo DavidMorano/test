@@ -23,7 +23,7 @@
 #include	<cstdio>		/* CSTD */
 #include	<functional>		/* C++STD |hash(3c++)| */
 #include	<iostream>		/* C++STD */
-#include	<new>			/* C++SYD placement-new */
+#include	<new>			/* C++STD placement-new */
 #include	<clanguage.h>		/* LIBU */
 #include	<utypedefs.h>		/* LIBU */
 #include	<utypealiases.h>	/* LIBU */
