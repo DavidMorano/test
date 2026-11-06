@@ -1,5 +1,8 @@
 /* snloadavg_main SUPPORT (testsnloadavg) */
 /* charset=ISO8859-1 */
+/* lang=C++20 */
+
+/* test load-average facility */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	0		/* compile-time debugging */
@@ -33,6 +36,7 @@
 #include	<snx.h>			/* LIBUC */
 #include	<cfdecf.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU |DEVBUFLEN| */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 
 /* local defines */
