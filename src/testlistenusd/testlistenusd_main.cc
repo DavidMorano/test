@@ -75,14 +75,6 @@
 #define	NARGPRESENT	(MAXARGINDEX/8 + 1)
 #define	BUFLEN		MAXPATHLEN
 
-#ifndef	LOGNAMELEN
-#define	LOGNAMELEN	32
-#endif
-
-#ifndef	USERNAMELEN
-#define	USERNAMELEN	32
-#endif
-
 #ifndef	LINENAMELEN
 #define	LINENAMELEN	MAXPATHLEN
 #endif
