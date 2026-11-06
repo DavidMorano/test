@@ -1,32 +1,42 @@
-/* main (testisproc) */
+/* testisproc_main SUPORT (testisproc) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
+/* test program */
+/* version %I% last-modified %G% */
 
 #define	CF_DEBUGS	1		/* compile-time debugging */
 #define	CF_WAITPID	0		/* use 'u_waitpid(2u)' */
 
+/* revision history:
+
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
+
+*/
+
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 #include	<envstandards.h>	/* MUST be first to configure */
-
 #include	<sys/types.h>
 #include	<sys/wait.h>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
 #include	<spawnproc.h>
-#include	<exitcodes.h>
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
-#include	"localmisc.h"
 #include	"config.h"
 #include	"defs.h"
 
 
-
 /* local defines */
-
-#ifndef	DIGBUFLEN
-#define	DIGBUFLEN	40		/* can hold int128_t in decimal */
-#endif
 
 #define	PROG_SLEEP	"/usr/bin/sleep"
 
@@ -34,29 +44,21 @@
 #define	NSLEEP_PARENT	3
 
 
-
 /* external subroutines */
 
-extern int	cfdeci(cchar *,int,int *) ;
-extern int	msleep(int) ;
 extern int	isproc(int) ;
 
 
 /* local variables */
 
 
+/* exported variables */
 
 
+/* exported subroutines */
 
-
-
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
+int main(argc,con mainv argv,con mainv envv) {
 	pid_t	pid ;
-
 	int	rs = SR_OK ;
 	int	rs1 ;
 	int	cl ;
