@@ -37,7 +37,7 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -lu -lf
 
 
 DEPS_MAIN += 
@@ -45,8 +45,8 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= testarray_main.o
-OBJ1= strkeycmp.o matkeystr.o
-OBJ2= getenver.o
+OBJ1=
+OBJ2=
 OBJ3= 
 OBJ4=
 OBJ5=
@@ -61,8 +61,6 @@ OBJ= obja.o
 
 
 INCDIRS=
-
-#LIBDIRS= -L $(LIBDIR)
 LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
