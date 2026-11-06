@@ -10,9 +10,8 @@
 /* revision history:
 
 	= 2001-11-01, David A­D­ Morano
-	This subroutine was written for use as a front-end for Korn
-	Shell (KSH) commands that are compiled as stand-alone
-	programs.
+	This subroutine was originally written to facilitate
+	testing of software writen for RightCore Network Services.
 
 */
 
@@ -36,14 +35,9 @@
 #include	<string_view>		/* C++STD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<usupport.h>		/* LIBU |cfdec(3u)| */
+#include	<usupport.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
-#include	<strnul.hh>		/* LIBU */
-#include	<intceil.h>		/* LIBU */
-#include	<ucgetx.h>		/* LIBUC |uc_gettimeofday(3uc)| */
-#include	<strkeycmp.h>		/* LIBUC */
-#include	<matkeystr.h>		/* LIBUC */
-#include	<timeval.hh>		/* LIBUC */
+#include	<stp.h>			/* LIBUC |stpcpyxc(3uc)| */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
 #include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
@@ -115,26 +109,37 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if (argc > 1) {
 	    con mainv av = argv ;
 	    char rbuf[rlen + 1] = {} ;
+	    char fbuf[rlen + 1] = {} ;
 	    endp = rbuf ;
-	    switch (argc) {
-	    case 2:
+	    switch (argc - 1) {
+	    case 1:
 		if (oklen(argc,av)) {
 		    endp = stpcpy(rbuf,av[1]) ;
+		    stpcpylc(fbuf,av[1]) ;
+		}
+		break ;
+	    case 2:
+		if (oklen(argc,av)) {
+		    endp = stpcpy(rbuf,av[1],av[2]) ;
+		    stpcpylc(fbuf,av[1],av[2]) ;
 		}
 		break ;
 	    case 3:
 		if (oklen(argc,av)) {
-		    endp = stpcpy(rbuf,av[1],av[2]) ;
+		    endp = stpcpy(rbuf,av[1],av[2],av[3]) ;
+		    stpcpylc(fbuf,av[1],av[2],av[3]) ;
 		}
 		break ;
 	    case 4:
 		if (oklen(argc,av)) {
-		    endp = stpcpy(rbuf,av[1],av[2],av[3]) ;
+		    endp = stpcpy(rbuf,av[1],av[2],av[3],av[4]) ;
+		    stpcpylc(fbuf,av[1],av[2],av[3],av[4]) ;
 		}
 		break ;
 	    } /* end switch */
 	    if (rbuf[0]) {
 	        printf("rl=%d rbuf=>%s<\n",intconv(endp - rbuf),rbuf) ;
+	        printf("rl=%d fbuf=>%s<\n",intconv(endp - rbuf),fbuf) ;
 	    } else {
 	        printf("rl=%d overflow\n",intconv(endp - rbuf)) ;
 	    }
