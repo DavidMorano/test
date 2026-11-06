@@ -1,4 +1,4 @@
-/* testugetpid SUPPORT */
+/* testucgetpid SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -6,8 +6,6 @@
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* compile-time debugging */
-#define	CF_DEBUGMALL	1		/* debugging memory-allocations */
-#define	CF_DEBUGN	0		/* special debugging */
 
 /* revision history:
 
@@ -21,118 +19,96 @@
 
 /* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
 
+/*******************************************************************************
+
+	Description:
+	This tests the |ucgetpid(3u)| variable.
+
+*******************************************************************************/
+
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<sys/types.h>
+#include	<sys/types.h>		/* POSIX® */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdarg>
-#include	<cstdio>
+#include	<cstdarg>		/* CSTD */
+#include	<cstdio>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<ugetpid.h>
-#include	<localmisc.h>
+#include	<usyscalls.h>		/* LIBU */
+#include	<ucfork.h>		/* LIBUC */
+#include	<ucgetpid.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBUC */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 
-#ifndef	TIMEBUFLEN
-#define	TIMEBUFLEN	80
+/* local defines */
+
+
+#define	VARDFN		"TESTUCGETPID_DFN"
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	0		/* compile-time debugging */
 #endif
 
-#define	VARDEBUGFNAME	"TESTUGETPID_DEBUGFILE"
 
-#define	NDF		"testugetpid.deb"
+/* imported namespaces */
 
-#if	CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
 
-#if	CF_DEBUGN
-extern int	nprintf(cchar *,cchar *,...) ;
-#endif
+/* local typedefs */
+
+
+/* external subroutines */
+
+
+/* external variables */
+
+
+/* local structures */
 
 
 /* forward references */
 
+
+/* local variables */
+
+cbool			f_debug		= CF_DEBUG ;
+
+
+/* exported variables */
+
+
 /* exported subroutines */
 
-/* ARGSUSED */
-int main(int argc,cchar **argv,cchar **envv)
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	FILE		*ofp = stdout ;
-
-#if	CF_DEBUG && CF_DEBUGMALL
-	uint		mo_start = 0 ;
-#endif
-
 	int		rs = SR_OK ;
 	int		rs1 ;
-
-#if	CF_DEBUG
-	{
-	    cchar	*cp ;
-	    if ((cp = getourenv(envv,VARDEBUGFNAME)) != NULL) {
-	        rs = debugopen(cp) ;
-	        debugprintf("main: starting fd=%d\n",rs) ;
-	    }
+	if (cchar *cp ; cp = getourenv(envv,VARDFN)) {
+	    rs = DEBUGOPEN(cp) ;
+	    DEBUGPRINTF("starting fd=%d\n",rs) ;
+	} /* end if (debugging) */
+	if (rs >= 0) {
+	    rs = uc_getpid() ;
+	    fprintf(ofp,"p ugetpid() rs=%d\n",rs) ;
+	    fflush(ofp) ;
 	}
-#endif /* CF_DEBUG */
-
-#if	CF_DEBUG && CF_DEBUGMALL
-	uc_mallset(1) ;
-	uc_mallout(&mo_start) ;
-#endif
-
-#if	CF_DEBUGN
-	nprintf(NDF,"main: inside\n") ;
-#endif
-
-	rs = ugetpid() ;
-	fprintf(ofp,"p ugetpid() rs=%d\n",rs) ;
-
-	fflush(ofp) ;
-
-#if	CF_DEBUG
-	debugprintf("main: fork()\n") ;
-#endif
-
-	if ((rs = uc_fork()) == 0) { /* child */
-
-	    rs = ugetpid() ;
-	    fprintf(ofp,"c ugetpid() rs=%d\n",rs) ;
-
-	    u_exit(0) ;
-	} else if (rs > 0) { /* parent */
-	    int	cs ;
-	    u_wait(&cs) ;
-	    fprintf(ofp,"cs=%u\n",cs) ;
-	} /* end if */
-
-	if (rs < 0)
-	fprintf(ofp,"failure (%d)\n",rs) ;
-
-#if	CF_DEBUG
-	debugprintf("main: out rs=%d\n",rs) ;
-#endif
-
-#if	CF_DEBUGN
-	nprintf(NDF,"main: leaving\n") ;
-#endif
-
-#if	CF_DEBUG && CF_DEBUGMALL
-	{
-	    uint	mo ;
-	    uc_mallout(&mo) ;
-	    debugprintf("main: final mallout=%u\n",(mo-mo_start)) ;
-	    uc_mallset(0) ;
+	if (rs >= 0) {
+	    DEBUGPRINTF("fork()\n") ;
+	    if ((rs = uc_fork()) == 0) { /* child */
+	        rs = uc_getpid() ;
+	        fprintf(ofp,"c uc_getpid() rs=%d\n",rs) ;
+	        u_exit(0) ;
+	    } else if (rs > 0) { /* parent */
+	        int	cs ;
+	        u_wait(&cs) ;
+	        fprintf(ofp,"cs=%u\n",cs) ;
+	    } /* end if */
+	} /* end if (ok) */
+	if (rs < 0) {
+	    fprintf(ofp,"failure (%d)\n",rs) ;
 	}
-#endif
-
-#if	CF_DEBUG
-	debugclose() ;
-#endif
-
+	DEBUGPRINTF("ret rs=%d\n",rs) ;
+	DEBUGCLOSE ;
 	return 0 ;
 } /* end subroutine (main) */
 
