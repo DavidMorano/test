@@ -1,0 +1,13 @@
+#!/usr/local/bin/ksh
+# TESTPATHDANGLE-RUN
+
+z pathgroup.deb 
+z testpathdangle.deb 
+
+testpathdangle.x "${@}"
+
+print -- ----
+cat testpathdangle.deb 
+print -- ----
+cat pathgroup.deb 
+
