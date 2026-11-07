@@ -1,0 +1,20 @@
+#!/usr/local/bin/ksh
+# TESTPATHBUF-RUN
+
+DFN=pathclean.deb
+PROG=testpathclean.x
+
+PN=${0##*/}
+if [[ -x "${PROG}" ]] ; then
+  z ${DFN} testpathclean.deb 
+  for FP in "${@}" ; do
+    ${PROG} ${FP}
+  done
+  print -- '==' 
+  if [[ -r ${DFN} ]] ; then
+    cat ${DFN}
+  fi
+else
+  print -- "${PN}: program not made"
+fi
+
