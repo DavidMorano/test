@@ -1,0 +1,1 @@
+../../../other/src/macfiles/patterns.txt
