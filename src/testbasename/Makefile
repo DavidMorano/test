@@ -37,7 +37,7 @@ INCS +=
 
 MODS += 
 
-LIBS += -lf -lu
+LIBS += -lu -lf
 
 
 DEPS_MAIN += 
@@ -45,11 +45,12 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 DEPS_MAIN += 
 
-OBJ_FILES += testbasename_main.o 
-OBJ_FILES += 
-OBJ_FILES += 
+OBJ0= testbasename_main.o 
+OBJ1=
+OBJ2=
+OBJ3= 
 
-OBJ_MAIN= obj_main.o
+OBJ= obj0.o
 
 
 INCDIRS +=
@@ -99,7 +100,7 @@ all:			$(ALL)
 	gxx -c -x c++ -o $@ -O $<
 
 
-$(T).x:			$(OBJ_MAIN)
+$(T).x:			$(OBJ)
 	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
 $(T).nm:		$(T).x
@@ -116,6 +117,31 @@ control:
 
 install:		$(T).x
 	makeinstall $(T).x
+
+
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
 obj_main.o:		$(OBJ_FILES)
