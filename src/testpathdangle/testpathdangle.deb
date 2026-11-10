@@ -1,6 +1,0 @@
-main: ent
-main: test-pathaddw
-main: test-pathaddw rs=11
-main: args
-main: path> testdir///..//testdir/junk/last
-main: ret rs=26 ex=0
