@@ -45,15 +45,15 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= testctdec_main.o
-OBJ1= xxtostr.o
-OBJ2=
+OBJ1= convdec.o
+OBJ2= ctx.o
 OBJ3= 
 OBJ4=
 OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o
+OBJA= obj0.o obj1.o obj2.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
@@ -161,12 +161,26 @@ obj.o:			$(OBJ)
 
 testctdec_main.o:	testctdec_main.cc $(DEPS_MAIN)	$(INCS)
 
-# USTREAM
+# USTREAM	(libu)
 ustream.o:		ustream.dir
 ustream.dir:
 	makesubdir $@
 
-# STRN
+# VARITHMETIC
+varithmetic.o:		varithmetic.dir
+varithmetic.dir:
+	makesubdir $@
+
+# DIGTAB
+digtab.o:		digtab.dir
+digtab.dir:
+	makesubdir $@
+
+# INTX
+intext.o:		intext.ccm	loadvals.o
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
+# STRN		(libuc)
 strn.o:			strn.dir
 strn.dir:
 	makesubdir $@
@@ -241,14 +255,9 @@ strxcmp.o:		strxcmp.dir
 strxcmp.dir:
 	makesubdir $@
 
-# VARITHMETIC
-varithmetic.o:		varithmetic.dir
-varithmetic.dir:
-	makesubdir $@
-
-# DIGTAB
-digtab.o:		digtab.dir
-digtab.dir:
+# CTX		(libuc)
+ctx.o:			ctx.dir
+ctx.dir:
 	makesubdir $@
 
 char.o:			char.cc		char.h
@@ -262,14 +271,10 @@ ucinetconv.o:		ucinetconv.cc	ucinetconv.h
 # TESTINT
 testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
 
-# INTX
-intext.o:		intext.ccm	loadvals.o
-	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
-
 arithsteps.o:		arithsteps.ccm
-
 loadvals.o:		loadvals.ccm
 
+convdec.o:		convdec.cc	convdec.h
 xxtostr.o:		xxtostr.cc	xxtostr.h
 
 
