@@ -1,0 +1,283 @@
+# MAKEFILE (testexception)
+
+T= testexception
+
+ALL= $(T).x
+
+
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
+
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
+
+
+DEFS +=
+
+INCS +=
+
+MODS +=
+
+LIBS += -luo -lu -lf
+
+
+DEPS_MAIN += 
+DEPS_MAIN +=
+DEPS_MAIN += 
+
+OBJ0= testexception_main.o
+OBJ1= prognamevar.o
+OBJ2= ctx.o convdec.o
+OBJ3= 
+OBJ4=
+OBJ5=
+OBJ6=
+OBJ7=
+
+OBJA= obj0.o obj1.o obj2.o
+OBJB= obj4.o 
+
+OBJ= obja.o
+
+
+INCDIRS=
+LIBDIRS= -L lib
+
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
+
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS) -g
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
+
+
+.SUFFIXES:		.hh .ii .iim .ccm
+
+
+default:		$(T).x
+
+all:			$(ALL)
+
+
+.c.i:
+	$(CPP) $(CPPFLAGS) $< > $(*).i
+
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
+
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
+.c.o:
+	$(COMPILE.c) $<
+
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
+
+$(T).x:			obj.o
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
+
+$(T).nm:		$(T).x
+	$(NM) $(NMFLAGS) $(T).x > $(T).nm
+
+again:
+	rm -f $(T).x
+
+clean:
+	makeclean $(ALL)
+
+control:
+	(uname -n ; date) > Control
+
+
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
+testexception_main.o:	testexception_main.cc $(DEPS_MAIN)	$(INCS)
+
+# USTREAM	(libu)
+ustream.o:		ustream.dir
+ustream.dir:
+	makesubdir $@
+
+# VARITHMETIC	(libu)
+varithmetic.o:		varithmetic.dir
+varithmetic.dir:
+	makesubdir $@
+
+# DIGTAB	(libu)
+digtab.o:		digtab.dir
+digtab.dir:
+	makesubdir $@
+
+# INTX		(libu)
+intext.o:		intext.ccm	loadvals.o
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
+# STRN		(libuc)
+strn.o:			strn.dir
+strn.dir:
+	makesubdir $@
+
+# SFX		(libuc)
+sfx.o:			sfx.dir
+sfx.dir:
+	makesubdir $@
+
+# SIX		(libuc)
+six.o:			six.dir
+six.dir:
+	makesubdir $@
+
+# RMX		(libuc)
+rmx.o:			rmx.dir
+rmx.dir:
+	makesubdir $@
+
+# HASX		(libuc)
+hasx.o:			hasx.dir
+hasx.dir:
+	makesubdir $@
+
+# ISX		(libuc)
+isx.o:			isx.dir
+isx.dir:
+	makesubdir $@
+
+# BUFOS		(libuc)
+bufos.o:		bufos.dir
+bufos.dir:
+	makesubdir $@
+
+# STRCPTX	(libuc)
+strcpyx.o:		strcpyx.dir
+strcpyx.dir:
+	makesubdir $@
+
+# STRWCPY	(libuc)
+strwcpy.o:		strwcpy.dir
+strwcpy.dir:
+	makesubdir $@
+
+# STRW		(libuc)
+strw.o:			strw.dir
+strw.dir:
+	makesubdir $@
+
+# STRX
+strx.o:			strx.dir
+strx.dir:
+	makesubdir $@
+
+# NLEADX
+nleadx.o:		nleadx.dir
+nleadx.dir:
+	makesubdir $@
+
+# MATXSTR
+matxstr.o:		matxstr.dir
+matxstr.dir:
+	makesubdir $@
+
+# STRNXCMP
+strnxcmp.o:		strnxcmp.dir
+strnxcmp.dir:
+	makesubdir $@
+
+# STRXCMP
+strxcmp.o:		strxcmp.dir
+strxcmp.dir:
+	makesubdir $@
+
+# CTX		(libuc)
+ctx.o:			ctx.dir
+ctx.dir:
+	makesubdir $@
+
+char.o:			char.cc		char.h
+inetconv.o:		inetconv.cc	inetconv.h
+base64.o:		base64.cc	base64.h
+base128.o:		base128.cc	base128.h
+dictdiff.o:		dictdiff.cc	dictdiff.h
+
+ucinetconv.o:		ucinetconv.cc	ucinetconv.h
+
+# TESTINT
+testint.o:		testint.ccm	intext.o varithmetic.o loadvals.o
+
+arithsteps.o:		arithsteps.ccm
+loadvals.o:		loadvals.ccm
+
+convdec.o:		convdec.cc	convdec.h
+xxtostr.o:		xxtostr.cc	xxtostr.h
+
+# LIBDAM
+prognamevar.o:		prognamevar.cc	prognamevar.hh
+
+
+
