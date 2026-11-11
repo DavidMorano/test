@@ -22,7 +22,7 @@
 /*******************************************************************************
 
 	Description:
-	This program test the EB module.
+	This program tests the DEB module.
 
 *******************************************************************************/
 
@@ -90,9 +90,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        strdcpy(sbuf,slen,"1234") ;
 	        rs = DEBPRINTHEX(-1,sbuf,slen) ;
 		c += rs ;
-	    if_constexpr (f_print) {
-		printf("deb=%d\n",rs) ;
-	    }
+	        if_constexpr (f_print) {
+		    printf("deb=%d\n",rs) ;
+	        }
 	    } /* end if (ok) */
 	    if (rs >= 0) rs = c ;
 	} /* end if (ok) */
