@@ -18,47 +18,51 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>
-#include	<string>
-#include	<string_view>
-#include	<iostream>
+#include	<cstdio>		/* CSTD */
+#include	<string>		/* C++STD */
+#include	<string_view>		/* C++STD */
+#include	<iostream>		/* C++STD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<strnul.hh>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 
 
-using std::cout ;
-using std::string_view ;
+using std::string_view ;		/* type */
+using std::cout ;			/* variable */
 
 typedef std::string_view	strview ;
 
 int main(int,con mainv,con mainv) {
 	int		ex = 0 ;
 	int		c = 0 ;
-	constexpr cchar	sp1[] = "Hello world!" ;
-	constexpr cchar	sp2[] = "Muck raker                   long!" ;
+	cchar	str1[] = "Hello world!" ;
+	cchar	str2[] = "Muck raker                   long!" ;
 	{
-	    strnul	s(sp1,11) ;
+	    strnul	ns ;
+	    printf("addr=%p fok=%u\n",ccp(ns),uint(ns.fok)) ;
+	}
+	{
+	    strnul	s(str1,11) ;
 	    cchar	*rp ;
 	    printf("s=>%s<\n",ccp(s)) ;
-	    cout << c++ << " " << sp1 << eol ;
+	    cout << c++ << " " << str1 << eol ;
 	    rp = s ;
 	    cout << c++ << " " << rp << eol ;
-	    s(sp2,7) ;
+	    s(str2,7) ;
 	    rp = s ;
 	    cout << c++ << " " << rp << eol ;
-	    rp = s(sp1,3) ;
+	    rp = s(str1,3) ;
 	    cout << c++ << " " << rp << eol ;
-	    cout << c++ << " " << s(sp1,9) << eol ;
-	    cout << c++ << " " << sp1 << eol ;
-	    cout << c++ << " " << s(sp1,40) << eol ;
-	    cout << c++ << " " << sp2 << eol ;
-	    cout << c++ << " " << s(sp2,8) << eol ;
+	    cout << c++ << " " << s(str1,9) << eol ;
+	    cout << c++ << " " << str1 << eol ;
+	    cout << c++ << " " << s(str1,40) << eol ;
+	    cout << c++ << " " << str2 << eol ;
+	    cout << c++ << " " << s(str2,8) << eol ;
 	    if (s) {
-		strview	sv(sp2,10) ;
+		strview	sv(str2,10) ;
 	        cout << c++ << " " << sv << eol ;
-	    }
+	    } /* end */
 	} /* end block */
 	return ex ;
 } /* end subroutine (main) */
