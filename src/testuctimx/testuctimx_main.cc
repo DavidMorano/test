@@ -54,7 +54,7 @@ import usigsets ;			/* |usigset(3u)| */
 /* local defines */
 
 #define	DEBUGFNVAR	"TESTUCTIM_DEBUGFN"
-#define	NLOOPS		5
+#define	NLOOPS		4
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	1		/* debugging */
@@ -85,8 +85,6 @@ using std::cout ;			/* variable */
 
 /* forward references */
 
-[[maybe_unused]]
-local void	int_all(int)		noex ;
 local int	loop(psem *,int)	noex ;
 extern "C" {
     local int	fun(void *,int,int) noex ;
@@ -96,7 +94,6 @@ extern "C" {
 /* local variables */
 
 std::osyncstream	sout(std::cout) ;
-sig_atomic_t		fsig		= 0 ;
 mutex			omtx ;
 cint			tlen		= TIMEBUFLEN ;
 cbool			f_debug		= CF_DEBUG ;
@@ -150,11 +147,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 
 /* local subroutines */
-
-local void int_all(int signum) noex {
-    	(void) signum ;
-    	fsig = signum ;
-} /* end subroutine (intall) */
 
 local int loop(psem *psemp,int tid) noex {
 	cnullptr	np{} ;
