@@ -53,7 +53,7 @@ OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o
+OBJA= obj0.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
@@ -290,5 +290,9 @@ xxtostr.o:		xxtostr.cc	xxtostr.h
 
 strkeycmp.o:		strkeycmp.cc	strkeycmp.h
 matkeystr.o:		matkeystr.cc	matkeystr.h
+
+pathbuf.o:		pathbuf.cc	pathbuf.hh
+pathnext.o:		pathnext.cc	pathnext.h
+pathclean.o:		pathclean.cc	pathclean.h	pathbuf.hh pathnext.h
 
 
