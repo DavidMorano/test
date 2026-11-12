@@ -16,12 +16,12 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 
 #include	"teststruct_sub.hh"
 
@@ -53,14 +53,14 @@ namespace {
 	    thing *op ;
 	    void operator () (thing *p) noex {
 		op = p ;
-	    } ;
+	    } ; /* end */
 	    operator int () noex ;
-	} ;
+	} ; /* end struct */
 	thing_co	member ;
 	thing(int ªa) noex {
 	    a = b = ªa ;
 	    member	(this) ;
-	} ;
+	} ; /* end ctor */
 	thing() noex : thing(0) { } ;
     } ; /* end struct (thing) */
 } /* end namespace */
@@ -71,9 +71,38 @@ namespace {
 	int		b ;
 	consteval testcon() noex {
 	    b = 2 ;
-	} ;
+	} ; /* end ctor */
     } ; /* end struct */
 } /* end namespace */
+
+#ifdef	COMMENT
+	void operator = (int v) noex {
+	    val = v ;
+	} ; /* end */
+#endif /* COMMENT */
+
+struct memer {
+    	int	val ;
+	memer() = delete ;
+	memer(int ªv) noex : val(ªv) { } ;
+	operator int () noex {
+	    return val ;
+	} ; /* end */
+} ; /* end struct (memer) */
+
+struct container {
+	static memer	a ;
+} ; /* end struct (container) */
+
+struct bindvaler {
+    	int	v1 ;
+	int	v2 ;
+} ; /* end struct (bindvaler) */
+
+local bindvaler bindfuner(int n) noex {
+    	bindvaler v(n,(n+1)) ;
+	return v ;
+} /* end subroutine */
 
 
 /* forward references */
@@ -85,6 +114,9 @@ constexpr testcon	tst ;
 constexpr substruct	ss ;
 
 int testcon::a = 1 ;
+
+/* instantiation */
+memer container::a	= 1 ;		/* direct construction */
 
 
 /* exported variables */
@@ -98,7 +130,7 @@ consteval int getval() noex {
 
 constexpr int	c = getval() ;
 
-int main(int,mainv,mainv) {
+int main(int,con mainv,con mainv) {
     	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	printf("c=%d\n",c) ;
@@ -106,19 +138,32 @@ int main(int,mainv,mainv) {
 	    thing some(1) ;
 	    int v = some.member ;
 	    printf("ome=%d\n",v) ;
-	}
+	} /* end */
 	{
 	    printf("tst.a=%d\n",tst.a) ;
 	    printf("tst.b=%d\n",tst.b) ;
-	}
+	} /* end */
 	{
 	    printf("ss.a=%d\n",ss.a) ;
 	    sub1() ;
 	    sub2() ;
-	}
+	} /* end */
+	{
+	    container conval ;
+	    {
+		cint v = conval.a ;
+	        printf("conval=%d\n",v) ;
+	    }
+	} /* end */
+	{
+	    for (int i = 0 ; i < 3 ; i += 1) {
+		cauto [a, b] = bindfuner(i) ;
+	        printf("a=%d b=%d\n",a,b) ;
+	    } /* end for */
+	} /* end if */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
