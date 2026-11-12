@@ -43,11 +43,14 @@ LIBS += -ldebug -luo -lu -lf
 DEPS_MAIN +=
 
 OBJ0= testuctim_main.o
-OBJ1= uctim.o strtime.o
-OBJ2=
-OBJ3=
+OBJ1= uctim.o 
+OBJ2= strtime.o
+OBJ3= timeval.o itimerval.o
 
-OBJ= obj0.o obj1.o
+OBJA=
+OBJB=
+
+OBJ= obj0.o obj1.o obj2.o obj3.o
 
 
 INCDIRS=
@@ -145,6 +148,13 @@ objb.o:			$(OBJB)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
 obj.o:			$(OBJ)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
@@ -154,6 +164,11 @@ testuctim_main.o:	testuctim_main.cc $(DEPS_MAIN)		$(INCS)
 uctim.o:		uctim.cc	uctim.h			$(INCS)
 
 progsig.o:		progsig.cc	progsig.h
+
+# UTIMEUTIL
+utimeutil.o:		utimeutil.dir
+utimeutil.dir:
+	makesubdir $@
 
 # PTX
 ptx.o:			ptx.dir
@@ -195,6 +210,7 @@ strtime.o:		strtime.dir
 strtime.dir:
 	makesubdir $@
 
+timeval.o:		timeval.cc	timeval.hh
 itinmrval.o:		itimerval.cc	itimerval.h
 
 
