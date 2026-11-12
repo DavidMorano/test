@@ -67,7 +67,7 @@ constexpr bool		f_debug = CF_DEBUG ;
 
 [[maybe_unused]] local int getraw() noex {
     	int		rs = SR_OK ;
-	printf("raw\n") ;
+	printf("-> raw\n") ;
     	for (cauto &e : pairs) {
 	    long v{} ;
 	    int ec ;
@@ -84,12 +84,12 @@ constexpr bool		f_debug = CF_DEBUG ;
 [[maybe_unused]] local int getu() noex {
     	cnullptr	np{} ;
     	int		rs = SR_OK ;
-	printf("getu\n") ;
-    	    for (cauto &e : pairs) {
-    	        rs = u_sysconfval(e.cmd,np) ;
-	        printf("%s=%d\n",e.str,rs) ;
-		if (rs < 0) break ;
-	    } /* end for */
+	printf("-> getu\n") ;
+	for (cauto &e : pairs) {
+	    rs = u_sysconfval(e.cmd,np) ;
+	    printf("%s=%d\n",e.str,rs) ;
+	    if (rs < 0) break ;
+	} /* end for */
 	return rs ;
 } /* end subroutine (getu) */
 
@@ -97,18 +97,18 @@ constexpr bool		f_debug = CF_DEBUG ;
     	cnullptr	np{} ;
     	int		rs = SR_OK ;
 	printf("getuc\n") ;
-    	    for (cauto &e : pairs) {
-    	        rs = uc_sysconfval(e.cmd,np) ;
-	        printf("%s=%d\n",e.str,rs) ;
-		if (rs < 0) break ;
-	    } /* end for */
+	for (cauto &e : pairs) {
+	    rs = uc_sysconfval(e.cmd,np) ;
+	    printf("%s=%d\n",e.str,rs) ;
+	    if (rs < 0) break ;
+	} /* end for */
 	return rs ;
 } /* end subroutine (getuc) */
 
 [[maybe_unused]] local int bufget() noex {
     	int		rs ;
 	DPRINTF("ent\n") ;
-	printf("bufget\n") ;
+	printf("-> bufget\n") ;
 	if ((rs = maxlinelen) >= 0) {
 	    printf("maxlinelen=%d\n",rs) ;
 	    if ((rs = bufsizeget(bufsize_ml)) >= 0) {
@@ -121,11 +121,11 @@ constexpr bool		f_debug = CF_DEBUG ;
 
 [[maybe_unused]] local int getuobj() noex {
     	int		rs = SR_OK ;
-	printf("getuobj\n") ;
+	printf("-> getuobj\n") ;
 	if ((rs = libu::usysconf.tzname) >= 0) {
 	    cint val = rs ;
 	    printf("tzname=%d\n",val) ;
-	}
+	} /* end */
 	return rs ;
 } /* end subroutine (getuobj) */
 
@@ -156,7 +156,7 @@ int main(int,con mainv,con mainv) {
 	} /* end if (ok) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(np,rs) ;
-	}
+	} /* end if (error) */
     	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
