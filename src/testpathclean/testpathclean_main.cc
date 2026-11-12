@@ -25,27 +25,29 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<ctime>			/* CSTD */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
 #include	<cstdio>		/* CSTD */
-#include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<path.h>		/* LIBUC */
-#include	<cfdec.h>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+#include	<deb.hh>		/* LIBD |DEBPRINTF(3u)| */
 
+#pragma		GCC dependency		"mod/deb.ccm"
+
+import deb ;				/* debugging */
 
 /* local defines */
-
-#define	TESTPATHCLEAN_DFN		"testpathclean.deb"
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	0		/* debugging */
 #endif
+
+#define	VARPATHGROUP		"PATHGROUP_DFN"
+#define	TESTPATHCLEAN_DFN	"testpathclean.deb"
 
 
 /* external subroutines */
@@ -72,9 +74,14 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = EXIT_SUCCESS ;
 	(void) envv ;
+	if (ccharp dcp = getenv(VARPATHGROUP)) {
+	    if (cint rs1 = DEBOPEN(dcp) ; rs1 >= 0) {
+		DEBPRINTF("debinit fd=%d\n",rs1) ;
+	    } /* end if (DEBOPEN) */
+	} /* end if (getenv) */
 	if (debugopen(dfn) >= 0) {
 	    DEBUGPRINTF("ent\n") ;
-	}
+	} /* end if */
 	if (argc > 1) {
 	    char	pbuf[plen + 1] ;
 	    DEBUGPRINTF("args\n") ;
@@ -88,10 +95,12 @@ int main(int argc,con mainv argv,con mainv envv) {
 		if (rs < 0) break ;
 	    } /* end for */
 	} /* end if (arguments) */
-	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(np,rs) ;
 	} /* end if (error) */
+	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
+	DEBUGCLOSE ;
+	DEBCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
 
