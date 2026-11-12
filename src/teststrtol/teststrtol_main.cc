@@ -13,13 +13,21 @@
 
 */
 
-/* Copyright © 2017 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
+
+/*******************************************************************************
+
+  	Description:
+	Play with the |strtol(3c)| standard C-language library
+	subroutine.
+
+*******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>		/* POSIX® */
 #include	<cstddef>		/* CSTD */
-#include	<cstdlib>		/* CSTD */
+#include	<cstdlib>		/* CSTD |strtol(3c)| [*/
 #include	<cstdio>		/* CSTD */
 #include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
