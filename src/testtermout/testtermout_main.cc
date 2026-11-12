@@ -27,9 +27,9 @@
 ******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<unistd.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
 #include	<csignal>		/* CSTD */
 #include	<climits>		/* CSTD */
 #include	<cstddef>		/* CSTD */
@@ -38,11 +38,11 @@
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<baops.h>		/* LIBU */
-#include	<estrings.h>
-#include	<keyopt.h>
-#include	<paramopt.h>
-#include	<sigblock.h>
-#include	<bwops.h>
+#include	<estrings.h>		/* LIBUC */
+#include	<keyopt.h>		/* LIBUC */
+#include	<paramopt.h>		/* LIBUC */
+#include	<sigblock.h>		/* LIBUC */
+#include	<bwops.h>		/* LIBU */
 #include	<exitcodes.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<bfile.h>		/* LIBB */
@@ -74,7 +74,6 @@ extern "C" int	mainer(int,con mainv,con mainv) noex ;
 
 
 /* external subroutines */
-
 
 int main(int argc,con mainv argv,con mainv envv) {
 	return mainer(argc,argv,envv) ;
