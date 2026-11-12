@@ -81,32 +81,8 @@ import libutil ;			/* |lenstr(3u)| */
 #define	MAXARGINDEX	10000
 #define	MAXARGGROUPS	(MAXARGINDEX/8 + 1)
 
-#ifndef	LOGNAMELEN
-#define	LOGNAMELEN	32
-#endif
-
-#ifndef	USERNAMELEN
-#define	USERNAMELEN	32
-#endif
-
-#ifndef	GNAMELEN
-#define	GNAMELEN	80		/* GECOS name length */
-#endif
-
 #ifndef	KEYBUFLEN
 #define	KEYBUFLEN	120		/* key-buffer length */
-#endif
-
-#ifndef	NOFILE
-#define	NOFILE		20
-#endif
-
-#ifndef	LINEBUFLEN
-#ifdef	LINE_MAX
-#define	LINEBUFLEN	MAX(LINE_MAX,2048)
-#else
-#define	LINEBUFLEN	2048
-#endif
 #endif
 
 #define	BUFLEN		MAX((4 * MAXPATHLEN),LINEBUFLEN)
