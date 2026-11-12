@@ -37,15 +37,15 @@ INCS +=
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -lu -lf
 
 
+DEPS_MAIN += strnul.o
 DEPS_MAIN += 
 DEPS_MAIN +=
-DEPS_MAIN += strnul.o
 
 OBJ0= teststrnul_main.o
-OBJ1=
+OBJ1= strnul.o
 OBJ2= 
 OBJ3= 
 OBJ4=
@@ -53,15 +53,13 @@ OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o
+OBJA= obj0.o obj1.o
 OBJB= obj4.o 
 
 OBJ= obja.o
 
 
 INCDIRS=
-
-#LIBDIRS= -L $(LIBDIR)
 LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
@@ -160,7 +158,7 @@ obj.o:			$(OBJ)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-teststrnul_main.o:		teststrnul_main.cc $(DEPS_MAIN)	$(INCS)
+teststrnul_main.o:	teststrnul_main.cc $(DEPS_MAIN)	$(INCS)
 
 # USTREAM
 ustream.o:		ustream.dir
