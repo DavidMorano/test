@@ -72,10 +72,14 @@ int main(int,con mainv,con mainv) {
 	int		rs = SR_OK ;
 	int		rs1 ;
 	int		ex = EXIT_SUCCESS ;
-	{
+	if (rs >= 0) {
 	    csize sz = sizeof(nlink_t) ;
 	    printf("nlink_t=%lu\n",sz) ;
-	}
+	} /* end if (ok) */
+	if (rs >= 0) {
+	    csize sz = sizeof(pthread_t) ;
+	    printf("pthread_t=%lu\n",sz) ;
+	} /* end if (ok) */
 	if (rs >= 0) {
 	    somer	some ;
 	    some.print(1,2) ;
