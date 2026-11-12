@@ -2,11 +2,14 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
-/* test the |hostequiv(3dam)| subroutine */
+/* test the LIBU library subroutine |strtox(3u)| */
 /* version %I% last-modified %G% */
 
 
 /* revision history:
+
+   	= 1998-05-12, David A-D- Morano
+	Originally written.
 
 	= 2026-03-30, David A-D- Morano
 	I just saw that there are tests for the GNU GLIB version
@@ -18,7 +21,7 @@
 
 */
 
-/* Copyright © 2026 David A­D­ Morano.  All rights reserved. */
+/* Copyright © 1998,2026 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
 /* Copyright © 2026 GNU GLIB.  All rights reserved. */
@@ -432,10 +435,10 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    } /* end for */
 	    if (rs < 0) break ;
 	} /* end for */
-	printf("%s: tests rs=%d c=%d\n",ccp(progname),rs,c) ;
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
+	printf("%s: tests ex=%d rs=%d c=%d\n",ccp(progname),ex,rs,c) ;
 	return ex ;
 } /* end subroutine (main) */
 
@@ -452,7 +455,7 @@ local int test(int w,const ltest *ep) noex {
 	int		rs = SR_OK ;
 	if (ep && ep->str) {
 	    rs = SR_NOMEM ;
-	    if (char *lbuf = new(nt)  char [llen + 1] ; lbuf) {
+	    if (char *lbuf = new(nt)  char [llen + 1]) {
     	    cchar	*str = ep->str ;
 	    ulong	expect = ep->expect ;
 	    int		base = ep->base ;
@@ -533,8 +536,8 @@ local int test(int w,const ltest *ep) noex {
 	        if ((err = ep->err) == errno) {
 		    rs = SR_OK ;
 	        } else {
-	            rs = (- errno) ;
-	        }
+	            rs = (neg errno) ;
+	        } /* end */
 	    } /* end if */
 	    if (rs < 0) {
 	        printf("failure rs=%d err=%d\n",rs,err) ;
