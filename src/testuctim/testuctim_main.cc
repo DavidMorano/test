@@ -1,4 +1,4 @@
-/* testuctimx_main SUPPORT */
+/* testuctim_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 */
 
@@ -43,7 +43,7 @@
 #include	<usysbase.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
 #include	<usupport.h>		/* LIBU */
-#include	<uctimx.h>		/* LIBUC */
+#include	<uctim.h>		/* LIBUC */
 #include	<psem.h>		/* LIBUC */
 #include	<strtime.h>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
@@ -54,7 +54,7 @@ import usigsets ;			/* |usigset(3u)| */
 /* local defines */
 
 #define	DEBUGFNVAR	"TESTUCTIM_DEBUGFN"
-#define	NLOOPS		5
+#define	NLOOPS		4
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	1		/* debugging */
@@ -85,8 +85,6 @@ using std::cout ;			/* variable */
 
 /* forward references */
 
-[[maybe_unused]]
-local void	int_all(int)		noex ;
 local int	loop(psem *,int)	noex ;
 extern "C" {
     local int	fun(void *,int,int) noex ;
@@ -96,7 +94,6 @@ extern "C" {
 /* local variables */
 
 std::osyncstream	sout(std::cout) ;
-sig_atomic_t		fsig		= 0 ;
 mutex			omtx ;
 cint			tlen		= TIMEBUFLEN ;
 cbool			f_debug		= CF_DEBUG ;
@@ -120,21 +117,21 @@ int main(int argc,con mainv argv,con mainv envv) {
 	} /* end */
 	if (rs >= 0) {
 	    if (psem nsem ; (rs = nsem.create) >= 0) {
-	        uctimxnote note{} ;
+	        uctimnote note{} ;
 		note.psemp = &nsem ;
 	        note.notfun = fun ;	/* notification function pointer */
 	        note.notarg = 42 ;	/* notification function argument */
-	        if ((rs = uc_timxcreate(&note)) >= 0) {
+	        if ((rs = uc_timcreate(&note)) >= 0) {
 		    cint tid = rs ;
 		    {
 	    	        DEBUGPRINTF("-> loop\n") ;
 	    	        rs = loop(&nsem,tid) ;
 	    	        DEBUGPRINTF("loop() rs=%d\n",rs) ;
 		    }
-		    rs1 = uc_timxdestroy(tid) ;
+		    rs1 = uc_timdestroy(tid) ;
 		    if (rs >= 0) rs = rs1 ;
-	        } /* end if (uc_timx) */
-	        DEBUGPRINTF("uctimx-out rs=%d\n",rs) ;
+	        } /* end if (uc_tim) */
+	        DEBUGPRINTF("uctim-out rs=%d\n",rs) ;
 	        rs1 = nsem.destroy ;
 	        if (rs >= 0) rs = rs1 ;
 	    } /* end if (psem) */
@@ -151,11 +148,6 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 /* local subroutines */
 
-local void int_all(int signum) noex {
-    	(void) signum ;
-    	fsig = signum ;
-} /* end subroutine (intall) */
-
 local int loop(psem *psemp,int tid) noex {
 	cnullptr	np{} ;
 	cnothrow	nt{} ;
@@ -163,25 +155,30 @@ local int loop(psem *psemp,int tid) noex {
     	int		rs = SR_NOMEM ;
 	DEBUGPRINTF("ent\n") ;
 	if (char *tbuf = new(nt) char[tlen + 1]) {
+	    itimerval	itv ;
+	    timeval	otv{} ;
+	    timeval	ntv{} ;
 	    ustime	dt = getustime ;
     	    cint	n = NLOOPS ;
-	    rs = SR_OK ;
-	    for (int i = 0 ; i < n ; i += 1) {
-	DEBUGPRINTF("-> uc_timxset\n") ;
-	        if ((rs = uc_timxset(tid,np,(dt + tint))) >= 0) {
-	DEBUGPRINTF("-> psemwait\n") ;
-		    rs = psemp->wait ;
-	DEBUGPRINTF("psemwait() rs=%d\n",rs) ;
-		    dt = getustime ;
-		    strtime_log(dt,tbuf) ;
-		    omtx.lock() ;
-		    cout << "wake-up " << tbuf << eol ;
-		    cout.flush() ;
-	    	    omtx.unlock() ;
-	        } /* end if (uc_timexset) */
-	DEBUGPRINTF("uctimerset-out rs=%d\n",rs) ;
-		if (rs < 0) break ;
-	    } /* end for */
+	    if ((rs = itimerval_load(&itv,&otv,&ntv)) >= 0) {
+	        for (int i = 0 ; i < n ; i += 1) {
+	            DEBUGPRINTF("-> uc_timset\n") ;
+		    itv.it_value.tv_sec = (dt + tint) ;
+	            if ((rs = uc_timset(tid,np,&itv)) >= 0) {
+	                DEBUGPRINTF("-> psemwait\n") ;
+		        rs = psemp->wait ;
+	                DEBUGPRINTF("psemwait() rs=%d\n",rs) ;
+		        dt = getustime ;
+		        strtime_log(dt,tbuf) ;
+		        omtx.lock() ;
+		        cout << "wake-up " << tbuf << eol ;
+		        cout.flush() ;
+	    	        omtx.unlock() ;
+	            } /* end if (uc_timeset) */
+	            DEBUGPRINTF("uctimerset-out rs=%d\n",rs) ;
+		    if (rs < 0) break ;
+	        } /* end for */
+	    } /* end if (itimerval_load) */
 	    delete [] tbuf ;
 	} /* end if (new-char) */
 	DEBUGPRINTF("ret rs=%d\n",rs) ;
