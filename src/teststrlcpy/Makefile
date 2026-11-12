@@ -2,7 +2,7 @@
 
 T= teststrlcpy
 
-ALL= $(T).$(OFF)
+ALL= $(T).x
 
 
 BINDIR		?= $(REPOROOT)/bin
@@ -31,16 +31,32 @@ TOUCH		?= touch
 LINT		?= lint
 
 
+DEFS +=
+
+INCS +=
+
+MODS +=
+
+LIBS += -ldebug -luo -lu -lf
+
+
+DEPS_MAIN +=
+
+OBJ0= teststrlcpy_main.o
+OBJ1=
+OBJ2=
+OBJ3=
+
+OBJ= obj0.o
+
+
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
-
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
-
 LIBINFO= $(LIBDIRS) $(LIBS)
 
-
+# flag setting
 CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
 CFLAGS		?= $(MAKECFLAGS)
 CXXFLAGS	?= $(MAKECXXFLAGS)
@@ -48,30 +64,7 @@ ARFLAGS		?= $(MAKEARFLAGS)
 LDFLAGS		?= $(MAKELDFLAGS)
 
 
-OBJ00= main.o whatinfo.o proginfo.o proginfo_setpiv.o
-OBJ01=
-OBJ02= strlcpy2.o
-OBJ03=
-OBJ04= timeval.o
-OBJ05=
-OBJ06=
-OBJ07= printhelp.o
-OBJ08=
-OBJ09=
-OBJ10=
-OBJ11=
-OBJ12=
-OBJ13=
-OBJ14=
-OBJ15=
-
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07)
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
-
-OBJ= $(OBJA) $(OBJB)
-
-
-.SUFFIXES:		.hh .ii .mod .ccm
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
@@ -85,6 +78,9 @@ all:			$(ALL)
 .cc.ii:
 	$(CPP) $(CPPFLAGS) $< > $(*).ii
 
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
 .c.s:
 	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
 
@@ -97,93 +93,109 @@ all:			$(ALL)
 .cc.o:
 	$(COMPILE.cc) $<
 
-.mod.o:
+.ccm.o:
 	makemodule $(*)
 
 
-$(T):			$(T).ee
-	cp -p $(T).ee $(T)
+$(T).x:			obj.o Makefile
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) obj.o $(LIBINFO)
 
-$(T).x:			$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c $(CFLAGS) makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).prof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS_P) $(MOBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).gprof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS_P) $(GOBJS) $(LIBDIRS) $(LIBS) $(CRTN) > $(T).lm
-
-$(T).$(OFF) $(OFF):	$(T).x
-	cp -p $(T).x $(T).$(OFF)
-
-$(T).nm nm:		$(T).x
+$(T).nm:		$(T).x
 	$(NM) $(NMFLAGS) $(T).x > $(T).nm
 
-$(T).cxref:
-	$(CXREF) -c $(CXREFFLAGS) $(SRC) > $(T).cxref
-
-strip:			$(T).x
-	strip $(T).x
-	rm -f $(T).$(OFF) $(T)
-
-install:		$(ALL)
-	makenewer -r $(ALL) $(BINDIR)
-
-install-raw:		$(T).x
-	rm -f $(T)
-	cp -p $(T).x $(T)
-	rm -f $(BINDIR)/$(T).$(OFF)
-	makenewer -r $(T) $(BINDIR)
-
-install-help:		$(T).help
-	rm -f $(T)
-	cp -p $(T).help $(T)
-	-mkdir -p $(HELPDIR) 2> /dev/null
-	makenewer $(T) $(HELPDIR)
-
 again:
-	rm -f $(ALL) $(T).x
+	rm -f $(T).x
 
-clean:			again
-	rm -f *.o
+clean:
+	makeclean $(ALL)
 
 control:
-	uname -n > Control
-	date >> Control
+	(uname -n ; date) > Control
 
 
-main.o:			main.c $(INCS) 
+obj0.o:			$(OBJ0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-whatinfo.o:		whatinfo.c config.h
+obj1.o:			$(OBJ1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-proginfo.o:		proginfo.c $(INCS)
+obj2.o:			$(OBJ2)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-printhelp.o:		printhelp.c
+obj3.o:			$(OBJ3)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-vecstr_loadfile.o:	vecstr_loadfile.c
+obj4.o:			$(OBJ4)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj5.o:			$(OBJ5)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj6.o:			$(OBJ6)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj7.o:			$(OBJ7)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-getutmpent.o:		getutmpent.c getutmpent.h
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-getnodedomain.o:	getnodedomain.c filebuf.h
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-userinfo.o:		userinfo.c userinfo.h
+obj.o:			$(OBJ)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-filemap.o:		filemap.c filemap.h
 
-filebuf.o:		filebuf.c filebuf.h
+teststrlcpy_main.o:	teststrlcpy_main.cc $(DEPS_MAIN)	$(INCS)
 
-realname.o:		realname.c realname.h
+uctim.o:		uctim.cc	uctim.h			$(INCS)
+uctimx.o:		uctimx.cc	uctimx.h		$(INCS)
 
-lastlogfile.o:		lastlogfile.c lastlogfile.h
+progsig.o:		progsig.cc	progsig.h
 
-tmpx.o:			tmpx.c tmpx.h
+# PTX
+ptx.o:			ptx.dir
+ptx.dir:
+	makesubdir $@
+
+# SEMX
+semx.o:			semx.dir
+semx.dir:
+	makesubdir $@
+
+# VEC
+vec.o:			vec.dir
+vec.dir:
+	makesubdir $@
+
+# QUEUE
+queue.o:		queue.dir
+queue.dir:
+	makesubdir $@
+
+# SIX
+six.o:			six.dir
+six.dir:
+	makesubdir $@
+
+# HASX
+hasx.o:			hasx.dir
+hasx.dir:
+	makesubdir $@
+
+# ISX
+isx.o:			isx.dir
+isx.dir:
+	makesubdir $@
+
+# STRTIME
+strtime.o:		strtime.dir
+strtime.dir:
+	makesubdir $@
+
+itinmrval.o:		itimerval.cc	itimerval.h
 
 
