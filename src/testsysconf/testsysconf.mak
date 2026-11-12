@@ -54,7 +54,6 @@ OBJ6=
 OBJ7=
 
 OBJA= obj0.o obj1.o obj2.o obj3.o
-OBJA= obj0.o obj1.o
 OBJB= obj4.o 
 
 OBJ= obja.o
