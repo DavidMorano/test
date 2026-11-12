@@ -10,9 +10,8 @@
 /* revision history:
 
 	= 2001-11-01, David A­D­ Morano
-	This subroutine was written for use as a front-end for Korn
-	Shell (KSH) commands that are compiled as stand-alone
-	programs.
+	This subroutine was originally written to facilitate
+	testing of software writen for RightCore Network Services.
 
 */
 
@@ -40,10 +39,10 @@
 #include	<usyscalls.h>		/* LIBU */
 #include	<strnul.hh>		/* LIBU */
 #include	<intceil.h>		/* LIBU */
+#include	<timeval.hh>		/* LIBU */
 #include	<ucgetx.h>		/* LIBUC |uc_gettimeofday(3uc)| */
 #include	<strkeycmp.h>		/* LIBUC */
 #include	<matkeystr.h>		/* LIBUC */
-#include	<timeval.hh>		/* LIBUC */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
 #include	<dprint.hh>		/* LIBU |DPRINTF(3u)| */
