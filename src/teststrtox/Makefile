@@ -37,13 +37,13 @@ INCS += strtox.h
 
 MODS +=
 
-LIBS += -lf -luo -lu
+LIBS += -luo -lu -lf
 
 
 DEPS_MAIN += strtox.o
 
 OBJ0= teststrtox_main.o
-OBJ1= prognamevar.o shellunder.o
+OBJ1= prognamevar.o
 OBJ2= strtox.o
 OBJ3=
 OBJ4=
@@ -274,6 +274,5 @@ bitmanip.o:		bitmanip.ccm
 builtin.o:		builtin.ccm
 
 prognamevar.o:		prognamevar.cc	prognamevar.hh
-shellunder.o:		shellunder.cc	shellunder.h prognamevar.hh
 
 
