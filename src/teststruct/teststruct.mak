@@ -40,7 +40,7 @@ MODS +=
 LIBS += -lf -luo -lu
 
 
-DEPS_MAIN += sub1.o sub2.o
+DEPS_MAIN += teststruct_sub1.o teststruct_sub2.o
 
 OBJ0= teststruct_main.o
 OBJ1= sub1.o sub2.o
@@ -58,8 +58,7 @@ OBJ= obja.o
 
 
 INCDIRS=
-
-LIBDIRS= -L$(LIBDIR)
+LIBDIRS= -L lib
 
 RUNINFO= -rpath $(RUNDIR)
 LIBINFO= $(LIBDIRS) $(LIBS)
