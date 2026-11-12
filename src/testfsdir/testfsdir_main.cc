@@ -15,6 +15,16 @@
 
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
+/*******************************************************************************
+
+  	Description:
+	Test of FSDIR(3c) object.
+
+	Usage:
+	$ testfsdir.x <dir>
+
+*******************************************************************************/
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/stat.h>		/* POSIX® |stat(2)| */
 #include	<unistd.h>		/* POSIX® |getpid(2)| */
