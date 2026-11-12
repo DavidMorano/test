@@ -32,7 +32,7 @@
 #include	<cstdint>		/* CSTD */
 #include	<new>			/* C++STD placement-new */
 #include	<typeinfo>		/* C++STD */
-#include	<typetraits>		/* C++STD */
+#include	<typetraits>		/* C++STD |is_same_v| */
 #include	<chrono>		/* C++STD */
 #include	<string>		/* C++STD */
 #include	<iostream>		/* C++STD */
@@ -46,6 +46,8 @@
 #include	<tmtime.hh>		/* LIBUC */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+
+#pragma		GCC dependency		"mod/ulibval.ccm"
 
 import ulibvals ;			/* |ulibval(3u)| */
 
@@ -90,7 +92,6 @@ local int libtzname	() noex ;
 
 /* local variables */
 
-static cint	maxtzname	= ulibval.maxtzname ;
 cbool		f_debug		= CF_DEBUG ;
 
 
@@ -106,23 +107,26 @@ int main(int,con mainv,con mainv envv) {
 	    rs = DEBUGOPEN(cp) ;
 	} /* end if (getenver) */
 	DEBUGPRINTF("prepare rs=%d\n", rs) ;
-	if ((rs >= 0) && ((rs = maxtzname) >= 0)) {
-	    DEBUGPRINTF("beg maxtzname=%d\n", rs) ;
-	    printf("maxtzname=%d\n",rs) ;
-    	    if (rs >= 0) rs = libtypes() ;
-    	    if (rs >= 0) rs = libchrono() ;
-	    if (rs >= 0) rs = libstrftime() ;
-	    if (rs >= 0) rs = libtmtime() ;
-	    if (rs >= 0) rs = libucftime() ;
-	    if (rs >= 0) rs = libucgettime() ;
-	    if (rs >= 0) rs = libuftime() ;
-	    if (rs >= 0) rs = libtimezone() ;
-	    if (rs >= 0) rs = libtzname() ;
-	    DEBUGPRINTF("end rs=%d\n",rs) ;
-	} /* end if (maxtzname) */
+	if (rs >= 0) {
+	    if (static cint rsm = ulibval.maxtzname ; (rs = rsm) >= 0) {
+		cint maxtzname = rsm ;
+	        DEBUGPRINTF("beg maxtzname=%d\n", rs) ;
+	        printf("maxtzname=%d\n",rs) ;
+    	        if (rs >= 0) rs = libtypes() ;
+    	        if (rs >= 0) rs = libchrono() ;
+	        if (rs >= 0) rs = libstrftime() ;
+	        if (rs >= 0) rs = libtmtime() ;
+	        if (rs >= 0) rs = libucftime() ;
+	        if (rs >= 0) rs = libucgettime() ;
+	        if (rs >= 0) rs = libuftime() ;
+	        if (rs >= 0) rs = libtimezone() ;
+	        if (rs >= 0) rs = libtzname() ;
+	        DEBUGPRINTF("end rs=%d\n",rs) ;
+	    } /* end if (maxtzname) */
+	} /* end if (ok) */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
 	DEBUGCLOSE ;
 	return ex ;
@@ -164,12 +168,12 @@ local int libchrono() noex {
 		    cout << " " << rsav << eol ;
 		}
 	        {
-	          cout << "save=  " << info.save << eol ;
-	          cauto rsav = s_sav.count() ;
-		  {
-		      cint wsav = conv<int>(rsav) ;
-		      printf("wsav=%d\n",wsav) ;
-		  }
+	            cout << "save=  " << info.save << eol ;
+	            cauto rsav = s_sav.count() ;
+		    {
+		        cint wsav = conv<int>(rsav) ;
+		        printf("wsav=%d\n",wsav) ;
+		    }
 	        }
 	    }
 	    cout << "abbr=  " << info.abbrev << eol ;
