@@ -27,19 +27,19 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cstring>
-#include	<new>
-#include	<utility>
-#include	<functional>
-#include	<algorithm>
-#include	<string>
-#include	<iostream>
-#include	<iomanip>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>		/* |eol(3ocal)| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstring>		/* CSTD */
+#include	<new>			/* C++STD */
+#include	<utility>		/* C++STD */
+#include	<functional>		/* C++STD */
+#include	<algorithm>		/* C++STD */
+#include	<string>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |eol(3ocal)| */
 
 
 /* local defines */
@@ -76,7 +76,7 @@ int main(int,con mainv,con mainv) {
     	cout << "\e[10;1H" ;
     	for (int i = 1 ; i < 10 ; i += 1) {
     	    cout << "\e[40C\e[" << i << "mblinking\e[m\n" ;
-	}
+	} /* end for */
     	cout << "\e8" ;
 } /* end subroutine (main) */
 
