@@ -38,9 +38,7 @@
 #include	<usyscalls.h>		/* LIBU */
 #include	<usupport.h>		/* LIBU |cfdec(3u)| */
 #include	<intceil.h>		/* LIBU */
-#include	<strkeycmp.h>		/* LIBUC */
 #include	<charnames.h>		/* **local** */
-#include	<matkeystr.h>		/* LIBUC */
 #include	<strnul.hh>		/* LIBU */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
@@ -109,7 +107,7 @@ int main(int argc,con mainv argv,con mainv) {
 	            if (int v ; (rs = cfdec(ap,-1,&v)) >= 0) {
 			v &= UCHAR_MAX ;
 			cchar *cp = charname[v] ;
-			printf("idx=%03u ch=%s\n",v,cp) ;
+			printf("id=%03u ch=%s\n",v,cp) ;
 		    } /* end if (cfdec) */
 	        } /* end if (non-empty) */
 		if (rs < 0) break ;
@@ -117,8 +115,8 @@ int main(int argc,con mainv argv,con mainv) {
 	} /* end if (arguments) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
-	}
-	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
+	} /* end if (error) */
+	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
 
