@@ -26,25 +26,25 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>
-#include	<cinttypes>
-#include	<cstring>
-#include	<new>
-#include	<initializer_list>
-#include	<utility>
-#include	<functional>
-#include	<algorithm>
-#include	<string>
-#include	<fstream>
-#include	<iostream>
-#include	<iomanip>
-#include	<locale>
-#include	<print>
-#include	<text_encoding>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>		/* |eol| */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cinttypes>		/* CSTD */
+#include	<cstring>		/* C++STD */
+#include	<new>			/* C++STD */
+#include	<initializer_list>	/* C++STD */
+#include	<utility>		/* C++STD */
+#include	<functional>		/* C++STD */
+#include	<algorithm>		/* C++STD */
+#include	<string>		/* C++STD */
+#include	<fstream>		/* C++STD */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<locale>		/* C++STD */
+#include	<print>			/* C++STD */
+#include	<text_encoding>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |eol| */
 
 
 /* local defines */
@@ -71,16 +71,16 @@ local void encoding() ;
 
 /* local variables */
 
-const cchar	gﬂstr[] = "g-str" ;
-const cchar	µgﬂstr[] = "l-str" ;
-const cchar	™gﬂstr[] = "str2" ;
-const cchar	∫gﬂstr[] = "str3" ;
-const cchar	ﬂgﬂstr[] = "str4" ;
-const cchar	ﬂgﬂstrπ[] = "strπ" ;
-const cchar	ﬂgﬂstr≤[] = "str≤" ;
-const cchar	ﬂgﬂstr≥[] = "str≥" ;
-const cchar	ﬂg$str[] = "str$" ;
-const cchar	ﬂg™str[] = "str™" ;
+const cchar	gﬂstr[]		= "g-str" ;
+const cchar	µgﬂstr[]	= "l-str" ;
+const cchar	™gﬂstr[]	= "str2" ;
+const cchar	∫gﬂstr[]	= "str3" ;
+const cchar	ﬂgﬂstr[]	= "str4" ;
+const cchar	ﬂgﬂstrπ[]	= "strπ" ;
+const cchar	ﬂgﬂstr≤[]	= "str≤" ;
+const cchar	ﬂgﬂstr≥[]	= "str≥" ;
+const cchar	ﬂg$str[]	= "str$" ;
+const cchar	ﬂg™str[]	= "str™" ;
 
 
 /* exported variables */
