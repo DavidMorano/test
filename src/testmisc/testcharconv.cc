@@ -18,20 +18,26 @@
 
 /* Copyright © 2000,2017 David A­D­ Morano.  All rights reserved. */
 
+/*******************************************************************************
+
+  	Description:
+	Convert a sequence of numbers to their digital character
+	(in decimal) representation.
+
+*******************************************************************************/
+
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |getenv(3c)| */
-#include	<cstdio>
-#include	<iostream>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
-#include	<cfdec.h>
-#include	<cfchars.h>
-#include	<ctdec.h>
-#include	<ctchars.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<iostream>		/* C++STD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU |eol| */
+#include	<cfdec.h>		/* LIBUC */
+#include	<cfchars.h>		/* LIBUC */
+#include	<ctdec.h>		/* LIBUC */
+#include	<ctchars.h>		/* LIBUC */
 
 
 /* local defines */
@@ -65,22 +71,22 @@ constexpr cpcchar	nums[] = {
 /* exported subroutines */
 
 int main(int,con mainv,con mainv) {
-	FILE		*ofp = stdout ;
-	cint		linelen = LINEBUFLEN ;
+	cint		llen = LINEBUFLEN ;
 	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
-	int		rs1 [[maybe_unused]] ;
 	cchar		*w ;
-	char		linebuf[LINEBUFLEN+1] ;
+	char		lbuf[LINEBUFLEN+1] ;
 	for (int i = 0 ; (rs >= 0) && ((w = nums[i])) ; i += 1) {
-	    fprintf(ofp,"w=%s\n",w) ;
-	    if (int v ; (rs = cfdeci(w,-1,&v)) >= 0) {
-		if ((rs = ctdeci(linebuf,linelen,v)) >= 0) {
-		    cout << linebuf ;
+	    cout << "w=" << w << " " ;
+	    if (int v ; (rs = cfdec(w,-1,&v)) >= 0) {
+		if ((rs = ctdec(lbuf,llen,v)) >= 0) {
+		    cout << lbuf << eol ;
 		}
 	    } /* end if (cfdec) */
 	} /* end for */
-	if (rs < 0) ex = EXIT_FAILURE ;
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
