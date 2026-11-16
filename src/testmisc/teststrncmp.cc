@@ -51,7 +51,7 @@ int main(int argc,con mainv,con mainv) {
 	        printf("strncmp: rc=%d\n",rc) ;
 	    }
 	} /* end block */
-	if ((rs < 0) && (ex == EXIT_SUCCESS)) {
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (error) */
 	return ex ;
