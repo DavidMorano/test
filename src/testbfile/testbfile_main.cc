@@ -125,7 +125,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    DEBUGPRINTF("-> mapex rs=%d\n",rs) ;
 	    ex = mapex(np,rs) ;
 	} /* end if (error) */
-	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	DEBUGCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
