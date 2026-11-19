@@ -34,11 +34,9 @@
 #include	<string_view>		/* C++STD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<usupport.h>		/* LIBU |cfdec(3u)| */
 #include	<usyscalls.h>		/* LIBU */
+#include	<usupport.h>		/* LIBU |cfdec(3u)| */
 #include	<intceil.h>		/* LIBU */
-#include	<strkeycmp.h>		/* LIBUC */
-#include	<matkeystr.h>		/* LIBUC */
 #include	<strnul.hh>		/* LIBU */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
@@ -78,17 +76,17 @@ typedef string_view	strview ;
 /* local variables */
 
 constexpr mapex_map	mapexs[] = {
-	{ SR_NOENT,	EX_NOUSER },
-	{ SR_AGAIN,	EX_TEMPFAIL },
-	{ SR_DEADLK,	EX_TEMPFAIL },
-	{ SR_NOLCK,	EX_TEMPFAIL },
-	{ SR_TXTBSY,	EX_TEMPFAIL },
-	{ SR_ACCESS,	EX_NOPERM },
-	{ SR_REMOTE,	EX_PROTOCOL },
-	{ SR_NOSPC,	EX_TEMPFAIL },
-	{ SR_INTR,	EX_INTR },
-	{ SR_EXIT,	EX_TERM },
-	{ SR_DOM,	EX_NOPROG },
+	{ SR_NOENT,	EX_NOUSER	},
+	{ SR_AGAIN,	EX_TEMPFAIL	},
+	{ SR_DEADLK,	EX_TEMPFAIL	},
+	{ SR_NOLCK,	EX_TEMPFAIL	},
+	{ SR_TXTBSY,	EX_TEMPFAIL	},
+	{ SR_ACCESS,	EX_NOPERM	},
+	{ SR_REMOTE,	EX_PROTOCOL	},
+	{ SR_NOSPC,	EX_TEMPFAIL	},
+	{ SR_INTR,	EX_INTR		},
+	{ SR_EXIT,	EX_TERM		},
+	{ SR_DOM,	EX_NOPROG	},
 	{ 0, 0 }
 } ; /* end array (mapexs) */
 
@@ -122,7 +120,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if (rs >= 0) {
 	    printf("search-raw\n") ;
 	    for (cauto &e : tests) {
-		if (cint ei = matkeystr(envv,e,-1) ; ei >= 0) {
+		if (cint ei = matstrk(envv,e,-1) ; ei >= 0) {
 		    cchar *valp = envv[ei] ;
 		    if (cchar *tp = strochr(envv[ei],'=') ; tp) {
 			valp = (tp+1) ;
@@ -150,7 +148,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
 	} /* end if (error) */
-	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
+	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
 
