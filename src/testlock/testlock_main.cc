@@ -186,7 +186,8 @@ int main(int argc,cchar *argv[],cchar *envv[])
 #if	CF_DEBUGN
 	                            nprintf(NDF,"main: srch=%s\n",srch) ;
 #endif
-	                            ex = lib_callcmd(srch,argc,argv,envv,nullptr) ;
+	                            ex = lib_callcmd(srch,argc,argv,envv,
+					    nullptr) ;
 #if	CF_DEBUGN
 	                            nprintf(NDF,"main: lib_callcmd() ex=%u\n",
 	                                ex) ;
