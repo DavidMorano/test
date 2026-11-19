@@ -140,7 +140,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (error) */
-	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	DEBUGCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
