@@ -159,7 +159,8 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
 	} /* end if (error) */
-	DPRINTF("ret rs=%d ex=%u\n",rs,ex) ;
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
+	DEBUGCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
 
