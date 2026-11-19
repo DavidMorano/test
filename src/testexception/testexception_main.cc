@@ -112,8 +112,8 @@ int main(int argc,con mainv argv,con mainv envv) {
 	} /* end if (ok) */
 	if ((rs == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	    printf("%s: error rs=%d ex=%d\n",ccp(pn),rs,ex) ;
 	} /* end if (error) */
+	printf("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
 
