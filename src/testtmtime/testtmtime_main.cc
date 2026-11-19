@@ -91,11 +91,11 @@ int main(int argc,con mainv argv,con mainv envv) noex {
 	    rs = procvals() ;
 	    DEBUGPRINTF("procvals() rs=%d\n",rs) ;
 	} /* end if (ok) */
-	DEBUGPRINTF("ret rs=%d ex=%d\n",rs,ex) ;
-	debugclose() ;
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (exit-return) */
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
+	DEBUGCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
 
