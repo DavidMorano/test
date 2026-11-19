@@ -1,12 +1,13 @@
-/* main */
+/* testparamfile_main SUPPORT */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
-/* test the paramfile object */
+/* test the PARAMFILE object */
+/* version %I% last-modified %G% */
 
-
-#define	CF_DEBUGS	1		/* non-switchable debug print-outs */
+#define	CF_DEBUG	1		/* non-switchable debug print-outs */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 #define	CF_ENUM		1		/* enumerate */
-
 
 /* revision history:
 
@@ -19,34 +20,32 @@
 
 /******************************************************************************
 
+  	Description:
 	This little subroutine tests the paramfile object.
-
 
 ******************************************************************************/
 
-
 #include	<envstandards.h>	/* ordered first to configure */
-
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
 #include	<unistd.h>
 #include	<fcntl.h>
-#include	<csignal>
 #include	<ctime>
-#include	<cstdlib>
-#include	<cstring>
-
-#include	<usystem.h>
-#include	<bfile.h>
+#include	<csignal>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<field.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<vecobj.h>
-#include	<exitcodes.h>
-#include	<localmisc.h>
+#include	<exitcodes.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+#include	<bfile.h>		/* LIBB */
 
 #include	"paramfile.h"
 #include	"config.h"
-#include	"defs.h"
 
 
 /* local defines */
@@ -65,13 +64,6 @@
 
 
 /* external subroutines */
-
-#if	CF_DEBUGS
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
 
 
 /* external variables */
@@ -102,27 +94,21 @@ static unsigned char	dterms[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(argc,argv,envv)
-int		argc ;
-cchar	*argv[] ;
-cchar	*envv[] ;
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	bfile	infile, *ifp = &infile ;
 	bfile	outfile, *ofp = &outfile ;
-
 	paramfile	params ;
-
-	FIELD		f ;
-
+	field		f ;
 	time_t	daytime = time(NULL) ;
-
 	uint	mo_start = 0 ;
-
-	int	rs = SR_OK ;
-	int	rs1 ;
+	int		ex = EX_OK ;
+	int		rs = SR_OK ;
+	int		rs1 ;
 	int	i, n ;
 	int	len, sl, cl ;
 
@@ -133,23 +119,24 @@ cchar	*envv[] ;
 	char	timebuf[TIMEBUFLEN + 1] ;
 
 
-#if	CF_DEBUGS
+#if	CF_DEBUG
 	if ((cp = getourenv(envv,VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getourenv(envv,VARDEBUGFD1)) == NULL)
 	        cp = getourenv(envv,VARDEBUGFD2) ;
 	}
-	if (cp != NULL)
+	if (cp != NULL) {
 	    debugopen(cp) ;
-	debugprintf("main: starting\n") ;
-#endif /* CF_DEBUGS */
+	    DEBUGPRINTF("main: starting\n") ;
+	}
+#endif /* CF_DEBUG */
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
 
-#if	CF_DEBUGS
-	debugprintf("main: program entered\n") ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main: program entered\n") ;
 #endif
 
 	bopen(ofp,BFILE_STDOUT,"dwct",0666) ;
@@ -169,8 +156,8 @@ cchar	*envv[] ;
 
 	rs = paramfile_open(&params,envv,pfname) ;
 
-#if	CF_DEBUGS
-	debugprintf("main: paramfile_open() rs=%d\n",rs) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main: paramfile_open() rs=%d\n",rs) ;
 #endif
 
 #if	CF_ENUM
@@ -214,8 +201,8 @@ cchar	*envv[] ;
 
 	    len = breadln(ifp,linebuf,LINEBUFLEN) ;
 
-#if	CF_DEBUGS
-	    debugprintf("main: breadln() rs=%d\n",len) ;
+#if	CF_DEBUG
+	    DEBUGPRINTF("main: breadln() rs=%d\n",len) ;
 #endif
 
 	    if (len <= 0)
@@ -243,8 +230,8 @@ cchar	*envv[] ;
 
 	            vl = paramfile_fetch(&params,sp,&cur,vbuf,VBUFLEN) ;
 
-#if	CF_DEBUGS
-	            debugprintf("main: paramfile_fetch() rs=%d\n",vl) ;
+#if	CF_DEBUG
+	            DEBUGPRINTF("main: paramfile_fetch() rs=%d\n",vl) ;
 #endif
 
 	            if (vl == SR_NOTFOUND) break ;
@@ -264,32 +251,31 @@ cchar	*envv[] ;
 
 	rs1 = paramfile_close(&params) ;
 
-#if	CF_DEBUGS
-	debugprintf("main: paramfile_close() rs=%d\n",rs1) ;
+#if	CF_DEBUG
+	DEBUGPRINTF("main: paramfile_close() rs=%d\n",rs1) ;
 #endif
-#if	CF_DEBUGS
-	            debugprintf("main: vecobj_free()\n") ;
+#if	CF_DEBUG
+	            DEBUGPRINTF("main: vecobj_free()\n") ;
 #endif
 
 	bclose(ifp) ;
 
 	bclose(ofp) ;
 
-#if	CF_DEBUGS && CF_DEBUGMALL
+#if	CF_DEBUG && CF_DEBUGMALL
 	{
 	    uint	mo ;
 	    uc_mallout(&mo) ;
-	    debugprintf("main: final mallout=%u\n",(mo-mo_start)) ;
+	    DEBUGPRINTF("main: final mallout=%u\n",(mo-mo_start)) ;
 	    uc_mallset(0) ;
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	(CF_DEBUGS || CF_DEBUG)
-	debugclose() ;
+#if	(CF_DEBUG || CF_DEBUG)
+	DEBUGCLOSE() ;
 #endif
 
-	return EX_OK ;
-}
-/* end subroutine (main) */
+	return ex ;
+} /* end subroutine (main) */
 
 
