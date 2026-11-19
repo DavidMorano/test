@@ -11,7 +11,6 @@
 #define	CF_ACCTAB	1
 #define	CF_SETENTRY	1		/* use 'proginfo_setentry()' */
 
-
 /* revision history:
 
 	= 1998-09-01, David A­D­ Morano
@@ -49,10 +48,10 @@
 #include	<netdb.h>
 #include	<pwd.h>
 #include	<grp.h>
-#include	<ctime>
-#include	<climits>
-#include	<cstdlib>
-#include	<cstring>
+#include	<ctime>			/* CSTD */
+#include	<climits>		/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<baops.h>		/* LIBU */
@@ -68,7 +67,7 @@
 #include	<getax.h>
 #include	<srvtab.h>
 #include	<acctab.h>
-#include	<vstrcmp.h>		/* |vstrkeycmp(3uc)| */
+#include	<vstrcmp.h>		/* LIBUC |vstrkeycmp(3uc)| */
 #include	<nistinfo.h>		/* LIBUC */
 #include	<strtime.h>		/* LIBUC */
 #include	<exitcodes.h>		/* LIBU */
