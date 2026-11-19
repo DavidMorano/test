@@ -2,7 +2,7 @@
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
-/* get the |getenv3(3abeyance)| subroutine */
+/* get the |getenv3(3dam)| subroutine */
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
@@ -16,6 +16,16 @@
 
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
+
+/*******************************************************************************
+
+  	Description:
+	Tes the |getenv3(3dam)| subroutine.
+
+	Usage:
+	# testgetenv3.x <environment-variable> ...
+
+*******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>		/* POSIX */
@@ -71,15 +81,17 @@ int main(int argc,con mainv argv,con mainv) {
 	if (argc > 1) {
 	    cchar *ep ;
 	    for (int ai = 1 ; (ai < argc) && argv[ai] ; ai += 1) {
-	        cchar *ap = argv[ai] ;
-		rs = getenv3(ap,-1,&ep) ;
+	        if (cchar *ap = argv[ai] ; ap[0]) {
+		    rs = getenv3(ap,-1,&ep) ;
+		    if (rs < 0) break ;
+		    printf("k=%s v=%s\n",ap,ep) ;
+		}
 		if (rs < 0) break ;
-		printf("k=%s v=%s\n",ap,ep) ;
 	    } /* end for */
 	} /* end if (arguments) */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
