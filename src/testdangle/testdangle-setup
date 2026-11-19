@@ -1,0 +1,6 @@
+#!/usr/local/bin/ksh
+# TESTPATHDANGLE-SETUP
+
+z testpathdangle.deb 
+z pathdangle.deb 
+
