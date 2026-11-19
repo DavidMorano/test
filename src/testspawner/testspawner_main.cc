@@ -263,15 +263,12 @@ int main(int argc,cchar **argv,cchar **envv)
 #endif
 
 	return 0 ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
 
-
-local int proglog(cchar *pn,bfile *efp,int cs)
-{
+local int proglog(cchar *pn,bfile *efp,int cs) noex {
 	int		rs = SR_OK ;
 
 	    if (WIFEXITED(cs)) {
@@ -291,9 +288,7 @@ local int proglog(cchar *pn,bfile *efp,int cs)
 	    }
 
 	return rs ;
-}
-/* end subroutine (proglog) */
-
+} /* end subroutine (proglog) */
 
 #if	CF_DEBUGS
 local int debugexit(cchar *pn,int cs)
@@ -315,8 +310,7 @@ local int debugexit(cchar *pn,int cs)
 		debugprintf("main: program exited weirdly cs=\\x%08x\n",cs) ;
 	    }
 	return rs ;
-}
-/* end subroutine (debugexit) */
+} /* end subroutine (debugexit) */
 #endif /* CF_DEBUGS */
 
 
