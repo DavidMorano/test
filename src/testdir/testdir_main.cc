@@ -148,11 +148,12 @@ static const SIGCODE	sigcode_bus[] = {
 } ;
 
 
+/* exported variables */
+
+
 /* exported subroutines */
 
-
-int main(int argc,cchar *argv[],cchar *envv[])
-{
+int main(int argc,con mainv argv,con mainv envv) {
 	cint	f_lockmemalloc = CF_LOCKMEMALLOC ;
 	cint	f_util = CF_UTIL ;
 	int		rs = SR_OK ;
@@ -214,22 +215,19 @@ int main(int argc,cchar *argv[],cchar *envv[])
 	        if (rs >= 0) rs = rs1 ;
 	    } else {
 	        ex = EX_OSERR ;
-	    }
+	    } /* end if (error) */
 	} else {
 	    ex = EX_OSERR ;
-	}
+	} /* end if (error) */
 
 	if ((rs < 0) && (ex == EX_OK)) {
 	    ex = mapex(mapexs,rs) ;
-	}
-
+	} /* end if (error) */
 #if	CF_DEBUGN
-	nprintf(NDF,"main: ret rs=%d ex=%u\n",rs,ex) ;
+	nprintf(NDF,"main: ret ex=%d rs=%d\n",ex,rs) ;
 #endif
-
 	return ex ;
-}
-/* end subroutine (main) */
+} /* end subroutine (main) */
 
 
 /* local subroutines */
