@@ -163,12 +163,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	}
 	ex = EX_OK ;
 done:
-
-#if	CF_DEBUGS
-	debugprintf("main: return ex=%d\n",ex) ;
-#endif
-
 	bclose(ofp) ;
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
+	DEBUGCLOSE ;
 	return ex ;
 } /* end subroutine (main) */
 
