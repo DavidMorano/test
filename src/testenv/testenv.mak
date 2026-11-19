@@ -45,7 +45,7 @@ DEPS_MAIN +=
 DEPS_MAIN += 
 
 OBJ0= testenv_main.o
-OBJ1= strkeycmp.o matkeystr.o
+OBJ1=
 OBJ2=
 OBJ3= 
 OBJ4=
@@ -53,7 +53,7 @@ OBJ5=
 OBJ6=
 OBJ7=
 
-OBJA= obj0.o obj1.o
+OBJA= obj0.o
 OBJB= obj4.o 
 #OBJB= obj4.o obj5.o obj6.o obj7.o
 
