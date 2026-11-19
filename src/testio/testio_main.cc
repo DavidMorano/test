@@ -1,51 +1,70 @@
-/* main (testio) */
+/* testio_main SUPPORT (testio) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
+/* test program */
+/* version %I% last-modified %G% */
 
-#define	CF_DEBUG	1
-#define	F_WRITE		1
-#define	F_ERROR		0
-
+#define	CF_DEBUG	1		/* debugging */
 
 /* revision history:
 
-	= 99/02/01, David A­D­ Morano
-
-	This is a little (big) hack to try to test some parts
-	of the BIO package.
-
+	= 1999-02-01, David A­D­ Morano
+	This is a little (big) hack to try to test some parts of
+	the C++ IO package functionality.
 
 */
 
+/* Copyright © 1999 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
 /************************************************************************
 
-	This is a test program for the BIO package.
-
+  	Descryption:
+	This is a test program for the C+ IO functionality.
 
 *************************************************************************/
 
-
-#include	<sys/types.h>
-#include	<sys/stat.h>
-#include	<fcntl.h>
-#include	<ctime>
-#include	<pwd.h>
-#include	<cstdlib>
-#include	<ctype.h>
-
-#include	<bfile.h>
-
-#include	"localmisc.h"
-
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<fcntl.h>		/* POSIX® */
+#include	<pwd.h>			/* POSIX® */
+#include	<string>		/* C++STD */
+#include	<sstream>		/* C++STD |stringstream| */
+#include	<iostream>		/* C++STD */
+#include	<iomanip>		/* C++STD */
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<mapex.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+#include	<prognamevar.hh>	/* LIBDAM */
 
 
 /* local defines */
 
-#define	VERSION		"1"
-#define	NPARG		2
+#define	TESTIO_DFN	"testio.deb"
 
-#define	BUFLEN		(8 * 1024)
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	0		/* debugging */
+#endif
 
+
+/* imported namespaces */
+
+using std::string ;			/* type */
+using std::streambuf ;			/* type */
+using std::stringstream ;		/* type */
+using std::ostringstream ;		/* type */
+using std::ostream ;			/* type */
+using std::cout ;			/* variable */
+
+
+/* local typedefs */
 
 
 /* external subroutines */
@@ -54,144 +73,126 @@
 /* external variables */
 
 
+/* local structures */
+
+namespace {
+    struct thing {
+    	int	a ;
+	thing() noex : a(0) { } ;
+	thing(int ª) noex : a(ª) { } ;
+    } ; /* end struct (thing) */
+} /* end namespce (thing) */
 
 
+/* forward references */
+
+ostream &operator % (ostream &ol,const thing &ot) noex {
+    	ol << ot.a ;
+	return ol ;
+} /* end */
+
+local int procstr() noex ;
+local int procbuf() noex ;
 
 
-int main(argc,argv,envv)
-int	argc ;
-char	*argv[] ;
-char	*envv[] ;
-{
-	bfile	errfile, *efp = &errfile ;
+/* local variables */
 
-	int	pan, i ;
-	int	argl, aol ;
-	int	rs ;
-	int	tlen ;
-	int	sfd, dfd, err_fd ;
-	int	f_usage = FALSE ;
+constexpr mapex_map	mapexs[] = {
+	{ SR_NOENT,	EX_NOUSER	},
+	{ SR_AGAIN,	EX_TEMPFAIL	},
+	{ SR_DEADLK,	EX_TEMPFAIL	},
+	{ SR_NOLCK,	EX_TEMPFAIL	},
+	{ SR_TXTBSY,	EX_TEMPFAIL	},
+	{ SR_ACCESS,	EX_NOPERM	},
+	{ SR_REMOTE,	EX_PROTOCOL	},
+	{ SR_NOSPC,	EX_TEMPFAIL	},
+	{ SR_INTR,	EX_INTR		},
+	{ SR_EXIT,	EX_TERM		},
+	{ SR_DOM,	EX_NOPROG	},
+	{ 0, 0 }
+} ; /* end array (mapexs) */
 
-	char	*progname, *argp, *aop ;
-	char	*buf ;
-	char	*cp ;
-
-
-#if	F_ERROR
-	if (((cp = getenv("ERROR_FD")) != NULL) &&
-	    (cfdeci(cp,-1,&err_fd) >= 0))
-	    debugsetfd(err_fd) ;
-#endif /* F_ERROR */
+cchar			dfn[]		= TESTIO_DFN ;
+cbool			f_debug		= CF_DEBUG ;
 
 
-#if	CF_DEBUG
-	debugprint("main: entered\n") ;
-		debugprintf("main: about to open error\n") ;
-#endif
-
-	progname = argv[0] ;
-	if (bopen(efp,BFILE_STDERR,"dwca",0666) >= 0)
-		bcontrol(efp,BC_LINEBUF,0) ;
+/* exported variables */
 
 
+/* exported subroutines */
 
-	if ((rs = uc_valloc(BUFLEN,&buf)) < 0)
-		return BAD ;
-
-#if	CF_DEBUG
-		debugprintf("main: about to open input\n") ;
-#endif
-
-	if ((sfd = open(argv[1],O_RDONLY,0666)) < 0) {
-
-#if	CF_DEBUG
-		debugprintf("main: no open input, rs=%d\n",rs) ;
-#endif
-
-		return BAD ;
+int main(int argc,con mainv argv,con mainv envv) {
+    	prognamevar	pn(argc,argv,envv) ;
+	int		rs = SR_OK ;
+	int		ex = EX_OK ;
+	(void) argc ;
+	(void) argv ;
+	(void) envv ;
+	if (DEBUGOPEN(dfn) >= 0) {
+	    DEBUGPRINTF("ent pn=%s\n",ccp(pn)) ;
 	}
+	if ((rs >= 0) && (argc > 1)) {
+	    thing item ;
+	    for (int ai = 1 ; ai < argc ; ai += 1) {
+		ccharp ap = argv[ai] ;
+		cout << ap << "=" ;
+		cout % item << eol ;
+		if (rs < 0) break ;
+	    } /* end for */
+	    rs = SR_OK ;
+	} /* end if (arguments) */
+	if (rs >= 0) {
+	    rs = procstr() ;
+	} /* end if (procstr) */
+	if (rs >= 0) {
+	    rs = procbuf() ;
+	} /* end if (procbuf) */
+	if ((ex == EX_OK) && (rs < 0)) {
+	    ex = mapex(mapexs,rs) ;
+	} /* end if (error) */
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
+	DEBUGCLOSE ;
+	return ex ;
+} /* end subroutine (main) */
 
 
-#if	CF_DEBUG
-		debugprintf("main: about to open output\n") ;
-#endif
+/* local subroutines */
 
-	if ((dfd = open(argv[2],O_WRONLY | O_CREAT | O_TRUNC,0666)) < 0) {
-
-#if	CF_DEBUG
-		debugprintf("main: no open output, rs=%d\n",rs) ;
-#endif
-
-		return BAD ;
+local int procstr() noex {
+    	ostringstream sso ;
+    	int rs = SR_OK ;
+	sso << "Hello" ;
+	sso << " " ;
+	sso << "world!" << eol ;
+	{
+	    string str ;
+	    str = sso.str() ;
+	    cout << str ;
 	}
+	DEBUGPRINTF("ret rs=%d\n",rs) ;
+	return rs ;
+} /* end subroutine (procstr) */
 
-/* OK, go into infinite loop mode */
-
-	tlen = uc_copy(sfd,dfd,-1) ;
-
-#if	CF_DEBUG
-		debugprintf("main: after loop\n") ;
-#endif
-
-	close(sfd) ;
-
-	close(dfd) ;
-
-
-	rs = tlen ;
-	if (tlen < 0) {
-
-#if	CF_DEBUG
-		debugprintf("main: bad read, len=%d\n",tlen) ;
-#endif
-
-		goto baddone ;
+local int procbuf() noex {
+    	int rs = SR_OK ;
+    	ostringstream sso ;
+	{
+    	    streambuf *sbufp = cout.rdbuf() ; /* <- save */
+	    cout.rdbuf(sso.rdbuf()) ;
+	    {
+	        cout << "Hello" ;
+	        cout << " " ;
+	        cout << "world!" << eol ;
+	    } /* end block */
+	    cout.rdbuf(sbufp) ; /* <- restore */
+	} /* end block */
+	{
+	    string str ;
+	    str = sso.str() ;
+	    cout << str ;
 	}
-
-	if (rs < 0) {
-
-#if	CF_DEBUG
-		debugprintf("main: bad write, rs=%d\n",rs) ;
-#endif
-
-		goto baddone ;
-	}
-
-
-	bprintf(efp,"%s: tlen=%d\n",progname,tlen) ;
-
-
-done:
-
-
-baddone:
-	bclose(efp) ;
-
-	return OK ;
-
-usage:
-	bprintf(efp,
-	    "usage: %s [mailfile [offset]] [-sV] [-t offset] [-offset]\n",
-	    progname) ;
-
-	goto badret ;
-
-not_enough:
-	bprintf(efp,"%s: not enough arguments supplied\n",
-	    progname) ;
-
-	goto badret ;
-
-badarg:
-	bprintf(efp,"%s: bad argument value specified\n",
-	    progname) ;
-
-badret:
-	bclose(efp) ;
-
-	return BAD ;
-}
-/* end subroutine (main) */
-
+	DEBUGPRINTF("ret rs=%d\n",rs) ;
+	return rs ;
+} /* end subroutine (procbuf) */
 
 
