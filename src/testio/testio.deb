@@ -1,0 +1,4 @@
+main: ent pn=testio
+procstr: ret rs=0
+procbuf: ret rs=0
+main: ret ex=0 rs=0
