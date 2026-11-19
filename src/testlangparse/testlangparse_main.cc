@@ -122,8 +122,7 @@ int main(int argc,con mainv argv,con mainv) {
 	    } /* end if (langparse) */
 	} /* end if (arguments) */
 	if ((ex == EX_OK) && (rs < 0)) ex = EX_DATAERR ;
-	DEBPRINTF("ret rs=%d\n",rs) ;
-	DEBPRINTF("exit ex=%d\n",ex) ;
+	DEBPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
 
