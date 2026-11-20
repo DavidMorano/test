@@ -61,7 +61,7 @@
 #if	CF_DEBUGS || CF_DEBUG
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
-extern int	debugprinthexblock(cchar *,int,cvoid *,int) ;
+extern int	debugprinthexb(cchar *,int,cvoid *,int) ;
 extern int	debugclose() ;
 extern int	strlinelen(cchar *,int,int) ;
 extern int	nprintf(cchar *,cchar *,...) ;
