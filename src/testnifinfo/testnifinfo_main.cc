@@ -109,7 +109,7 @@ int main(int argc,mainv argv,mainv envv) {
 	        while ((rs = ucmallreg_curenum(&cur,&reg)) > 0) {
 	            debugprintf("main: MIreg.addr=%p\n",reg.addr) ;
 	            debugprintf("main: MIreg.size=%u\n",reg.size) ;
-	            debugprinthexblock(ids,80,reg.addr,reg.size) ;
+	            debugprinthexb(ids,80,reg.addr,reg.size) ;
 	        }
 	        rs1 = ucmallreg_curend(&cur) ;
 		if (rs >= 0) rs = rs1 ;
