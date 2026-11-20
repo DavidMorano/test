@@ -1,308 +1,244 @@
-# MAKEFILE
+# MAKEFILE (testuserinfo)
 
 T= testuserinfo
 
-ALL= $(T)
-
-SRCROOT= $(LOCAL)
+ALL= $(T).o
 
 
-BINDIR= $(SRCROOT)/bin
-INCDIR= $(SRCROOT)/include
-LIBDIR= $(SRCROOT)/lib
-MANDIR= $(SRCROOT)/man/man1
-HELPDIR= $(SRCROOT)/share/help
+BINDIR		?= $(REPOROOT)/bin
+INCDIR		?= $(REPOROOT)/include
+LIBDIR		?= $(REPOROOT)/lib
+MANDIR		?= $(REPOROOT)/man
+INFODIR		?= $(REPOROOT)/info
+HELPDIR		?= $(REPOROOT)/share/help
+CRTDIR		?= $(CGS_CRTDIR)
+VALDIR		?= $(CGS_VALDIR)
+RUNDIR		?= $(CGS_RUNDIR)
 
-#LDCRTDIR= /opt/SUNWspro/WS6/lib
-#LDCRTDIR= /opt/SUNWspro/SC5.0/lib
-#LDCRTDIR= /opt/SUNWspro/SC4.0/lib
-#LDCRTDIR= /opt/SUNWspro/lib
-LDCRTDIR= $(SRCROOT)/lib
-
-CC= gcc
-GPP= g++
-
-CCOPTS_GCCALL= -pthreads -fexceptions
-CCOPTS_CCALL= -MT
-
-CCOPTS_GCCOPTSPARC= -mcpu=ultrasparc
-CCOPTS_GCCLIBSPARC= -mno-app-regs
-
-CCOPTS= $(CCOPTS_GCCALL) -O $(CCOPTS_GCCOPTSPARC)
-#CCOPTS= $(CCOPTS_GCCALL) -g -O
-#CCOPTS= $(CCOPTS_GCCALL) -g -pg
-#CCOPTS= $(CCOPTS_GCCALL) -g -Wstrict-aliasing
-
-CCOPTS_GCCLIB= -fpic $(CCOPTS_GCCLIBSPARC)
-
-#CCOPTS= $(CCOPTS_CCALL) -g -xs
-
-# HyperSPARC
-# regular
-#CCOPTS= -xO5 -xtarget=ss20/hs22 -xdepend
-# profiling 'prof(1)'
-#CCOPTS= -p -xO5 -xtarget=ss20/hs22 -xdepend
-# profiling 'gprof(1)' 
-#CCOPTS= -xpg -xO5 -xtarget=ss20/hs22 -xdepend
-
-# UltraSPARC
-# regular
-#CCOPTS= -xO5 -xtarget=ultra -xsafe=mem -xdepend
-# profiling 'prof(1)'
-#CCOPTS= -p -xO5 -xtarget=ultra -xsafe=mem -xdepend
-# profiling 'gprof(1)' 
-#CCOPTS= -xpg -xO5 -xtarget=ultra -xsafe=mem -xdepend
+CPP		?= cpp
+CC		?= gcc
+CXX		?= gxx
+LD		?= gld
+RANLIB		?= granlib
+AR		?= gar
+NM		?= gnm
+COV		?= gcov
+LORDER		?= lorder
+TSORT		?= tsort
+LINT		?= lint
+RM		?= rm -f
+TOUCH		?= touch
+LINT		?= lint
 
 
-DEF0=
-DEF1=
-DEF2=
-DEF3=
-DEF4=
-DEF5=
-DEF6=
-DEF7= $(LF_DEFS)
+DEFS +=
 
-DEFS= $(DEF0) $(DEF1) $(DEF2) $(DEF3) $(DEF4) $(DEF5) $(DEF6) $(DEF7)
+INCS += testuserinfo.h
+
+MODS += testuserinfo.o
+
+LIBS= -ldebug -luo -lu -lf
 
 
-INCDIRS= -I$(INCDIR)
+OBJ_PR=
 
-CPPFLAGS= $(DEFS) $(INCDIRS)
+OBJ_PA0=
+OBJ_PA1=
 
-CFLAGS= $(CCOPTS)
+OBJ_PA=
 
-#LD= $(CC)
-#LD= cc
-LD= ld
+OBJ_IM0=
+OBJ_IM1=
 
-# regular
-LDFLAGS= -R$(LIBDIR)
-# for profiling
-LDFLAGS_P= -L/usr/lib/libp # -m -R$(LIBDIR)
+OBJ_IM= obj_im0.o
 
+DEPS_PI= proginfo.o
 
-LIBDIRS= -L$(LIBDIR)
+DEPS= 
 
-LIB0=
-LIB1= -ldam -lb
-LIB2=
-LIB3= -luc -lu
-LIB4= -L$(GNU)/lib -lgcc
-LIB5= 
-LIB6= -lsecdb -lproject -lpthread -lrt -lxnet -lsocket -lnsl
-LIB7= -ldl -lc
-
-LIBS= $(LIB0) $(LIB1) $(LIB2) $(LIB3) $(LIB4) $(LIB5) $(LIB6) $(LIB7)
-
-
-CRT1= $(LDCRTDIR)/crt1.o
-CRTI= $(LDCRTDIR)/crti.o
-VALUES= $(LDCRTDIR)/values-xa.o
-CRTBEGIN= $(LDCRTDIR)/crtbegin.o
-MCRT1= $(LDCRTDIR)/mcrt1.o
-GCRT1= $(LDCRTDIR)/gcrt1.o
-CRTEND= $(LDCRTDIR)/crtend.o
-CRTN= $(LDCRTDIR)/crtn.o
-
-CRTFRONT= $(CRT1) $(CRTI) $(VALUES) $(CRTBEGIN)
-CRTBACK= $(CRTEND) $(CRTN)
-
-# for regular (no profiling)
-CRT0= $(CRT1) $(CRTI) $(VALUES)
-# for 'prof(1)'
-MCRT0= $(CRTI) $(MCRT1) $(VALUES)
-# for 'gprof(1)'
-GCRT0= $(CRTI) $(GCRT1) $(VALUES)
-
-CRTC= makedate.o
-
-LINT= lint
-LINTFLAGS= -uxn -Dlint
-
-NM= nm
-NMFLAGS= -xs -v
-
-CXREF= cxref
-CXREFFLAGS= -R -s
-
-CPP= cpp
-
-LORDER= lorder
-TSORT= tsort
-
-RM= rm -f
-
-
-INCS= config.h defs.h
-
-
-OBJ00= main.o whatinfo.o proginfo.o proginfo_setpiv.o 
-OBJ01= 
-OBJ02=
+OBJ00= testuserinfo_main.o
+OBJ01= prognamevar.o
+OBJ02= userinfo.o
 OBJ03=
-OBJ04=
-OBJ05=
-OBJ06=
-OBJ07= printhelp.o 
-OBJ08=
-OBJ09= userattr.o strstore.o
-OBJ10= userinfo.o
-OBJ11= 
-OBJ12= mkrealname.o mkmailname.o
-OBJ13= getxusername.o getnodename.o getdomainname.o getprojname.o
-OBJ14= uc_getlogin.o uc_getuserattr.o uc_kvamatch.o
-OBJ15=
 
-OBJA= $(OBJ00) $(OBJ01) $(OBJ02) $(OBJ03) $(OBJ04) $(OBJ05) $(OBJ06) $(OBJ07)
-OBJB= $(OBJ08) $(OBJ09) $(OBJ10) $(OBJ11) $(OBJ12) $(OBJ13) $(OBJ14) $(OBJ15)
+OBJ04= 
+OBJ05= 
+OBJ06= 
+OBJ07= 
 
-OBJ= $(OBJA) $(OBJB)
+OBJA= obj00.o obj01.o obj02.o
+OBJB= obj04.o obj05.o obj06.o obj07.o
+OBJC= 
+OBJD= 
 
-# for regular (no profiling)
-OBJS= $(CRTFRONT) $(OBJ) $(CRTC) $(CRTBACK)
-# for 'prof(1)'
-MOBJS= $(MCRT0) $(OBJ) $(CRTC)
-# for 'gprof(1)'
-GOBJS= $(GCRT0) $(OBJ) $(CRTC)
+OBJ= obja.o 
+
+OBJ_INFO= $(OBJ_PA) $(OBJ_PR) $(OBJ_IM)
 
 
-SRC= $(OBJ:.c=.o)
+INCDIRS=
+LIBDIRS= -L lib
+
+RUNINFO= -rpath $(RUNDIR)
+LIBINFO= $(LIBDIRS) $(LIBS)
+
+# flag setting
+CPPFLAGS	?= $(DEFS) $(INCDIRS) $(MAKECPPFLAGS)
+CFLAGS		?= $(MAKECFLAGS)
+CXXFLAGS	?= $(MAKECXXFLAGS)
+ARFLAGS		?= $(MAKEARFLAGS)
+LDFLAGS		?= $(MAKELDFLAGS)
 
 
-.SUFFIXES:		.ls .i .cx .cs
+.SUFFIXES:		.hh .ii .iim .ccm
 
 
 default:		$(T).x
 
 all:			$(ALL)
 
-.c.o:
-	$(CC) -c $(CFLAGS) $(CPPFLAGS) $<
+so:			$(T).so
 
-.cc.o:
-	$(GPP) -c $(CFLAGS) $(CPPFLAGS) $<
-
-.c.ln:
-	$(LINT) -c -u $(CPPFLAGS) $<
-
-.c.ls:
-	$(LINT) $(LINTFLAGS) $(CPPFLAGS) $<
 
 .c.i:
 	$(CPP) $(CPPFLAGS) $< > $(*).i
 
-.c.cx:
-	$(CXREF) -C $(CXREFFLAGS) $(CPPFLAGS) $<
+.cc.ii:
+	$(CPP) $(CPPFLAGS) $< > $(*).ii
 
-.c.cs:
-	$(CXREF) $(CXREFFLAGS) $(CPPFLAGS) -o $(*).cs $<
+.ccm.iim:
+	$(CPP) $(CPPFLAGS) $< > $(*).iim
+
+.c.s:
+	$(CC) -S $(CPPFLAGS) $(CFLAGS) $<
+
+.cc.s:
+	$(CXX) -S $(CPPFLAGS) $(CXXFLAGS) $<
+
+.c.o:
+	$(COMPILE.c) $<
+
+.cc.o:
+	$(COMPILE.cc) $<
+
+.ccm.o:
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
 
 
-$(T):			$(T).ee
-	cp -p $(T).ee $(T)
+$(T).x:			$(OBJ)
+	$(CXX) -o $@ $(LDFLAGS) $(RUNINFO) $^ $(LIBINFO)
 
-$(T).x:			$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c $(CFLAGS) makedate.c
-	$(LD) -o $@ $(LDFLAGS) $(OBJS) $(LIBDIRS) $(LIBS) > $(T).lm
+$(T).o:			$(OBJ)
+	$(LD) -r -o $@ $(LDFLAGS) $^
 
-$(T).prof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS_P) $(MOBJS) $(LIBDIRS) $(LIBS) > $(T).lm
+$(T).so:		$(OBJ)
+	$(LD) -o $@ $(SOFL) $(LDFLAGS) $^ $(LIBINFO)
 
-$(T).gprof:		$(OBJ) Makefile
-	makedate -m $(T) > makedate.c
-	$(CC) -c makedate.c
-	$(LD) -o $@ $(LDFLAGS_P) $(GOBJS) $(LIBDIRS) $(LIBS) > $(T).lm
+$(T).a:			$(OBJ)
+	$(AR) -rc $(T).a $?
 
-$(T).$(OFF) $(OFF):	$(T).x
-	cp -p $(T).x $(T).$(OFF)
+$(T).nm:		$(T).o
+	$(NM) $(NMFLAGS) $(T).o > $(T).nm
 
-$(T).nm nm:		$(T).x
-	$(NM) $(NMFLAGS) $(T).x > $(T).nm
+$(T).order order:	$(OBJ) $(T).a
+	$(LORDER) $(T).a | $(TSORT) > $(T).order
+	$(RM) $(T).a
+	while read O ; do $(AR) -cr $(T).a $${O} ; done < $(T).order
 
-$(T).cxref:
-	$(CXREF) -c $(CXREFFLAGS) $(SRC) > $(T).cxref
+install-pre:
+	filefind . -s h | makenewer -af - -d $(INCDIR)
+
+install:		$(ALL) Makefile
+	ranlib $(T).a
+	install -S -p -m 0775 $(T).so $(LIBDIR)
+
+install-incs:		$(INSTALLINCS)
+	makenewer $(INSTALLINCS) $(INCDIR)
 
 safe:
 	makesafe -v=3 -I $(INCDIR) $(OBJ)
 
-strip:			$(T).x
-	strip $(T).x
-	rm -f $(T).$(OFF) $(T)
-
-install:		$(ALL)
-	makenewer -r $(ALL) $(BINDIR)
-
-install-raw:		$(T).x
-	rm -f $(T)
-	cp -p $(T).x $(T)
-	rm -f $(BINDIR)/$(T).$(OFF)
-	makenewer -r $(T) $(BINDIR)
-
-install-help:		$(T).help
-	-mkdir -p $(HELPDIR) 2> /dev/null
-	makenewer -o rmsuf $(T).HELP $(HELPDIR)
-
 again:
-	rm -f $(ALL) $(T).x
+	rm -f $(ALL)
 
-clean:			again
-	makeclean
+clean:
+	makeclean $(ALL) testuserinfo.x
+	rmsubpat
 
 control:
-	uname -n > Control
-	date >> Control
+	(uname -n ; date) > Control
 
 
-main.o:			main.c $(INCS) userinfo.h
+obj00.o:		$(OBJ00)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-whatinfo.o:		whatinfo.c config.h
+obj01.o:		$(OBJ01)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-proginfo.o:		proginfo.c defs.h
+obj02.o:		$(OBJ02)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-proginfo_setpiv.o:	proginfo_setpiv.c defs.h
-
-
-getxusername.o:		getxusername.c getxusername.h
-
-getutmpent.o:		getutmpent.c getutmpent.h
-
-getnodedomain.o:	getnodedomain.c filebuf.h
+obj03.o:		$(OBJ03)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
-vecstr_loadfile.o:	vecstr_loadfile.c
+obja.o:			$(OBJA)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-userinfo.o:		userinfo.c userinfo.h
+objb.o:			$(OBJB)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-vecstr_env.o:		vecstr_env.c
+objc.o:			$(OBJC)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-vecstr.o:		vecstr.c vecstr.h
+objd.o:			$(OBJD)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-filemap.o:		filemap.c filemap.h
+obje.o:			$(OBJE)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-filebuf.o:		filebuf.c filebuf.h
+objf.o:			$(OBJF)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-realname.o:		realname.c realname.h
+objg.o:			$(OBJG)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-ipasswd.o:		ipasswd.c ipasswd.h
 
-lastlogfile.o:		lastlogfile.c lastlogfile.h
+# parts
+obj_pa.o:		$(OBJ_PA)
 
-tmpx.o:			tmpx.c tmpx.h
+# primary
+obj_pr.o:		$(OBJ_PR)
 
-nodedb.o:		nodedb.c nodedb.h
+# implementation
+obj_im0.o:		$(OBJ_IM0)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-clusterdb.o:		clusterdb.c clusterdb.h
+obj_im1.o:		$(OBJ_IM1)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-kvsfile.o:		kvsfile.c kvsfile.h
+obj_im.o:		$(OBJ_IM)
 
-userattr.o:		userattr.c userattr.h
+testuserinfo_main.o:	testuserinfo_main.cc			$(DEPS)	$(INCS)
 
-strtab.o:		strtab.c strtab.h
+testuserinfo_info.o:	$(OBJ_INFO)
+	$(LD) -r $(LDFLAGS) -o $@ $^
 
-strstore.o:		strstore.c strstore.h
+testuserinfo_info0.o:	testuserinfo_info.ccm		$(DEPS_PI)	$(INCS)
+	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
+
+testuserinfo_info1.o:	testuserinfo_info1.cc		$(OBJ_PR)	$(INCS)
+
+proginfo.o:		proginfo.dir
+proginfo.dir:
+	makesubdir $@
+
+logfile.o:		logfile.dir
+logfile.dir:
+	makesubdir $@
+
+# LIBDAM
+prognamevar.o:		prognamevar.cc	prognamevar.hh
+userinfo.o:		userinfo.cc	userinfo.h
 
 
