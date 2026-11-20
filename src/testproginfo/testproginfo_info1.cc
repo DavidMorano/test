@@ -31,15 +31,10 @@ module ;
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
-#include	<usupport.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
-#include	<intceil.h>		/* LIBU */
-#include	<strkeycmp.h>		/* LIBUC */
-#include	<matkeystr.h>		/* LIBUC */
-#include	<strnul.hh>		/* LIBU */
+#include	<usupport.h>		/* LIBU */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
