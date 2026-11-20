@@ -69,7 +69,7 @@ extern int	cfdeci(cchar *,int,int *) ;
 extern int	debugopen(cchar *) ;
 extern int	debugprintf(cchar *,...) ;
 extern int	debugclose() ;
-extern int	debugprinthexblock(cchar *,int,cvoid *,int) ;
+extern int	debugprinthexb(cchar *,int,cvoid *,int) ;
 extern int	strlinelen(cchar *,int,int) ;
 #endif
 
