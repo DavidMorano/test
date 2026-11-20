@@ -19,6 +19,11 @@
 #define	TESTPROGINFOCONFIG_INCLUDE
 
 
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+
+
 #define	VERSION		"0"
 #define	WHATINFO	"@(#)TESTPROGINFO "
 #define	BANNER		"Test Program Information"
@@ -44,25 +49,6 @@
 #define	VARDEBUGFD1	"TESTPROGINFO_DEBUGFD"
 #define	VARDEBUGFD2	"DEBUGFD"
 
-#define	VARNODE		"NODE"
-#define	VARSYSNAME	"SYSNAME"
-#define	VARRELEASE	"RELEASE"
-#define	VARMACHINE	"MACHINE"
-#define	VARARCHITECTURE	"ARCHITECTURE"
-#define	VARCLUSTER	"CLUSTER"
-#define	VARSYSTEM	"SYSTEM"
-#define	VARNISDOMAIN	"NISDOMAIN"
-#define	VARTERM		"TERM"
-#define	VARPRINTER	"PRINTER"
-#define	VARLPDEST	"LPDEST"
-#define	VARPAGER	"PAGER"
-#define	VARMAIL		"MAIL"
-#define	VARORGANIZATION	"ORGANIZATION"
-#define	VARLINES	"LINES"
-#define	VARCOLUMNS	"COLUMNS"
-#define	VARNAME		"NAME"
-#define	VARFULLNAME	"FULLNAME"
-
 #define	VARHOMEDNAME	"HOME"
 #define	VARTMPDNAME	"TMPDIR"
 #define	VARMAILDNAME	"MAILDIR"
@@ -70,15 +56,9 @@
 
 #define	VARPRTESTPROGINFO	"TESTPROGINFO"
 
-#define	TMPDNAME	"/tmp"
-#define	LOGCNAME	"log"
-
 #define	CONFFNAME	"conf"
 #define	LOGFNAME	"log/cal"
 #define	HELPFNAME	"help"
-
-#define	PROG_TESTPROGINFO	"/usr/bin/cal"
-#define	PROG_TESTPROGINFONAME	"cal"
 
 #define	PO_OPTION	"option"
 
