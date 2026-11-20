@@ -108,7 +108,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 
 	fprintf(stderr,"main: sbuf rs=%d dl=%d\n",rs,dl) ;
 #if	CF_DEBUG
-	debugprinthexblock("main",80,dbuf,dl) ;
+	debugprinthexb("main",80,dbuf,dl) ;
 #endif
 
 	if (rs >= 0) {
