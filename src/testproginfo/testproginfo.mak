@@ -57,21 +57,22 @@ DEPS_PI= proginfo.o
 DEPS= testproginfo_info.o proginfo.o
 
 OBJ00= testproginfo_main.o testproginfo_info.o 
-OBJ01= proginfo.o prognamevar.o shellunder.o
-OBJ02= logfile.o logzone.o
-OBJ03=
+OBJ01= proginfo.o prognamevar.o
+OBJ02= userinfo.o
+OBJ03= logfile.o logzone.o
 
-OBJ04= 
+OBJ04= libdebug.o
 OBJ05= 
 OBJ06= 
 OBJ07= 
 
-OBJA= obj00.o obj01.o obj02.o 
-OBJB= obj04.o obj05.o obj06.o obj07.o
+OBJA= obj00.o obj01.o obj02.o obj03.o
+OBJB= obj04.o
+#OBJB= obj04.o obj05.o obj06.o obj07.o
 OBJC= 
 OBJD= 
 
-OBJ= obja.o 
+OBJ= obja.o objb.o
 
 OBJ_INFO= $(OBJ_PA) $(OBJ_PR) $(OBJ_IM)
 
@@ -182,6 +183,19 @@ obj03.o:		$(OBJ03)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
 
+obj04.o:		$(OBJ04)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj05.o:		$(OBJ05)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj06.o:		$(OBJ06)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+obj07.o:		$(OBJ07)
+	$(LD) -r $(LDFLAGS) -o $@ $^
+
+
 obja.o:			$(OBJA)
 	$(LD) -r $(LDFLAGS) -o $@ $^
 
@@ -237,9 +251,14 @@ logfile.o:		logfile.dir
 logfile.dir:
 	makesubdir $@
 
+# LIBDEBUG
+libdebug.o:		libdebug.dir
+libdebug.dir:
+	makesubdir $@
+
 # LIBDAM
 prognamevar.o:		prognamevar.cc	prognamevar.hh
-shellunder.o:		shellunder.cc	shellunder.h
+userinfo.o:		userinfo.cc	userinfo.h
 logzone.o:		logzone.cc	logzone.h
 
 
