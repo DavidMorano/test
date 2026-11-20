@@ -147,6 +147,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if (rs >= 0) {
 	    rs = procbuf() ;
 	} /* end if (procbuf) */
+	if (rs >= 0) {
+	    println(cout,"Hello world!") ;
+	} /* end if (procbuf) */
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
 	} /* end if (error) */
