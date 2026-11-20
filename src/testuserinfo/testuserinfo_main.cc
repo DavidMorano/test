@@ -1,11 +1,10 @@
-/* main SUPPORT */
+/* testuserinfo_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
 /* part of the TESTUSERINFO program */
 /* version %I% last-modified %G% */
 
-#define	CF_DEBUGS	0		/* compile-time debug print-outs */
 #define	CF_DEBUG	1		/* run-time debug print-outs */
 #define	CF_DEBUGMALL	1		/* debug memory-allocations */
 
@@ -21,6 +20,7 @@
 
 /*******************************************************************************
 
+  	Description:
 	This is a fairly generic front-end subroutine for a program.
 
 *******************************************************************************/
@@ -29,23 +29,19 @@
 #include	<sys/types.h>
 #include	<sys/param.h>
 #include	<sys/stat.h>
-#include	<csignal>
 #include	<unistd.h>
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstring>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<getxusername.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<paramopt.h>
 #include	<bits.h>
-#include	<bfile.h>
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
-#include	<libdebug.h>
+#include	<libdebug.h>		/* LIBDEBUG */
+#include	<bfile.h>		/* LIBB */
 
-#include	"config.h"
-#include	"defs.h"
+#include	"testuserinfo.h"
 #include	"userinfo.h"
 
 
@@ -186,7 +182,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	cchar	*cp ;
 
 
-#if	CF_DEBUGS || CF_DEBUG
+#if	CF_DEBUG || CF_DEBUG
 	if ((cp = getenv(VARDEBUGFNAME)) == NULL) {
 	    if ((cp = getenv(VARDEBUGFD1)) == NULL)
 	        cp = getenv(VARDEBUGFD2) ;
@@ -194,9 +190,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if (cp != NULL)
 	    debugopen(cp) ;
 	debugprintf("main: starting\n") ;
-#endif /* CF_DEBUGS */
+#endif /* CF_DEBUG */
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	uc_mallset(1) ;
 	uc_mallout(&mo_start) ;
 #endif
@@ -797,7 +793,7 @@ badpargs:
 
 badprogstart:
 
-#if	(CF_DEBUGS || CF_DEBUG) && CF_DEBUGMALL
+#if	(CF_DEBUG || CF_DEBUG) && CF_DEBUGMALL
 	{
 	    uint	mo_finish ;
 	    uc_mallout(&mo_finish) ;
@@ -805,7 +801,7 @@ badprogstart:
 	}
 #endif /* CF_DEBUGMALL */
 
-#if	(CF_DEBUGS || CF_DEBUG)
+#if	(CF_DEBUG || CF_DEBUG)
 	debugclose() ;
 #endif
 
