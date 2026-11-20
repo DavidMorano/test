@@ -27,7 +27,6 @@
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstdio>		/* CSTD */
 #include	<cstring>		/* CSTD |strcasecmp(3c)| */
 #include	<iostream>		/* C++STD */
 #include	<clanguage.h>		/* LIBU */
@@ -54,25 +53,21 @@ int main(int,con mainv,con mainv) {
 } /* end subroutine (main) */
 
 local void cmpall() noex {
-    	cnullptr	np{} ;
-	printf("cmp-all\n") ;
-    if (strcmp(str_main,str_all) == 0) {
-	cout << "strcmp" << eol ;
-    }
-    if (strcasecmp(str_main,str_all) == 0) {
-	cout << "strcasecmp" << eol ;
-    }
-    if (strcasecmpo(str_main,str_all) == 0) {
-	cout << "strcasecmpo" << eol ;
-    }
-    if (strfoldcmp(str_main,str_all) == 0) {
-	cout << "strfoldcmp" << eol ;
-    }
+	int		rc ;
+	cout << "cmp-all:\n" ;
+    	rc = strcmp(str_main,str_all) ;
+	cout << "strcmp=" << rc << eol ;
+    	rc = strcasecmp(str_main,str_all) ;
+	cout << "strcasecmp=" << rc << eol ;
+    	rc = strcasecmpo(str_main,str_all) ;
+	cout << "strcasecmpo=" << rc << eol ;
+    	rc = strfoldcmp(str_main,str_all) ;
+	cout << "strfoldcmp=" << rc << eol ;
 } /* end subroutine (cmpall) */
 
 local void cmpsub() noex {
     	cnullptr	np{} ;
-	printf("cmp-sub\n") ;
+	cout << "cmp-sub:\n" ;
     if (cc *tp ; (tp = strstr(str_main,str_sub)) != np) {
 	cout << "strstr" << eol ;
     }
