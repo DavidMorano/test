@@ -30,15 +30,10 @@
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
-#include	<cstring>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
 #include	<usysbase.h>		/* LIBU */
 #include	<usupport.h>		/* LIBU */
 #include	<usyscalls.h>		/* LIBU */
-#include	<intceil.h>		/* LIBU */
-#include	<strkeycmp.h>		/* LIBUC */
-#include	<matkeystr.h>		/* LIBUC */
-#include	<strnul.hh>		/* LIBU */
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU |COLUMNS| + |DECBUFLEN| */
 #include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
@@ -53,7 +48,7 @@ import testproginfo_info ;
 #define	CF_DEBUG	0		/* special debugging */
 #endif
 
-#define	VDF		"TESTPROGINFO_DFN"
+#define	VDFN		"TESTPROGINFO_DFN"
 
 
 /* imported namespaces */
@@ -73,7 +68,8 @@ import testproginfo_info ;
 
 /* forward references */
 
-local int mi_hello(maininfo *) noex ;
+local int mi_hello	(maininfo *) noex ;
+local int mi_uinfo	(maininfo *) noex ;
 
 
 /* local variables */
@@ -116,11 +112,11 @@ cbool			f_debug = CF_DEBUG ;
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) {
+	int		ex = EX_OK ;
 	int		rs ;
 	int		rs1 ;
-	int		ex = EX_OK ;
 	mainv		pns = prognames ;
-	if (ccp cp = getourenv(envv,VDF)) {
+	if (ccp cp = getourenv(envv,VDFN)) {
 	    rs = DEBUGOPEN(cp) ;
 	    DEBUGPRINTF("ent rs=%d\n",rs) ;
 	} /* end if debugging) */
@@ -133,12 +129,14 @@ int main(int argc,con mainv argv,con mainv envv) {
 		if ((rs = mi.progmode(prognames)) >= 0) {
 	            DEBUGPRINTF("pm=%d\n",mi.pm) ;
 		    if ((rs = mi_hello(&mi)) >= 0) {
-			rs = mi.retpid ;
+			if ((rs = mi.retpid) >= 0) {
 	                DEBUGPRINTF("pid=%d\n",rs) ;
 	                DEBUGPRINTF("pid=%d\n",mi.pid) ;
-		    }
-		}
-	    } /* end block */
+			    rs = mi_uinfo(&mi) ;
+			} /* end if (mi.retpid) */
+		    } /* end if (mi_hello) */
+		} /* end if (progmode) */
+	    } /* end if (progname) */
 	    rs1 = mi.finish ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (maininfo) */
@@ -162,7 +160,9 @@ local int mi_hello(maininfo *mip) noex {
 	    if ((rs = mip->eprintf("fmt> %s\n",s)) >= 0) {
 	        len += rs ;
 	        if ((rs = mip->eprint) >= 0) {
-		    len += rs ;
+	            if ((rs = mip->eprint("print")) >= 0) {
+		        len += rs ;
+		    }
 		}
 	    }
 	} /* end if */
@@ -170,4 +170,13 @@ local int mi_hello(maininfo *mip) noex {
 	return rs ;
 } /* end subroutine (mi_hello) */
 
+local int mi_uinfo(maininfo *mip) noex {
+    	int rs = SR_OK ;
+	if (mip) ylikely {
+	    if ((rs = mip->uinfo) >= 0) {
+		printf("username=%s\n",mip->username) ;
+	    } /* end if (uinfo) */
+	} /* end if (non-null) */
+	return rs ;
+} /* end subroutine (mi_uinfo) */
 
