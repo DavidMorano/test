@@ -174,6 +174,7 @@ local int mi_uinfo(maininfo *mip) noex {
     	int rs = SR_OK ;
 	if (mip) ylikely {
 	    if ((rs = mip->uinfo) >= 0) {
+		printf("nodename=%s\n",mip->nodename) ;
 		printf("username=%s\n",mip->username) ;
 	    } /* end if (uinfo) */
 	} /* end if (non-null) */
