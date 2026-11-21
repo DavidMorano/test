@@ -1,0 +1,32 @@
+main: starting rs=3
+userinfo_start: ent
+userinfo_proc: ent
+userinfo_proc: -> find
+submgr_find: ent
+submgr_find: 1 rs=1
+submgr_find: 2 rs=1
+submgr_find: 3 rs=0
+submgr_find: 4 rs=0
+submgr_find: 5 rs=0
+submgr_find: 7 rs=0
+submgr_find: 8 rs=0
+submgr_find: loop i=0 rs=0
+submgr_find: loop i=1 rs=0
+submgr_find: loop i=2 rs=0
+submgr_find: loop i=3 rs=0
+submgr_find: loop i=4 rs=0
+submgr_find: loop i=5 rs=0
+submgr_find: loop i=6 rs=0
+submgr_find: loop i=7 rs=16
+submgr_find: loop i=8 rs=0
+submgr_realname: ent
+submgr_realname: mkrealname-out rs=-14
+submgr_realname: ret rs=-14
+submgr_find: loop-out rs=-14
+submgr_find: ret rs=-14
+userinfo_proc: find() rs=-14
+userinfo_proc: ret rs=-14 rv=-14
+userinfo_start: UI_STARTx: ret rs=-14
+UI_START: ret rs=-14
+userinfo_start: ret rs=-14 len=0
+main: ret ex=122 rs=-14
