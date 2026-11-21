@@ -35,7 +35,7 @@ DEFS +=
 
 INCS += testuserinfo.h
 
-MODS += testuserinfo.o
+MODS +=
 
 LIBS= -ldebug -luo -lu -lf
 
@@ -50,23 +50,23 @@ OBJ_PA=
 OBJ_IM0=
 OBJ_IM1=
 
-OBJ_IM= obj_im0.o
+OBJ_IM=
 
-DEPS_PI= proginfo.o
+DEPS_PI=
 
 DEPS= 
 
 OBJ00= testuserinfo_main.o
 OBJ01= prognamevar.o
 OBJ02= userinfo.o
-OBJ03=
+OBJ03= realname.o
 
 OBJ04= 
 OBJ05= 
 OBJ06= 
 OBJ07= 
 
-OBJA= obj00.o obj01.o obj02.o
+OBJA= obj00.o obj01.o obj02.o obj03.o
 OBJB= obj04.o obj05.o obj06.o obj07.o
 OBJC= 
 OBJD= 
@@ -221,18 +221,22 @@ obj_im.o:		$(OBJ_IM)
 
 testuserinfo_main.o:	testuserinfo_main.cc			$(DEPS)	$(INCS)
 
-testuserinfo_info.o:	$(OBJ_INFO)
-	$(LD) -r $(LDFLAGS) -o $@ $^
+# LIBUC
+realname.o:		realname.dir
+realname.dir:
+	makesubdir $@
 
-testuserinfo_info0.o:	testuserinfo_info.ccm		$(DEPS_PI)	$(INCS)
-	gxx -c -x c++ -o $@ $(CPPFLAGS) $(CXXFLAGS) $<
-
-testuserinfo_info1.o:	testuserinfo_info1.cc		$(OBJ_PR)	$(INCS)
-
+# LINPROG
 proginfo.o:		proginfo.dir
 proginfo.dir:
 	makesubdir $@
 
+# LIBDEBUG
+libdebug.o:		libdebug.dir
+libdebug.dir:
+	makesubdir $@
+
+# LIBDAM
 logfile.o:		logfile.dir
 logfile.dir:
 	makesubdir $@
@@ -240,5 +244,4 @@ logfile.dir:
 # LIBDAM
 prognamevar.o:		prognamevar.cc	prognamevar.hh
 userinfo.o:		userinfo.cc	userinfo.h
-
 
