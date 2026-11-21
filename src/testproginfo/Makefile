@@ -37,7 +37,8 @@ INCS += testproginfo.h
 
 MODS += testproginfo.o
 
-LIBS= -lb -ldebug -luo -lu -lf
+# LIBB (BFILE)  is used within PROGINFO
+LIBS= -lb -luo -lu -lf
 
 
 OBJ_PR= testproginfo_info0.o
