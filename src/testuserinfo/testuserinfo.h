@@ -26,7 +26,7 @@
 
 #define	VERSION		"0"
 #define	WHATINFO	"@(#)TESTUSERINFO "
-#define	BANNER		"Test Program Information"
+#define	BANNER		"Test User Information"
 #define	SEARCHNAME	"cal"
 #define	VARPRNAME	"TESTUSERINFO"
 
