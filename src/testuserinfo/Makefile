@@ -37,7 +37,7 @@ INCS += testuserinfo.h
 
 MODS +=
 
-LIBS= -ldebug -luo -lu -lf
+LIBS= -luo -lu -lf
 
 
 OBJ_PR=
@@ -58,8 +58,8 @@ DEPS=
 
 OBJ00= testuserinfo_main.o
 OBJ01= prognamevar.o
-OBJ02= userinfo.o
-OBJ03= realname.o
+OBJ02= userinfo.o libdebug.o
+OBJ03= realname.o mkrealname.o mkmailname.o
 
 OBJ04= 
 OBJ05= 
@@ -244,4 +244,7 @@ logfile.dir:
 # LIBDAM
 prognamevar.o:		prognamevar.cc	prognamevar.hh
 userinfo.o:		userinfo.cc	userinfo.h
+mkrealname.o:		mkrealname.cc
+mkmailname.o:		mkmailname.cc
+
 
