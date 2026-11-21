@@ -1,0 +1,6 @@
+main: ent pn=testrealname rs=3
+main: argc=2
+main: llen=2048 -> new
+main: new() 
+main: new-out rs=0
+main: ret ex=0 rs=0
