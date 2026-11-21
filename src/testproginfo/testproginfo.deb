@@ -1,7 +1,7 @@
 main: ent rs=3
 operator(): maininfo_co-mv-ent
 pstart: maininfo-ent
-pstart: maininfo-ent pns=0x106fb0100
+pstart: maininfo-ent pns=0x105d11120
 pstart: maininfo-ent pn0=testproginfo
 pstart: maininfo rs=0 pm=0
 pstart: maininfo pn=testproginfo
@@ -12,12 +12,15 @@ main: pn=testproginfo
 main: pm=0
 main: pm=0
 mi_hello: ret rs=20 len=91
-main: pid=58194
-main: pid=58194
+main: pid=69447
+main: pid=69447
 puinfo: ent
 puibeg: ent
 puibeg: -> userinfo::start
-puibeg: userinfo::start-out rs=-78
-puibeg: ret rs=-78
-puinfo: ret rs=-78
-main: ret ex=122 rs=-78
+puibeg: userinfo::start() rs=104
+puibeg: userinfo::start-out rs=0
+puibeg: ret rs=0
+puinfo: ret rs=104
+puiend: ent
+puiend: ret rs=0
+main: ret ex=0 rs=0
