@@ -1,153 +1,143 @@
-/* main (testrealname) */
+/* testrealname_main SUPPORT (testrealname) */
+/* charset=ISO8859-1 */
+/* lang=C++20 (conformance reviewed) */
 
 /* test the REALNAME object */
+/* version %I% last-modified %G% */
 
+#define	CF_DEBUG	1		/* debugging */
 
-#define	CF_DEBUGS	0
+/* revision history:
 
+	= 1998-04-13, David A-D- Morano
+	Originally written for Rightcore Network Services.
 
+*/
 
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<unistd.h>
-#include	<fcntl.h>
-#include	<csignal>
-#include	<ctime>
-#include	<ftw.h>
-#include	<dirent.h>
-#include	<cstring>
-#include	<cstdlib>
-#include	<cerrno>
+/* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
+/* Use is subject to license terms. */
 
-#include	<bfile.h>
-#include	<mallocstuff.h>
+/*******************************************************************************
 
-#include	"localmisc.h"
-#include	"realname.h"
+  	Description:
+	Test the REALNAME object.
 
+*******************************************************************************/
+
+#include	<envstandards.h>	/* ordered first to configure */
+#include	<ctime>			/* CSTD */
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<realname.h>		/* LIBUC */
+#include	<localmisc.h>		/* LIBU */
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
+#include	<prognamevar.hh>	/* LIBDAM */
 
 
 /* local defines */
 
 #define	LINELEN		100
+#define	VDFN		"TESTREALNAME_DFN"
 
+#define	RN		realname
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* debugging */
+#endif
 
 
 /* external subroutines */
 
 
+/* external variables */
+
+
+/* local structures */
+
+
 /* forward references */
 
 
+/* local variables */
+
+cbool			f_debug		= CF_DEBUG ;
 
 
+/* exported variables */
 
 
-int main(argc,argv)
-int	argc ;
-char	*argv[] ;
-{
-	bfile		infile, *ifp = &infile ;
-	bfile		outfile, *ofp = &outfile ;
+/* exported subroutines */
 
-	REALNAME	rn ;
+int main(int argc,con mainv argv,con mainv envv) {
+    	prognamevar	pn(argc,argv,envv) ;
+	cnothrow	nt{} ;
+    	int		ex = EXIT_SUCCESS ;
+	int		rs = SR_OK ;
+	int		rs1 ;
+	if (ccharp cp = getenv(VDFN)) {
+	    if ((rs = DEBUGOPEN(cp)) >= 0) {
+	        DEBUGPRINTF("ent pn=%s rs=%d\n",ccp(pn),rs) ;
+	        DEBUGPRINTF("argc=%d\n",argc) ;
+	    }
+	} /* end if (debugging) */
+	if ((rs >= 0) && (argc > 1)) {
+	    cint llen = LINEBUFLEN ;
+	    rs = SR_NOMEM ;
+	    DEBUGPRINTF("llen=%d -> new\n",llen) ;
+	    if (char *lbuf = new(nt) char [llen + 1]) {
+	        DEBUGPRINTF("new() \n") ;
+		rs = SR_OK ;
+	        for (int ai = 1 ; (rs >= 0) && (ai < argc) ; ai += 1) {
+		    if (ccharp name = argv[ai] ; name[0]) {
+			int sl ;
+	    	        printf("name> %s <\n",name) ;
+	                if (RN rn ; (rs = realname_start(&rn,name,-1)) >= 0) {
 
-	int	rs, i, j, sl, len ;
-	int	err_fd ;
-
-	char	*cp ;
-	char	linebuf[MAXPATHLEN + 1] ;
-	char	*progname ;
-
-
-	if (((cp = getenv("ERROR_FD")) != NULL) &&
-	    (cfdeci(cp,-1,&err_fd) >= 0))
-	    debugsetfd(err_fd) ;
-
-
-	progname = argv[0] ;
-
-	if (bopen(ofp,BFILE_STDOUT,"dwct",0666) >= 0)
-	    bcontrol(ofp,BC_LINEBUF,0) ;
-
-	bopen(ifp,BFILE_STDIN,"dr",0666) ;
-
-
-#if	CF_DEBUGS
-	debugprintf("main: entered\n") ;
-#endif
-
-
-	while (TRUE) {
-
-	    bprintf(ofp,"name> ") ;
-
-	    if ((len = breadln(ifp,linebuf,LINELEN)) <= 0)
-	        break ;
-
-	    if (linebuf[len - 1] == '\n')
-	        len -= 1 ;
-
-	    linebuf[len] = '\0' ;
-	    bprintf(ofp,"> %s\n",linebuf,len) ;
-
-	    realname_start(&rn,linebuf,len) ;
-
-	    bprintf(ofp,"first>\t\t%s %c\n",
+	    printf("first>\t\t%s %c\n",
 	        rn.first,
-	        (rn.f.abv_first) ? '*' : ' ') ;
-
-	    bprintf(ofp,"middle1>\t%s %c\n",
+	        (rn.abv.first) ? '*' : ' ') ;
+	    printf("middle1>\t%s %c\n",
 	        rn.m1,
-	        (rn.f.abv_m1) ? '*' : ' ') ;
-
-	    bprintf(ofp,"middle2>\t%s %c\n",
+	        (rn.abv.m1) ? '*' : ' ') ;
+	    printf("middle2>\t%s %c\n",
 	        rn.m2,
-	        (rn.f.abv_m2) ? '*' : ' ') ;
-
-	    bprintf(ofp,"last>\t\t%s %c\n",
+	        (rn.abv.m2) ? '*' : ' ') ;
+	    printf("last>\t\t%s %c\n",
 	        rn.last,
-	        (rn.f.abv_last) ? '*' : ' ') ;
+	        (rn.abv.last) ? '*' : ' ') ;
 
-
-	    sl = realname_fullname(&rn,linebuf,LINELEN) ;
-
-	    bprintf(ofp,"fullname=%s\n",linebuf) ;
-
-
-	    sl = realname_name(&rn,linebuf,LINELEN) ;
-
-	    bprintf(ofp,"name=%s\n",linebuf) ;
-
-
-	    sl = realname_mailname(&rn,linebuf,LINELEN) ;
-
-	    bprintf(ofp,"mailname=%s\n",linebuf) ;
-
-
-
-	    realname_finish(&rn) ;
-
-	} /* end while */
-
-
-
-#if	CF_DEBUGS
-	debugprintf("main: done\n") ;
-#endif
-
-
-	rs = 0 ;
-
-done:
-	bclose(ifp) ;
-
-	bclose(ofp) ;
-
-	return rs ;
-}
-/* end subroutine (main) */
-
+		{
+	    sl = realname_fullname(&rn,lbuf,llen) ;
+	    printf("fullname=%s\n",lbuf) ;
+		}
+		{
+	    sl = realname_name(&rn,lbuf,llen) ;
+	    printf("name=%s\n",lbuf) ;
+		}
+		{
+	    sl = realname_mailname(&rn,lbuf,llen) ;
+	    printf("mailname=%s\n",lbuf) ;
+		}
+			    (void) sl ;
+	    		    rs1 = realname_finish(&rn) ;
+	    		    if (rs >= 0) rs = rs1 ;
+		        } /* end if (realname) */
+		    } /* end if (non-empty) */
+	        } /* end for */
+	        delete [] lbuf ;
+	    } /* end if (m-a-f) */
+	    DEBUGPRINTF("new-out rs=%d\n",rs) ;
+	} /* end if (arguments) */
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
+	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
+	DEBUGCLOSE ;
+	return ex ;
+} /* end subroutine (main) */
 
 
