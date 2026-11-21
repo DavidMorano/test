@@ -6,7 +6,6 @@
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* compile-time debugging */
-#define	CF_DEBUGMALL	1		/* debug memory allocations */
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
 
@@ -24,10 +23,13 @@
 #include	<envstandards.h>	/* must be ordered first to configure */
 #include	<sys/types.h>
 #include	<sys/syslog.h>
-#include	<cstdlib>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
 #include	<cstdio>
-#include	<usystem.h>
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<localmisc.h>
+#include	<libdebug.h>		/* LIBDEBUG |DEBUGPRINTF(3debug)| */
 
 #include	"sysrealname.h"
 
@@ -35,14 +37,14 @@
 
 #define	NDEBFNAME	"testsysrealname.deb"
 
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	1		/* compile-time debugging */
+#endif
+
 /* external subroutines */
 
-#if	CF_DEBUG
-extern int	debugopen(cchar *) ;
-extern int	debugprintf(cchar *,...) ;
-extern int	debugclose() ;
-extern int	strlinelen(cchar *,int,int) ;
-#endif
+
+/* external variables */
 
 
 /* local structures */
@@ -50,8 +52,9 @@ extern int	strlinelen(cchar *,int,int) ;
 struct arginfo {
 	int		argc ;
 	int		ai, ai_max, ai_pos ;
-	cchar	**argv ;
-} ;
+	mainv		argv ;
+} ; /* end struct (arginfo) */
+
 
 /* forward references */
 
@@ -64,114 +67,55 @@ local int procargs(struct ainfo *,SYSREALNAME *) ;
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) {
-	struct arginfo	ainfo ;
-	SYSREALNAME	grm ;
-
-#if	CF_DEBUG && CF_DEBUGMALL
-	uint	mo_start = 0 ;
-#endif
-
-	int	rs = SR_OK ;
-	int	rs1 ;
+	arginfo		ainfo{} ;
+	int		ex = EXIT_SUCCESS ;
+	int		rs = SR_OK ;
+	int		rs1 ;
 	int	ai, ai_pos, ai_max ;
 	int	max = 10 ;
 	int	ttl = (10*60) ;
 	int	opts = 0 ;
 
-	cchar	*cp ;
-
-#if	CF_DEBUG
-	if ((cp = getenv(VARDEBUGFNAME)) != NULL) {
-	    debugopen(cp) ;
-	    debugprintf("main: starting\n") ;
-	}
-#endif /* CF_DEBUG */
-
-#if	CF_DEBUG && CF_DEBUGMALL
-	uc_mallset(1) ;
-	uc_mallout(&mo_start) ;
-#endif
+	if (cchar *cp = getenv(VARDEBUGFNAME)) {
+	    rs = DEBUGOPEN(cp) ;
+	    DEBUGPRINTF("starting rs=%d\n",rs) ;
+	} /* end if (debugging) */
 
 	ai = 0 ;
 	ai_pos = 0 ;
 	ai_max = 0 ;
 
-	memset(&ainfo,0,sizeof(struct arginfo)) ;
 	ainfo.argc = argc ;
 	ainfo.ai = ai ;
 	ainfo.argv = argv ;
 	ainfo.ai_max = ai_max ;
 	ainfo.ai_pos = ai_pos ;
 
-
+	SYSREALNAME	grm ;
 	if ((rs = sysrealname_start(&grm,max,ttl)) >= 0) {
-	    if (argv != NULL) {
+	    if (argc > 1) {
 		rs = procargs(&ainfo,&grm) ;
 	    } /* end if (arguments) */
 	    rs1 = sysrealname_finish(&grm) ;
 	    if (rs >= 0) rs = rs1 ;
 	} /* end if (sysrealname) */
 
-#if	CF_DEBUG
-	debugprintf("main: sysrealname-out rs=%d\n",rs) ;
-#endif
-
-#if	CF_DEBUG && CF_DEBUGMALL
-	{
-	    cint	f_default = FALSE ;
-	    uint	mi[12] ;
-	    uint	mo ;
-	    uint	mdiff ;
-	    uc_mallout(&mo) ;
-	    mdiff = (mo-mo_start) ;
-	    debugprintf("main: final mallout=%u\n",mdiff) ;
-	    if ((mdiff > 0) || f_default) {
-		UCMALLREG_CUR	cur ;
-		UCMALLREG_REG	reg ;
-		cint	size = (10*sizeof(uint)) ;
-		int		rs1 ;
-		cchar	*ids = "main" ;
-		uc_mallinfo(mi,size) ;
-	        debugprintf("main: MIoutnum=%u\n",mi[ucmallreg_outnum]) ;
-	        debugprintf("main: MIoutnummax=%u\n",mi[ucmallreg_outnummax]) ;
-	        debugprintf("main: MIoutsize=%u\n",mi[ucmallreg_outsize]) ;
-	        debugprintf("main: MIoutsizemax=%u\n",
-			mi[ucmallreg_outsizemax]) ;
-	        debugprintf("main: MIused=%u\n",mi[ucmallreg_used]) ;
-	        debugprintf("main: MIusedmax=%u\n",mi[ucmallreg_usedmax]) ;
-	        debugprintf("main: MIunder=%u\n",mi[ucmallreg_under]) ;
-	        debugprintf("main: MIover=%u\n",mi[ucmallreg_over]) ;
-	        debugprintf("main: MInotalloc=%u\n",mi[ucmallreg_notalloc]) ;
-	        debugprintf("main: MInotfree=%u\n",mi[ucmallreg_notfree]) ;
-		ucmallreg_curbegin(&cur) ;
-		while (ucmallreg_curenum(&cur,&reg) >= 0) {
-	            debugprintf("main: MIreg.addr=%p\n",reg.addr) ;
-	            debugprintf("main: MIreg.size=%u\n",reg.size) ;
-		    debugprinthexb(ids,80,reg.addr,reg.size) ;
-		}
-		ucmallreg_curend(&cur) ;
-	    }
-	    uc_mallset(0) ;
-	}
-#endif /* CF_DEBUGMALL */
-
-#if	CF_DEBUG
-	debugclose() ;
-#endif
-
-	return 0 ;
+	if ((ex = EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
+	DEBUGPRINTF("sysrealname-out rs=%d\n",rs) ;
+	DEBUGCLOSE ;
+	return ex ;
 } /* end subroutine (main) */
 
 
 /* local subroutines */
 
-local int procargs(struct ainfo *aip,SYSREALNAME *snp) {
+local int procargs(ainfo *aip,SYSREALNAME *snp) {
 	int		rs = SR_OK ;
 	int		rs1 ;
-	int		ai ;
 	int		c = 0 ;
-
-		for (ai = 1 ; argv[ai] != NULL ; ai += 1) {
+		for (int ai = 1 ; argv[ai] ; ai += 1) {
 		    SYSREALNAME_CUR	cur ;
 		    cchar	*gn = argv[ai] ;
 #if	CF_PRINTBEF
@@ -211,7 +155,6 @@ local int procargs(struct ainfo *aip,SYSREALNAME *snp) {
 			if (rs >= 0) rs = rs1 ;
 		    } /* end if (cursor) */
 		} /* end for */
-
 	return rs ;
 } /* end subroutine (procargs) */
 
