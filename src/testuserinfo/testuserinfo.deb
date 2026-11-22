@@ -1,100 +1,44 @@
 main: starting rs=3
 userinfo_start: ent
 userinfo_proc: ent
-userinfo_proc: -> find
-submgr_find: ent
-submgr_find: 1 rs=1
-submgr_find: 2 rs=1
-submgr_find: 3 rs=0
-submgr_find: 4 rs=0
-submgr_find: 5 rs=0
-submgr_find: 7 rs=0
-submgr_find: 8 rs=0
-submgr_find: loop i=0 rs=0
-submgr_find: loop i=1 rs=0
-submgr_find: loop i=2 rs=0
-submgr_find: loop i=3 rs=0
-submgr_find: loop i=4 rs=0
-submgr_find: loop i=5 rs=0
-submgr_find: loop i=6 rs=0
-submgr_find: loop i=7 rs=16
-submgr_find: loop i=8 rs=0
+submgr_pwext: ent
+submgr_pwext: 1 rs=1
+submgr_pwext: 2 rs=1
+submgr_pwext: 3 rs=0
+submgr_pwext: 4 rs=0
+submgr_pwext: 5 rs=0
+submgr_pwext: 7 rs=0
+submgr_pwext: ret rs=0
+submgr_comps: loop i=0 rs=0
+submgr_comps: loop i=1 rs=0
+submgr_comps: loop i=2 rs=0
+submgr_comps: loop i=3 rs=0
+submgr_comps: loop i=4 rs=0
+submgr_comps: loop i=5 rs=0
+submgr_comps: loop i=6 rs=0
+submgr_comps: loop i=7 rs=16
+submgr_comps: loop i=8 rs=0
 submgr_realname: ent
 mkrealname: ent
 mkrealname: -> realname_start
-realname_start: ent
-realname_ctor: ent
-realname_ctor: ret rs=100
-realname_start: -> ss
-realname_start: ss=David A.D. Morano
-realname_start: debprints() rs=37
-realname_parse: ent
-realname_parse: 1 stbuf¥0x7fd9acc068b0
-names_start: ent rlen=100 rbuf¥0x7fd9acc068b0
-names_start: 1
-names_start: ret rs=0
-realname_parse: 2
-realname_parse: 3
-realname_parse: 4
-realname_parse: 4
-realname_parse: 4
-realname_parse: 4
-realname_parse: 5 rs=4
-realname_parse: 6 rs=0
-realname_parse: 7 rs=0
-realname_parse: 8 rs=0
-realname_parse: 9 rs=0
-realname_parse: 10 rs=18
-realname_parse: ret rs=18 len=18
-realname_start: ret rs=18
-realname_name: ent
-realname_name: ret rs=15
-realname_finish: ent
-realname_finish: ret rs=0
 mkrealname: ret rs=0 len=15
 submgr_realname: mkrealname() rs=15
 submgr_realname: mkrealname-out rs=88
 submgr_realname: ret rs=88
-submgr_find: loop i=9 rs=88
+submgr_comps: loop i=9 rs=88
 submgr_mailname: ent
 submgr_mailname: mid2() rs=0
-realname_start: ent
-realname_ctor: ent
-realname_ctor: ret rs=100
-realname_start: -> ss
-realname_start: ss=David A.D. Morano
-realname_start: debprints() rs=37
-realname_parse: ent
-realname_parse: 1 stbuf¥0x7fd9acc068b0
-names_start: ent rlen=100 rbuf¥0x7fd9acc068b0
-names_start: 1
-names_start: ret rs=0
-realname_parse: 2
-realname_parse: 3
-realname_parse: 4
-realname_parse: 4
-realname_parse: 4
-realname_parse: 4
-realname_parse: 5 rs=4
-realname_parse: 6 rs=0
-realname_parse: 7 rs=0
-realname_parse: 8 rs=0
-realname_parse: 9 rs=0
-realname_parse: 10 rs=18
-realname_parse: ret rs=18 len=18
-realname_start: ret rs=18
-realname_finish: ent
-realname_finish: ret rs=0
 submgr_mailname: mkmailname-out rs=0
 submgr_mailname: ret rs=0
-submgr_find: loop i=10 rs=0
+submgr_comps: loop i=10 rs=0
 submgr_name: ent
 submgr_name: mid3 rs=0
 submgr_name: ret rs=0
-submgr_find: loop i=11 rs=0
-submgr_find: loop i=12 rs=0
-submgr_find: loop i=13 rs=0
-submgr_find: loop i=14 rs=0
+submgr_comps: loop i=11 rs=0
+submgr_comps: loop i=12 rs=0
+submgr_comps: loop i=13 rs=0
+submgr_comps: loop i=14 rs=0
+submgr_comps: loop i=15 rs=0
 submgr_domain: ent
 submgr_domain: mid1 rs=0
 submgr_domain: pw1 rs=0
@@ -103,15 +47,14 @@ submgr_domain: pw5 rs=0
 submgr_domain: mid2 rs=0
 submgr_domain: mid3 rs=0
 submgr_domain: ret rs=0
-submgr_find: loop i=15 rs=0
+submgr_comps: loop i=16 rs=0
 submgr_project: ent
 submgr_project: ret rs=0
-submgr_find: loop i=16 rs=0
-submgr_find: loop i=17 rs=0
-submgr_find: loop i=18 rs=0
-submgr_find: loop i=19 rs=0
-submgr_find: loop-out rs=0
-submgr_find: ret rs=0
+submgr_comps: loop i=17 rs=0
+submgr_comps: loop i=18 rs=0
+submgr_comps: loop i=19 rs=0
+submgr_comps: loop i=20 rs=0
+submgr_comps: ret rs=0
 userinfo_proc: find() rs=0
 userinfo_proc: ret rs=0 rv=0
 userinfo_start: ret rs=0 len=140
