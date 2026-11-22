@@ -158,8 +158,11 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        DEBUGPRINTF("userinfo_start() rs=%d\n",rs) ;
 		{
 		    printf("userinfo() rs=%d\n",rs) ;
-		    printf("uid=%u\n",	u.uid) ;
 		    printf("pid=%u\n",	u.pid) ;
+		    printf("ruid=%u\n",	u.ruid) ;
+		    printf("rgid=%u\n",	u.rgid) ;
+		    printf("pwuid=%u\n",	u.pwuid) ;
+		    printf("pwgid=%u\n",	u.pwgid) ;
 		    printf("username=%s\n",	u.username) ;
 		    printf("password=%s\n",	u.password) ;
 		    printf("shell=%s\n",	u.shell) ;
@@ -176,7 +179,8 @@ int main(int argc,con mainv argv,con mainv envv) {
 		    printf("sysname=%s\n",	u.sysname) ;
 		    printf("nodename=%s\n",	u.nodename) ;
 		    printf("domainname=%s\n",u.domainname) ;
-		    printf("project=%s\n",	u.projname) ;
+		    printf("groupname=%s\n",	u.groupname) ;
+		    printf("projname=%s\n",	u.projname) ;
 		    printf("tz=%s\n",	u.tz) ;
 		    printf("md=%s\n",	u.md) ;
 		    printf("wstation=%s\n",	u.wstation) ;
