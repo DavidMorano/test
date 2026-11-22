@@ -54,7 +54,7 @@ OBJ_IM=
 
 DEPS_PI=
 
-DEPS= 
+DEPS= userinfo.o
 
 OBJ00= testuserinfo_main.o
 OBJ01= prognamevar.o
