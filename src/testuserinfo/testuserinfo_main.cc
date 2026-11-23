@@ -25,10 +25,10 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<sys/types.h>
-#include	<sys/param.h>
-#include	<sys/stat.h>
-#include	<unistd.h>
+#include	<sys/types.h>		/* POSIX® */
+#include	<sys/param.h>		/* POSIX® */
+#include	<sys/stat.h>		/* POSIX® */
+#include	<unistd.h>		/* POSIX® */
 #include	<cstddef>		/* CSTD */
 #include	<cstdlib>		/* CSTD */
 #include	<clanguage.h>		/* LIBU */
@@ -36,13 +36,17 @@
 #include	<mapex.h>		/* LIBU */
 #include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
+#include	<deb.hh>		/* LIBU |DEBPRINTF(3u)| */
 #include	<prognamevar.hh>	/* LIBDAM */
 
 #include	"testuserinfo.h"
 #include	"userinfo.h"
 
+#pragma		GCC dependency		"mod/deb.ccm"
 
-/* local defines */
+import deb ;				/* debugging */
+
+//* local defines */
 
 #ifndef	CF_DEBUG
 #define	CF_DEBUG	1		/* run-time debug print-outs */
@@ -101,14 +105,17 @@ constexpr cpcchar	argopts[] = {
 } ; /* end array */
 
 constexpr mapex_map	mapexs[] = {
-	{ SR_NOENT, EX_NOUSER },
-	{ SR_AGAIN, EX_TEMPFAIL },
-	{ SR_DEADLK, EX_TEMPFAIL },
-	{ SR_NOLCK, EX_TEMPFAIL },
-	{ SR_TXTBSY, EX_TEMPFAIL },
-	{ SR_ACCESS, EX_NOPERM },
-	{ SR_REMOTE, EX_PROTOCOL },
-	{ SR_NOSPC, EX_TEMPFAIL },
+	{ SR_NOENT,	EX_NOUSER	},
+	{ SR_AGAIN,	EX_TEMPFAIL	},
+	{ SR_DEADLK,	EX_TEMPFAIL	},
+	{ SR_NOLCK,	EX_TEMPFAIL	},
+	{ SR_TXTBSY,	EX_TEMPFAIL	},
+	{ SR_ACCESS,	EX_NOPERM	},
+	{ SR_REMOTE,	EX_PROTOCOL	},
+	{ SR_NOSPC,	EX_TEMPFAIL	},
+	{ SR_INTR,	EX_INTR		},
+	{ SR_EXIT,	EX_TERM		},
+	{ SR_DOM,	EX_NOPROG	},
 	{ 0, 0 }
 } ; /* end array */
 
@@ -134,6 +141,7 @@ constexpr cpcchar	progopts[] = {
 	nullptr
 } ; /* end array */
 
+cchar			debfn[]		= "userinfo.deb" ;
 cbool			f_debug		= CF_DEBUG ;
 
 
@@ -152,6 +160,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 	        rs = DEBUGPRINTF("starting rs=%d\n",rs) ;
 	    }
 	} /* end if (debugging) */
+	    if (rs1 = DEBOPEN(debfn) ; rs1 >= 0) {
+		DEBPRINTF("deb fd=%d\n",rs1) ;
+	    } /* end if (DEBOPEN) */
 	if (rs >= 0) {
 	    userinfo u ;
 	    if ((rs = userinfo_start(&u,nullptr)) >= 0) {
@@ -193,6 +204,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if ((ex == EX_OK) && (rs < 0)) {
 	    ex = mapex(mapexs,rs) ;
 	} /* end if (error) */
+	DEBCLOSE ;
 	DEBUGPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	DEBUGCLOSE ;
 	return ex ;
