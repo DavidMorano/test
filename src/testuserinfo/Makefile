@@ -37,7 +37,7 @@ INCS += testuserinfo.h
 
 MODS +=
 
-LIBS= -luo -lu -lf
+LIBS= -ldebug -luo -lu -lf
 
 
 OBJ_PR=
@@ -58,7 +58,7 @@ DEPS= userinfo.o
 
 OBJ00= testuserinfo_main.o
 OBJ01= prognamevar.o
-OBJ02= userinfo.o libdebug.o
+OBJ02= userinfo.o
 OBJ03= realname.o mkrealname.o mkmailname.o
 
 OBJ04= 
