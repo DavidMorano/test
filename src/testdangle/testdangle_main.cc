@@ -77,14 +77,14 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		rs = SR_OK ;
 	int		ex = EXIT_SUCCESS ;
 	(void) envv ;
+	if (DEBUGOPEN(dfn) >= 0) {
+	    DEBUGPRINTF("ent\n") ;
+	} /* end if (DEBOPEN) */
 	if (ccharp dcp = getenv(VARPATHGROUP)) {
 	    if (cint rs1 = DEBOPEN(dcp) ; rs1 >= 0) {
 		DEBPRINTF("debinit fd=%d\n",rs1) ;
 	    } /* end if (DEBOPEN) */
 	} /* end if (getenv) */
-	if (DEBUGOPEN(dfn) >= 0) {
-	    DEBUGPRINTF("ent\n") ;
-	}
 	if (rs >= 0) {
 	    char pbuf[plen + 1] ;
 	    int pl = 0 ;
