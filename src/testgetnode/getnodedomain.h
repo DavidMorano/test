@@ -1,0 +1,1 @@
+../../../system/src/libuc/getx/getnodedomain.h
