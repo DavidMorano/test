@@ -19,19 +19,23 @@
 
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
+#include	<cstddef>		/* CSYD */
+#include	<cstdlib>		/* CSYD */
+#include	<cstdio>		/* CSYD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
 #include	<uclibmem.h>
 #include	<ucgetx.h>
 #include	<hostent.h>
-#include	<localmisc.h>
-#include	<dprint.hh>
+#include	<localmisc.h>		/* LIBU */
+#include	<dprint.hh>		/* LIBU */
 
 
 /* local defines */
+
+#ifndef	CF_DEBUG
+#define	CF_DEBUG	0		/* debugging */
+#endif
 
 
 /* imported namespaces */
@@ -42,22 +46,26 @@ using libuc::libmem ;			/* variable */
 /* local typedefs */
 
 
+/* local variables */
+
+cbool			f_debug		= CF_DEBUG ;
+
+
 /* exported variables */
 
 
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) {
+	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	int		rs1 ;
-	int		ex = EXIT_SUCCESS ;
 	if (argc > 0) {
 	    if (char *hebuf ; (rs = lm_ho(&hebuf)) >= 0) {
 	        HOSTENT	he ;
 	        cint	helen = rs ;
 	        for (int ai = 1 ; ai < argc ; ai += 1) {
-	            cchar	*name = argv[ai] ;
-	            if (name[0]) {
+	            if (ccharp name = argv[ai] ; name[0]) {
 	                rs = uc_gethostbyname(&he,hebuf,helen,name) ;
 		        printf("get n=%s rs=%d \n",name,rs) ;
 	            }
@@ -68,7 +76,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	} /* end if (positive) */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
