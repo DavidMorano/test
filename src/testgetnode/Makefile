@@ -59,14 +59,14 @@ DEPS= getnodedomain.o
 OBJ00= testgetnode_main.o
 OBJ01= prognamevar.o
 OBJ02= getnodedomain.o
-OBJ03=
+OBJ03= ucent.o ucget.o storeitem.o
 
 OBJ04= 
 OBJ05= 
 OBJ06= 
 OBJ07= 
 
-OBJA= obj00.o obj01.o obj02.o
+OBJA= obj00.o obj01.o obj02.o obj03.o
 OBJB= obj04.o obj05.o obj06.o obj07.o
 OBJC= 
 OBJD= 
@@ -226,7 +226,19 @@ realname.o:		realname.dir
 realname.dir:
 	makesubdir $@
 
-# LINPROG
+# UCENT		(libuc)
+ucent.o:		ucent.dir
+ucent.dir:
+	makesubdir $@
+
+# UCGET		(libuc)
+ucget.o:		ucget.dir
+ucget.dir:
+	makesubdir $@
+
+storeitem.o:		storeitem.cc		storeitem.h
+
+# LIBPROG
 proginfo.o:		proginfo.dir
 proginfo.dir:
 	makesubdir $@
