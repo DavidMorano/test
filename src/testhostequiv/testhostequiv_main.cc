@@ -27,16 +27,16 @@
 *******************************************************************************/
 
 #include	<envstandards.h>	/* MUST be ordered first to configure */
-#include	<cstddef>		/* |nullptr_t| */
-#include	<cstdlib>		/* |geprogname(3c)| */
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<usyscalls.h>
-#include	<usysflag.h>		/* |usysflag(3u)| */
-#include	<prognamevar.hh>
-#include	<hostequiv.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<usyscalls.h>		/* LIBU */
+#include	<usysflag.h>		/* LIBU |usysflag(3u)| */
+#include	<hostequiv.h>		/* LIBUC */
 #include	<localmisc.h>		/* |MAXPATHLEN| */
+#include	<prognamevar.hh>	/* LIBDAM */
 
 
 /* local defines */
@@ -109,7 +109,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	printf("%s: tests %d\n",ccp(progname),c) ;
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
-	}
+	} /* end if (error) */
 	return ex ;
 } /* end subroutine (main) */
 
