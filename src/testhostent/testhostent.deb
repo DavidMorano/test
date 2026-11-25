@@ -1,0 +1,2 @@
+main: ent pn=testhostent rs=3
+main: ret rs=0
