@@ -19,7 +19,7 @@
 /*******************************************************************************
 
  	Description:
-	I test some standar case-insensitive string comparison functions
+	I test some standard case-insensitive string comparison functions
 	against my own vesion.
 
 *******************************************************************************/
