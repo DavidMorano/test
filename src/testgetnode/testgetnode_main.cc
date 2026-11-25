@@ -50,7 +50,7 @@ import deb ;				/* debugging */
 /* local defines */
 
 #ifndef	CF_DEBUG
-#define	CF_DEBUG	1		/* debugging */
+#define	CF_DEBUG	0		/* debugging */
 #endif
 
 #define	VARDFN		"TESTGETNODE_DFN"
