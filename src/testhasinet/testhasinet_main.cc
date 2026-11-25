@@ -16,12 +16,12 @@
 /* Copyright © 2000 David A­D­ Morano.  All rights reserved. */
 
 #include	<envstandards.h>	/* ordered first to configure */
-#include	<cstddef>
-#include	<cstdlib>
-#include	<cstdio>
-#include	<clanguage.h>
-#include	<usysbase.h>
-#include	<localmisc.h>
+#include	<cstddef>		/* CSTD */
+#include	<cstdlib>		/* CSTD */
+#include	<cstdio>		/* CSTD */
+#include	<clanguage.h>		/* LIBU */
+#include	<usysbase.h>		/* LIBU */
+#include	<localmisc.h>		/* LIBU */
 #include	<libdebug.h>		/* LIBDEBUG */
 
 #include	"hasinet.h"
@@ -45,12 +45,12 @@ extern "C" {
 enum result : bool {
     	resbad,
     	resgood
-} ;
+} ; /* end struct */
 
 struct inetent {
     	cchar	*addr ;
 	bool	fr ;
-} ;
+} ; /* end struct */
 
 
 /* forward references */
@@ -123,10 +123,10 @@ int main(int,mainv,mainv) {
 
 /* local subroutines */
 
-local void testsuite(cc *af,hasinetx_f hasx,const inetent *suite) noex {
+local void testsuite(cc *af,hasinetx_f hasx,con inetent *suite) noex {
     	cchar		*fmt = "%s %s %c %s\n" ;
 	bool		fpass{} ;
-	for (const inetent *ep = suite ; ep->addr ; ep += 1) {
+	for (con inetent *ep = suite ; ep->addr ; ep += 1) {
 	    cbool f = hasx(ep->addr,-1) ;
 	    fpass = (f == ep->fr) ;
 	    printf(fmt,res[fpass],af,((f) ? 't' : 'f'),ep->addr) ;
