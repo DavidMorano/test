@@ -1,4 +1,4 @@
-/* testsysrealname SUPPORT */
+/* testsysreal_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -8,7 +8,6 @@
 #define	CF_DEBUG	1		/* compile-time debugging */
 #define	CF_PRINTBEF	0		/* use |printf(3stdio)| before */
 #define	CF_PRINTOUT	1		/* use |printf(3stdio)| for out */
-
 
 /* revision history:
 
