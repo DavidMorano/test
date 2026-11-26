@@ -1,0 +1,4 @@
+TESTSTOREITEM
+
+Test the STOREITEM object.
+
