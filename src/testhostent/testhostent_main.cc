@@ -1,4 +1,4 @@
-/* testhostent SUPPORT */
+/* testhostent_main SUPPORT */
 /* charset=ISO8859-1 */
 /* lang=C++20 (conformance reviewed) */
 
@@ -6,6 +6,7 @@
 /* version %I% last-modified %G% */
 
 #define	CF_DEBUG	1		/* debugging */
+#define	CF_ZERO		1		/* use a zeroed out entry */
 #define	CF_UCGET	0		/* use |ucget{x}| */
 
 /* revision history:
@@ -78,6 +79,7 @@ using libuc::libmem ;			/* variable */
 
 /* forward references */
 
+local int testzero	(ccharp) noex ;
 local int testget	(ccharp) noex ;
 local int testgetuc	(ccharp) noex ;
 local int hostent_disp	(HOSTENT *) noex ;
@@ -89,6 +91,7 @@ local int mkdot		(char *,int,int,cchar *) noex ;
 cint			aslen		= INET4_ADDRSTRLEN ;
 cchar			defhost[] 	= "mailhost" ;
 cbool			f_debug		= CF_DEBUG ;
+cbool			f_zero		= CF_ZERO ;
 cbool			f_ucget		= CF_UCGET ;
 
 
@@ -107,7 +110,10 @@ int main(int argc,con mainv argv,con mainv envv) {
 	    } else if (isNotPresent(rs)) {
 		rs = SR_OK ;
 	    } /* end */
-	} /* end if (debugging */
+	} /* end if (debugging) */
+	if ((rs >= 0) && f_zero) {
+	    rs = testzero("mailhost") ;
+	} /* end if (testzero) */
 	if ((rs >= 0) && (argc > 1)) {
 	    for (int ai = 1 ; (rs >= 0) && (ai < argc) ; ai += 1) {
 	        if (ccharp name = argv[ai] ; name[0]) {
@@ -115,6 +121,9 @@ int main(int argc,con mainv argv,con mainv envv) {
 		}
             } /* end for */
 	} /* end if (arguments) */
+	if ((rs >= 0) && f_ucget) {
+	    rs = testgetuc("mailhost") ;
+	} /* end if (testgetuc) */
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (error) */
@@ -127,6 +136,12 @@ int main(int argc,con mainv argv,con mainv envv) {
 /* local subroutines */
 
 [[maybe_unused]]
+local int testzero(ccharp) noex {
+    	ucentho	he{} ;
+	return hostent_disp(&he) ;
+} /* end subroutine (testzero) */
+
+[[maybe_unused]]
 local int testget(ccharp hn) noex {
     	int		rs = SR_FAULT ;
 	int		rs1 ;
@@ -134,13 +149,23 @@ local int testget(ccharp hn) noex {
 	    rs = SR_INVALID ;
 	    if (hn[0]) {
 	        if (char *hebuf ; (rs = lm_ho(&hebuf)) >= 0) {
+		    cint helen = rs ;
 	            {
-		        if (HOSTENT *hep = gethostbyname(hn)) {
-		            rs = hostent_disp(hep) ;
+		        if (HOSTENT *hep = gethonam(hn)) {
+		            if ((rs = hostent_disp(hep)) >= 0) {
+			        con ucentho *p = cast_static<ucentho *>(hep) ;
+				ucentho he ;
+				printf("try-go\n") ;
+				if ((rs = he.load(hebuf,helen,p)) >= 0) {
+				    printf("you-ready rs=%d\n",rs) ;
+				    rs = hostent_disp(&he) ;
+				    printf("you-win rs=%d\n",rs) ;
+				} /* end if (ucentho::load) */
+			    } /* end if (hostent(disp) */
 			} else {
 			    printf("no-entry\n") ;
 		        } /* end if (gethostbyname) */
-	            }
+	            } /* end block */
 	            rs1 = lm_free(hebuf) ;
 	            if (rs >= 0) rs = rs1 ;
 	        } /* end if (m-a-f) */
@@ -157,10 +182,9 @@ local int testgetuc(ccharp hn) noex {
 	    rs = SR_INVALID ;
 	    if (hn[0]) {
 	        if (char *hebuf ; (rs = lm_ho(&hebuf)) >= 0) {
-	            HOSTENT	he ;
-		    cauto	get = uc_gethostbyname ;
+	            ucentho	he ;
 	            cint	helen = rs ;
-	            if ((rs = get(&he,hebuf,helen,hn)) >= 0) {
+	            if ((rs = uc_gethonam(&he,hebuf,helen,hn)) >= 0) {
 			rs = hostent_disp(&he) ;
                     } else {
 			printf("no-entry\n") ;
@@ -182,25 +206,31 @@ local int hostent_disp(HOSTENT *hep) noex {
 	    printf("name=%s\n",		hep->h_name) ;
 	    printf("addrtype=%d\n",	hep->h_addrtype) ;
 	    printf("addrlen=%d\n",	hep->h_length) ;
-	    if (cchar **aliases = cast_const<ccharpp>(hep->h_aliases)) {
-		for (int i = 0 ; (rs >= 0) && aliases[i] ; i += 1) {
-                    printf("alias=%s\n",aliases[i]) ;
-		} /* end for */
-	    } /* end if (aliases) */
-	    if (cchar **addrs = cast_const<ccharpp>(hep->h_addr_list)) {
-		char asbuf[aslen + 1] ;
-		for (int i = 0 ; (rs >= 0) && addrs[i] ; i += 1) {
-		    ccharp ap = cast_const<ccharp>(hep->h_addr_list[i]) ;
-		    if (rs >= 0) {
-		        uint a = inet4int(ap) ;
-		        printf("a=%08x\n",a) ;
-		    }
-                    if (rs >= 0) {
-		        rs = inetntop(asbuf,aslen,af,ap) ;
-		        printf("inetntop=%s\n",asbuf) ;
-		    }
-                } /* end for */
+	    if (rs >= 0) {
+	        if (cchar **addrs = cast_const<ccharpp>(hep->h_addr_list)) {
+		    char asbuf[aslen + 1] ;
+		    printf("addresses\n") ;
+		    for (int i = 0 ; (rs >= 0) && addrs[i] ; i += 1) {
+		        ccharp ap = cast_const<ccharp>(hep->h_addr_list[i]) ;
+		        if (rs >= 0) {
+		            uint a = inet4int(ap) ;
+		            printf("a=%08x\n",a) ;
+		        }
+                        if (rs >= 0) {
+		            rs = inetntop(asbuf,aslen,af,ap) ;
+		            printf("inetntop=%s\n",asbuf) ;
+		        }
+                    } /* end for */
+	        } /* end if (addresses) */
 	    } /* end if (addresses) */
+	    if (rs >= 0) {
+	        if (cchar **aliases = cast_const<ccharpp>(hep->h_aliases)) {
+		    printf("aliases\n") ;
+		    for (int i = 0 ; (rs >= 0) && aliases[i] ; i += 1) {
+                        printf("alias=%s\n",aliases[i]) ;
+		    } /* end for */
+	        } /* end if (aliases) */
+	    } /* end if (aliases) */
 	} /* end if (non-null) */
 	return rs ;
 } /* end subroutine (hostent_disp) */
