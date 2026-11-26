@@ -46,8 +46,8 @@ DEPS_MAIN +=
 
 OBJ0= testhostent_main.o
 OBJ1= ucsys.o ucget.o ucent.o
-OBJ2= inetaddrx.o
-OBJ3= 
+OBJ2= storeitem.o
+OBJ3=
 OBJ4=
 OBJ5=
 OBJ6=
@@ -267,6 +267,6 @@ digtab.o:		digtab.dir
 digtab.dir:
 	makesubdir $@
 
-prognamevar.o:		prognamevar.cc	prognamevar.hh
+storeitem.o:		storeitem.cc	storeitem.h
 
 
