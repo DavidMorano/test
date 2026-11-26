@@ -60,6 +60,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	int		rs1 ;
+	DPRINTF("ent\n") ;
 	if (argc > 0) {
 	    if (char *hebuf ; (rs = lm_ho(&hebuf)) >= 0) {
 	        HOSTENT	he ;
@@ -77,6 +78,7 @@ int main(int argc,con mainv argv,con mainv envv) {
 	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
 	    ex = EXIT_FAILURE ;
 	} /* end if (error) */
+	DPRINTF("ret ex=%d rs=%d\n",ex,rs) ;
 	return ex ;
 } /* end subroutine (main) */
 
