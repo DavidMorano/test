@@ -45,7 +45,7 @@
 #define	UCTIMNOTE	struct uctimnote_head
 
 
-EXTERNC_begin
+EXTERNC_beg
 
 typedef int (*uctim_f)(void *objp,int timid,int notarg) noex ;
 
@@ -66,7 +66,7 @@ struct uctimnote : uctimnote_head {
 typedef	UCTIMNOTE	uctimnote ;
 #endif /* __cplusplus */
 
-EXTERNC_begin
+EXTERNC_beg
 
 extern int uctimnote_load	(uctimnote *,void *,psem *,uctim_f,int) noex ;
 
