@@ -98,7 +98,7 @@ struct vecelem_head {
 	int		esz ;		/* element size */
 } ; /* end struct (vecelem_head) */
 
-EXTERNC_begin
+EXTERNC_beg
 typedef int (*vecelem_vcmp)(cvoid **,cvoid **) noex ;
 EXTERNC_end
 
@@ -164,7 +164,7 @@ typedef VECELEM		vecelem ;
 
 typedef VECELEM_FL	vecelem_fl ;
 
-EXTERNC_begin
+EXTERNC_beg
 extern int vecelem_start	(vecelem *,int,int,int) noex ;
 extern int vecelem_finish	(vecelem *) noex ;
 extern int vecelem_add		(vecelem *,cvoid *) noex ;
