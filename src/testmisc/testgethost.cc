@@ -17,6 +17,14 @@
 /* Copyright © 1998 David A­D­ Morano.  All rights reserved. */
 /* Use is subject to license terms. */
 
+/*******************************************************************************
+
+	Description:
+	Test some miscellaneous things related to retrieving host
+	information from the system network-related databases.
+
+*******************************************************************************/
+
 #include	<envstandards.h>	/* ordered first to configure */
 #include	<sys/types.h>
 #include	<cstddef>		/* CSYD */
