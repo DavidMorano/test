@@ -48,7 +48,7 @@ using std::max ;			/* subroutine */
 
 /* forward references */
 
-constexpr char		fmt[] = "str> %s\n" ;
+constexpr char	fmt[]		= "str> %s\n" ;
 
 local int proci(int *a,int idx,int **ipp) noex {
     	*ipp = (a + idx) ;
@@ -79,29 +79,32 @@ cbool		f_debug		= CF_DEBUG ;
 /* exported subroutines */
 
 int main(int argc,con mainv argv,con mainv envv) {
+    	int		ex = EXIT_SUCCESS ;
 	int		rs = SR_OK ;
 	int		rs1 ;
 	if (cchar *cp = getourenv(envv,VARDFN)) {
 	    rs = DEBUGOPEN(cp) ;
 	    DEBUGPRINTF("starting DFD=%d\n",rs) ;
-	}
+	} /* end */
 	if (rs >= 0) {
 	    int		a[AN] = { 0, 1, 2, 3 } ;
 	    intp	ip = (a + 0) ;
 	    printf("a=%d\n",a[0]) ;
-	    rs = proci(a,1,&ip) ;
+	    if (rs >= 0) rs = proci(a,1,&ip) ;
 	    printf("ae=%d\n",*ip) ;
-	    rs = procx(a,2,&ip) ;
+	    if (rs >= 0) rs = procx(a,2,&ip) ;
 	    printf("ae=%d\n",*ip) ;
-	    {
-		voidp vp{} ;
-	        rs = procv(a,3,&vp) ;
-		{
+	    if (rs >= 0) rs = procv(a,2,&ip) ;
+	    if (rs >= 0) {
+		if (voidp vp{} ; (rs = procv(a,3,&vp)) >= 0) {
 		    int *ip = intp(vp) ;
 	            printf("ae=%d\n",*ip) ;
 		}
-	    }
+	    } /* end if (ok) */
 	} /* end if (ok) */
+	if ((ex == EXIT_SUCCESS) && (rs < 0)) {
+	    ex = EXIT_FAILURE ;
+	} /* end if (error) */
 	DEBUGPRINTF("ret rs=%d\n",rs) ;
 	DEBUGCLOSE ;
 	return 0 ;
