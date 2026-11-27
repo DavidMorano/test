@@ -28,7 +28,7 @@
 
 #ifndef	TYPEDEF_VECENTCMP
 #define	TYPEDEF_VECENTCMP
-EXTERNC_begin
+EXTERNC_beg
 typedef int (*vecsorthand_cmpf)(cvoid *,cvoid *) noex ;
 EXTERNC_end
 #endif /* TYPEDEF_VECENTCMP */
@@ -133,7 +133,7 @@ struct vecsorthand : vecsorthand_head {
 typedef VECSORTHAND	vecsorthand ;
 #endif /* __cplusplus */
 
-EXTERNC_begin
+EXTERNC_beg
 extern int vecsorthand_start	(vecsorthand *,vecsorthand_cmpf,int) noex ;
 extern int vecsorthand_finish	(vecsorthand *) noex ;
 extern int vecsorthand_add	(vecsorthand *,cvoid *) noex ;
