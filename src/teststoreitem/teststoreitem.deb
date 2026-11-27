@@ -1,21 +1,13 @@
 main: ent pn=teststoreitem rs=3
 testone: ent
 testload: ent
-storeitem_start: ent
-storeitem_start: ret rs=0
 testload: -> storeitem_word
 testload: storeitem_word() rs=4
-storeitem_finish: ent
-storeitem_finish: ret rs=10
 testload: storeitem_finish() rs=10
 testload: ret rs=10 len=0
 testone: ret rs=0 len=0
 testargs: ent
-storeitem_start: ent
-storeitem_start: ret rs=0
-testargs: si.strtab() rs=43
-storeitem_finish: ent
-storeitem_finish: ret rs=46
+testargs: si.strtab() rs=46
 testargs: si-out rs=46
-testargs: ret rs=0 len=43
-main: ret rs=43
+testargs: ret rs=0 len=46
+main: ret rs=46
