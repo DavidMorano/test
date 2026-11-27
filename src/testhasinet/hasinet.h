@@ -49,7 +49,7 @@
 #include	<usysdefs.h>		/* LIBU */
 
 
-EXTERNC_begin
+EXTERNC_beg
 
 extern bool hasinet4addrstr(cchar *,int) noex ;
 extern bool hasinet6addrstr(cchar *,int) noex ;
