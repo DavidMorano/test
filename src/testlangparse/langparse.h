@@ -110,7 +110,7 @@ struct langparse : langparse_head {
 typedef LANGPARSE	langparse ;
 #endif /* __cplusplus */
 
-EXTERNC_begin
+EXTERNC_beg
 
 extern int langparse_start	(langparse *) noex ;
 extern int langparse_load	(langparse *,cchar *,int) noex ;
