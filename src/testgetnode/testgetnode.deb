@@ -1,5 +1,6 @@
 main: starting pn=testgetnode rs=3
 getnodedomain: ent
+getnode: ent
 getnode: req node
 try_initnode: ent
 try_initvarnode: ent
@@ -12,6 +13,8 @@ try_initnode: mid2 res ss=rcc
 try_initnode: mid2 nrbuf=rcc
 try_initnode: mid3 rs=3
 try_initnode: ret rs=3
+getnode: ret rs=0
+getdomain: ent
 getdomain: req domain
 getdomain: try i=0
 try_vardomain: ent
@@ -26,28 +29,21 @@ getdomain: try i=4
 try_gethost: ent
 try_gethost: mid1 rs=0
 try_gethost: mid2 bef nn=rcc rs=8192
-uc_gethonam: ent n=rcc
-uc_gethonam: go
-getho_nam: ent n=rcc
-getho_nam: mid2
-getho_nam: mid2 sz-bef 
-load: ent
-load: mid1
-load: other h-length=4
-storeitem_start: ent
-storeitem_start: ret rs=0
-load: storeitem_start() rs=0
-load: mid3 n=0 rs=0
-load: mid4 rs=8
-load: for-out rs=8
-load: ptab-out rs=8
-load: storeitem-out rs=13
-load: ret rs=13
-getho_nam: mid2 sz-aft rs=13
-getho_nam: mid3 rs=13
-getho_nam: ret rs=13
-uc_gethonam: ret rs=13
 try_gethost: mid2 alias-bef in rs=0
 try_gethost: mid2 for-bef rs=0
-try_gethost: mid2 for-test-bef h_aliases=0x7fcdf9809c08
-try_gethost: mid2 for-test-bef h_aliases[0]=0x636372
+try_gethost: mid2 for-test-bef h_aliases=0x7fe458009c04
+try_gethost: mid2 for-test-bef h_aliases[0]=0x0
+try_gethost: mid2 for-test-alias=(null)
+try_gethost: mid2 for-test-aft
+try_gethost: mid2 for-aft rs=0
+try_gethost: mid2 alias-aft rs=0
+try_gethost: mid2 get-aft rs=0
+try_gethost: ret rs=0 len=0
+getdomain: try i=5
+getdomain: try i=6
+try_guess: ent
+try_guess: ret rs=13 len=13
+getdomain: mid rs=13 dn=rightcore.com
+getdomain: ret rs=13
+getnodedomain: ret rs=0
+main: ret ex=0 rs=0
