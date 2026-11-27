@@ -100,7 +100,7 @@ struct sintq : sintq_head {
 typedef SINTQ		sintq ;
 #endif /* __cplusplus */
 
-EXTERNC_begin
+EXTERNC_beg
 
 extern int	sintq_start	(sintq *,int) noex ;
 extern int	sintq_ins	(sintq *,int) noex ;
