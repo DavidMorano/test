@@ -1,8 +1,4 @@
 main: ent pn=testhostent rs=3
 load: ent ×
-storeitem_start: ent
-storeitem_start: ret rs=0
-storeitem_finish: ent
-storeitem_finish: ret rs=4
-load: ret rs=4
+load: ret rs=32
 main: ret rs=0
