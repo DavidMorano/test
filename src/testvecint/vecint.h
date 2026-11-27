@@ -234,7 +234,7 @@ struct vecint : vecint_head {
 typedef VECINT		vecint ;
 #endif /* __cplusplus */
 
-EXTERNC_begin
+EXTERNC_beg
 extern int vecint_start		(vecint *,int,int) noex ;
 extern int vecint_finish	(vecint *) noex ;
 extern int vecint_add		(vecint *,VECINT_TYPE) noex ;
